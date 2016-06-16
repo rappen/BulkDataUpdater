@@ -9,9 +9,11 @@
     <projectUrl>http://cinteros.xrmtoolbox.com</projectUrl>
     <iconUrl>http://rappen.net/Cinteros/BDU-if.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Updates or touches single attributes on a set of records. This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
-    Note: This plugin requires the FetchXML Builder to be installed to work properly!</description>
-    <summary></summary>
+    <description>Updates or touches single attributes on a set of records.</description>
+    <summary>XrmToolBox plugin to update or touch single attributes on a set of records.</summary>
+    <releaseNotes>This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
+
+Note: This plugin requires the FetchXML Builder to be installed to work properly!</releaseNotes>
     <copyright>Copyright 2016 Innofactor AB</copyright>
     <tags>XrmToolBox Plugins Innofactor BulkDataUpdater</tags>
     <dependencies>
