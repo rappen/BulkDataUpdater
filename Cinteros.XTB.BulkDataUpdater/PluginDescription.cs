@@ -12,7 +12,7 @@
     ExportMetadata("BackgroundColor", "#ffffff"), // Use a HTML color name
     ExportMetadata("PrimaryFontColor", "#000000"), // Or an hexadecimal code
     ExportMetadata("SecondaryFontColor", "DarkGray")]
-    public class ViewDesignerTool : PluginBase
+    public class BulkDataUpdaterTool : PluginBase
     {
         #region Public Methods
 
