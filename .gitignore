@@ -6,5 +6,5 @@
 */packages
 */bin
 */obj
-*/packages
+/packages
 *.csproj.user
