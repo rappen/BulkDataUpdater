@@ -6,7 +6,7 @@
 
     [Export(typeof(IXrmToolBoxPlugin)),
     ExportMetadata("Name", "Bulk Data Updater"),
-    ExportMetadata("Description", "Update or touche single attributes on a set of records"),
+    ExportMetadata("Description", "Update or touch single attributes on a set of records"),
     ExportMetadata("SmallImageBase64", Constants.B64_IMAGE_SMALL), // null for "no logo" image or base64 image content
     ExportMetadata("BigImageBase64", Constants.B64_IMAGE_LARGE), // null for "no logo" image or base64 image content
     ExportMetadata("BackgroundColor", "#ffffff"), // Use a HTML color name

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Cinteros.XTB.BulkDataUpdater")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Bulk Data Updater")]
+[assembly: AssemblyDescription("XrmToolBox plugin to update or touch single attributes on a set of records.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Jonas Rapp, Innofactor AB")]
 [assembly: AssemblyProduct("Cinteros.XTB.BulkDataUpdater")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © Innofactor 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
