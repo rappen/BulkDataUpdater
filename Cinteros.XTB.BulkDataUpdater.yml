@@ -22,7 +22,7 @@ after_build:
 - cmd: >-
     nuget pack Cinteros.XTB.BulkDataUpdater.nuspec -Version %APPVEYOR_BUILD_VERSION%
 
-    7z a Cinteros.XTB.BulkDataUpdater_%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\Output\%CONFIGURATION%\Cinteros.XTB.BulkDataUpdater.dll
+    7z a Cinteros.XTB.BulkDataUpdater_%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\Cinteros.XTB.BulkDataUpdater\bin\%CONFIGURATION%\Cinteros.XTB.BulkDataUpdater.dll
 
     appveyor PushArtifact Cinteros.XTB.BulkDataUpdater_%APPVEYOR_BUILD_VERSION%.zip
 artifacts:
