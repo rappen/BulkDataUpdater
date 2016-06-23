@@ -34,9 +34,6 @@
       <HintPath>..\packages\Cinteros.Xrm.CRMWinForm.2016.4.12.6\lib\Cinteros.Xrm.CRMWinForm.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cinteros.Xrm.FetchXmlBuilder">
-      <HintPath>..\Dependencies\Cinteros.Xrm.FetchXmlBuilder.dll</HintPath>
-    </Reference>
     <Reference Include="Cinteros.Xrm.XmlEditorUtils, Version=1.2016.4.106, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Cinteros.Xrm.XmlEditorUtils.dll</HintPath>

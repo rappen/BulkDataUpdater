@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using System.Xml;
-    using Xrm.FetchXmlBuilder;
     using Xrm.XmlEditorUtils;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Messages;
@@ -80,11 +79,9 @@
         public void OnIncomingMessage(XrmToolBox.Extensibility.MessageBusEventArgs message)
         {
             if (message.SourcePlugin == "FetchXML Builder" &&
-                message.TargetArgument != null &&
-                message.TargetArgument is FXBMessageBusArgument)
+                message.TargetArgument is string)
             {
-                var fxbArg = (FXBMessageBusArgument)message.TargetArgument;
-                FetchUpdated(fxbArg.FetchXML);
+                FetchUpdated(message.TargetArgument);
             }
         }
 
@@ -421,8 +418,8 @@
                     }
                     catch (PluginNotFoundException)
                     {
-                        if (MessageBox.Show("FetchXML Builder was not found.\nDownload latest version from\n\nhttp://fxb.xrmtoolbox.com", "FetchXML Builder",
-                            MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                        if (MessageBox.Show("FetchXML Builder was not found.\nInstall it from the XrmToolBox Plugin Store or visit\n\nhttp://fxb.xrmtoolbox.com", "FetchXML Builder",
+                                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                         {
                             DownloadFXB();
                         }
@@ -456,11 +453,7 @@
             {
                 //SourcePlugin = "Bulk Data Updater"
             };
-            var fXBMessageBusArgument = new FXBMessageBusArgument(FXBMessageBusRequest.FetchXML)
-            {
-                FetchXML = fetchXml
-            };
-            messageBusEventArgs.TargetArgument = fXBMessageBusArgument;
+            messageBusEventArgs.TargetArgument = fetchXml;
             OnOutgoingMessage(this, messageBusEventArgs);
         }
 

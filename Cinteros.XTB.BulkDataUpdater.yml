@@ -24,6 +24,8 @@ after_build:
 
     7z a Cinteros.XTB.BulkDataUpdater_%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\Cinteros.XTB.BulkDataUpdater\bin\%CONFIGURATION%\Cinteros.XTB.BulkDataUpdater.dll
 
+    7z a Cinteros.XTB.BulkDataUpdater_%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\Cinteros.XTB.BulkDataUpdater\bin\%CONFIGURATION%\Cinteros.Xrm.XmlEditorUtils.dll
+
     appveyor PushArtifact Cinteros.XTB.BulkDataUpdater_%APPVEYOR_BUILD_VERSION%.zip
 artifacts:
 - path: '**\Cinteros.XrmToolBox.BulkDataUpdater.*.nupkg'
