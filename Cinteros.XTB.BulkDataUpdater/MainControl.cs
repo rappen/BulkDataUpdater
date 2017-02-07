@@ -636,17 +636,50 @@
                 case AttributeTypeCode.String:
                 case AttributeTypeCode.Memo:
                     return cmbValue.Text;
-                    break;
+
                 case AttributeTypeCode.BigInt:
                 case AttributeTypeCode.Integer:
                     return int.Parse(cmbValue.Text);
-                    break;
+
                 case AttributeTypeCode.Picklist:
                 case AttributeTypeCode.State:
                 case AttributeTypeCode.Status:
                     var value = ((OptionsetItem)cmbValue.SelectedItem).meta.Value;
                     return new OptionSetValue((int)value);
-                    break;
+
+                case AttributeTypeCode.DateTime:
+                    return DateTime.Parse(cmbValue.Text);
+
+                case AttributeTypeCode.Boolean:
+                    {
+                        // Is checking the cmbAttribute ok? I hope so...
+                        var attr = (BooleanAttributeMetadata)((AttributeItem)cmbAttribute.SelectedItem).Metadata;
+                        return ((OptionsetItem)cmbValue.SelectedItem).meta == attr.OptionSet.TrueOption;
+                    }
+
+                // The following allows to specify an entity reference in the following form:
+                // attribute_name,attribute_guid
+                // eg: account,08e943f8-1ff0-41ea-89c0-5478dd465806
+                // As a security check, the attribute_name MUST be in the targets 
+                // specified by the lookup attribute metadata targets
+                case AttributeTypeCode.Lookup:
+                    {
+                        // Get the attribute metadata for the lookup type:
+                        var attr = (LookupAttributeMetadata)((AttributeItem)cmbAttribute.SelectedItem).Metadata;
+
+                        // split the text: first part: attribute meta name, second part: attribute guid to update
+                        var t = cmbValue.Text.Split(',', ';', '/', '\\', ':').ToArray();
+                        // get the first target
+                        string attrname = (attr.Targets != null && attr.Targets.Length > 0) ? attr.Targets[0] : null;
+                        if (attr.Targets != null && t.Length > 1)
+                            attrname = attr.Targets.FirstOrDefault(x => t.First().Equals(x, StringComparison.OrdinalIgnoreCase));
+
+                        if (String.IsNullOrEmpty(attrname))
+                            throw new Exception("Target entity: '" + t.First() + "' is null or not found");
+
+                        return new EntityReference(attrname, new Guid(t.Last()));
+                    }
+
                 default:
                     throw new Exception("Attribute of type " + type.ToString() + " is currently not supported.");
             }
@@ -667,6 +700,16 @@
                         {
                             cmbValue.Items.Add(new OptionsetItem(option));
                         }
+                    }
+                    cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
+                }
+                else if (attribute.Metadata is BooleanAttributeMetadata)
+                {
+                    var options = ((BooleanAttributeMetadata)attribute.Metadata).OptionSet;
+                    if (options != null)
+                    {
+                        cmbValue.Items.Add(new OptionsetItem(options.TrueOption));
+                        cmbValue.Items.Add(new OptionsetItem(options.FalseOption));
                     }
                     cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
                 }
