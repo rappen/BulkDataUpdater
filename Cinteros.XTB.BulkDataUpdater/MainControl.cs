@@ -93,11 +93,6 @@
         {
             EnableControls(false);
             LoadSetting();
-            var tasks = new List<Task>
-            {
-                this.LaunchVersionCheck("Cinteros", "XrmToolBox.Plugins", "http://cinteros.xrmtoolbox.com/?src=DBU.{0}")
-            };
-            tasks.ForEach(x => x.Start());
             EnableControls(true);
         }
 
@@ -410,19 +405,13 @@
                     }
                     catch (System.IO.FileNotFoundException)
                     {
-                        if (MessageBox.Show("FetchXML Builder is not installed.\nDownload latest version from\n\nhttp://fxb.xrmtoolbox.com", "FetchXML Builder",
-                            MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
-                        {
-                            DownloadFXB();
-                        }
+                        MessageBox.Show("FetchXML Builder is not installed.\nDownload latest version from the Plugins Store.", "FetchXML Builder",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     catch (PluginNotFoundException)
                     {
-                        if (MessageBox.Show("FetchXML Builder was not found.\nInstall it from the XrmToolBox Plugin Store or visit\n\nhttp://fxb.xrmtoolbox.com", "FetchXML Builder",
-                                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
-                        {
-                            DownloadFXB();
-                        }
+                        MessageBox.Show("FetchXML Builder was not found.\nInstall it from the XrmToolBox Plugin Store.", "FetchXML Builder",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     break;
                 case 2: // File
@@ -701,32 +690,6 @@
                     "Statecode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             EnableControls(true);
-        }
-
-        private Task LaunchVersionCheck(string ghUser, string ghRepo, string dlUrl)
-        {
-            return new Task(() =>
-            {
-                var currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                var cvc = new XrmToolBox.AppCode.GithubVersionChecker(currentVersion, ghUser, ghRepo);
-
-                cvc.Run();
-
-                if (cvc.Cpi != null && !string.IsNullOrEmpty(cvc.Cpi.Version))
-                {
-                    this.Invoke(new Action(() =>
-                    {
-                        var nvForm = new NewVersionForm(currentVersion, cvc.Cpi.Version, cvc.Cpi.Description, ghUser, ghRepo, new Uri(string.Format(dlUrl, currentVersion)));
-                        nvForm.ShowDialog(this);
-                    }));
-                }
-            });
-        }
-
-        internal static void DownloadFXB()
-        {
-            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            System.Diagnostics.Process.Start("http://fxb.xrmtoolbox.com/?src=DBU." + currentVersion);
         }
 
         #endregion Methods
