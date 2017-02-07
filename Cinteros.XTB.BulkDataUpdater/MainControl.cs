@@ -498,6 +498,10 @@
                 {
                     foreach (var attribute in attributes)
                     {
+                        if (!attribute.IsValidForUpdate.Value == true)
+                        {
+                            continue;
+                        }
                         if (!showAttributesAll)
                         {
                             if (!string.IsNullOrEmpty(attribute.AttributeOf)) { continue; }
