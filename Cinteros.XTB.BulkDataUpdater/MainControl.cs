@@ -985,7 +985,16 @@
                 attributes.Add("statecode");
             }
             var touch = rbSetTouch.Checked;
-            var value = rbSetValue.Checked ? GetValue(attributeitem.Metadata.AttributeType) : null;
+            object value = null;
+            try
+            {
+                value = rbSetValue.Checked ? GetValue(attributeitem.Metadata.AttributeType) : null;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Value error:\n" + e.Message, "Set value", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             OptionSetValue statevalue = null;
             if (attributeitem.Metadata is StatusAttributeMetadata && value is OptionSetValue)
             {
