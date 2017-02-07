@@ -19,7 +19,7 @@
     using System.Configuration;
     using AppCode;
     using Xrm.Common.Forms;
-    public partial class MainControl : PluginControlBase, IGitHubPlugin, IPayPalPlugin, IMessageBusHost
+    public partial class BulkDataUpdater : PluginControlBase, IGitHubPlugin, IPayPalPlugin, IMessageBusHost
     {
         const string settingfile = "Cinteros.Xrm.DataUpdater.Settings.xml";
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
@@ -42,7 +42,7 @@
         private bool showAttributesOnlyValidAF = true;
         private Dictionary<string, string> entityAttributes = new Dictionary<string, string>();
 
-        public MainControl()
+        public BulkDataUpdater()
         {
             InitializeComponent();
         }
@@ -148,7 +148,7 @@
             }
             if (!tsmiAttributesCustom.Checked && !tsmiAttributesStandard.Checked)
             {   // Neither custom nor standard is not such a good idea...
-                tsmiAttributesCustom.Checked = true;
+                tsmiAttributesStandard.Checked = true;
             }
             tsmiAttributesManaged.Enabled = !tsmiAttributesAll.Checked;
             tsmiAttributesUnmanaged.Enabled = !tsmiAttributesAll.Checked;
@@ -201,10 +201,10 @@
         private void tsbAbout_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                "Data Updater for XrmToolBox\n" +
+                "Bulk Data Updater for XrmToolBox\n" +
                 "Version: " + Assembly.GetExecutingAssembly().GetName().Version + "\n\n" +
-                "Developed by Jonas Rapp at Cinteros AB.",
-                "About Data Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                "Developed by Jonas Rapp at Innofactor Sweden.",
+                "About Bulk Data Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #endregion Event handlers
@@ -213,100 +213,54 @@
 
         private void SaveSetting()
         {
-            var map = new ExeConfigurationFileMap { ExeConfigFilename = settingfile };
-            System.Configuration.Configuration config = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
-            config.AppSettings.Settings.Clear();
-            if (!string.IsNullOrWhiteSpace(fetchXml))
+            //var entattrstr = "";
+            //foreach (var entattr in entityAttributes)
+            //{
+            //    entattrstr += entattr.Key + ":" + entattr.Value + "|";
+            //}
+            var settings = new Settings()
             {
-                config.AppSettings.Settings.Add("FetchXML", fetchXml);
-            }
-            if (entityAttributes != null && entityAttributes.Count > 0)
-            {
-                var entattrstr = "";
-                foreach (var entattr in entityAttributes)
-                {
-                    entattrstr += entattr.Key + ":" + entattr.Value + "|";
-                }
-                config.AppSettings.Settings.Add("EntityAttributes", entattrstr);
-            }
-            SaveControlValue(config, tsmiFriendly);
-            SaveControlValue(config, tsmiAttributesManaged);
-            SaveControlValue(config, tsmiAttributesUnmanaged);
-            SaveControlValue(config, tsmiAttributesCustomizable);
-            SaveControlValue(config, tsmiAttributesUncustomizable);
-            SaveControlValue(config, tsmiAttributesCustom);
-            SaveControlValue(config, tsmiAttributesStandard);
-            SaveControlValue(config, tsmiAttributesOnlyValidAF);
-            config.Save();
+                FetchXML = fetchXml,
+                EntityAttributes = entityAttributes.Select(p => new KeyValuePair() { key = p.Key, value = p.Value }).ToList(),
+                Friendly = tsmiFriendly.Checked,
+                AttributesManaged = tsmiAttributesManaged.Checked,
+                AttributesUnmanaged = tsmiAttributesUnmanaged.Checked,
+                AttributesCustomizable = tsmiAttributesCustomizable.Checked,
+                AttributesUncustomizable = tsmiAttributesUncustomizable.Checked,
+                AttributesCustom = tsmiAttributesCustom.Checked,
+                AttributesStandard = tsmiAttributesStandard.Checked,
+                AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked
+            };
+            SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, "Settings");
         }
 
         private void LoadSetting()
         {
-            var map = new ExeConfigurationFileMap { ExeConfigFilename = settingfile };
-            System.Configuration.Configuration config = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
-            if (config.AppSettings.Settings["FetchXML"] != null)
+            Settings settings;
+            if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out settings, "Settings"))
             {
-                fetchXml = config.AppSettings.Settings["FetchXML"].Value;
+                settings = new Settings();
             }
-            if (config.AppSettings.Settings["EntityAttributes"] != null)
+
+            fetchXml = settings.FetchXML;
+            if (settings.EntityAttributes != null)
             {
-                var entattrstr = config.AppSettings.Settings["EntityAttributes"].Value;
-                foreach (var entattr in entattrstr.Split('|'))
-                {
-                    if (!string.IsNullOrEmpty(entattr) && entattr.Contains(':'))
-                    {
-                        var entity = entattr.Split(':')[0];
-                        var attr = entattr.Split(':')[1];
-                        entityAttributes.Add(entity, attr);
-                    }
-                }
+                entityAttributes = settings.EntityAttributes.ToDictionary(i => i.key, i => i.value);
             }
-            LoadControlValue(config, tsmiFriendly);
-            LoadControlValue(config, tsmiAttributesManaged);
-            LoadControlValue(config, tsmiAttributesUnmanaged);
-            LoadControlValue(config, tsmiAttributesCustomizable);
-            LoadControlValue(config, tsmiAttributesUncustomizable);
-            LoadControlValue(config, tsmiAttributesCustom);
-            LoadControlValue(config, tsmiAttributesStandard);
-            LoadControlValue(config, tsmiAttributesOnlyValidAF);
+            else
+            {
+                entityAttributes = new Dictionary<string, string>();
+            }
+            tsmiFriendly.Checked = settings.Friendly;
+            tsmiAttributesManaged.Checked = settings.AttributesManaged;
+            tsmiAttributesUnmanaged.Checked = settings.AttributesUnmanaged;
+            tsmiAttributesCustomizable.Checked = settings.AttributesCustomizable;
+            tsmiAttributesUncustomizable.Checked = settings.AttributesUncustomizable;
+            tsmiAttributesCustom.Checked = settings.AttributesCustom;
+            tsmiAttributesStandard.Checked = settings.AttributesStandard;
+            tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
             tsmiFriendly_Click(null, null);
             tsmiAttributes_Click(null, null);
-        }
-
-        private void SaveControlValue(Configuration config, object control)
-        {
-            if (control is ToolStripMenuItem)
-            {
-                config.AppSettings.Settings.Add(((ToolStripMenuItem)control).Name, ((ToolStripMenuItem)control).Checked ? "1" : "0");
-            }
-            else if (control is ToolStripComboBox)
-            {
-                config.AppSettings.Settings.Add(((ToolStripComboBox)control).Name, ((ToolStripComboBox)control).SelectedIndex.ToString());
-            }
-        }
-
-        private void LoadControlValue(Configuration config, object control)
-        {
-            if (control is ToolStripMenuItem)
-            {
-                var name = ((ToolStripMenuItem)control).Name;
-                if (config.AppSettings.Settings[name] != null)
-                {
-                    ((ToolStripMenuItem)control).Checked = config.AppSettings.Settings[name].Value == "1";
-                }
-            }
-            else if (control is ToolStripComboBox)
-            {
-                var name = ((ToolStripComboBox)control).Name;
-                if (config.AppSettings.Settings[name] != null)
-                {
-                    var index = 0;
-                    if (int.TryParse(config.AppSettings.Settings[name].Value, out index) && ((ToolStripComboBox)control).Items.Count > index)
-                    {
-                        ((ToolStripComboBox)control).SelectedIndex = index;
-                    }
-                }
-            }
         }
 
         private void EnableControls(bool enabled)

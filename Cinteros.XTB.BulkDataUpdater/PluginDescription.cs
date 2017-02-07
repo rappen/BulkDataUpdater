@@ -18,7 +18,7 @@
 
         public override IXrmToolBoxPluginControl GetControl()
         {
-            return new MainControl();
+            return new BulkDataUpdater();
         }
 
         #endregion Public Methods
