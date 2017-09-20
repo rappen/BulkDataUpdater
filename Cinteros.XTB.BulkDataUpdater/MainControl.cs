@@ -614,6 +614,8 @@
                         var attr = (BooleanAttributeMetadata)((AttributeItem)cmbAttribute.SelectedItem).Metadata;
                         return ((OptionsetItem)cmbValue.SelectedItem).meta == attr.OptionSet.TrueOption;
                     }
+                case AttributeTypeCode.Money:
+                    return new Money(decimal.Parse(cmbValue.Text));
 
                 // The following allows to specify an entity reference in the following form:
                 // attribute_name,attribute_guid
