@@ -56,12 +56,12 @@
 
         public string RepositoryName
         {
-            get { return "DataUpdater"; }
+            get { return "XrmToolBox.BulkDataUpdater"; }
         }
 
         public string UserName
         {
-            get { return "Cinteros"; }
+            get { return "Innofactor"; }
         }
 
         public string DonationDescription
