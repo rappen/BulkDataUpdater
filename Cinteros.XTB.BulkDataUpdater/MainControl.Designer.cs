@@ -539,14 +539,15 @@
             this.splitContainer1.SplitterDistance = 328;
             this.splitContainer1.TabIndex = 39;
             // 
-            // MainControl
+            // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStripMain);
-            this.Name = "MainControl";
+            this.Name = "BulkDataUpdater";
             this.Size = new System.Drawing.Size(698, 512);
+            this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
             this.toolStripMain.ResumeLayout(false);
