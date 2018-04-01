@@ -1,27 +1,25 @@
 ﻿namespace Cinteros.XTB.BulkDataUpdater
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
-    using System.Xml;
-    using Xrm.XmlEditorUtils;
+    using AppCode;
+    using Microsoft.Crm.Sdk.Messages;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Windows.Forms;
+    using System.Xml;
+    using Xrm.Common.Forms;
+    using Xrm.XmlEditorUtils;
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Interfaces;
-    using XrmToolBox.Forms;
-    using Microsoft.Crm.Sdk.Messages;
-    using System.Configuration;
-    using AppCode;
-    using Xrm.Common.Forms;
+
     public partial class BulkDataUpdater : PluginControlBase, IGitHubPlugin, IPayPalPlugin, IMessageBusHost
     {
-        const string settingfile = "Cinteros.Xrm.DataUpdater.Settings.xml";
+        //        const string settingfile = "Cinteros.Xrm.DataUpdater.Settings.xml";
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
 
         private string fetchXml = fetchTemplate;
@@ -47,32 +45,17 @@
             InitializeComponent();
         }
 
-        #region interface implementation
+        #region Interface implementation
 
-        public override void ClosingPlugin(PluginCloseInfo info)
-        {
-            SaveSetting();
-        }
+        public override void ClosingPlugin(PluginCloseInfo info) => SaveSetting();
 
-        public string RepositoryName
-        {
-            get { return "XrmToolBox.BulkDataUpdater"; }
-        }
+        public string RepositoryName => "XrmToolBox.BulkDataUpdater";
 
-        public string UserName
-        {
-            get { return "Innofactor"; }
-        }
+        public string UserName => "Innofactor";
 
-        public string DonationDescription
-        {
-            get { return "Donation to DataUpdater for XrmToolBox"; }
-        }
+        public string DonationDescription => "Donation to DataUpdater for XrmToolBox";
 
-        public string EmailAccount
-        {
-            get { return "jonas@rappen.net"; }
-        }
+        public string EmailAccount => "jonas@rappen.net";
 
         public event EventHandler<XrmToolBox.Extensibility.MessageBusEventArgs> OnOutgoingMessage;
 
@@ -191,6 +174,7 @@
             {
                 chkOnlyChange.Checked = false;
             }
+            EnableControls(true);
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -205,6 +189,68 @@
                 "Version: " + Assembly.GetExecutingAssembly().GetName().Version + "\n\n" +
                 "Developed by Jonas Rapp at Innofactor Sweden.",
                 "About Bulk Data Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            AddAttribute();
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            RemoveAttribute();
+        }
+
+        private void lvAttributes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvAttributes.SelectedItems.Count == 0)
+            {
+                return;
+            }
+            if (lvAttributes.SelectedItems[0].Tag is BulkActionItem attribute)
+            {
+                cmbAttribute.Text = attribute.Attribute.ToString();
+                switch (attribute.Action)
+                {
+                    case BulkActionAction.SetValue:
+                        rbSetValue.Checked = true;
+                        if (attribute.Value is OptionSetValue osv)
+                        {
+                            foreach (var option in cmbValue.Items.Cast<object>().Where(i => i is OptionsetItem).Select(i => i as OptionsetItem))
+                            {
+                                if (option.meta.Value == osv.Value)
+                                {
+                                    cmbValue.SelectedItem = option;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            cmbValue.Text = attribute.Value.ToString();
+                        }
+                        break;
+                    case BulkActionAction.Touch:
+                        rbSetTouch.Checked = true;
+                        cmbValue.Text = string.Empty;
+                        break;
+                    case BulkActionAction.Null:
+                        rbSetNull.Checked = true;
+                        cmbValue.Text = string.Empty;
+                        break;
+                }
+                chkOnlyChange.Checked = attribute.DontTouch;
+            }
+        }
+
+        private void cmbSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnGetRecords.Enabled = cmbSource.SelectedIndex >= 0;
+        }
+
+        private void cmbValue_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnableControls(true);
         }
 
         #endregion Event handlers
@@ -271,10 +317,10 @@
                 {
                     gb1select.Enabled = enabled && Service != null;
                     gb2attribute.Enabled = gb1select.Enabled && records != null && records.Entities.Count > 0;
-                    gb3value.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeItem;
-                    gb4update.Enabled = gb3value.Enabled;
-                    var attribute = (AttributeItem)cmbAttribute.SelectedItem;
-                    rbSetNull.Enabled = attribute != null && attribute.Metadata.LogicalName != "statecode" && attribute.Metadata.LogicalName != "statuscode";
+                    pan2value.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeItem;
+                    btnAdd.Enabled = pan2value.Enabled && (!rbSetValue.Checked || cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null);
+                    gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
+                    gb4update.Enabled = pan2value.Enabled && lvAttributes.Items.Count > 0;
                 }
                 catch
                 {
@@ -647,8 +693,9 @@
 
         private void UpdateValueField()
         {
-            cmbValue.Items.Clear();
             var attribute = (AttributeItem)cmbAttribute.SelectedItem;
+            rbSetNull.Enabled = attribute != null && attribute.Metadata.LogicalName != "statecode" && attribute.Metadata.LogicalName != "statuscode";
+            cmbValue.Items.Clear();
             if (attribute != null)
             {
                 if (attribute.Metadata is EnumAttributeMetadata)
@@ -691,6 +738,41 @@
                 MessageBox.Show("You selected to update the statecode. In most cases this will probably not work.\n" +
                     "But if you select to update the statuscode instead, the statecode will be fixed automatically!",
                     "Statecode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            EnableControls(true);
+        }
+
+        private void AddAttribute()
+        {
+            var bai = GetAttributeItemFromUI();
+            if (lvAttributes.Items
+                .Cast<ListViewItem>()
+                .Select(i => i.Tag as BulkActionItem)
+                .Any(i => i.Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName))
+            {
+                if (MessageBox.Show($"Replace already added attribute {bai.Attribute} ?", "Attribute added", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
+                {
+                    return;
+                }
+                var removeitem = lvAttributes.Items
+                    .Cast<ListViewItem>()
+                    .FirstOrDefault(i => (i.Tag as BulkActionItem).Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName);
+                lvAttributes.Items.Remove(removeitem);
+            }
+            var item = lvAttributes.Items.Add(bai.Attribute.ToString());
+            item.Tag = bai;
+            item.SubItems.Add(bai.Action.ToString());
+            item.SubItems.Add(bai.Action == BulkActionAction.SetValue ? bai.StringValue : string.Empty);
+            item.SubItems.Add(bai.DontTouch ? "Yes" : "No");
+            EnableControls(true);
+        }
+
+        private void RemoveAttribute()
+        {
+            var items = lvAttributes.SelectedItems;
+            foreach (ListViewItem item in items)
+            {
+                lvAttributes.Items.Remove(item);
             }
             EnableControls(true);
         }
@@ -918,126 +1000,93 @@
             });
         }
 
+        private BulkActionItem GetAttributeItemFromUI()
+        {
+            if (!(cmbAttribute.SelectedItem is AttributeItem))
+            {
+                MessageBox.Show("Select an attribute to update from the list.");
+                return null;
+            }
+            var bai = new BulkActionItem
+            {
+                Attribute = (AttributeItem)cmbAttribute.SelectedItem,
+                DontTouch = chkOnlyChange.Checked,
+                Action = rbSetValue.Checked ? BulkActionAction.SetValue : rbSetNull.Checked ? BulkActionAction.Null : BulkActionAction.Touch
+            };
+            var logicalname = bai.Attribute.GetValue();
+            bai.Value = null;
+            try
+            {
+                bai.Value = bai.Action == BulkActionAction.SetValue ? GetValue(bai.Attribute.Metadata.AttributeType) : null;
+                bai.StringValue = bai.Action == BulkActionAction.SetValue ? cmbValue.Text : string.Empty;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Value error:\n" + e.Message, "Set value", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+            return bai;
+        }
+
         private void UpdateRecords()
         {
             if (working)
             {
                 return;
             }
-            if (!(cmbAttribute.SelectedItem is AttributeItem))
-            {
-                MessageBox.Show("Select an attribute to update from the list.");
-                return;
-            }
-            if (MessageBox.Show("All selected records will unconditionally be updated.\nUI defined rules will not be enforced.\n\nConfirm update!",
+            if (MessageBox.Show("All selected records will unconditionally be updated.\nUI defined rules will NOT be enforced.\n\nConfirm update!",
                 "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
             {
                 return;
             }
-            var attributeitem = (AttributeItem)cmbAttribute.SelectedItem;
-            var onlychange = chkOnlyChange.Checked;
-            var ignoreerror = chkIgnoreErrors.Checked;
+            var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
             var entity = records.EntityName;
-            var attributes = new List<string>();
-            attributes.Add(attributeitem.GetValue());
-            if (attributes[0] == "statuscode")
-            {
-                attributes.Add("statecode");
-            }
-            var touch = rbSetTouch.Checked;
-            object value = null;
-            try
-            {
-                value = rbSetValue.Checked ? GetValue(attributeitem.Metadata.AttributeType) : null;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Value error:\n" + e.Message, "Set value", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            OptionSetValue statevalue = null;
-            if (attributeitem.Metadata is StatusAttributeMetadata && value is OptionSetValue)
-            {
-                var statusmeta = (StatusAttributeMetadata)attributeitem.Metadata;
-                foreach (var statusoption in statusmeta.OptionSet.Options)
-                {
-                    if (statusoption is StatusOptionMetadata && statusoption.Value == ((OptionSetValue)value).Value)
-                    {
-                        statevalue = new OptionSetValue((int)((StatusOptionMetadata)statusoption).State);
-                        break;
-                    }
-                }
-            }
             working = true;
-            WorkAsync(new WorkAsyncInfo("Updating records",
-                (bgworker, workargs) =>
+            WorkAsync(new WorkAsyncInfo()
+            {
+                Message = "Updating records",
+                IsCancelable = true,
+                AsyncArgument = selectedattributes,
+                Work = (bgworker, workargs) =>
                 {
                     var total = records.Entities.Count;
                     var current = 0;
                     var updated = 0;
                     var failed = 0;
+                    var attributes = workargs.Argument as List<BulkActionItem>;
                     foreach (var record in records.Entities)
                     {
                         current++;
                         var pct = 100 * current / total;
-                        var attributesexists = true;
-                        foreach (var attribute in attributes)
+                        if (!CheckAllUpdateAttributesExistOnRecord(record, attributes))
                         {
-                            if (!record.Contains(attribute))
-                            {
-                                attributesexists = false;
-                                break;
-                            }
-                        }
-                        if ((onlychange || touch) && !attributesexists)
-                        {
+                            //if ((bai.DontTouch || bai.Action == BulkActionAction.Touch) && !attributesexists)
                             bgworker.ReportProgress(pct, "Reloading record " + current.ToString());
-                            var newcols = new ColumnSet(attributes.ToArray());
-                            var newrecord = Service.Retrieve(entity, record.Id, newcols);
-                            foreach (var attribute in attributes)
-                            {
-                                if (newrecord.Contains(attribute) && !record.Contains(attribute))
-                                {
-                                    record.Attributes.Add(attribute, newrecord[attribute]);
-                                }
-                            }
+                            LoadMissingAttributesForRecord(record, entity, attributes);
                         }
                         bgworker.ReportProgress(pct, "Updating record " + current.ToString());
                         try
                         {
-                            if (attributeitem.Metadata is StatusAttributeMetadata)
+                            if (UpdateState(record, attributes))
                             {
-                                if (UpdateState(touch, onlychange, (OptionSetValue)value, statevalue, record))
-                                {
-                                    updated++;
-                                }
+                                updated++;
                             }
-                            else
+                            if (UpdateRecord(record, attributes))
                             {
-                                // This currently only supports ONE attribute being updated, can be expanded to set/touch several attributes in the future
-                                var currentvalue = record.Contains(attributes[0]) ? record[attributes[0]] : null;
-                                if (touch)
-                                {
-                                    value = currentvalue;
-                                }
-                                if (UpdateAttributes(onlychange, entity, attributes, value, record, currentvalue))
-                                {
-                                    updated++;
-                                }
+                                updated++;
                             }
                         }
                         catch (Exception ex)
                         {
                             failed++;
-                            if (!ignoreerror)
+                            if (!chkIgnoreErrors.Checked)
                             {
                                 throw ex;
                             }
                         }
                     }
                     workargs.Result = new Tuple<int, int>(updated, failed);
-                })
-            {
+                },
                 PostWorkCallBack = (completedargs) =>
                 {
                     working = false;
@@ -1058,41 +1107,77 @@
             });
         }
 
-        // This currently only supports ONE attribute being updated, can be expanded to set/touch several attributes in the future
-        private bool UpdateAttributes(bool onlychange, string entity, List<string> attributes, object value, Entity record, object currentvalue)
+        private static bool CheckAllUpdateAttributesExistOnRecord(Entity record, List<BulkActionItem> attributes)
         {
-            if (!onlychange || !ValuesEqual(value, currentvalue))
+            var allattributesexist = true;
+            foreach (var attribute in attributes.Select(a => a.Attribute.Metadata.LogicalName))
             {
-                var updaterecord = new Entity(entity);
-                updaterecord.Id = record.Id;
-                foreach (var attribute in attributes)
+                if (!record.Contains(attribute))
                 {
-                    updaterecord.Attributes.Add(attribute, value);
+                    allattributesexist = false;
+                    break;
                 }
-                Service.Update(updaterecord);
-                if (record.Contains(attributes[0]))
+                if (attribute == "statuscode" && !record.Contains("statecode"))
                 {
-                    record[attributes[0]] = value;
+                    allattributesexist = false;
+                    break;
                 }
-                else
-                {
-                    record.Attributes.Add(attributes[0], value);
-                }
-                return true;
             }
-            return false;
+            return allattributesexist;
         }
 
-        private bool UpdateState(bool touch, bool onlychange, OptionSetValue statusvalue, OptionSetValue statevalue, Entity record)
+        private void LoadMissingAttributesForRecord(Entity record, string entity, IEnumerable<BulkActionItem> attributes)
         {
+            var newcols = new ColumnSet(attributes.Select(a => a.Attribute.Metadata.LogicalName).ToArray());
+            if (newcols.Columns.Contains("statuscode"))
+            {
+                newcols.AddColumn("statecode");
+            }
+            var newrecord = Service.Retrieve(entity, record.Id, newcols);
+            foreach (var attribute in newrecord.Attributes.Keys)
+            {
+                if (newrecord.Contains(attribute) && !record.Contains(attribute))
+                {
+                    record.Attributes.Add(attribute, newrecord[attribute]);
+                }
+            }
+        }
+
+        private static OptionSetValue GetCurrentStateCodeFromStatusCode(IEnumerable<BulkActionItem> attributes)
+        {
+            var statusattribute = attributes.Where(a => a.Attribute.Metadata is StatusAttributeMetadata && a.Value is OptionSetValue).FirstOrDefault();
+            if (statusattribute != null &&
+                statusattribute.Attribute.Metadata is StatusAttributeMetadata statusmeta &&
+                statusattribute.Value is OptionSetValue osv)
+            {
+                foreach (var statusoption in statusmeta.OptionSet.Options)
+                {
+                    if (statusoption is StatusOptionMetadata && statusoption.Value == osv.Value)
+                    {
+                        return new OptionSetValue((int)((StatusOptionMetadata)statusoption).State);
+                    }
+                }
+            }
+            return null;
+        }
+
+        private bool UpdateState(Entity record, List<BulkActionItem> attributes)
+        {
+            var attribute = attributes.FirstOrDefault(a => a.Attribute.Metadata is StateAttributeMetadata);
+            if (attribute == null)
+            {
+                return false;
+            }
+            var statevalue = GetCurrentStateCodeFromStatusCode(attributes);
+            var statusvalue = attribute.Value as OptionSetValue;
             var currentstate = record.Contains("statecode") ? record["statecode"] : new OptionSetValue(-1);
             var currentstatus = record.Contains("statuscode") ? record["statuscode"] : new OptionSetValue(-1);
-            if (touch)
+            if (attribute.Action == BulkActionAction.Touch)
             {
                 statevalue = (OptionSetValue)currentstate;
                 statusvalue = (OptionSetValue)currentstatus;
             }
-            if (!onlychange || !ValuesEqual(currentstate, statevalue) || !ValuesEqual(currentstatus, statusvalue))
+            if (!attribute.DontTouch || !ValuesEqual(currentstate, statevalue) || !ValuesEqual(currentstatus, statusvalue))
             {
                 var req = new SetStateRequest()
                 {
@@ -1111,15 +1196,47 @@
                 }
                 if (record.Contains("statuscode"))
                 {
-                    record["statuscode"] = statusvalue;
+                    record["statuscode"] = currentstatus;
                 }
                 else
                 {
-                    record.Attributes.Add("statuscode", statusvalue);
+                    record.Attributes.Add("statuscode", currentstatus);
                 }
                 return true;
             }
             return false;
+        }
+
+        private bool UpdateRecord(Entity record, List<BulkActionItem> attributes)
+        {
+            if (attributes.Count == 0)
+            {
+                return false;
+            }
+            var updaterecord = new Entity(record.LogicalName, record.Id);
+            foreach (var bai in attributes.Where(a => !(a.Attribute.Metadata is StateAttributeMetadata)))
+            {
+                var attribute = bai.Attribute.Metadata.LogicalName;
+                var currentvalue = record.Contains(attribute) ? record[attribute] : null;
+                if (bai.Action == BulkActionAction.Touch)
+                {
+                    bai.Value = currentvalue;
+                }
+                if (!bai.DontTouch || !ValuesEqual(bai.Value, currentvalue))
+                {
+                    updaterecord.Attributes.Add(attribute, bai.Value);
+                    if (record.Contains(attribute))
+                    {
+                        record[attribute] = bai.Value;
+                    }
+                    else
+                    {
+                        record.Attributes.Add(attribute, bai.Value);
+                    }
+                }
+            }
+            Service.Update(updaterecord);
+            return true;
         }
 
         #endregion Async SDK methods
