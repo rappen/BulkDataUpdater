@@ -8,10 +8,12 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cinteros.XTB.BulkDataUpdater</RootNamespace>
-    <AssemblyName>Cinteros.XTB.BulkDataUpdater</AssemblyName>
+    <AssemblyName>Cinteros.XTB.BulkDataUpdater.Unmerged</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +39,9 @@
     <Reference Include="Cinteros.Xrm.XmlEditorUtils, Version=1.2016.4.106, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Cinteros.Xrm.XmlEditorUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="ILMerge">
+      <HintPath>..\packages\ILMerge.2.14.1208\tools\ILMerge.exe</HintPath>
     </Reference>
     <Reference Include="McTools.Xrm.Connection, Version=1.2017.10.15, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
       <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2017.10.15\lib\net462\McTools.Xrm.Connection.dll</HintPath>
@@ -209,13 +214,13 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Debug (
+    <PostBuildEvent>ilmerge.exe /target:library /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319" "/out:Cinteros.XTB.BulkDataUpdater.dll" "$(TargetFileName)" "Cinteros.Xrm.CRMWinForm.dll" "Cinteros.Xrm.XmlEditorUtils.dll"
+
+if $(ConfigurationName) == Debug (
   IF NOT EXIST Plugins mkdir Plugins
-  move /Y Cinteros.*.dll Plugins
-  move /Y Cinteros.*.pdb Plugins
+  move /Y "Cinteros.XTB.BulkDataUpdater.dll" Plugins
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
