@@ -8,6 +8,7 @@
     using Microsoft.Xrm.Sdk.Query;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
@@ -19,7 +20,11 @@
 
     public partial class BulkDataUpdater : PluginControlBase, IGitHubPlugin, IPayPalPlugin, IMessageBusHost
     {
-        //        const string settingfile = "Cinteros.Xrm.DataUpdater.Settings.xml";
+        private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
+        //private const string aiKey = "cc7cb081-b489-421d-bb61-2ee53495c336";    // jonas@rappen.net tenant, TestAI 
+        private const string aiKey = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
+        private AppInsights ai = new AppInsights(new AiConfig(aiEndpoint, aiKey) { PluginName = "Bulk Data Updater" });
+
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
 
         private string fetchXml = fetchTemplate;
@@ -47,7 +52,11 @@
 
         #region Interface implementation
 
-        public override void ClosingPlugin(PluginCloseInfo info) => SaveSetting();
+        public override void ClosingPlugin(PluginCloseInfo info)
+        {
+            SaveSetting();
+            LogUse("Close");
+        }
 
         public string RepositoryName => "XrmToolBox.BulkDataUpdater";
 
@@ -76,6 +85,7 @@
         {
             EnableControls(false);
             LoadSetting();
+            LogUse("Load");
             EnableControls(true);
         }
 
@@ -184,11 +194,11 @@
 
         private void tsbAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Bulk Data Updater for XrmToolBox\n" +
-                "Version: " + Assembly.GetExecutingAssembly().GetName().Version + "\n\n" +
-                "Developed by Jonas Rapp at Innofactor Sweden.",
-                "About Bulk Data Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LogUse("OpenAbout");
+            var about = new About(this);
+            about.StartPosition = FormStartPosition.CenterParent;
+            about.lblVersion.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            about.ShowDialog();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -424,6 +434,7 @@
                     MessageBox.Show("Select record source.", "Get Records", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     break;
             }
+            LogUse(cmbSource.Text, records?.Entities?.Count);
         }
 
         private void GetFromEditor()
@@ -777,6 +788,19 @@
             EnableControls(true);
         }
 
+        internal void LogUse(string action, double? count = null, double? duration = null)
+        {
+            ai.WriteEvent(action, count, duration, HandleAIResult);
+        }
+
+        private void HandleAIResult(string result)
+        {
+            if (!string.IsNullOrEmpty(result))
+            {
+                LogError("Failed to write to Application Insights:\n{0}", result);
+            }
+        }
+
         #endregion Methods
 
         #region Async SDK methods
@@ -1049,6 +1073,7 @@
                 AsyncArgument = selectedattributes,
                 Work = (bgworker, workargs) =>
                 {
+                    var sw = Stopwatch.StartNew();
                     var total = records.Entities.Count;
                     var current = 0;
                     var updated = 0;
@@ -1085,7 +1110,8 @@
                             }
                         }
                     }
-                    workargs.Result = new Tuple<int, int>(updated, failed);
+                    sw.Stop();
+                    workargs.Result = new Tuple<int, int, long>(updated, failed, sw.ElapsedMilliseconds);
                 },
                 PostWorkCallBack = (completedargs) =>
                 {
@@ -1096,8 +1122,13 @@
                     }
                     else
                     {
-                        var result = completedargs.Result as Tuple<int, int>;
+                        var result = completedargs.Result as Tuple<int, int, long>;
                         lblUpdateStatus.Text = $"{result.Item1} records updated, {result.Item2} records failed.";
+                        LogUse("Updated", result.Item1, result.Item3);
+                        if (result.Item2 > 0)
+                        {
+                            LogUse("Failed", result.Item2);
+                        }
                     }
                 },
                 ProgressChanged = (changeargs) =>
