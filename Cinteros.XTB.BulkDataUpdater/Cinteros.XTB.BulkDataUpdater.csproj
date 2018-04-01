@@ -127,7 +127,31 @@
     <Compile Include="AppCode\OptionsetItem.cs" />
     <Compile Include="AppCode\ViewItem.cs" />
     <Compile Include="AppCode\BulkActionItem.cs" />
+    <Compile Include="AppInsights\AiBaseData.cs" />
+    <Compile Include="AppInsights\AiConfig.cs" />
+    <Compile Include="AppInsights\AiData.cs" />
+    <Compile Include="AppInsights\AiDataPoint.cs" />
+    <Compile Include="AppInsights\AiException.cs" />
+    <Compile Include="AppInsights\AiLogRequest.cs" />
+    <Compile Include="AppInsights\AiMeasurements.cs" />
+    <Compile Include="AppInsights\AiParsedStack.cs" />
+    <Compile Include="AppInsights\AiProperties.cs" />
+    <Compile Include="AppInsights\AiTags.cs" />
+    <Compile Include="AppInsights\AppInsights.cs" />
+    <Compile Include="AppInsights\Enums\AiDataPointType.cs" />
+    <Compile Include="AppInsights\Enums\AiExceptionSeverity.cs" />
+    <Compile Include="AppInsights\Enums\AiTraceSeverity.cs" />
+    <Compile Include="AppInsights\ExceptionHelper.cs" />
+    <Compile Include="AppInsights\HttpHelper.cs" />
+    <Compile Include="AppInsights\LogHelper.cs" />
+    <Compile Include="AppInsights\Serialization.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Forms\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\About.designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SelectViewDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,6 +192,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SelectViewDialog.resx">
       <DependentUpon>SelectViewDialog.cs</DependentUpon>
     </EmbeddedResource>
