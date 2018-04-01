@@ -76,7 +76,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             bdu.LogUse("About-OpenTwitter");
-            System.Diagnostics.Process.Start("http://twitter.com/PluginTraceView");
+            System.Diagnostics.Process.Start("http://twitter.com/rappen");
         }
 
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
