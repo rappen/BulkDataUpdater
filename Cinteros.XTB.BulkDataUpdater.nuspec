@@ -6,22 +6,23 @@
     <title>Bulk Data Updater for XrmToolBox</title>
     <authors>Jonas Rapp, Innofactor Sweden</authors>
     <owners>Innofactor</owners>
-    <projectUrl>http://cinteros.xrmtoolbox.com</projectUrl>
-    <iconUrl>http://rappen.net/Cinteros/BDU-if.png</iconUrl>
+    <projectUrl>https://github.com/Innofactor/XrmToolBox.BulkDataUpdater</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Innofactor/XrmToolBox.BulkDataUpdater/master/images/BDU-150-transp.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Updates or touches single attributes on a set of records.</description>
-    <summary>XrmToolBox plugin to update or touch single attributes on a set of records.</summary>
+    <description>This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.</description>
+    <summary>Update or touch attributes on a set of records.</summary>
     <releaseNotes>
-      This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
+#9 It is now possible to update multiple attributes at the same time.
+Adding AppInsights statistics.
+Merging dependencies to prevent conflicting versions.
     </releaseNotes>
-    <copyright>Copyright 2016 Innofactor AB</copyright>
+    <copyright>Copyright 2016-2018 Jonas Rapp</copyright>
     <tags>XrmToolBox Plugins Innofactor BulkDataUpdater</tags>
     <dependencies>
-      <dependency id="XrmToolBox" version="1.2017.1.11" />
+      <dependency id="XrmToolBox" version="1.2018.3.21" />
     </dependencies>
   </metadata>
   <files>
     <file src="Cinteros.XTB.BulkDataUpdater\bin\Release\Cinteros.XTB.BulkDataUpdater.dll" target="lib\net452\Plugins" />
-    <file src="Cinteros.XTB.BulkDataUpdater\bin\Release\Cinteros.Xrm.XmlEditorUtils.dll" target="lib\net452\Plugins" />
   </files>
 </package>
