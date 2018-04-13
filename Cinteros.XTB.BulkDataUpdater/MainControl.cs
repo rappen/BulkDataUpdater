@@ -1141,7 +1141,9 @@
         private static bool CheckAllUpdateAttributesExistOnRecord(Entity record, List<BulkActionItem> attributes)
         {
             var allattributesexist = true;
-            foreach (var attribute in attributes.Select(a => a.Attribute.Metadata.LogicalName))
+            foreach (var attribute in attributes
+                .Where(a => a.Action == BulkActionAction.Touch || (a.Action == BulkActionAction.SetValue && a.DontTouch))
+                .Select(a => a.Attribute.Metadata.LogicalName))
             {
                 if (!record.Contains(attribute))
                 {
