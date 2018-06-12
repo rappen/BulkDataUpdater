@@ -34,7 +34,6 @@
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             this.tsbOptions = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiFriendly = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
@@ -52,6 +51,7 @@
             this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiAttributesOnlyValidAF = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.tslAbout = new System.Windows.Forms.ToolStripLabel();
             this.btnGetRecords = new System.Windows.Forms.Button();
             this.lblRecords = new System.Windows.Forms.Label();
             this.cmbAttribute = new System.Windows.Forms.ComboBox();
@@ -105,8 +105,8 @@
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbCloseThisTab,
             this.toolStripSeparator4,
-            this.tsbAbout,
-            this.tsbOptions});
+            this.tsbOptions,
+            this.tslAbout});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(729, 31);
@@ -126,17 +126,7 @@
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbAbout
-            // 
-            this.tsbAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsbAbout.Image = ((System.Drawing.Image)(resources.GetObject("tsbAbout.Image")));
-            this.tsbAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbAbout.Name = "tsbAbout";
-            this.tsbAbout.Size = new System.Drawing.Size(68, 28);
-            this.tsbAbout.Text = "About";
-            this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 31);
             // 
             // tsbOptions
             // 
@@ -292,6 +282,16 @@
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(153, 6);
+            // 
+            // tslAbout
+            // 
+            this.tslAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslAbout.Image = ((System.Drawing.Image)(resources.GetObject("tslAbout.Image")));
+            this.tslAbout.IsLink = true;
+            this.tslAbout.Name = "tslAbout";
+            this.tslAbout.Size = new System.Drawing.Size(106, 28);
+            this.tslAbout.Text = "by Jonas Rapp";
+            this.tslAbout.Click += new System.EventHandler(this.tslAbout_Click);
             // 
             // btnGetRecords
             // 
@@ -619,6 +619,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
+            this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
             this.Size = new System.Drawing.Size(729, 521);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
@@ -650,7 +651,6 @@
         internal System.Windows.Forms.ToolStrip toolStripMain;
         private System.Windows.Forms.ToolStripButton tsbCloseThisTab;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripButton tsbAbout;
         private System.Windows.Forms.ToolStripDropDownButton tsbOptions;
         private System.Windows.Forms.ToolStripMenuItem tsmiFriendly;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
@@ -695,5 +695,6 @@
         private System.Windows.Forms.ColumnHeader action;
         private System.Windows.Forms.ColumnHeader value;
         private System.Windows.Forms.ColumnHeader onlychange;
+        private System.Windows.Forms.ToolStripLabel tslAbout;
     }
 }

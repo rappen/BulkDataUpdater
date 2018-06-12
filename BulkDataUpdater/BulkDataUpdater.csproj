@@ -153,7 +153,6 @@
     <Compile Include="AppInsights\HttpHelper.cs" />
     <Compile Include="AppInsights\LogHelper.cs" />
     <Compile Include="AppInsights\Serialization.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
