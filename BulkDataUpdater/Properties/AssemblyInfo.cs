@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Bulk Data Updater")]
 [assembly: AssemblyDescription("XrmToolBox plugin to update or touch single attributes on a set of records.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jonas Rapp, Innofactor Sweden")]
+[assembly: AssemblyCompany("Jonas Rapp, Sweden")]
 [assembly: AssemblyProduct("Cinteros.XTB.BulkDataUpdater")]
 [assembly: AssemblyCopyright("Copyright © Innofactor 2016")]
 [assembly: AssemblyTrademark("")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2017.9.1001")]
-[assembly: AssemblyFileVersion("1.2017.9.1001")]
+[assembly: AssemblyVersion("1.2018.6.1002")]
+[assembly: AssemblyFileVersion("1.2018.6.1002")]
