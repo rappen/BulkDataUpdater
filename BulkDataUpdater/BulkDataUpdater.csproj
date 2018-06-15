@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cinteros.XTB.BulkDataUpdater</RootNamespace>
-    <AssemblyName>Cinteros.XTB.BulkDataUpdater.Unmerged</AssemblyName>
+    <AssemblyName>Rappen.XTB.BDU.Unmerged</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -216,12 +216,18 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Cinteros.XTB.BulkDataUpdater.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>ilmerge.exe /target:library /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319" "/out:Cinteros.XTB.BulkDataUpdater.dll" "$(TargetFileName)" "Cinteros.Xrm.CRMWinForm.dll" "Cinteros.Xrm.XmlEditorUtils.dll"
+    <PostBuildEvent>ilmerge.exe /target:library /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319" "/out:Rappen.XTB.BDU.dll" "$(TargetFileName)" "Cinteros.Xrm.CRMWinForm.dll" "Cinteros.Xrm.XmlEditorUtils.dll"
 
 if $(ConfigurationName) == Debug (
   IF NOT EXIST Plugins mkdir Plugins
+  move /Y "Rappen.XTB.BDU.dll" Plugins
   move /Y "Cinteros.XTB.BulkDataUpdater.dll" Plugins
 )</PostBuildEvent>
   </PropertyGroup>
