@@ -36,7 +36,7 @@
                 btnCancel.Text = "Close";
             }
             btnFormat.Visible = allowFormat;
-            if (xmlString.Length > 100000)
+            if (xmlString?.Length > 100000)
             {
                 var dlgresult = MessageBox.Show("Huge result, this may take a while!\n" + xmlString.Length.ToString() + " characters in the XML document.\n\nContinue?", "Huge result",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
