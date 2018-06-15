@@ -23,7 +23,7 @@ Rebranding
     </dependencies>
   </metadata>
   <files>
-    <file src="Cinteros.XTB.BulkDataUpdater\bin\Release\Rappen.XTB.BDU.dll" target="lib\net452\Plugins" />
-    <file src="Cinteros.XTB.BulkDataUpdater\bin\Release\Cinteros.XTB.BulkDataUpdater.dll" target="lib\net452\Plugins" />
+    <file src="BulkDataUpdater\bin\Release\Rappen.XTB.BDU.dll" target="lib\net452\Plugins" />
+    <file src="BulkDataUpdater\bin\Release\Cinteros.XTB.BulkDataUpdater.dll" target="lib\net452\Plugins" />
   </files>
 </package>
