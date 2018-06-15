@@ -18,7 +18,7 @@
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class BulkDataUpdater : PluginControlBase, IGitHubPlugin, IPayPalPlugin, IMessageBusHost
+    public partial class BulkDataUpdater : PluginControlBase, IGitHubPlugin, IPayPalPlugin, IMessageBusHost, IAboutPlugin
     {
         private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
         //private const string aiKey = "cc7cb081-b489-421d-bb61-2ee53495c336";    // jonas@rappen.net tenant, TestAI 
@@ -58,11 +58,11 @@
             LogUse("Close");
         }
 
-        public string RepositoryName => "XrmToolBox.BulkDataUpdater";
+        public string RepositoryName => "BulkDataUpdater";
 
-        public string UserName => "Innofactor";
+        public string UserName => "rappen";
 
-        public string DonationDescription => "Donation to DataUpdater for XrmToolBox";
+        public string DonationDescription => "Donation to Bulk Data Updater for XrmToolBox";
 
         public string EmailAccount => "jonas@rappen.net";
 
@@ -75,6 +75,11 @@
             {
                 FetchUpdated(message.TargetArgument);
             }
+        }
+
+        public void ShowAboutDialog()
+        {
+            tslAbout_Click(null, null);
         }
 
         #endregion interface implementation
@@ -656,6 +661,12 @@
                 case AttributeTypeCode.Integer:
                     return int.Parse(cmbValue.Text);
 
+                case AttributeTypeCode.Decimal:
+                    return decimal.Parse(cmbValue.Text);
+
+                case AttributeTypeCode.Double:
+                    return double.Parse(cmbValue.Text);
+
                 case AttributeTypeCode.Picklist:
                 case AttributeTypeCode.State:
                 case AttributeTypeCode.Status:
@@ -680,6 +691,7 @@
                 // As a security check, the attribute_name MUST be in the targets 
                 // specified by the lookup attribute metadata targets
                 case AttributeTypeCode.Lookup:
+                case AttributeTypeCode.Customer:
                     {
                         // Get the attribute metadata for the lookup type:
                         var attr = (LookupAttributeMetadata)((AttributeItem)cmbAttribute.SelectedItem).Metadata;
@@ -755,7 +767,10 @@
 
         private void AddAttribute()
         {
-            var bai = GetAttributeItemFromUI();
+            if (!(GetAttributeItemFromUI() is BulkActionItem bai))
+            {
+                return;
+            }
             if (lvAttributes.Items
                 .Cast<ListViewItem>()
                 .Select(i => i.Tag as BulkActionItem)
