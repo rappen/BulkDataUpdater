@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -52,7 +53,7 @@
             this.tsmiAttributesOnlyValidAF = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
-            this.btnGetRecords = new System.Windows.Forms.Button();
+            this.btnGetEdit = new System.Windows.Forms.Button();
             this.lblRecords = new System.Windows.Forms.Label();
             this.cmbAttribute = new System.Windows.Forms.ComboBox();
             this.rbSetNull = new System.Windows.Forms.RadioButton();
@@ -61,7 +62,9 @@
             this.cmbValue = new System.Windows.Forms.ComboBox();
             this.chkOnlyChange = new System.Windows.Forms.CheckBox();
             this.gb1select = new System.Windows.Forms.GroupBox();
-            this.cmbSource = new System.Windows.Forms.ComboBox();
+            this.btnGetFile = new System.Windows.Forms.Button();
+            this.btnGetView = new System.Windows.Forms.Button();
+            this.btnGetFXB = new System.Windows.Forms.Button();
             this.gb2attribute = new System.Windows.Forms.GroupBox();
             this.pan2value = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -72,6 +75,8 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.crmGridView1 = new Cinteros.Xrm.CRMWinForm.CRMGridView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabUpdate = new System.Windows.Forms.TabPage();
             this.gb3attributes = new System.Windows.Forms.GroupBox();
             this.lvAttributes = new System.Windows.Forms.ListView();
             this.logicalname = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -79,6 +84,10 @@
             this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.onlychange = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnRemove = new System.Windows.Forms.Button();
+            this.tabSetState = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabDelete = new System.Windows.Forms.TabPage();
+            this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -90,7 +99,11 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabUpdate.SuspendLayout();
             this.gb3attributes.SuspendLayout();
+            this.tabSetState.SuspendLayout();
+            this.tabDelete.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList1
@@ -109,7 +122,7 @@
             this.tslAbout});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(729, 31);
+            this.toolStripMain.Size = new System.Drawing.Size(909, 31);
             this.toolStripMain.TabIndex = 23;
             this.toolStripMain.Text = "toolStrip1";
             // 
@@ -145,14 +158,14 @@
             // 
             this.tsmiFriendly.CheckOnClick = true;
             this.tsmiFriendly.Name = "tsmiFriendly";
-            this.tsmiFriendly.Size = new System.Drawing.Size(156, 22);
+            this.tsmiFriendly.Size = new System.Drawing.Size(180, 22);
             this.tsmiFriendly.Text = "Friendly names";
             this.tsmiFriendly.Click += new System.EventHandler(this.tsmiFriendly_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmiShowAttributes
             // 
@@ -170,7 +183,7 @@
             this.toolStripSeparator16,
             this.tsmiAttributesOnlyValidAF});
             this.tsmiShowAttributes.Name = "tsmiShowAttributes";
-            this.tsmiShowAttributes.Size = new System.Drawing.Size(156, 22);
+            this.tsmiShowAttributes.Size = new System.Drawing.Size(180, 22);
             this.tsmiShowAttributes.Text = "Show attributes";
             // 
             // tsmiAttributesAll
@@ -281,7 +294,7 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // tslAbout
             // 
@@ -293,22 +306,26 @@
             this.tslAbout.Text = "by Jonas Rapp";
             this.tslAbout.Click += new System.EventHandler(this.tslAbout_Click);
             // 
-            // btnGetRecords
+            // btnGetEdit
             // 
-            this.btnGetRecords.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetRecords.Enabled = false;
-            this.btnGetRecords.Location = new System.Drawing.Point(193, 18);
-            this.btnGetRecords.Name = "btnGetRecords";
-            this.btnGetRecords.Size = new System.Drawing.Size(109, 23);
-            this.btnGetRecords.TabIndex = 24;
-            this.btnGetRecords.Text = "Get records";
-            this.btnGetRecords.UseVisualStyleBackColor = true;
-            this.btnGetRecords.Click += new System.EventHandler(this.btnGetRecords_Click);
+            this.btnGetEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnGetEdit.Image")));
+            this.btnGetEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetEdit.Location = new System.Drawing.Point(150, 19);
+            this.btnGetEdit.Name = "btnGetEdit";
+            this.btnGetEdit.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.btnGetEdit.Size = new System.Drawing.Size(114, 39);
+            this.btnGetEdit.TabIndex = 20;
+            this.btnGetEdit.Tag = "Edit";
+            this.btnGetEdit.Text = "Edit FetchXML";
+            this.btnGetEdit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGetEdit.UseVisualStyleBackColor = true;
+            this.btnGetEdit.Click += new System.EventHandler(this.btnGetRecords_Click);
             // 
             // lblRecords
             // 
             this.lblRecords.AutoSize = true;
-            this.lblRecords.Location = new System.Drawing.Point(12, 43);
+            this.lblRecords.Location = new System.Drawing.Point(12, 69);
             this.lblRecords.Name = "lblRecords";
             this.lblRecords.Size = new System.Drawing.Size(100, 13);
             this.lblRecords.TabIndex = 25;
@@ -323,7 +340,7 @@
             this.cmbAttribute.FormattingEnabled = true;
             this.cmbAttribute.Location = new System.Drawing.Point(15, 19);
             this.cmbAttribute.Name = "cmbAttribute";
-            this.cmbAttribute.Size = new System.Drawing.Size(287, 21);
+            this.cmbAttribute.Size = new System.Drawing.Size(312, 21);
             this.cmbAttribute.Sorted = true;
             this.cmbAttribute.TabIndex = 26;
             this.cmbAttribute.Tag = "attribute";
@@ -372,7 +389,7 @@
             this.cmbValue.FormattingEnabled = true;
             this.cmbValue.Location = new System.Drawing.Point(9, 26);
             this.cmbValue.Name = "cmbValue";
-            this.cmbValue.Size = new System.Drawing.Size(287, 21);
+            this.cmbValue.Size = new System.Drawing.Size(312, 21);
             this.cmbValue.TabIndex = 32;
             this.cmbValue.Tag = "value";
             this.cmbValue.SelectedIndexChanged += new System.EventHandler(this.cmbValue_SelectedIndexChanged);
@@ -389,45 +406,78 @@
             // 
             // gb1select
             // 
-            this.gb1select.Controls.Add(this.cmbSource);
-            this.gb1select.Controls.Add(this.btnGetRecords);
+            this.gb1select.Controls.Add(this.btnGetFile);
+            this.gb1select.Controls.Add(this.btnGetView);
+            this.gb1select.Controls.Add(this.btnGetFXB);
+            this.gb1select.Controls.Add(this.btnGetEdit);
             this.gb1select.Controls.Add(this.lblRecords);
             this.gb1select.Dock = System.Windows.Forms.DockStyle.Top;
             this.gb1select.Location = new System.Drawing.Point(0, 0);
             this.gb1select.Name = "gb1select";
-            this.gb1select.Size = new System.Drawing.Size(319, 66);
+            this.gb1select.Size = new System.Drawing.Size(547, 91);
             this.gb1select.TabIndex = 34;
             this.gb1select.TabStop = false;
             this.gb1select.Text = "1. Select records to update";
             // 
-            // cmbSource
+            // btnGetFile
             // 
-            this.cmbSource.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSource.FormattingEnabled = true;
-            this.cmbSource.Items.AddRange(new object[] {
-            "Edit FetchXML",
-            "Use FetchXML Builder",
-            "Open File",
-            "Open View"});
-            this.cmbSource.Location = new System.Drawing.Point(15, 19);
-            this.cmbSource.Name = "cmbSource";
-            this.cmbSource.Size = new System.Drawing.Size(172, 21);
-            this.cmbSource.TabIndex = 26;
-            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
+            this.btnGetFile.Image = ((System.Drawing.Image)(resources.GetObject("btnGetFile.Image")));
+            this.btnGetFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetFile.Location = new System.Drawing.Point(390, 19);
+            this.btnGetFile.Name = "btnGetFile";
+            this.btnGetFile.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.btnGetFile.Size = new System.Drawing.Size(114, 39);
+            this.btnGetFile.TabIndex = 40;
+            this.btnGetFile.Tag = "File";
+            this.btnGetFile.Text = "Open File";
+            this.btnGetFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetFile.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGetFile.UseVisualStyleBackColor = true;
+            this.btnGetFile.Click += new System.EventHandler(this.btnGetRecords_Click);
+            // 
+            // btnGetView
+            // 
+            this.btnGetView.Image = ((System.Drawing.Image)(resources.GetObject("btnGetView.Image")));
+            this.btnGetView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetView.Location = new System.Drawing.Point(270, 19);
+            this.btnGetView.Name = "btnGetView";
+            this.btnGetView.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.btnGetView.Size = new System.Drawing.Size(114, 39);
+            this.btnGetView.TabIndex = 30;
+            this.btnGetView.Tag = "View";
+            this.btnGetView.Text = "Open View";
+            this.btnGetView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetView.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGetView.UseVisualStyleBackColor = true;
+            this.btnGetView.Click += new System.EventHandler(this.btnGetRecords_Click);
+            // 
+            // btnGetFXB
+            // 
+            this.btnGetFXB.Image = ((System.Drawing.Image)(resources.GetObject("btnGetFXB.Image")));
+            this.btnGetFXB.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetFXB.Location = new System.Drawing.Point(15, 19);
+            this.btnGetFXB.Name = "btnGetFXB";
+            this.btnGetFXB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.btnGetFXB.Size = new System.Drawing.Size(129, 39);
+            this.btnGetFXB.TabIndex = 10;
+            this.btnGetFXB.Tag = "FXB";
+            this.btnGetFXB.Text = "FetchXML Builder";
+            this.btnGetFXB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetFXB.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGetFXB.UseVisualStyleBackColor = true;
+            this.btnGetFXB.Click += new System.EventHandler(this.btnGetRecords_Click);
             // 
             // gb2attribute
             // 
             this.gb2attribute.Controls.Add(this.pan2value);
             this.gb2attribute.Controls.Add(this.cmbAttribute);
             this.gb2attribute.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gb2attribute.Location = new System.Drawing.Point(0, 66);
+            this.gb2attribute.Location = new System.Drawing.Point(3, 3);
             this.gb2attribute.Name = "gb2attribute";
-            this.gb2attribute.Size = new System.Drawing.Size(319, 149);
+            this.gb2attribute.Size = new System.Drawing.Size(344, 154);
             this.gb2attribute.TabIndex = 35;
             this.gb2attribute.TabStop = false;
-            this.gb2attribute.Text = "2. Select attribute to update";
+            this.gb2attribute.Text = "Select attribute to update";
             // 
             // pan2value
             // 
@@ -441,13 +491,13 @@
             this.pan2value.Controls.Add(this.rbSetValue);
             this.pan2value.Location = new System.Drawing.Point(6, 46);
             this.pan2value.Name = "pan2value";
-            this.pan2value.Size = new System.Drawing.Size(307, 121);
+            this.pan2value.Size = new System.Drawing.Size(332, 105);
             this.pan2value.TabIndex = 3;
             // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(187, 75);
+            this.btnAdd.Location = new System.Drawing.Point(212, 75);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(109, 23);
             this.btnAdd.TabIndex = 35;
@@ -471,12 +521,12 @@
             this.gb4update.Controls.Add(this.btnUpdate);
             this.gb4update.Controls.Add(this.chkIgnoreErrors);
             this.gb4update.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gb4update.Location = new System.Drawing.Point(0, 401);
+            this.gb4update.Location = new System.Drawing.Point(3, 424);
             this.gb4update.Name = "gb4update";
-            this.gb4update.Size = new System.Drawing.Size(319, 89);
+            this.gb4update.Size = new System.Drawing.Size(344, 89);
             this.gb4update.TabIndex = 37;
             this.gb4update.TabStop = false;
-            this.gb4update.Text = "4. Execute update";
+            this.gb4update.Text = "Execute update";
             // 
             // lblUpdateStatus
             // 
@@ -490,7 +540,7 @@
             // btnUpdate
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdate.Location = new System.Drawing.Point(193, 29);
+            this.btnUpdate.Location = new System.Drawing.Point(218, 29);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(109, 23);
             this.btnUpdate.TabIndex = 0;
@@ -502,9 +552,9 @@
             // 
             this.groupBox5.Controls.Add(this.crmGridView1);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(0, 0);
+            this.groupBox5.Location = new System.Drawing.Point(0, 91);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(406, 490);
+            this.groupBox5.Size = new System.Drawing.Size(547, 451);
             this.groupBox5.TabIndex = 38;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
@@ -515,52 +565,79 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crmGridView1.FilterColumns = "";
             this.crmGridView1.Location = new System.Drawing.Point(3, 16);
             this.crmGridView1.Name = "crmGridView1";
             this.crmGridView1.ReadOnly = true;
+            this.crmGridView1.RowHeadersVisible = false;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(400, 471);
+            this.crmGridView1.Size = new System.Drawing.Size(541, 432);
             this.crmGridView1.TabIndex = 2;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(0, 31);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.gb3attributes);
-            this.splitContainer1.Panel1.Controls.Add(this.gb2attribute);
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox5);
             this.splitContainer1.Panel1.Controls.Add(this.gb1select);
-            this.splitContainer1.Panel1.Controls.Add(this.gb4update);
             this.splitContainer1.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.Panel1MinSize = 100;
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.groupBox5);
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(729, 490);
-            this.splitContainer1.SplitterDistance = 319;
+            this.splitContainer1.Size = new System.Drawing.Size(909, 542);
+            this.splitContainer1.SplitterDistance = 547;
             this.splitContainer1.TabIndex = 39;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabUpdate);
+            this.tabControl1.Controls.Add(this.tabSetState);
+            this.tabControl1.Controls.Add(this.tabDelete);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(358, 542);
+            this.tabControl1.TabIndex = 39;
+            // 
+            // tabUpdate
+            // 
+            this.tabUpdate.Controls.Add(this.gb3attributes);
+            this.tabUpdate.Controls.Add(this.gb2attribute);
+            this.tabUpdate.Controls.Add(this.gb4update);
+            this.tabUpdate.Location = new System.Drawing.Point(4, 22);
+            this.tabUpdate.Name = "tabUpdate";
+            this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
+            this.tabUpdate.Size = new System.Drawing.Size(350, 516);
+            this.tabUpdate.TabIndex = 1;
+            this.tabUpdate.Text = "Update";
+            this.tabUpdate.UseVisualStyleBackColor = true;
             // 
             // gb3attributes
             // 
             this.gb3attributes.Controls.Add(this.lvAttributes);
             this.gb3attributes.Controls.Add(this.btnRemove);
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb3attributes.Location = new System.Drawing.Point(0, 215);
+            this.gb3attributes.Location = new System.Drawing.Point(3, 157);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(319, 186);
+            this.gb3attributes.Size = new System.Drawing.Size(344, 267);
             this.gb3attributes.TabIndex = 38;
             this.gb3attributes.TabStop = false;
-            this.gb3attributes.Text = "3. Verify attributes to update";
+            this.gb3attributes.Text = "Verify attributes to update";
             // 
             // lvAttributes
             // 
@@ -575,7 +652,7 @@
             this.lvAttributes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(287, 132);
+            this.lvAttributes.Size = new System.Drawing.Size(312, 213);
             this.lvAttributes.TabIndex = 2;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -604,7 +681,7 @@
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(193, 157);
+            this.btnRemove.Location = new System.Drawing.Point(218, 238);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(109, 23);
             this.btnRemove.TabIndex = 1;
@@ -612,15 +689,58 @@
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
+            // tabSetState
+            // 
+            this.tabSetState.Controls.Add(this.label1);
+            this.tabSetState.Location = new System.Drawing.Point(4, 22);
+            this.tabSetState.Name = "tabSetState";
+            this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSetState.Size = new System.Drawing.Size(350, 516);
+            this.tabSetState.TabIndex = 3;
+            this.tabSetState.Text = "Set State";
+            this.tabSetState.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(77, 246);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(195, 24);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Soon to be released...";
+            // 
+            // tabDelete
+            // 
+            this.tabDelete.Controls.Add(this.lblDeleteHeader);
+            this.tabDelete.Location = new System.Drawing.Point(4, 22);
+            this.tabDelete.Name = "tabDelete";
+            this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDelete.Size = new System.Drawing.Size(350, 516);
+            this.tabDelete.TabIndex = 2;
+            this.tabDelete.Text = "Delete";
+            this.tabDelete.UseVisualStyleBackColor = true;
+            // 
+            // lblDeleteHeader
+            // 
+            this.lblDeleteHeader.AutoSize = true;
+            this.lblDeleteHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDeleteHeader.Location = new System.Drawing.Point(16, 21);
+            this.lblDeleteHeader.Name = "lblDeleteHeader";
+            this.lblDeleteHeader.Size = new System.Drawing.Size(196, 24);
+            this.lblDeleteHeader.TabIndex = 0;
+            this.lblDeleteHeader.Text = "Delete [nn] [collection]";
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(729, 521);
+            this.Size = new System.Drawing.Size(909, 573);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
@@ -639,7 +759,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabUpdate.ResumeLayout(false);
             this.gb3attributes.ResumeLayout(false);
+            this.tabSetState.ResumeLayout(false);
+            this.tabSetState.PerformLayout();
+            this.tabDelete.ResumeLayout(false);
+            this.tabDelete.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -668,7 +794,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
         internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesOnlyValidAF;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.Button btnGetRecords;
+        private System.Windows.Forms.Button btnGetEdit;
         private System.Windows.Forms.Label lblRecords;
         private System.Windows.Forms.ComboBox cmbAttribute;
         private System.Windows.Forms.RadioButton rbSetNull;
@@ -683,7 +809,6 @@
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ComboBox cmbSource;
         private Xrm.CRMWinForm.CRMGridView crmGridView1;
         private System.Windows.Forms.CheckBox chkIgnoreErrors;
         private System.Windows.Forms.GroupBox gb3attributes;
@@ -696,5 +821,14 @@
         private System.Windows.Forms.ColumnHeader value;
         private System.Windows.Forms.ColumnHeader onlychange;
         private System.Windows.Forms.ToolStripLabel tslAbout;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabUpdate;
+        private System.Windows.Forms.TabPage tabDelete;
+        private System.Windows.Forms.Label lblDeleteHeader;
+        private System.Windows.Forms.TabPage tabSetState;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnGetFile;
+        private System.Windows.Forms.Button btnGetView;
+        private System.Windows.Forms.Button btnGetFXB;
     }
 }

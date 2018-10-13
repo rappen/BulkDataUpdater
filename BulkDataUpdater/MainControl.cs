@@ -168,7 +168,10 @@
 
         private void btnGetRecords_Click(object sender, EventArgs e)
         {
-            GetRecords();
+            if (sender is Button btn)
+            {
+                GetRecords(btn.Tag?.ToString());
+            }
         }
 
         private void cmbAttribute_SelectedIndexChanged(object sender, EventArgs e)
@@ -256,11 +259,6 @@
                 }
                 chkOnlyChange.Checked = attribute.DontTouch;
             }
-        }
-
-        private void cmbSource_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            btnGetRecords.Enabled = cmbSource.SelectedIndex >= 0;
         }
 
         private void cmbValue_SelectedIndexChanged(object sender, EventArgs e)
@@ -406,14 +404,14 @@
             EnableControls(true);
         }
 
-        private void GetRecords()
+        private void GetRecords(string tag)
         {
-            switch (cmbSource.SelectedIndex)
+            switch (tag)
             {
-                case 0: // Edit
+                case "Edit": // Edit
                     GetFromEditor();
                     break;
-                case 1: // FXB
+                case "FXB": // FXB
                     try
                     {
                         GetFromFXB();
@@ -429,17 +427,17 @@
                                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     break;
-                case 2: // File
+                case "File": // File
                     FetchUpdated(OpenFile());
                     break;
-                case 3: // View
+                case "View": // View
                     OpenView();
                     break;
                 default:
                     MessageBox.Show("Select record source.", "Get Records", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     break;
             }
-            LogUse(cmbSource.Text, records?.Entities?.Count);
+            LogUse(tag, records?.Entities?.Count);
         }
 
         private void GetFromEditor()
@@ -475,9 +473,20 @@
         {
             if (records != null)
             {
+                var entityName = records.EntityName;
+                if (NeedToLoadEntity(entityName))
+                {
+                    if (!working)
+                    {
+                        LoadEntityDetails(entityName, RetrieveRecordsReady);
+                    }
+                    return;
+                }
                 lblRecords.Text = records.Entities.Count.ToString() + " records of entity " + records.EntityName;
+                lblDeleteHeader.Text = $"Delete {records.Entities.Count} {entities.FirstOrDefault(e => e.Key == records.EntityName).Value.DisplayCollectionName.UserLocalizedLabel.Label}";
                 crmGridView1.OrganizationService = Service;
                 crmGridView1.DataSource = records;
+                crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             }
             RefreshAttributes();
         }
@@ -522,6 +531,7 @@
                 }
             }
             crmGridView1.ShowFriendlyNames = useFriendlyNames;
+            crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             EnableControls(true);
         }
 
@@ -561,6 +571,10 @@
                     foreach (var attribute in attributes)
                     {
                         if (!attribute.IsValidForUpdate.Value == true)
+                        {
+                            continue;
+                        }
+                        if (attribute.LogicalName=="statecode" || attribute.LogicalName == "statuscode")
                         {
                             continue;
                         }
@@ -1288,5 +1302,6 @@
         }
 
         #endregion Async SDK methods
+
     }
 }
