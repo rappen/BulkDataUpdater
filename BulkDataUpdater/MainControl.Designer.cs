@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -87,7 +87,14 @@
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.tabDelete = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.chkDelIgnoreErrors = new System.Windows.Forms.CheckBox();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.cmbDelBatchSize = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
+            this.lblDelStatus = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -158,14 +165,14 @@
             // 
             this.tsmiFriendly.CheckOnClick = true;
             this.tsmiFriendly.Name = "tsmiFriendly";
-            this.tsmiFriendly.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFriendly.Size = new System.Drawing.Size(156, 22);
             this.tsmiFriendly.Text = "Friendly names";
             this.tsmiFriendly.Click += new System.EventHandler(this.tsmiFriendly_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(153, 6);
             // 
             // tsmiShowAttributes
             // 
@@ -183,7 +190,7 @@
             this.toolStripSeparator16,
             this.tsmiAttributesOnlyValidAF});
             this.tsmiShowAttributes.Name = "tsmiShowAttributes";
-            this.tsmiShowAttributes.Size = new System.Drawing.Size(180, 22);
+            this.tsmiShowAttributes.Size = new System.Drawing.Size(156, 22);
             this.tsmiShowAttributes.Text = "Show attributes";
             // 
             // tsmiAttributesAll
@@ -294,7 +301,7 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(153, 6);
             // 
             // tslAbout
             // 
@@ -565,8 +572,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
@@ -712,6 +719,13 @@
             // 
             // tabDelete
             // 
+            this.tabDelete.Controls.Add(this.lblDelStatus);
+            this.tabDelete.Controls.Add(this.label3);
+            this.tabDelete.Controls.Add(this.chkDelIgnoreErrors);
+            this.tabDelete.Controls.Add(this.btnDelete);
+            this.tabDelete.Controls.Add(this.cmbDelBatchSize);
+            this.tabDelete.Controls.Add(this.label2);
+            this.tabDelete.Controls.Add(this.textBox1);
             this.tabDelete.Controls.Add(this.lblDeleteHeader);
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
@@ -720,6 +734,86 @@
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
             this.tabDelete.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 281);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(66, 13);
+            this.label3.TabIndex = 36;
+            this.label3.Text = "Ignore errors";
+            // 
+            // chkDelIgnoreErrors
+            // 
+            this.chkDelIgnoreErrors.AutoSize = true;
+            this.chkDelIgnoreErrors.Location = new System.Drawing.Point(120, 280);
+            this.chkDelIgnoreErrors.Name = "chkDelIgnoreErrors";
+            this.chkDelIgnoreErrors.Size = new System.Drawing.Size(15, 14);
+            this.chkDelIgnoreErrors.TabIndex = 35;
+            this.chkDelIgnoreErrors.UseVisualStyleBackColor = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.ForeColor = System.Drawing.Color.Red;
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.Location = new System.Drawing.Point(50, 412);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(252, 50);
+            this.btnDelete.TabIndex = 4;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // cmbDelBatchSize
+            // 
+            this.cmbDelBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbDelBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDelBatchSize.FormattingEnabled = true;
+            this.cmbDelBatchSize.Items.AddRange(new object[] {
+            "1",
+            "5",
+            "10",
+            "50",
+            "100",
+            "200",
+            "500",
+            "1000"});
+            this.cmbDelBatchSize.Location = new System.Drawing.Point(120, 253);
+            this.cmbDelBatchSize.Name = "cmbDelBatchSize";
+            this.cmbDelBatchSize.Size = new System.Drawing.Size(205, 21);
+            this.cmbDelBatchSize.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(19, 256);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Batch size";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.Color.Red;
+            this.textBox1.Location = new System.Drawing.Point(35, 69);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(277, 178);
+            this.textBox1.TabIndex = 1;
+            this.textBox1.Text = "This action will delete all records in the list to the left.\r\n\r\nThis action can N" +
+    "OT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation qu" +
+    "estion, and then point of no return.";
             // 
             // lblDeleteHeader
             // 
@@ -730,6 +824,15 @@
             this.lblDeleteHeader.Size = new System.Drawing.Size(196, 24);
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
+            // 
+            // lblDelStatus
+            // 
+            this.lblDelStatus.AutoSize = true;
+            this.lblDelStatus.Location = new System.Drawing.Point(19, 480);
+            this.lblDelStatus.Name = "lblDelStatus";
+            this.lblDelStatus.Size = new System.Drawing.Size(82, 13);
+            this.lblDelStatus.TabIndex = 37;
+            this.lblDelStatus.Text = "Nothing deleted";
             // 
             // BulkDataUpdater
             // 
@@ -830,5 +933,12 @@
         private System.Windows.Forms.Button btnGetFile;
         private System.Windows.Forms.Button btnGetView;
         private System.Windows.Forms.Button btnGetFXB;
+        private System.Windows.Forms.ComboBox cmbDelBatchSize;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox chkDelIgnoreErrors;
+        private System.Windows.Forms.Label lblDelStatus;
     }
 }

@@ -288,7 +288,8 @@
                 AttributesUncustomizable = tsmiAttributesUncustomizable.Checked,
                 AttributesCustom = tsmiAttributesCustom.Checked,
                 AttributesStandard = tsmiAttributesStandard.Checked,
-                AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked
+                AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
+                DeleteBatchSize = int.TryParse(cmbDelBatchSize.Text, out int size) ? size : 1
             };
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, "Settings");
         }
@@ -318,6 +319,7 @@
             tsmiAttributesCustom.Checked = settings.AttributesCustom;
             tsmiAttributesStandard.Checked = settings.AttributesStandard;
             tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
+            cmbDelBatchSize.SelectedItem = cmbDelBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.DeleteBatchSize.ToString());
             tsmiFriendly_Click(null, null);
             tsmiAttributes_Click(null, null);
         }
@@ -574,7 +576,7 @@
                         {
                             continue;
                         }
-                        if (attribute.LogicalName=="statecode" || attribute.LogicalName == "statuscode")
+                        if (attribute.LogicalName == "statecode" || attribute.LogicalName == "statuscode")
                         {
                             continue;
                         }
@@ -1121,10 +1123,10 @@
                         bgworker.ReportProgress(pct, "Updating record " + current.ToString());
                         try
                         {
-                            if (UpdateState(record, attributes))
-                            {
-                                updated++;
-                            }
+                            //if (UpdateState(record, attributes))
+                            //{
+                            //    updated++;
+                            //}
                             if (UpdateRecord(record, attributes))
                             {
                                 updated++;
@@ -1303,5 +1305,90 @@
 
         #endregion Async SDK methods
 
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DeleteRecords();
+        }
+
+        private void DeleteRecords()
+        {
+            if (working)
+            {
+                return;
+            }
+            if (MessageBox.Show("All selected records will unconditionally be deleted.\nUI defined rules will NOT be enforced.\nPlugins and workflows WILL trigger.\n\nConfirm delete!",
+                "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
+            {
+                return;
+            }
+            working = true;
+            if (!int.TryParse(cmbDelBatchSize.Text, out int batchsize))
+            {
+                batchsize = 1;
+            }
+            WorkAsync(new WorkAsyncInfo()
+            {
+                Message = "Deleting records",
+                IsCancelable = true,
+                Work = (bgworker, workargs) =>
+                {
+                    var sw = Stopwatch.StartNew();
+                    var total = records.Entities.Count;
+                    var current = 0;
+                    var deleted = 0;
+                    var failed = 0;
+                    foreach (var record in records.Entities)
+                    {
+                        current++;
+                        var pct = 100 * current / total;
+                        bgworker.ReportProgress(pct, "Deleting record " + current.ToString());
+                        try
+                        {
+                            if (batchsize == 1)
+                            {
+                                Service.Delete(record.LogicalName, record.Id);
+                                deleted++;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Not implemented yet, try batch size = 1");
+                                return;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            failed++;
+                            if (!chkIgnoreErrors.Checked)
+                            {
+                                throw ex;
+                            }
+                        }
+                    }
+                    sw.Stop();
+                    workargs.Result = new Tuple<int, int, long>(deleted, failed, sw.ElapsedMilliseconds);
+                },
+                PostWorkCallBack = (completedargs) =>
+                {
+                    working = false;
+                    if (completedargs.Error != null)
+                    {
+                        MessageBox.Show(completedargs.Error.Message, "Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else if (completedargs.Result is Tuple<int, int, long> result)
+                    {
+                        lblDelStatus.Text = $"{result.Item1} records deleted, {result.Item2} records failed.";
+                        LogUse("Deleted", result.Item1, result.Item3);
+                        if (result.Item2 > 0)
+                        {
+                            LogUse("Failed", result.Item2);
+                        }
+                    }
+                },
+                ProgressChanged = (changeargs) =>
+                {
+                    SetWorkingMessage(changeargs.UserState.ToString());
+                }
+            });
+        }
     }
 }
