@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -87,6 +87,7 @@
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.tabDelete = new System.Windows.Forms.TabPage();
+            this.lblDelStatus = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.chkDelIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -94,7 +95,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
-            this.lblDelStatus = new System.Windows.Forms.Label();
+            this.tsbCancel = new System.Windows.Forms.ToolStripButton();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -126,7 +127,8 @@
             this.tsbCloseThisTab,
             this.toolStripSeparator4,
             this.tsbOptions,
-            this.tslAbout});
+            this.tslAbout,
+            this.tsbCancel});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(909, 31);
@@ -572,8 +574,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
@@ -735,6 +737,16 @@
             this.tabDelete.Text = "Delete";
             this.tabDelete.UseVisualStyleBackColor = true;
             // 
+            // lblDelStatus
+            // 
+            this.lblDelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDelStatus.AutoSize = true;
+            this.lblDelStatus.Location = new System.Drawing.Point(19, 480);
+            this.lblDelStatus.Name = "lblDelStatus";
+            this.lblDelStatus.Size = new System.Drawing.Size(82, 13);
+            this.lblDelStatus.TabIndex = 37;
+            this.lblDelStatus.Text = "Nothing deleted";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -825,14 +837,15 @@
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
-            // lblDelStatus
+            // tsbCancel
             // 
-            this.lblDelStatus.AutoSize = true;
-            this.lblDelStatus.Location = new System.Drawing.Point(19, 480);
-            this.lblDelStatus.Name = "lblDelStatus";
-            this.lblDelStatus.Size = new System.Drawing.Size(82, 13);
-            this.lblDelStatus.TabIndex = 37;
-            this.lblDelStatus.Text = "Nothing deleted";
+            this.tsbCancel.Enabled = false;
+            this.tsbCancel.Image = ((System.Drawing.Image)(resources.GetObject("tsbCancel.Image")));
+            this.tsbCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCancel.Name = "tsbCancel";
+            this.tsbCancel.Size = new System.Drawing.Size(71, 28);
+            this.tsbCancel.Text = "Cancel";
+            this.tsbCancel.Click += new System.EventHandler(this.tsbCancel_Click);
             // 
             // BulkDataUpdater
             // 
@@ -940,5 +953,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkDelIgnoreErrors;
         private System.Windows.Forms.Label lblDelStatus;
+        private System.Windows.Forms.ToolStripButton tsbCancel;
     }
 }

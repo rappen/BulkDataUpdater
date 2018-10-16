@@ -352,12 +352,19 @@
             {
                 return;
             }
-            if (MessageBox.Show("All selected records will unconditionally be deleted.\nUI defined rules will NOT be enforced.\nPlugins and workflows WILL trigger.\n\nConfirm delete!",
+            if (MessageBox.Show("All selected records will unconditionally be deleted.\n" +
+                "UI defined rules will NOT be enforced.\n" +
+                "Plugins and workflows WILL trigger.\n" +
+                "User privileges WILL be respected.\n\n" +
+                "Confirm delete!",
                 "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
             {
                 return;
             }
+            tsbCancel.Enabled = true;
+            btnDelete.Enabled = false;
             working = true;
+            var ignoreerrors = chkDelIgnoreErrors.Checked;
             if (!int.TryParse(cmbDelBatchSize.Text, out int batchsize))
             {
                 batchsize = 1;
@@ -373,28 +380,44 @@
                     var current = 0;
                     var deleted = 0;
                     var failed = 0;
+                    var batch = new ExecuteMultipleRequest
+                    {
+                        Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
+                        Requests = new OrganizationRequestCollection()
+                    };
                     foreach (var record in records.Entities)
                     {
+                        if (bgworker.CancellationPending)
+                        {
+                            workargs.Cancel = true;
+                            break;
+                        }
                         current++;
                         var pct = 100 * current / total;
-                        bgworker.ReportProgress(pct, "Deleting record " + current.ToString());
                         try
                         {
                             if (batchsize == 1)
                             {
+                                bgworker.ReportProgress(pct, $"Deleting record {current} of {total}");
                                 Service.Delete(record.LogicalName, record.Id);
                                 deleted++;
                             }
                             else
                             {
-                                MessageBox.Show("Not implemented yet, try batch size = 1");
-                                return;
+                                batch.Requests.Add(new DeleteRequest { Target = record.ToEntityReference() });
+                                if (batch.Requests.Count == batchsize || current == total)
+                                {
+                                    bgworker.ReportProgress(pct, $"Deleting records {current - batch.Requests.Count + 1}-{current} of {total}");
+                                    Service.Execute(batch);
+                                    deleted += batch.Requests.Count;
+                                    batch.Requests.Clear();
+                                }
                             }
                         }
                         catch (Exception ex)
                         {
                             failed++;
-                            if (!chkIgnoreErrors.Checked)
+                            if (!ignoreerrors)
                             {
                                 throw ex;
                             }
@@ -406,9 +429,17 @@
                 PostWorkCallBack = (completedargs) =>
                 {
                     working = false;
+                    tsbCancel.Enabled = false;
                     if (completedargs.Error != null)
                     {
                         MessageBox.Show(completedargs.Error.Message, "Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else if (completedargs.Cancelled)
+                    {
+                        if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify remaining records.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                        {
+                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                        }
                     }
                     else if (completedargs.Result is Tuple<int, int, long> result)
                     {
@@ -418,7 +449,12 @@
                         {
                             LogUse("Failed", result.Item2);
                         }
+                        if (MessageBox.Show("Delete completed!\nRun query to get records again?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                        {
+                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                        }
                     }
+                    btnDelete.Enabled = true;
                 },
                 ProgressChanged = (changeargs) =>
                 {
@@ -1033,6 +1069,8 @@
             {
                 return;
             }
+            tsbCancel.Enabled = true;
+            btnUpdate.Enabled = false;
             var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
             var entity = records.EntityName;
             working = true;
@@ -1051,6 +1089,11 @@
                     var attributes = workargs.Argument as List<BulkActionItem>;
                     foreach (var record in records.Entities)
                     {
+                        if (bgworker.CancellationPending)
+                        {
+                            workargs.Cancel = true;
+                            break;
+                        }
                         current++;
                         var pct = 100 * current / total;
                         if (!CheckAllUpdateAttributesExistOnRecord(record, attributes))
@@ -1062,10 +1105,6 @@
                         bgworker.ReportProgress(pct, "Updating record " + current.ToString());
                         try
                         {
-                            //if (UpdateState(record, attributes))
-                            //{
-                            //    updated++;
-                            //}
                             if (UpdateRecord(record, attributes))
                             {
                                 updated++;
@@ -1086,20 +1125,32 @@
                 PostWorkCallBack = (completedargs) =>
                 {
                     working = false;
+                    tsbCancel.Enabled = false;
                     if (completedargs.Error != null)
                     {
                         MessageBox.Show(completedargs.Error.Message, "Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    else
+                    else if (completedargs.Cancelled)
                     {
-                        var result = completedargs.Result as Tuple<int, int, long>;
+                        if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                        {
+                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                        }
+                    }
+                    else if (completedargs.Result is Tuple<int, int, long> result)
+                    {
                         lblUpdateStatus.Text = $"{result.Item1} records updated, {result.Item2} records failed.";
                         LogUse("Updated", result.Item1, result.Item3);
                         if (result.Item2 > 0)
                         {
                             LogUse("Failed", result.Item2);
                         }
+                        if (MessageBox.Show("Update completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                        {
+                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                        }
                     }
+                    btnUpdate.Enabled = true;
                 },
                 ProgressChanged = (changeargs) =>
                 {
@@ -1338,6 +1389,11 @@
                 chkOnlyChange.Checked = false;
             }
             EnableControls(true);
+        }
+
+        private void tsbCancel_Click(object sender, EventArgs e)
+        {
+            CancelWorker();
         }
 
         private void tsbCloseThisTab_Click(object sender, EventArgs e)
