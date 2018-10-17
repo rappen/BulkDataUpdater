@@ -71,10 +71,16 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.gb4update = new System.Windows.Forms.GroupBox();
+            this.cmbUpdBatchSize = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.crmGridView1 = new Cinteros.Xrm.CRMWinForm.CRMGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.rbIncludeSelected = new System.Windows.Forms.RadioButton();
+            this.rbIncludeAll = new System.Windows.Forms.RadioButton();
+            this.lblIncludedRecords = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabUpdate = new System.Windows.Forms.TabPage();
@@ -95,8 +101,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
-            this.cmbUpdBatchSize = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -104,6 +108,7 @@
             this.gb4update.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -360,7 +365,7 @@
             this.cmbAttribute.FormattingEnabled = true;
             this.cmbAttribute.Location = new System.Drawing.Point(15, 19);
             this.cmbAttribute.Name = "cmbAttribute";
-            this.cmbAttribute.Size = new System.Drawing.Size(340, 21);
+            this.cmbAttribute.Size = new System.Drawing.Size(298, 21);
             this.cmbAttribute.Sorted = true;
             this.cmbAttribute.TabIndex = 26;
             this.cmbAttribute.Tag = "attribute";
@@ -409,7 +414,7 @@
             this.cmbValue.FormattingEnabled = true;
             this.cmbValue.Location = new System.Drawing.Point(9, 26);
             this.cmbValue.Name = "cmbValue";
-            this.cmbValue.Size = new System.Drawing.Size(340, 21);
+            this.cmbValue.Size = new System.Drawing.Size(298, 21);
             this.cmbValue.TabIndex = 32;
             this.cmbValue.Tag = "value";
             this.cmbValue.SelectedIndexChanged += new System.EventHandler(this.cmbValue_SelectedIndexChanged);
@@ -434,7 +439,7 @@
             this.gb1select.Dock = System.Windows.Forms.DockStyle.Top;
             this.gb1select.Location = new System.Drawing.Point(0, 0);
             this.gb1select.Name = "gb1select";
-            this.gb1select.Size = new System.Drawing.Size(457, 91);
+            this.gb1select.Size = new System.Drawing.Size(499, 91);
             this.gb1select.TabIndex = 34;
             this.gb1select.TabStop = false;
             this.gb1select.Text = "1. Select records to update";
@@ -494,7 +499,7 @@
             this.gb2attribute.Dock = System.Windows.Forms.DockStyle.Top;
             this.gb2attribute.Location = new System.Drawing.Point(3, 3);
             this.gb2attribute.Name = "gb2attribute";
-            this.gb2attribute.Size = new System.Drawing.Size(372, 154);
+            this.gb2attribute.Size = new System.Drawing.Size(330, 154);
             this.gb2attribute.TabIndex = 35;
             this.gb2attribute.TabStop = false;
             this.gb2attribute.Text = "Select attribute to update";
@@ -511,13 +516,13 @@
             this.pan2value.Controls.Add(this.rbSetValue);
             this.pan2value.Location = new System.Drawing.Point(6, 46);
             this.pan2value.Name = "pan2value";
-            this.pan2value.Size = new System.Drawing.Size(360, 105);
+            this.pan2value.Size = new System.Drawing.Size(318, 105);
             this.pan2value.TabIndex = 3;
             // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(240, 75);
+            this.btnAdd.Location = new System.Drawing.Point(198, 75);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(109, 23);
             this.btnAdd.TabIndex = 35;
@@ -546,10 +551,39 @@
             this.gb4update.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.gb4update.Location = new System.Drawing.Point(3, 377);
             this.gb4update.Name = "gb4update";
-            this.gb4update.Size = new System.Drawing.Size(372, 89);
+            this.gb4update.Size = new System.Drawing.Size(330, 89);
             this.gb4update.TabIndex = 37;
             this.gb4update.TabStop = false;
             this.gb4update.Text = "Execute update";
+            // 
+            // cmbUpdBatchSize
+            // 
+            this.cmbUpdBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmbUpdBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUpdBatchSize.FormattingEnabled = true;
+            this.cmbUpdBatchSize.Items.AddRange(new object[] {
+            "1",
+            "5",
+            "10",
+            "50",
+            "100",
+            "200",
+            "500",
+            "1000"});
+            this.cmbUpdBatchSize.Location = new System.Drawing.Point(92, 20);
+            this.cmbUpdBatchSize.Name = "cmbUpdBatchSize";
+            this.cmbUpdBatchSize.Size = new System.Drawing.Size(75, 21);
+            this.cmbUpdBatchSize.TabIndex = 36;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(18, 23);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 13);
+            this.label3.TabIndex = 35;
+            this.label3.Text = "Batch size";
             // 
             // lblUpdateStatus
             // 
@@ -563,7 +597,7 @@
             // btnUpdate
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdate.Location = new System.Drawing.Point(246, 56);
+            this.btnUpdate.Location = new System.Drawing.Point(204, 56);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(109, 23);
             this.btnUpdate.TabIndex = 0;
@@ -574,10 +608,11 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.crmGridView1);
+            this.groupBox5.Controls.Add(this.panel1);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 91);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(457, 404);
+            this.groupBox5.Size = new System.Drawing.Size(499, 404);
             this.groupBox5.TabIndex = 38;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
@@ -593,14 +628,62 @@
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
-            this.crmGridView1.Location = new System.Drawing.Point(3, 16);
+            this.crmGridView1.Location = new System.Drawing.Point(3, 40);
             this.crmGridView1.Name = "crmGridView1";
             this.crmGridView1.ReadOnly = true;
             this.crmGridView1.RowHeadersVisible = false;
+            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(451, 385);
+            this.crmGridView1.Size = new System.Drawing.Size(493, 361);
             this.crmGridView1.TabIndex = 2;
+            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.rbIncludeSelected);
+            this.panel1.Controls.Add(this.rbIncludeAll);
+            this.panel1.Controls.Add(this.lblIncludedRecords);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 16);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(493, 24);
+            this.panel1.TabIndex = 4;
+            // 
+            // rbIncludeSelected
+            // 
+            this.rbIncludeSelected.AutoSize = true;
+            this.rbIncludeSelected.Location = new System.Drawing.Point(180, 3);
+            this.rbIncludeSelected.Name = "rbIncludeSelected";
+            this.rbIncludeSelected.Size = new System.Drawing.Size(163, 17);
+            this.rbIncludeSelected.TabIndex = 4;
+            this.rbIncludeSelected.Tag = "";
+            this.rbIncludeSelected.Text = "Include selected records only";
+            this.rbIncludeSelected.UseVisualStyleBackColor = true;
+            this.rbIncludeSelected.CheckedChanged += new System.EventHandler(this.rbInclude_CheckedChanged);
+            // 
+            // rbIncludeAll
+            // 
+            this.rbIncludeAll.AutoSize = true;
+            this.rbIncludeAll.Checked = true;
+            this.rbIncludeAll.Location = new System.Drawing.Point(12, 3);
+            this.rbIncludeAll.Name = "rbIncludeAll";
+            this.rbIncludeAll.Size = new System.Drawing.Size(153, 17);
+            this.rbIncludeAll.TabIndex = 3;
+            this.rbIncludeAll.TabStop = true;
+            this.rbIncludeAll.Text = "Include all records returned";
+            this.rbIncludeAll.UseVisualStyleBackColor = true;
+            this.rbIncludeAll.CheckedChanged += new System.EventHandler(this.rbInclude_CheckedChanged);
+            // 
+            // lblIncludedRecords
+            // 
+            this.lblIncludedRecords.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblIncludedRecords.Location = new System.Drawing.Point(349, 5);
+            this.lblIncludedRecords.Name = "lblIncludedRecords";
+            this.lblIncludedRecords.Size = new System.Drawing.Size(141, 16);
+            this.lblIncludedRecords.TabIndex = 5;
+            this.lblIncludedRecords.Text = "0 records";
+            this.lblIncludedRecords.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // splitContainer1
             // 
@@ -622,7 +705,7 @@
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.Size = new System.Drawing.Size(847, 495);
-            this.splitContainer1.SplitterDistance = 457;
+            this.splitContainer1.SplitterDistance = 499;
             this.splitContainer1.TabIndex = 39;
             // 
             // tabControl1
@@ -634,7 +717,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(386, 495);
+            this.tabControl1.Size = new System.Drawing.Size(344, 495);
             this.tabControl1.TabIndex = 39;
             // 
             // tabUpdate
@@ -645,7 +728,7 @@
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
             this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUpdate.Size = new System.Drawing.Size(378, 469);
+            this.tabUpdate.Size = new System.Drawing.Size(336, 469);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             this.tabUpdate.UseVisualStyleBackColor = true;
@@ -657,7 +740,7 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(3, 157);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(372, 220);
+            this.gb3attributes.Size = new System.Drawing.Size(330, 220);
             this.gb3attributes.TabIndex = 38;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Verify attributes to update";
@@ -675,7 +758,7 @@
             this.lvAttributes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(340, 166);
+            this.lvAttributes.Size = new System.Drawing.Size(298, 166);
             this.lvAttributes.TabIndex = 2;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -704,7 +787,7 @@
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(246, 191);
+            this.btnRemove.Location = new System.Drawing.Point(204, 191);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(109, 23);
             this.btnRemove.TabIndex = 1;
@@ -718,7 +801,7 @@
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
             this.tabSetState.Name = "tabSetState";
             this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSetState.Size = new System.Drawing.Size(350, 516);
+            this.tabSetState.Size = new System.Drawing.Size(336, 469);
             this.tabSetState.TabIndex = 3;
             this.tabSetState.Text = "Set State";
             this.tabSetState.UseVisualStyleBackColor = true;
@@ -745,7 +828,7 @@
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
             this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDelete.Size = new System.Drawing.Size(378, 469);
+            this.tabDelete.Size = new System.Drawing.Size(336, 469);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
             this.tabDelete.UseVisualStyleBackColor = true;
@@ -843,35 +926,6 @@
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
-            // cmbUpdBatchSize
-            // 
-            this.cmbUpdBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cmbUpdBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUpdBatchSize.FormattingEnabled = true;
-            this.cmbUpdBatchSize.Items.AddRange(new object[] {
-            "1",
-            "5",
-            "10",
-            "50",
-            "100",
-            "200",
-            "500",
-            "1000"});
-            this.cmbUpdBatchSize.Location = new System.Drawing.Point(92, 20);
-            this.cmbUpdBatchSize.Name = "cmbUpdBatchSize";
-            this.cmbUpdBatchSize.Size = new System.Drawing.Size(75, 21);
-            this.cmbUpdBatchSize.TabIndex = 36;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 23);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 13);
-            this.label3.TabIndex = 35;
-            this.label3.Text = "Batch size";
-            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -896,6 +950,8 @@
             this.gb4update.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -980,5 +1036,9 @@
         private System.Windows.Forms.ToolStripButton tsbCancel;
         private System.Windows.Forms.ComboBox cmbUpdBatchSize;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton rbIncludeAll;
+        private System.Windows.Forms.RadioButton rbIncludeSelected;
+        private System.Windows.Forms.Label lblIncludedRecords;
     }
 }

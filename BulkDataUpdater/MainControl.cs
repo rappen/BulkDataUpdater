@@ -364,6 +364,7 @@
             tsbCancel.Enabled = true;
             splitContainer1.Enabled = false;
             working = true;
+            var includedrecords = GetIncludedRecords();
             var ignoreerrors = chkDelIgnoreErrors.Checked;
             if (!int.TryParse(cmbDelBatchSize.Text, out int batchsize))
             {
@@ -376,7 +377,7 @@
                 Work = (bgworker, workargs) =>
                 {
                     var sw = Stopwatch.StartNew();
-                    var total = records.Entities.Count;
+                    var total = includedrecords.Entities.Count;
                     var current = 0;
                     var deleted = 0;
                     var failed = 0;
@@ -385,7 +386,7 @@
                         Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
                         Requests = new OrganizationRequestCollection()
                     };
-                    foreach (var record in records.Entities)
+                    foreach (var record in includedrecords.Entities)
                     {
                         if (bgworker.CancellationPending)
                         {
@@ -585,6 +586,11 @@
             OnOutgoingMessage(this, messageBusEventArgs);
         }
 
+        private EntityCollection GetIncludedRecords()
+        {
+            return rbIncludeSelected.Checked ? crmGridView1.SelectedRowRecords : records;
+        }
+
         private void GetRecords(string tag)
         {
             switch (tag)
@@ -619,6 +625,37 @@
                     break;
             }
             LogUse(tag, records?.Entities?.Count);
+        }
+
+        private Entity GetUpdateRecord(Entity record, List<BulkActionItem> attributes)
+        {
+            if (attributes.Count == 0)
+            {
+                return null;
+            }
+            var updaterecord = new Entity(record.LogicalName, record.Id);
+            foreach (var bai in attributes.Where(a => !(a.Attribute.Metadata is StateAttributeMetadata)))
+            {
+                var attribute = bai.Attribute.Metadata.LogicalName;
+                var currentvalue = record.Contains(attribute) ? record[attribute] : null;
+                if (bai.Action == BulkActionAction.Touch)
+                {
+                    bai.Value = currentvalue;
+                }
+                if (!bai.DontTouch || !ValuesEqual(bai.Value, currentvalue))
+                {
+                    updaterecord.Attributes.Add(attribute, bai.Value);
+                    if (record.Contains(attribute))
+                    {
+                        record[attribute] = bai.Value;
+                    }
+                    else
+                    {
+                        record.Attributes.Add(attribute, bai.Value);
+                    }
+                }
+            }
+            return updaterecord;
         }
 
         private object GetValue(AttributeTypeCode? type)
@@ -994,8 +1031,8 @@
                     }
                     return;
                 }
-                lblRecords.Text = records.Entities.Count.ToString() + " records of entity " + records.EntityName;
-                lblDeleteHeader.Text = $"Delete {records.Entities.Count} {entities.FirstOrDefault(e => e.Key == records.EntityName).Value.DisplayCollectionName.UserLocalizedLabel.Label}";
+                lblRecords.Text = $"{records.Entities.Count} records of entity {records.EntityName} loaded";
+                UpdateIncludeCount();
                 crmGridView1.OrganizationService = Service;
                 crmGridView1.DataSource = records;
                 crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -1028,35 +1065,11 @@
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, "Settings");
         }
 
-        private Entity GetUpdateRecord(Entity record, List<BulkActionItem> attributes)
+        private void UpdateIncludeCount()
         {
-            if (attributes.Count == 0)
-            {
-                return null;
-            }
-            var updaterecord = new Entity(record.LogicalName, record.Id);
-            foreach (var bai in attributes.Where(a => !(a.Attribute.Metadata is StateAttributeMetadata)))
-            {
-                var attribute = bai.Attribute.Metadata.LogicalName;
-                var currentvalue = record.Contains(attribute) ? record[attribute] : null;
-                if (bai.Action == BulkActionAction.Touch)
-                {
-                    bai.Value = currentvalue;
-                }
-                if (!bai.DontTouch || !ValuesEqual(bai.Value, currentvalue))
-                {
-                    updaterecord.Attributes.Add(attribute, bai.Value);
-                    if (record.Contains(attribute))
-                    {
-                        record[attribute] = bai.Value;
-                    }
-                    else
-                    {
-                        record.Attributes.Add(attribute, bai.Value);
-                    }
-                }
-            }
-            return updaterecord;
+            var count = rbIncludeSelected.Checked ? crmGridView1.SelectedCellRecords?.Entities?.Count : records?.Entities?.Count;
+            lblIncludedRecords.Text = $"{count} records";
+            lblDeleteHeader.Text = $"Delete {count} {entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label}";
         }
 
         private void UpdateRecords()
@@ -1074,6 +1087,7 @@
             splitContainer1.Enabled = false;
             var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
             var entity = records.EntityName;
+            var includedrecords = GetIncludedRecords();
             working = true;
             var ignoreerrors = chkIgnoreErrors.Checked;
             if (!int.TryParse(cmbUpdBatchSize.Text, out int batchsize))
@@ -1088,7 +1102,7 @@
                 Work = (bgworker, workargs) =>
                 {
                     var sw = Stopwatch.StartNew();
-                    var total = records.Entities.Count;
+                    var total = includedrecords.Entities.Count;
                     var current = 0;
                     var updated = 0;
                     var failed = 0;
@@ -1098,7 +1112,7 @@
                         Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
                         Requests = new OrganizationRequestCollection()
                     };
-                    foreach (var record in records.Entities)
+                    foreach (var record in includedrecords.Entities)
                     {
                         if (bgworker.CancellationPending)
                         {
@@ -1348,6 +1362,11 @@
             EnableControls(true);
         }
 
+        private void crmGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateIncludeCount();
+        }
+
         private void DataUpdater_ConnectionUpdated(object sender, XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedEventArgs e)
         {
             crmGridView1.DataSource = null;
@@ -1404,6 +1423,11 @@
                 }
                 chkOnlyChange.Checked = attribute.DontTouch;
             }
+        }
+
+        private void rbInclude_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateIncludeCount();
         }
 
         private void rbSet_CheckedChanged(object sender, EventArgs e)

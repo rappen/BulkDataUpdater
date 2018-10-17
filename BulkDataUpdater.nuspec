@@ -12,9 +12,10 @@
     <description>This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values. It can also delete records by the filter specified.</description>
     <summary>Update or touch attributes on a set of records, or delete the data set completely.</summary>
     <releaseNotes>
-#3 ExecuteMultiple for updates to improve performance!
-#21 Bulk Data Updater can now Bulk Delete too!
-#22 Added possibility to cancel long running operations.
+#1 Option to only update/delete selected records
+#3 ExecuteMultiple for updates to improve performance
+#21 Bulk Data Updater can now Bulk Delete too
+#22 Added possibility to cancel long running operations
     </releaseNotes>
     <copyright>Copyright 2016-2018 Jonas Rapp</copyright>
     <tags>XrmToolBox Plugins BulkDataUpdater</tags>
