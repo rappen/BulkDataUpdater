@@ -362,7 +362,7 @@
                 return;
             }
             tsbCancel.Enabled = true;
-            btnDelete.Enabled = false;
+            splitContainer1.Enabled = false;
             working = true;
             var ignoreerrors = chkDelIgnoreErrors.Checked;
             if (!int.TryParse(cmbDelBatchSize.Text, out int batchsize))
@@ -454,7 +454,7 @@
                             RetrieveRecords(fetchXml, RetrieveRecordsReady);
                         }
                     }
-                    btnDelete.Enabled = true;
+                    splitContainer1.Enabled = true;
                 },
                 ProgressChanged = (changeargs) =>
                 {
@@ -836,6 +836,7 @@
             tsmiAttributesCustom.Checked = settings.AttributesCustom;
             tsmiAttributesStandard.Checked = settings.AttributesStandard;
             tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
+            cmbUpdBatchSize.SelectedItem = cmbUpdBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.UpdateBatchSize.ToString());
             cmbDelBatchSize.SelectedItem = cmbDelBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.DeleteBatchSize.ToString());
             tsmiFriendly_Click(null, null);
             tsmiAttributes_Click(null, null);
@@ -1021,16 +1022,17 @@
                 AttributesCustom = tsmiAttributesCustom.Checked,
                 AttributesStandard = tsmiAttributesStandard.Checked,
                 AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
-                DeleteBatchSize = int.TryParse(cmbDelBatchSize.Text, out int size) ? size : 1
+                UpdateBatchSize = int.TryParse(cmbUpdBatchSize.Text, out int updsize) ? updsize : 1,
+                DeleteBatchSize = int.TryParse(cmbDelBatchSize.Text, out int delsize) ? delsize : 1
             };
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, "Settings");
         }
 
-        private bool UpdateRecord(Entity record, List<BulkActionItem> attributes)
+        private Entity GetUpdateRecord(Entity record, List<BulkActionItem> attributes)
         {
             if (attributes.Count == 0)
             {
-                return false;
+                return null;
             }
             var updaterecord = new Entity(record.LogicalName, record.Id);
             foreach (var bai in attributes.Where(a => !(a.Attribute.Metadata is StateAttributeMetadata)))
@@ -1054,8 +1056,7 @@
                     }
                 }
             }
-            Service.Update(updaterecord);
-            return true;
+            return updaterecord;
         }
 
         private void UpdateRecords()
@@ -1070,10 +1071,15 @@
                 return;
             }
             tsbCancel.Enabled = true;
-            btnUpdate.Enabled = false;
+            splitContainer1.Enabled = false;
             var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
             var entity = records.EntityName;
             working = true;
+            var ignoreerrors = chkIgnoreErrors.Checked;
+            if (!int.TryParse(cmbUpdBatchSize.Text, out int batchsize))
+            {
+                batchsize = 1;
+            }
             WorkAsync(new WorkAsyncInfo()
             {
                 Message = "Updating records",
@@ -1087,6 +1093,11 @@
                     var updated = 0;
                     var failed = 0;
                     var attributes = workargs.Argument as List<BulkActionItem>;
+                    var batch = new ExecuteMultipleRequest
+                    {
+                        Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
+                        Requests = new OrganizationRequestCollection()
+                    };
                     foreach (var record in records.Entities)
                     {
                         if (bgworker.CancellationPending)
@@ -1102,12 +1113,27 @@
                             bgworker.ReportProgress(pct, "Reloading record " + current.ToString());
                             LoadMissingAttributesForRecord(record, entity, attributes);
                         }
-                        bgworker.ReportProgress(pct, "Updating record " + current.ToString());
                         try
                         {
-                            if (UpdateRecord(record, attributes))
+                            if (GetUpdateRecord(record, attributes) is Entity updateentity)
                             {
-                                updated++;
+                                if (batchsize == 1)
+                                {
+                                    bgworker.ReportProgress(pct, $"Updating record {current} of {total}");
+                                    Service.Update(updateentity);
+                                    updated++;
+                                }
+                                else
+                                {
+                                    batch.Requests.Add(new UpdateRequest { Target = updateentity });
+                                    if (batch.Requests.Count == batchsize || current == total)
+                                    {
+                                        bgworker.ReportProgress(pct, $"Updating records {current - batch.Requests.Count + 1}-{current} of {total}");
+                                        Service.Execute(batch);
+                                        updated += batch.Requests.Count;
+                                        batch.Requests.Clear();
+                                    }
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -1150,7 +1176,7 @@
                             RetrieveRecords(fetchXml, RetrieveRecordsReady);
                         }
                     }
-                    btnUpdate.Enabled = true;
+                    splitContainer1.Enabled = true;
                 },
                 ProgressChanged = (changeargs) =>
                 {

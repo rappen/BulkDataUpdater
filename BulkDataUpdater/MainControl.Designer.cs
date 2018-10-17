@@ -53,6 +53,7 @@
             this.tsmiAttributesOnlyValidAF = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
+            this.tsbCancel = new System.Windows.Forms.ToolStripButton();
             this.btnGetEdit = new System.Windows.Forms.Button();
             this.lblRecords = new System.Windows.Forms.Label();
             this.cmbAttribute = new System.Windows.Forms.ComboBox();
@@ -88,14 +89,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.lblDelStatus = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.chkDelIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.cmbDelBatchSize = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
-            this.tsbCancel = new System.Windows.Forms.ToolStripButton();
+            this.cmbUpdBatchSize = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -131,7 +132,7 @@
             this.tsbCancel});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(909, 31);
+            this.toolStripMain.Size = new System.Drawing.Size(847, 31);
             this.toolStripMain.TabIndex = 23;
             this.toolStripMain.Text = "toolStrip1";
             // 
@@ -315,6 +316,16 @@
             this.tslAbout.Text = "by Jonas Rapp";
             this.tslAbout.Click += new System.EventHandler(this.tslAbout_Click);
             // 
+            // tsbCancel
+            // 
+            this.tsbCancel.Enabled = false;
+            this.tsbCancel.Image = ((System.Drawing.Image)(resources.GetObject("tsbCancel.Image")));
+            this.tsbCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCancel.Name = "tsbCancel";
+            this.tsbCancel.Size = new System.Drawing.Size(71, 28);
+            this.tsbCancel.Text = "Cancel";
+            this.tsbCancel.Click += new System.EventHandler(this.tsbCancel_Click);
+            // 
             // btnGetEdit
             // 
             this.btnGetEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnGetEdit.Image")));
@@ -349,7 +360,7 @@
             this.cmbAttribute.FormattingEnabled = true;
             this.cmbAttribute.Location = new System.Drawing.Point(15, 19);
             this.cmbAttribute.Name = "cmbAttribute";
-            this.cmbAttribute.Size = new System.Drawing.Size(312, 21);
+            this.cmbAttribute.Size = new System.Drawing.Size(340, 21);
             this.cmbAttribute.Sorted = true;
             this.cmbAttribute.TabIndex = 26;
             this.cmbAttribute.Tag = "attribute";
@@ -398,7 +409,7 @@
             this.cmbValue.FormattingEnabled = true;
             this.cmbValue.Location = new System.Drawing.Point(9, 26);
             this.cmbValue.Name = "cmbValue";
-            this.cmbValue.Size = new System.Drawing.Size(312, 21);
+            this.cmbValue.Size = new System.Drawing.Size(340, 21);
             this.cmbValue.TabIndex = 32;
             this.cmbValue.Tag = "value";
             this.cmbValue.SelectedIndexChanged += new System.EventHandler(this.cmbValue_SelectedIndexChanged);
@@ -423,7 +434,7 @@
             this.gb1select.Dock = System.Windows.Forms.DockStyle.Top;
             this.gb1select.Location = new System.Drawing.Point(0, 0);
             this.gb1select.Name = "gb1select";
-            this.gb1select.Size = new System.Drawing.Size(547, 91);
+            this.gb1select.Size = new System.Drawing.Size(457, 91);
             this.gb1select.TabIndex = 34;
             this.gb1select.TabStop = false;
             this.gb1select.Text = "1. Select records to update";
@@ -483,7 +494,7 @@
             this.gb2attribute.Dock = System.Windows.Forms.DockStyle.Top;
             this.gb2attribute.Location = new System.Drawing.Point(3, 3);
             this.gb2attribute.Name = "gb2attribute";
-            this.gb2attribute.Size = new System.Drawing.Size(344, 154);
+            this.gb2attribute.Size = new System.Drawing.Size(372, 154);
             this.gb2attribute.TabIndex = 35;
             this.gb2attribute.TabStop = false;
             this.gb2attribute.Text = "Select attribute to update";
@@ -500,13 +511,13 @@
             this.pan2value.Controls.Add(this.rbSetValue);
             this.pan2value.Location = new System.Drawing.Point(6, 46);
             this.pan2value.Name = "pan2value";
-            this.pan2value.Size = new System.Drawing.Size(332, 105);
+            this.pan2value.Size = new System.Drawing.Size(360, 105);
             this.pan2value.TabIndex = 3;
             // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(212, 75);
+            this.btnAdd.Location = new System.Drawing.Point(240, 75);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(109, 23);
             this.btnAdd.TabIndex = 35;
@@ -516,8 +527,9 @@
             // 
             // chkIgnoreErrors
             // 
+            this.chkIgnoreErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkIgnoreErrors.AutoSize = true;
-            this.chkIgnoreErrors.Location = new System.Drawing.Point(15, 33);
+            this.chkIgnoreErrors.Location = new System.Drawing.Point(181, 22);
             this.chkIgnoreErrors.Name = "chkIgnoreErrors";
             this.chkIgnoreErrors.Size = new System.Drawing.Size(85, 17);
             this.chkIgnoreErrors.TabIndex = 34;
@@ -526,13 +538,15 @@
             // 
             // gb4update
             // 
+            this.gb4update.Controls.Add(this.cmbUpdBatchSize);
+            this.gb4update.Controls.Add(this.label3);
             this.gb4update.Controls.Add(this.lblUpdateStatus);
             this.gb4update.Controls.Add(this.btnUpdate);
             this.gb4update.Controls.Add(this.chkIgnoreErrors);
             this.gb4update.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gb4update.Location = new System.Drawing.Point(3, 424);
+            this.gb4update.Location = new System.Drawing.Point(3, 377);
             this.gb4update.Name = "gb4update";
-            this.gb4update.Size = new System.Drawing.Size(344, 89);
+            this.gb4update.Size = new System.Drawing.Size(372, 89);
             this.gb4update.TabIndex = 37;
             this.gb4update.TabStop = false;
             this.gb4update.Text = "Execute update";
@@ -548,8 +562,8 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdate.Location = new System.Drawing.Point(218, 29);
+            this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUpdate.Location = new System.Drawing.Point(246, 56);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(109, 23);
             this.btnUpdate.TabIndex = 0;
@@ -563,7 +577,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 91);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(547, 451);
+            this.groupBox5.Size = new System.Drawing.Size(457, 404);
             this.groupBox5.TabIndex = 38;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
@@ -585,7 +599,7 @@
             this.crmGridView1.RowHeadersVisible = false;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(541, 432);
+            this.crmGridView1.Size = new System.Drawing.Size(451, 385);
             this.crmGridView1.TabIndex = 2;
             // 
             // splitContainer1
@@ -607,8 +621,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(909, 542);
-            this.splitContainer1.SplitterDistance = 547;
+            this.splitContainer1.Size = new System.Drawing.Size(847, 495);
+            this.splitContainer1.SplitterDistance = 457;
             this.splitContainer1.TabIndex = 39;
             // 
             // tabControl1
@@ -620,7 +634,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(358, 542);
+            this.tabControl1.Size = new System.Drawing.Size(386, 495);
             this.tabControl1.TabIndex = 39;
             // 
             // tabUpdate
@@ -631,7 +645,7 @@
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
             this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUpdate.Size = new System.Drawing.Size(350, 516);
+            this.tabUpdate.Size = new System.Drawing.Size(378, 469);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             this.tabUpdate.UseVisualStyleBackColor = true;
@@ -643,7 +657,7 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(3, 157);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(344, 267);
+            this.gb3attributes.Size = new System.Drawing.Size(372, 220);
             this.gb3attributes.TabIndex = 38;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Verify attributes to update";
@@ -661,7 +675,7 @@
             this.lvAttributes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(312, 213);
+            this.lvAttributes.Size = new System.Drawing.Size(340, 166);
             this.lvAttributes.TabIndex = 2;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -690,7 +704,7 @@
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(218, 238);
+            this.btnRemove.Location = new System.Drawing.Point(246, 191);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(109, 23);
             this.btnRemove.TabIndex = 1;
@@ -722,7 +736,6 @@
             // tabDelete
             // 
             this.tabDelete.Controls.Add(this.lblDelStatus);
-            this.tabDelete.Controls.Add(this.label3);
             this.tabDelete.Controls.Add(this.chkDelIgnoreErrors);
             this.tabDelete.Controls.Add(this.btnDelete);
             this.tabDelete.Controls.Add(this.cmbDelBatchSize);
@@ -732,7 +745,7 @@
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
             this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDelete.Size = new System.Drawing.Size(350, 516);
+            this.tabDelete.Size = new System.Drawing.Size(378, 469);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
             this.tabDelete.UseVisualStyleBackColor = true;
@@ -741,28 +754,21 @@
             // 
             this.lblDelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDelStatus.AutoSize = true;
-            this.lblDelStatus.Location = new System.Drawing.Point(19, 480);
+            this.lblDelStatus.Location = new System.Drawing.Point(19, 433);
             this.lblDelStatus.Name = "lblDelStatus";
             this.lblDelStatus.Size = new System.Drawing.Size(82, 13);
             this.lblDelStatus.TabIndex = 37;
             this.lblDelStatus.Text = "Nothing deleted";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 281);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 13);
-            this.label3.TabIndex = 36;
-            this.label3.Text = "Ignore errors";
-            // 
             // chkDelIgnoreErrors
             // 
+            this.chkDelIgnoreErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkDelIgnoreErrors.AutoSize = true;
-            this.chkDelIgnoreErrors.Location = new System.Drawing.Point(120, 280);
+            this.chkDelIgnoreErrors.Location = new System.Drawing.Point(211, 328);
             this.chkDelIgnoreErrors.Name = "chkDelIgnoreErrors";
-            this.chkDelIgnoreErrors.Size = new System.Drawing.Size(15, 14);
+            this.chkDelIgnoreErrors.Size = new System.Drawing.Size(85, 17);
             this.chkDelIgnoreErrors.TabIndex = 35;
+            this.chkDelIgnoreErrors.Text = "Ignore errors";
             this.chkDelIgnoreErrors.UseVisualStyleBackColor = true;
             // 
             // btnDelete
@@ -772,9 +778,9 @@
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.Color.Red;
             this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-            this.btnDelete.Location = new System.Drawing.Point(50, 412);
+            this.btnDelete.Location = new System.Drawing.Point(50, 365);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(252, 50);
+            this.btnDelete.Size = new System.Drawing.Size(280, 50);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -784,8 +790,7 @@
             // 
             // cmbDelBatchSize
             // 
-            this.cmbDelBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbDelBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cmbDelBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDelBatchSize.FormattingEnabled = true;
             this.cmbDelBatchSize.Items.AddRange(new object[] {
@@ -797,15 +802,16 @@
             "200",
             "500",
             "1000"});
-            this.cmbDelBatchSize.Location = new System.Drawing.Point(120, 253);
+            this.cmbDelBatchSize.Location = new System.Drawing.Point(106, 326);
             this.cmbDelBatchSize.Name = "cmbDelBatchSize";
-            this.cmbDelBatchSize.Size = new System.Drawing.Size(205, 21);
+            this.cmbDelBatchSize.Size = new System.Drawing.Size(75, 21);
             this.cmbDelBatchSize.TabIndex = 3;
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 256);
+            this.label2.Location = new System.Drawing.Point(32, 329);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 2;
@@ -818,10 +824,10 @@
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ForeColor = System.Drawing.Color.Red;
-            this.textBox1.Location = new System.Drawing.Point(35, 69);
+            this.textBox1.Location = new System.Drawing.Point(35, 97);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(277, 178);
+            this.textBox1.Size = new System.Drawing.Size(305, 178);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "This action will delete all records in the list to the left.\r\n\r\nThis action can N" +
     "OT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation qu" +
@@ -837,15 +843,34 @@
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
-            // tsbCancel
+            // cmbUpdBatchSize
             // 
-            this.tsbCancel.Enabled = false;
-            this.tsbCancel.Image = ((System.Drawing.Image)(resources.GetObject("tsbCancel.Image")));
-            this.tsbCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCancel.Name = "tsbCancel";
-            this.tsbCancel.Size = new System.Drawing.Size(71, 28);
-            this.tsbCancel.Text = "Cancel";
-            this.tsbCancel.Click += new System.EventHandler(this.tsbCancel_Click);
+            this.cmbUpdBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmbUpdBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUpdBatchSize.FormattingEnabled = true;
+            this.cmbUpdBatchSize.Items.AddRange(new object[] {
+            "1",
+            "5",
+            "10",
+            "50",
+            "100",
+            "200",
+            "500",
+            "1000"});
+            this.cmbUpdBatchSize.Location = new System.Drawing.Point(92, 20);
+            this.cmbUpdBatchSize.Name = "cmbUpdBatchSize";
+            this.cmbUpdBatchSize.Size = new System.Drawing.Size(75, 21);
+            this.cmbUpdBatchSize.TabIndex = 36;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(18, 23);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 13);
+            this.label3.TabIndex = 35;
+            this.label3.Text = "Batch size";
             // 
             // BulkDataUpdater
             // 
@@ -856,7 +881,7 @@
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(909, 573);
+            this.Size = new System.Drawing.Size(847, 526);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
@@ -950,9 +975,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkDelIgnoreErrors;
         private System.Windows.Forms.Label lblDelStatus;
         private System.Windows.Forms.ToolStripButton tsbCancel;
+        private System.Windows.Forms.ComboBox cmbUpdBatchSize;
+        private System.Windows.Forms.Label label3;
     }
 }
