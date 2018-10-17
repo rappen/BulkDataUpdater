@@ -16,9 +16,10 @@
     using Xrm.Common.Forms;
     using Xrm.XmlEditorUtils;
     using XrmToolBox.Extensibility;
+    using XrmToolBox.Extensibility.Args;
     using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class BulkDataUpdater : PluginControlBase, IGitHubPlugin, IPayPalPlugin, IMessageBusHost, IAboutPlugin
+    public partial class BulkDataUpdater : PluginControlBase, IGitHubPlugin, IPayPalPlugin, IMessageBusHost, IAboutPlugin, IStatusBarMessenger
     {
         #region Internal Fields
 
@@ -69,6 +70,7 @@
         #region Public Events
 
         public event EventHandler<XrmToolBox.Extensibility.MessageBusEventArgs> OnOutgoingMessage;
+        public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
 
         #endregion Public Events
 
@@ -996,10 +998,20 @@
             lblRecords.Text = "Retrieving records...";
             records = null;
             working = true;
+            QueryBase query;
+            try
+            {
+                query = ((FetchXmlToQueryExpressionResponse)Service.Execute(new FetchXmlToQueryExpressionRequest() { FetchXml = fetch })).Query;
+            }
+            catch
+            {
+                query = new FetchExpression(fetch);
+            }
             WorkAsync(new WorkAsyncInfo("Retrieving records...",
                 (eventargs) =>
                 {
-                    eventargs.Result = Service.RetrieveMultiple(new FetchExpression(fetch));
+                    EntityCollection retrieved = RetrieveRecordsAllPages(query);
+                    eventargs.Result = retrieved;
                 })
             {
                 PostWorkCallBack = (completedargs) =>
@@ -1016,6 +1028,47 @@
                     AfterRetrieve();
                 }
             });
+        }
+
+        private EntityCollection RetrieveRecordsAllPages(QueryBase query)
+        {
+            var start = DateTime.Now;
+            EntityCollection resultCollection = null;
+            EntityCollection tmpResult = null;
+            var page = 0;
+            do
+            {
+                tmpResult = Service.RetrieveMultiple(query);
+                if (resultCollection == null)
+                {
+                    resultCollection = tmpResult;
+                }
+                else
+                {
+                    resultCollection.Entities.AddRange(tmpResult.Entities);
+                    resultCollection.MoreRecords = tmpResult.MoreRecords;
+                    resultCollection.PagingCookie = tmpResult.PagingCookie;
+                    resultCollection.TotalRecordCount = tmpResult.TotalRecordCount;
+                    resultCollection.TotalRecordCountLimitExceeded = tmpResult.TotalRecordCountLimitExceeded;
+                }
+                if (query is QueryExpression && tmpResult.MoreRecords)
+                {
+                    ((QueryExpression)query).PageInfo.PageNumber++;
+                    ((QueryExpression)query).PageInfo.PagingCookie = tmpResult.PagingCookie;
+                }
+                page++;
+                var duration = DateTime.Now - start;
+                if (page == 1)
+                {
+                    SendMessageToStatusBar(this, new StatusBarMessageEventArgs($"Retrieved {resultCollection.Entities.Count} records on first page in {duration.TotalSeconds:F2} seconds"));
+                }
+                else
+                {
+                    SendMessageToStatusBar(this, new StatusBarMessageEventArgs($"Retrieved {resultCollection.Entities.Count} records on {page} pages in {duration.TotalSeconds:F2} seconds"));
+                }
+            }
+            while (query is QueryExpression && tmpResult.MoreRecords);
+            return resultCollection;
         }
 
         private void RetrieveRecordsReady()

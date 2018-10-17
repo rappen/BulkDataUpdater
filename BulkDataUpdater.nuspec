@@ -14,6 +14,7 @@
     <releaseNotes>
 #1 Option to only update/delete selected records
 #3 ExecuteMultiple for updates to improve performance
+#16 Retrieve all pages instead of just first page (5000 records)
 #21 Bulk Data Updater can now Bulk Delete too
 #22 Added possibility to cancel long running operations
 #24 Edit XML window did not resize well
