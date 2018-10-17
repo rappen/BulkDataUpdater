@@ -16,6 +16,7 @@
 #3 ExecuteMultiple for updates to improve performance
 #21 Bulk Data Updater can now Bulk Delete too
 #22 Added possibility to cancel long running operations
+#24 Edit XML window did not resize well
     </releaseNotes>
     <copyright>Copyright 2016-2018 Jonas Rapp</copyright>
     <tags>XrmToolBox Plugins BulkDataUpdater</tags>

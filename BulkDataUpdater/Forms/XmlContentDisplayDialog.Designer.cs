@@ -36,13 +36,11 @@
             this.panCancel = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnFormat = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.gbXml = new System.Windows.Forms.GroupBox();
             this.txtXML = new CSRichTextBoxSyntaxHighlighting.XMLViewer();
             this.panBottom.SuspendLayout();
             this.panOk.SuspendLayout();
             this.panCancel.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.gbXml.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,16 +51,16 @@
             this.panBottom.Controls.Add(this.panCancel);
             this.panBottom.Controls.Add(this.btnFormat);
             this.panBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panBottom.Location = new System.Drawing.Point(0, 533);
+            this.panBottom.Location = new System.Drawing.Point(0, 309);
             this.panBottom.Name = "panBottom";
-            this.panBottom.Size = new System.Drawing.Size(784, 28);
+            this.panBottom.Size = new System.Drawing.Size(536, 28);
             this.panBottom.TabIndex = 4;
             // 
             // panOk
             // 
             this.panOk.Controls.Add(this.btnOk);
             this.panOk.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panOk.Location = new System.Drawing.Point(602, 0);
+            this.panOk.Location = new System.Drawing.Point(354, 0);
             this.panOk.Name = "panOk";
             this.panOk.Size = new System.Drawing.Size(91, 28);
             this.panOk.TabIndex = 4;
@@ -82,7 +80,7 @@
             // 
             this.panCancel.Controls.Add(this.btnCancel);
             this.panCancel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panCancel.Location = new System.Drawing.Point(693, 0);
+            this.panCancel.Location = new System.Drawing.Point(445, 0);
             this.panCancel.Name = "panCancel";
             this.panCancel.Size = new System.Drawing.Size(91, 28);
             this.panCancel.TabIndex = 3;
@@ -108,24 +106,13 @@
             this.btnFormat.UseVisualStyleBackColor = true;
             this.btnFormat.Click += new System.EventHandler(this.button3_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.gbXml);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(784, 530);
-            this.panel1.TabIndex = 5;
-            // 
             // gbXml
             // 
-            this.gbXml.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbXml.Controls.Add(this.txtXML);
-            this.gbXml.Location = new System.Drawing.Point(3, 3);
+            this.gbXml.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbXml.Location = new System.Drawing.Point(0, 0);
             this.gbXml.Name = "gbXml";
-            this.gbXml.Size = new System.Drawing.Size(778, 524);
+            this.gbXml.Size = new System.Drawing.Size(536, 309);
             this.gbXml.TabIndex = 0;
             this.gbXml.TabStop = false;
             this.gbXml.Text = "XML";
@@ -140,10 +127,11 @@
             xmlViewerSettings1.AttributeValue = System.Drawing.Color.Blue;
             xmlViewerSettings1.Comment = System.Drawing.Color.Empty;
             xmlViewerSettings1.Element = System.Drawing.Color.DarkRed;
+            xmlViewerSettings1.QuoteCharacter = '\"';
             xmlViewerSettings1.Tag = System.Drawing.Color.Blue;
             xmlViewerSettings1.Value = System.Drawing.Color.Black;
             this.txtXML.Settings = xmlViewerSettings1;
-            this.txtXML.Size = new System.Drawing.Size(772, 505);
+            this.txtXML.Size = new System.Drawing.Size(530, 290);
             this.txtXML.TabIndex = 2;
             this.txtXML.Text = "";
             // 
@@ -152,8 +140,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(784, 561);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(536, 337);
+            this.Controls.Add(this.gbXml);
             this.Controls.Add(this.panBottom);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -164,7 +152,6 @@
             this.panBottom.ResumeLayout(false);
             this.panOk.ResumeLayout(false);
             this.panCancel.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.gbXml.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -178,7 +165,6 @@
         private System.Windows.Forms.Panel panCancel;
         private System.Windows.Forms.Button btnCancel;
         internal System.Windows.Forms.Button btnFormat;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox gbXml;
         internal CSRichTextBoxSyntaxHighlighting.XMLViewer txtXML;
     }
