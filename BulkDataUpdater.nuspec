@@ -7,7 +7,7 @@
     <authors>Jonas Rapp</authors>
     <owners>rappen</owners>
     <projectUrl>https://github.com/rappen/BulkDataUpdater</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/Innofactor/XrmToolBox.BulkDataUpdater/master/images/BDU-150-tsp.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/rappen/BulkDataUpdater/master/images/BDU-150-tsp.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values. It can also delete records by the filter specified.</description>
     <summary>Update or touch attributes on a set of records, or delete the data set completely.</summary>
