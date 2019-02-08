@@ -99,7 +99,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.cmbDelBatchSize = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
@@ -625,6 +625,7 @@
             this.crmGridView1.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
@@ -823,7 +824,7 @@
             this.tabDelete.Controls.Add(this.btnDelete);
             this.tabDelete.Controls.Add(this.cmbDelBatchSize);
             this.tabDelete.Controls.Add(this.label2);
-            this.tabDelete.Controls.Add(this.textBox1);
+            this.tabDelete.Controls.Add(this.txtDeleteWarning);
             this.tabDelete.Controls.Add(this.lblDeleteHeader);
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
@@ -900,21 +901,21 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Batch size";
             // 
-            // textBox1
+            // txtDeleteWarning
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtDeleteWarning.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.ForeColor = System.Drawing.Color.Red;
-            this.textBox1.Location = new System.Drawing.Point(35, 97);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(305, 178);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "This action will delete all records in the list to the left.\r\n\r\nThis action can N" +
-    "OT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation qu" +
-    "estion, and then point of no return.";
+            this.txtDeleteWarning.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDeleteWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDeleteWarning.ForeColor = System.Drawing.Color.Red;
+            this.txtDeleteWarning.Location = new System.Drawing.Point(35, 97);
+            this.txtDeleteWarning.Multiline = true;
+            this.txtDeleteWarning.Name = "txtDeleteWarning";
+            this.txtDeleteWarning.Size = new System.Drawing.Size(295, 192);
+            this.txtDeleteWarning.TabIndex = 1;
+            this.txtDeleteWarning.Text = "This action will delete [nn] records in the list to the left.\r\n\r\nThis action can " +
+    "NOT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation q" +
+    "uestion, and then point of no return.";
             // 
             // lblDeleteHeader
             // 
@@ -1029,7 +1030,7 @@
         private System.Windows.Forms.Button btnGetFXB;
         private System.Windows.Forms.ComboBox cmbDelBatchSize;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtDeleteWarning;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.CheckBox chkDelIgnoreErrors;
         private System.Windows.Forms.Label lblDelStatus;

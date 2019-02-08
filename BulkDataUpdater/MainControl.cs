@@ -50,6 +50,7 @@
         private bool showAttributesStandard = true;
         private bool showAttributesUncustomizable = true;
         private bool showAttributesUnmanaged = true;
+        private string deleteWarningText;
 
         // Oops, did I name that one??
         private Entity view;
@@ -63,6 +64,7 @@
         public BulkDataUpdater()
         {
             InitializeComponent();
+            deleteWarningText = txtDeleteWarning.Text;
         }
 
         #endregion Public Constructors
@@ -1123,6 +1125,7 @@
             var count = rbIncludeSelected.Checked ? crmGridView1.SelectedCellRecords?.Entities?.Count : records?.Entities?.Count;
             lblIncludedRecords.Text = $"{count} records";
             lblDeleteHeader.Text = $"Delete {count} {entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label}";
+            txtDeleteWarning.Text = deleteWarningText.Replace("[nn]", rbIncludeSelected.Checked ? count.ToString() : "ALL");
         }
 
         private void UpdateRecords()
