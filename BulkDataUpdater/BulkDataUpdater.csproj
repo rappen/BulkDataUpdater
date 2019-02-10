@@ -132,6 +132,21 @@
     <Compile Include="AppCode\OptionsetItem.cs" />
     <Compile Include="AppCode\ViewItem.cs" />
     <Compile Include="AppCode\BulkActionItem.cs" />
+    <Compile Include="BDUDelete.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BDUGeneral.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BDUInterfaces.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BDUSetState.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BDUUpdate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
