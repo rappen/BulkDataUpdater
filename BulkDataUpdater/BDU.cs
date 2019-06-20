@@ -366,6 +366,7 @@
             tsmiAttributesCustom.Checked = settings.AttributesCustom;
             tsmiAttributesStandard.Checked = settings.AttributesStandard;
             tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
+            cmbUpdDelayCall.SelectedItem = cmbUpdDelayCall.Items.Cast<string>().FirstOrDefault(i => i == settings.DelayCallTime.ToString());
             cmbUpdBatchSize.SelectedItem = cmbUpdBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.UpdateBatchSize.ToString());
             cmbDelBatchSize.SelectedItem = cmbDelBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.DeleteBatchSize.ToString());
             tsmiFriendly_Click(null, null);
@@ -489,6 +490,7 @@
                 AttributesCustom = tsmiAttributesCustom.Checked,
                 AttributesStandard = tsmiAttributesStandard.Checked,
                 AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
+                DelayCallTime = int.TryParse(cmbUpdDelayCall.Text, out int upddel) ? upddel : 0,
                 UpdateBatchSize = int.TryParse(cmbUpdBatchSize.Text, out int updsize) ? updsize : 1,
                 DeleteBatchSize = int.TryParse(cmbDelBatchSize.Text, out int delsize) ? delsize : 1
             };
