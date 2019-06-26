@@ -12,6 +12,19 @@
     <description>This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values. It can also delete records by the filter specified.</description>
     <summary>Update or touch attributes on a set of records, or delete the data set completely.</summary>
     <releaseNotes>
+Latest version:
+
+#29 Added option to wait between calls to server. Thanks Mats Sundbergh @cint-mats!
+#28 XML attribute values with only space got trimmed, now fixed.
+#26 Incorrect warning text during Delete.
+#25 Errors were always ignored during Delete, not anymore.
+Fixed tab-order for usability.
+Rebranded for 2019.
+
+---
+
+Version 1.2018.10.2:
+
 #1 Option to only update/delete selected records
 #3 ExecuteMultiple for updates to improve performance
 #16 Retrieve all pages instead of just first page (5000 records)
