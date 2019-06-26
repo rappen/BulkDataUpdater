@@ -186,6 +186,8 @@
             xmlViewerSettings1.AttributeValue = System.Drawing.Color.Blue;
             xmlViewerSettings1.Comment = System.Drawing.Color.Empty;
             xmlViewerSettings1.Element = System.Drawing.Color.DarkRed;
+            xmlViewerSettings1.FontName = "Consolas";
+            xmlViewerSettings1.FontSize = 9F;
             xmlViewerSettings1.QuoteCharacter = '\"';
             xmlViewerSettings1.Tag = System.Drawing.Color.Blue;
             xmlViewerSettings1.Value = System.Drawing.Color.Black;
