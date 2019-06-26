@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -71,6 +71,8 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.gb4update = new System.Windows.Forms.GroupBox();
+            this.cmbUpdDelayCall = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.cmbUpdBatchSize = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
@@ -101,8 +103,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cmbUpdDelayCall = new System.Windows.Forms.ComboBox();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -175,14 +175,14 @@
             // 
             this.tsmiFriendly.CheckOnClick = true;
             this.tsmiFriendly.Name = "tsmiFriendly";
-            this.tsmiFriendly.Size = new System.Drawing.Size(156, 22);
+            this.tsmiFriendly.Size = new System.Drawing.Size(180, 22);
             this.tsmiFriendly.Text = "Friendly names";
             this.tsmiFriendly.Click += new System.EventHandler(this.tsmiFriendly_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmiShowAttributes
             // 
@@ -200,7 +200,7 @@
             this.toolStripSeparator16,
             this.tsmiAttributesOnlyValidAF});
             this.tsmiShowAttributes.Name = "tsmiShowAttributes";
-            this.tsmiShowAttributes.Size = new System.Drawing.Size(156, 22);
+            this.tsmiShowAttributes.Size = new System.Drawing.Size(180, 22);
             this.tsmiShowAttributes.Text = "Show attributes";
             // 
             // tsmiAttributesAll
@@ -311,7 +311,7 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // tslAbout
             // 
@@ -341,7 +341,7 @@
             this.btnGetEdit.Name = "btnGetEdit";
             this.btnGetEdit.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnGetEdit.Size = new System.Drawing.Size(114, 39);
-            this.btnGetEdit.TabIndex = 20;
+            this.btnGetEdit.TabIndex = 2;
             this.btnGetEdit.Tag = "Edit";
             this.btnGetEdit.Text = "Edit FetchXML";
             this.btnGetEdit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -369,7 +369,7 @@
             this.cmbAttribute.Name = "cmbAttribute";
             this.cmbAttribute.Size = new System.Drawing.Size(298, 21);
             this.cmbAttribute.Sorted = true;
-            this.cmbAttribute.TabIndex = 26;
+            this.cmbAttribute.TabIndex = 1;
             this.cmbAttribute.Tag = "attribute";
             this.cmbAttribute.SelectedIndexChanged += new System.EventHandler(this.cmbAttribute_SelectedIndexChanged);
             this.cmbAttribute.TextChanged += new System.EventHandler(this.cmbAttribute_TextChanged);
@@ -442,7 +442,7 @@
             this.gb1select.Location = new System.Drawing.Point(0, 0);
             this.gb1select.Name = "gb1select";
             this.gb1select.Size = new System.Drawing.Size(499, 91);
-            this.gb1select.TabIndex = 34;
+            this.gb1select.TabIndex = 1;
             this.gb1select.TabStop = false;
             this.gb1select.Text = "1. Select records to update";
             // 
@@ -454,7 +454,7 @@
             this.btnGetFile.Name = "btnGetFile";
             this.btnGetFile.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnGetFile.Size = new System.Drawing.Size(114, 39);
-            this.btnGetFile.TabIndex = 40;
+            this.btnGetFile.TabIndex = 4;
             this.btnGetFile.Tag = "File";
             this.btnGetFile.Text = "Open File";
             this.btnGetFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -470,7 +470,7 @@
             this.btnGetView.Name = "btnGetView";
             this.btnGetView.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnGetView.Size = new System.Drawing.Size(114, 39);
-            this.btnGetView.TabIndex = 30;
+            this.btnGetView.TabIndex = 3;
             this.btnGetView.Tag = "View";
             this.btnGetView.Text = "Open View";
             this.btnGetView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -486,7 +486,7 @@
             this.btnGetFXB.Name = "btnGetFXB";
             this.btnGetFXB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnGetFXB.Size = new System.Drawing.Size(129, 39);
-            this.btnGetFXB.TabIndex = 10;
+            this.btnGetFXB.TabIndex = 1;
             this.btnGetFXB.Tag = "FXB";
             this.btnGetFXB.Text = "FetchXML Builder";
             this.btnGetFXB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -539,7 +539,7 @@
             this.chkIgnoreErrors.Location = new System.Drawing.Point(204, 50);
             this.chkIgnoreErrors.Name = "chkIgnoreErrors";
             this.chkIgnoreErrors.Size = new System.Drawing.Size(85, 17);
-            this.chkIgnoreErrors.TabIndex = 34;
+            this.chkIgnoreErrors.TabIndex = 3;
             this.chkIgnoreErrors.Text = "Ignore errors";
             this.chkIgnoreErrors.UseVisualStyleBackColor = true;
             // 
@@ -560,6 +560,34 @@
             this.gb4update.TabStop = false;
             this.gb4update.Text = "Execute update";
             // 
+            // cmbUpdDelayCall
+            // 
+            this.cmbUpdDelayCall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmbUpdDelayCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUpdDelayCall.FormattingEnabled = true;
+            this.cmbUpdDelayCall.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "30",
+            "60",
+            "120",
+            "300"});
+            this.cmbUpdDelayCall.Location = new System.Drawing.Point(113, 20);
+            this.cmbUpdDelayCall.Name = "cmbUpdDelayCall";
+            this.cmbUpdDelayCall.Size = new System.Drawing.Size(75, 21);
+            this.cmbUpdDelayCall.TabIndex = 1;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(18, 23);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(82, 13);
+            this.label4.TabIndex = 37;
+            this.label4.Text = "Wait betw. calls";
+            // 
             // cmbUpdBatchSize
             // 
             this.cmbUpdBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -577,7 +605,7 @@
             this.cmbUpdBatchSize.Location = new System.Drawing.Point(113, 49);
             this.cmbUpdBatchSize.Name = "cmbUpdBatchSize";
             this.cmbUpdBatchSize.Size = new System.Drawing.Size(75, 21);
-            this.cmbUpdBatchSize.TabIndex = 36;
+            this.cmbUpdBatchSize.TabIndex = 2;
             // 
             // label3
             // 
@@ -596,7 +624,7 @@
             this.lblUpdateStatus.Location = new System.Drawing.Point(18, 89);
             this.lblUpdateStatus.Name = "lblUpdateStatus";
             this.lblUpdateStatus.Size = new System.Drawing.Size(86, 13);
-            this.lblUpdateStatus.TabIndex = 1;
+            this.lblUpdateStatus.TabIndex = 100;
             this.lblUpdateStatus.Text = "Nothing updated";
             // 
             // btnUpdate
@@ -605,7 +633,7 @@
             this.btnUpdate.Location = new System.Drawing.Point(204, 84);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(109, 23);
-            this.btnUpdate.TabIndex = 0;
+            this.btnUpdate.TabIndex = 4;
             this.btnUpdate.Text = "Update records";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
@@ -628,8 +656,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -654,7 +682,7 @@
             this.panel1.Location = new System.Drawing.Point(3, 16);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(493, 24);
-            this.panel1.TabIndex = 4;
+            this.panel1.TabIndex = 1;
             // 
             // rbIncludeSelected
             // 
@@ -747,7 +775,7 @@
             this.gb3attributes.Location = new System.Drawing.Point(3, 157);
             this.gb3attributes.Name = "gb3attributes";
             this.gb3attributes.Size = new System.Drawing.Size(330, 192);
-            this.gb3attributes.TabIndex = 38;
+            this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Verify attributes to update";
             // 
@@ -765,7 +793,7 @@
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
             this.lvAttributes.Size = new System.Drawing.Size(298, 138);
-            this.lvAttributes.TabIndex = 2;
+            this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
             this.lvAttributes.SelectedIndexChanged += new System.EventHandler(this.lvAttributes_SelectedIndexChanged);
@@ -796,7 +824,7 @@
             this.btnRemove.Location = new System.Drawing.Point(204, 163);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(109, 23);
-            this.btnRemove.TabIndex = 1;
+            this.btnRemove.TabIndex = 2;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
@@ -856,7 +884,7 @@
             this.chkDelIgnoreErrors.Location = new System.Drawing.Point(211, 328);
             this.chkDelIgnoreErrors.Name = "chkDelIgnoreErrors";
             this.chkDelIgnoreErrors.Size = new System.Drawing.Size(85, 17);
-            this.chkDelIgnoreErrors.TabIndex = 35;
+            this.chkDelIgnoreErrors.TabIndex = 4;
             this.chkDelIgnoreErrors.Text = "Ignore errors";
             this.chkDelIgnoreErrors.UseVisualStyleBackColor = true;
             // 
@@ -870,7 +898,7 @@
             this.btnDelete.Location = new System.Drawing.Point(50, 365);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(280, 50);
-            this.btnDelete.TabIndex = 4;
+            this.btnDelete.TabIndex = 5;
             this.btnDelete.Text = "Delete";
             this.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -931,34 +959,6 @@
             this.lblDeleteHeader.Size = new System.Drawing.Size(196, 24);
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 23);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 13);
-            this.label4.TabIndex = 37;
-            this.label4.Text = "Wait betw. calls";
-            // 
-            // cmbUpdDelayCall
-            // 
-            this.cmbUpdDelayCall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cmbUpdDelayCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUpdDelayCall.FormattingEnabled = true;
-            this.cmbUpdDelayCall.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "10",
-            "30",
-            "60",
-            "120",
-            "300"});
-            this.cmbUpdDelayCall.Location = new System.Drawing.Point(113, 20);
-            this.cmbUpdDelayCall.Name = "cmbUpdDelayCall";
-            this.cmbUpdDelayCall.Size = new System.Drawing.Size(75, 21);
-            this.cmbUpdDelayCall.TabIndex = 38;
             // 
             // BulkDataUpdater
             // 
