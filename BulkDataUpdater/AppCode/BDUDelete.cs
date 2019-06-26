@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 
@@ -76,8 +73,17 @@ namespace Cinteros.XTB.BulkDataUpdater
                                 if (batch.Requests.Count == batchsize || current == total)
                                 {
                                     bgworker.ReportProgress(pct, $"Deleting records {current - batch.Requests.Count + 1}-{current} of {total}");
-                                    Service.Execute(batch);
-                                    deleted += batch.Requests.Count;
+                                    var response = (ExecuteMultipleResponse)Service.Execute(batch);
+                                    if (response.IsFaulted && !ignoreerrors)
+                                    {
+                                        var firsterror = response.Responses.First(r => r.Fault != null);
+                                        if (firsterror != null)
+                                        {
+                                            throw new Exception(firsterror.Fault.Message);
+                                        }
+                                        throw new Exception("Unknown exception during delete");
+                                    }
+                                    deleted += response.Responses.Count;
                                     batch.Requests.Clear();
                                 }
                             }
