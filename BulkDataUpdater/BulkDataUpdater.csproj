@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cinteros.XTB.BulkDataUpdater</RootNamespace>
     <AssemblyName>Rappen.XTB.BDU.Unmerged</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -37,12 +37,8 @@
     <Reference Include="Cinteros.Xrm.CRMWinForm, Version=2019.4.22.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cinteros.Xrm.CRMWinForm.2019.4.22.1\lib\net452\Cinteros.Xrm.CRMWinForm.dll</HintPath>
     </Reference>
-    <Reference Include="Cinteros.Xrm.XmlEditorUtils, Version=1.2016.4.106, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Cinteros.Xrm.XmlEditorUtils.dll</HintPath>
-    </Reference>
     <Reference Include="ILMerge">
-      <HintPath>..\packages\ILMerge.2.14.1208\tools\ILMerge.exe</HintPath>
+      <HintPath>..\packages\ILMerge.3.0.29\tools\net452\ILMerge.exe</HintPath>
     </Reference>
     <Reference Include="McTools.Xrm.Connection, Version=1.2019.6.25, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
       <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2019.6.25\lib\net462\McTools.Xrm.Connection.dll</HintPath>
@@ -88,6 +84,9 @@
       <HintPath>..\packages\NuGet.Core.2.14.0\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
+    <Reference Include="Rappen.XmlEditorUtils">
+      <HintPath>..\Dependencies\Rappen.XmlEditorUtils.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
@@ -222,7 +221,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>ilmerge.exe /target:library /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319" "/out:Rappen.XTB.BDU.dll" "$(TargetFileName)" "Cinteros.Xrm.CRMWinForm.dll" "Cinteros.Xrm.XmlEditorUtils.dll"
+    <PostBuildEvent>ilmerge.exe /target:library /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319" "/out:Rappen.XTB.BDU.dll" "$(TargetFileName)" "Cinteros.Xrm.CRMWinForm.dll" "Rappen.XmlEditorUtils.dll"
 
 if $(ConfigurationName) == Debug (
   IF NOT EXIST Plugins mkdir Plugins
