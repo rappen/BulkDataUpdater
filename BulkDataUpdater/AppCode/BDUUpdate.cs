@@ -35,6 +35,10 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 batchsize = 1;
             }
+            if (!int.TryParse(cmbUpdDelayCall.Text, out int delaytime))
+            {
+                delaytime = 0;
+            }
             WorkAsync(new WorkAsyncInfo()
             {
                 Message = "Updating records",
@@ -44,6 +48,8 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     var sw = Stopwatch.StartNew();
                     var total = includedrecords.Entities.Count;
+                    var waitnow = false;
+                    var waitcur = 0;
                     var current = 0;
                     var updated = 0;
                     var failed = 0;
@@ -62,6 +68,30 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         current++;
                         var pct = 100 * current / total;
+                        if (waitnow && delaytime > 0)
+                        {
+                            waitcur = delaytime;
+                            while (waitcur > 0)
+                            {
+                                bgworker.ReportProgress(pct, $"Waiting between calls - {waitcur} sec{Environment.NewLine}(Next update {current} of {total})");
+                                if (waitcur > 10)
+                                {
+                                    System.Threading.Thread.Sleep(10000);
+                                    waitcur -= 10;
+                                }
+                                else
+                                {
+                                    System.Threading.Thread.Sleep(waitcur * 1000);
+                                    waitcur = 0;
+                                }
+                                if (bgworker.CancellationPending)
+                                {
+                                    workargs.Cancel = true;
+                                    break;
+                                }
+                            }
+                            waitnow = false;
+                        }
                         if (!CheckAllUpdateAttributesExistOnRecord(record, attributes))
                         {
                             //if ((bai.DontTouch || bai.Action == BulkActionAction.Touch) && !attributesexists)
@@ -77,6 +107,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                                     bgworker.ReportProgress(pct, $"Updating record {current} of {total}");
                                     Service.Update(updateentity);
                                     updated++;
+                                    waitnow = true;
                                 }
                                 else
                                 {
@@ -87,6 +118,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                                         Service.Execute(batch);
                                         updated += batch.Requests.Count;
                                         batch.Requests.Clear();
+                                        waitnow = true;
                                     }
                                 }
                             }

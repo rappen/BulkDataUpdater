@@ -14,6 +14,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         public List<KeyValuePair> EntityAttributes { get; set; }
         public string FetchXML { get; set; }
         public bool Friendly { get; set; } = false;
+        public int DelayCallTime { get; set; } = 0;
         public int UpdateBatchSize { get; set; } = 1;
         public int DeleteBatchSize { get; set; } = 1;
     }
