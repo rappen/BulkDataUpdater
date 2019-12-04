@@ -79,7 +79,7 @@
             this.lblUpdateStatus = new System.Windows.Forms.Label();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.crmGridView1 = new Cinteros.Xrm.CRMWinForm.CRMGridView();
+            this.crmGridView1 = new xrmtb.XrmToolBox.Controls.CRMGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbIncludeSelected = new System.Windows.Forms.RadioButton();
             this.rbIncludeAll = new System.Windows.Forms.RadioButton();
@@ -1052,7 +1052,7 @@
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private Xrm.CRMWinForm.CRMGridView crmGridView1;
+        private xrmtb.XrmToolBox.Controls.CRMGridView crmGridView1;
         private System.Windows.Forms.CheckBox chkIgnoreErrors;
         private System.Windows.Forms.GroupBox gb3attributes;
         private System.Windows.Forms.Button btnAdd;
