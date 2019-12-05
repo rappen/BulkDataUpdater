@@ -100,12 +100,16 @@
             {
                 try
                 {
+                    Enabled = enabled;
                     gb1select.Enabled = enabled && Service != null;
                     gb2attribute.Enabled = gb1select.Enabled && records != null && records.Entities.Count > 0;
                     pan2value.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeItem;
                     btnAdd.Enabled = pan2value.Enabled && (!rbSetValue.Checked || cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null);
                     gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
-                    gb4update.Enabled = pan2value.Enabled && lvAttributes.Items.Count > 0;
+                    gbExecute.Enabled =
+                        (tabControl1.SelectedTab == tabUpdate && pan2value.Enabled && lvAttributes.Items.Count > 0) ||
+                        (tabControl1.SelectedTab == tabAssign && (cbAssignUser.SelectedEntity != null || cbAssignTeam.SelectedEntity != null)) ||
+                        (tabControl1.SelectedTab == tabDelete);
                 }
                 catch
                 {
@@ -366,9 +370,8 @@
             tsmiAttributesCustom.Checked = settings.AttributesCustom;
             tsmiAttributesStandard.Checked = settings.AttributesStandard;
             tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
-            cmbUpdDelayCall.SelectedItem = cmbUpdDelayCall.Items.Cast<string>().FirstOrDefault(i => i == settings.DelayCallTime.ToString());
-            cmbUpdBatchSize.SelectedItem = cmbUpdBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.UpdateBatchSize.ToString());
-            cmbDelBatchSize.SelectedItem = cmbDelBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.DeleteBatchSize.ToString());
+            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == settings.DelayCallTime.ToString());
+            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.UpdateBatchSize.ToString());
             tsmiFriendly_Click(null, null);
             tsmiAttributes_Click(null, null);
         }
@@ -490,9 +493,8 @@
                 AttributesCustom = tsmiAttributesCustom.Checked,
                 AttributesStandard = tsmiAttributesStandard.Checked,
                 AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
-                DelayCallTime = int.TryParse(cmbUpdDelayCall.Text, out int upddel) ? upddel : 0,
-                UpdateBatchSize = int.TryParse(cmbUpdBatchSize.Text, out int updsize) ? updsize : 1,
-                DeleteBatchSize = int.TryParse(cmbDelBatchSize.Text, out int delsize) ? delsize : 1
+                DelayCallTime = int.TryParse(cmbDelayCall.Text, out int upddel) ? upddel : 0,
+                UpdateBatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
             };
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, "Settings");
         }
@@ -500,8 +502,10 @@
         private void UpdateIncludeCount()
         {
             var count = rbIncludeSelected.Checked ? crmGridView1.SelectedCellRecords?.Entities?.Count : records?.Entities?.Count;
+            var entity = entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label;
             lblIncludedRecords.Text = $"{count} records";
-            lblDeleteHeader.Text = $"Delete {count} {entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label}";
+            lblAssignHeader.Text = $"Assign {count} {entity}";
+            lblDeleteHeader.Text = $"Delete {count} {entity}";
             txtDeleteWarning.Text = deleteWarningText.Replace("[nn]", rbIncludeSelected.Checked ? count.ToString() : "ALL");
         }
 
@@ -583,9 +587,24 @@
             RemoveAttribute();
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private void btnExecute_Click(object sender, EventArgs e)
         {
-            UpdateRecords();
+            if (tabControl1.SelectedTab == tabUpdate)
+            {
+                UpdateRecords();
+            }
+            else if (tabControl1.SelectedTab == tabAssign)
+            {
+                AssignRecords();
+            }
+            else if (tabControl1.SelectedTab == tabSetState)
+            {
+                
+            }
+            else if (tabControl1.SelectedTab == tabDelete)
+            {
+                DeleteRecords();
+            }
         }
 
         private void cmbAttribute_SelectedIndexChanged(object sender, EventArgs e)
@@ -682,6 +701,29 @@
             EnableControls(true);
         }
 
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabUpdate)
+            {
+                btnExecute.Text = "Update records";
+            }
+            else if (tabControl1.SelectedTab == tabAssign)
+            {
+                btnExecute.Text = "Assign records";
+                LoadOwners();
+            }
+            else if (tabControl1.SelectedTab == tabSetState)
+            {
+                btnExecute.Text = "Update records";
+            }
+            else if (tabControl1.SelectedTab == tabDelete)
+            {
+                btnExecute.Text = "Delete records";
+            }
+            panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
+            EnableControls(true);
+        }
+
         private void tsbCancel_Click(object sender, EventArgs e)
         {
             CancelWorker();
@@ -757,5 +799,23 @@
         }
 
         #endregion Form Event Handlers
+
+        private void cbAssignUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbAssignUser.SelectedIndex >= 0)
+            {
+                cbAssignTeam.SelectedIndex = -1;
+            }
+            EnableControls(true);
+        }
+
+        private void cbAssignTeam_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbAssignTeam.SelectedIndex >= 0)
+            {
+                cbAssignUser.SelectedIndex = -1;
+            }
+            EnableControls(true);
+        }
     }
 }

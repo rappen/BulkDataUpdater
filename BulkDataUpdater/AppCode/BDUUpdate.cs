@@ -31,11 +31,11 @@ namespace Cinteros.XTB.BulkDataUpdater
             var includedrecords = GetIncludedRecords();
             working = true;
             var ignoreerrors = chkIgnoreErrors.Checked;
-            if (!int.TryParse(cmbUpdBatchSize.Text, out int batchsize))
+            if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
             {
                 batchsize = 1;
             }
-            if (!int.TryParse(cmbUpdDelayCall.Text, out int delaytime))
+            if (!int.TryParse(cmbDelayCall.Text, out int delaytime))
             {
                 delaytime = 0;
             }

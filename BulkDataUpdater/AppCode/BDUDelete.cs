@@ -29,8 +29,8 @@ namespace Cinteros.XTB.BulkDataUpdater
             splitContainer1.Enabled = false;
             working = true;
             var includedrecords = GetIncludedRecords();
-            var ignoreerrors = chkDelIgnoreErrors.Checked;
-            if (!int.TryParse(cmbDelBatchSize.Text, out int batchsize))
+            var ignoreerrors = chkIgnoreErrors.Checked;
+            if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
             {
                 batchsize = 1;
             }
@@ -117,7 +117,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     }
                     else if (completedargs.Result is Tuple<int, int, long> result)
                     {
-                        lblDelStatus.Text = $"{result.Item1} records deleted, {result.Item2} records failed.";
+                        lblUpdateStatus.Text = $"{result.Item1} records deleted, {result.Item2} records failed.";
                         LogUse("Deleted", result.Item1, result.Item3);
                         if (result.Item2 > 0)
                         {

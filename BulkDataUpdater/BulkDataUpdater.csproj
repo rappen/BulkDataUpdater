@@ -170,6 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCode\AttributeItem.cs" />
+    <Compile Include="AppCode\BDUAssign.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="AppCode\EntityItem.cs" />
     <Compile Include="AppCode\OptionsetItem.cs" />
     <Compile Include="AppCode\ViewItem.cs" />
@@ -189,6 +192,7 @@
     <Compile Include="AppCode\BDUUpdate.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Const.cs" />
     <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -51,7 +51,6 @@
             this.tsmiAttributesCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiAttributesOnlyValidAF = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
             this.tsbCancel = new System.Windows.Forms.ToolStripButton();
             this.btnGetEdit = new System.Windows.Forms.Button();
@@ -70,14 +69,14 @@
             this.pan2value = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
-            this.gb4update = new System.Windows.Forms.GroupBox();
+            this.gbExecute = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.cmbUpdDelayCall = new System.Windows.Forms.ComboBox();
+            this.cmbDelayCall = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cmbUpdBatchSize = new System.Windows.Forms.ComboBox();
+            this.cmbBatchSize = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
-            this.btnUpdate = new System.Windows.Forms.Button();
+            this.btnExecute = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.crmGridView1 = new xrmtb.XrmToolBox.Controls.CRMGridView();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -94,21 +93,24 @@
             this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.onlychange = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnRemove = new System.Windows.Forms.Button();
+            this.tabAssign = new System.Windows.Forms.TabPage();
+            this.lblAssignHeader = new System.Windows.Forms.Label();
+            this.cbAssignTeam = new xrmtb.XrmToolBox.Controls.Controls.CDSDataComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cbAssignUser = new xrmtb.XrmToolBox.Controls.Controls.CDSDataComboBox();
+            this.btnAssign = new System.Windows.Forms.Button();
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.tabDelete = new System.Windows.Forms.TabPage();
-            this.lblDelStatus = new System.Windows.Forms.Label();
-            this.chkDelIgnoreErrors = new System.Windows.Forms.CheckBox();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.cmbDelBatchSize = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
+            this.panWaitBetween = new System.Windows.Forms.Panel();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
             this.pan2value.SuspendLayout();
-            this.gb4update.SuspendLayout();
+            this.gbExecute.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -119,8 +121,10 @@
             this.tabControl1.SuspendLayout();
             this.tabUpdate.SuspendLayout();
             this.gb3attributes.SuspendLayout();
+            this.tabAssign.SuspendLayout();
             this.tabSetState.SuspendLayout();
             this.tabDelete.SuspendLayout();
+            this.panWaitBetween.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList1
@@ -164,8 +168,7 @@
             this.tsbOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFriendly,
             this.toolStripSeparator12,
-            this.tsmiShowAttributes,
-            this.toolStripSeparator7});
+            this.tsmiShowAttributes});
             this.tsbOptions.Image = ((System.Drawing.Image)(resources.GetObject("tsbOptions.Image")));
             this.tsbOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOptions.Name = "tsbOptions";
@@ -308,11 +311,6 @@
             this.tsmiAttributesOnlyValidAF.Size = new System.Drawing.Size(195, 22);
             this.tsmiAttributesOnlyValidAF.Text = "Only valid for Adv.Find";
             this.tsmiAttributesOnlyValidAF.Click += new System.EventHandler(this.tsmiAttributes_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(153, 6);
             // 
             // tslAbout
             // 
@@ -544,40 +542,38 @@
             this.chkIgnoreErrors.Text = "Ignore errors";
             this.chkIgnoreErrors.UseVisualStyleBackColor = true;
             // 
-            // gb4update
+            // gbExecute
             // 
-            this.gb4update.Controls.Add(this.label5);
-            this.gb4update.Controls.Add(this.cmbUpdDelayCall);
-            this.gb4update.Controls.Add(this.label4);
-            this.gb4update.Controls.Add(this.cmbUpdBatchSize);
-            this.gb4update.Controls.Add(this.label3);
-            this.gb4update.Controls.Add(this.lblUpdateStatus);
-            this.gb4update.Controls.Add(this.btnUpdate);
-            this.gb4update.Controls.Add(this.chkIgnoreErrors);
-            this.gb4update.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gb4update.Location = new System.Drawing.Point(3, 349);
-            this.gb4update.Name = "gb4update";
-            this.gb4update.Size = new System.Drawing.Size(330, 117);
-            this.gb4update.TabIndex = 37;
-            this.gb4update.TabStop = false;
-            this.gb4update.Text = "Execute update";
+            this.gbExecute.Controls.Add(this.panWaitBetween);
+            this.gbExecute.Controls.Add(this.cmbBatchSize);
+            this.gbExecute.Controls.Add(this.label3);
+            this.gbExecute.Controls.Add(this.lblUpdateStatus);
+            this.gbExecute.Controls.Add(this.btnExecute);
+            this.gbExecute.Controls.Add(this.chkIgnoreErrors);
+            this.gbExecute.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.gbExecute.Location = new System.Drawing.Point(0, 365);
+            this.gbExecute.Name = "gbExecute";
+            this.gbExecute.Size = new System.Drawing.Size(344, 117);
+            this.gbExecute.TabIndex = 37;
+            this.gbExecute.TabStop = false;
+            this.gbExecute.Text = "Execution";
             // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(201, 23);
+            this.label5.Location = new System.Drawing.Point(188, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 101;
             this.label5.Text = "seconds";
             // 
-            // cmbUpdDelayCall
+            // cmbDelayCall
             // 
-            this.cmbUpdDelayCall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cmbUpdDelayCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUpdDelayCall.FormattingEnabled = true;
-            this.cmbUpdDelayCall.Items.AddRange(new object[] {
+            this.cmbDelayCall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmbDelayCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDelayCall.FormattingEnabled = true;
+            this.cmbDelayCall.Items.AddRange(new object[] {
             "0",
             "5",
             "10",
@@ -585,27 +581,27 @@
             "60",
             "120",
             "300"});
-            this.cmbUpdDelayCall.Location = new System.Drawing.Point(113, 20);
-            this.cmbUpdDelayCall.Name = "cmbUpdDelayCall";
-            this.cmbUpdDelayCall.Size = new System.Drawing.Size(75, 21);
-            this.cmbUpdDelayCall.TabIndex = 1;
+            this.cmbDelayCall.Location = new System.Drawing.Point(100, 6);
+            this.cmbDelayCall.Name = "cmbDelayCall";
+            this.cmbDelayCall.Size = new System.Drawing.Size(75, 21);
+            this.cmbDelayCall.TabIndex = 1;
             // 
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 23);
+            this.label4.Location = new System.Drawing.Point(5, 9);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(82, 13);
             this.label4.TabIndex = 37;
             this.label4.Text = "Wait betw. calls";
             // 
-            // cmbUpdBatchSize
+            // cmbBatchSize
             // 
-            this.cmbUpdBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cmbUpdBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUpdBatchSize.FormattingEnabled = true;
-            this.cmbUpdBatchSize.Items.AddRange(new object[] {
+            this.cmbBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmbBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBatchSize.FormattingEnabled = true;
+            this.cmbBatchSize.Items.AddRange(new object[] {
             "1",
             "5",
             "10",
@@ -614,16 +610,16 @@
             "200",
             "500",
             "1000"});
-            this.cmbUpdBatchSize.Location = new System.Drawing.Point(113, 49);
-            this.cmbUpdBatchSize.Name = "cmbUpdBatchSize";
-            this.cmbUpdBatchSize.Size = new System.Drawing.Size(75, 21);
-            this.cmbUpdBatchSize.TabIndex = 2;
+            this.cmbBatchSize.Location = new System.Drawing.Point(113, 49);
+            this.cmbBatchSize.Name = "cmbBatchSize";
+            this.cmbBatchSize.Size = new System.Drawing.Size(75, 21);
+            this.cmbBatchSize.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(44, 51);
+            this.label3.Location = new System.Drawing.Point(18, 51);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 13);
             this.label3.TabIndex = 35;
@@ -635,20 +631,20 @@
             this.lblUpdateStatus.AutoSize = true;
             this.lblUpdateStatus.Location = new System.Drawing.Point(18, 89);
             this.lblUpdateStatus.Name = "lblUpdateStatus";
-            this.lblUpdateStatus.Size = new System.Drawing.Size(86, 13);
+            this.lblUpdateStatus.Size = new System.Drawing.Size(37, 13);
             this.lblUpdateStatus.TabIndex = 100;
-            this.lblUpdateStatus.Text = "Nothing updated";
+            this.lblUpdateStatus.Text = "Status";
             // 
-            // btnUpdate
+            // btnExecute
             // 
-            this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdate.Location = new System.Drawing.Point(204, 84);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(109, 23);
-            this.btnUpdate.TabIndex = 4;
-            this.btnUpdate.Text = "Update records";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExecute.Location = new System.Drawing.Point(218, 84);
+            this.btnExecute.Name = "btnExecute";
+            this.btnExecute.Size = new System.Drawing.Size(109, 23);
+            this.btnExecute.TabIndex = 4;
+            this.btnExecute.Text = "Update records";
+            this.btnExecute.UseVisualStyleBackColor = true;
+            this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
             // 
             // groupBox5
             // 
@@ -657,7 +653,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 91);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(499, 404);
+            this.groupBox5.Size = new System.Drawing.Size(499, 391);
             this.groupBox5.TabIndex = 38;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
@@ -668,8 +664,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -681,7 +677,7 @@
             this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(493, 361);
+            this.crmGridView1.Size = new System.Drawing.Size(493, 348);
             this.crmGridView1.TabIndex = 2;
             this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
             // 
@@ -748,33 +744,35 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel2.Controls.Add(this.gbExecute);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(847, 495);
+            this.splitContainer1.Size = new System.Drawing.Size(847, 482);
             this.splitContainer1.SplitterDistance = 499;
             this.splitContainer1.TabIndex = 39;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabUpdate);
+            this.tabControl1.Controls.Add(this.tabAssign);
             this.tabControl1.Controls.Add(this.tabSetState);
             this.tabControl1.Controls.Add(this.tabDelete);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(344, 495);
+            this.tabControl1.Size = new System.Drawing.Size(344, 365);
             this.tabControl1.TabIndex = 39;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabUpdate
             // 
             this.tabUpdate.Controls.Add(this.gb3attributes);
             this.tabUpdate.Controls.Add(this.gb2attribute);
-            this.tabUpdate.Controls.Add(this.gb4update);
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
             this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUpdate.Size = new System.Drawing.Size(336, 469);
+            this.tabUpdate.Size = new System.Drawing.Size(336, 339);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             this.tabUpdate.UseVisualStyleBackColor = true;
@@ -786,7 +784,7 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(3, 157);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(330, 192);
+            this.gb3attributes.Size = new System.Drawing.Size(330, 179);
             this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Verify attributes to update";
@@ -802,9 +800,10 @@
             this.value,
             this.onlychange});
             this.lvAttributes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(298, 138);
+            this.lvAttributes.Size = new System.Drawing.Size(298, 125);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -833,7 +832,7 @@
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(204, 163);
+            this.btnRemove.Location = new System.Drawing.Point(204, 150);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(109, 23);
             this.btnRemove.TabIndex = 2;
@@ -841,13 +840,93 @@
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
+            // tabAssign
+            // 
+            this.tabAssign.Controls.Add(this.lblAssignHeader);
+            this.tabAssign.Controls.Add(this.cbAssignTeam);
+            this.tabAssign.Controls.Add(this.label7);
+            this.tabAssign.Controls.Add(this.label6);
+            this.tabAssign.Controls.Add(this.cbAssignUser);
+            this.tabAssign.Controls.Add(this.btnAssign);
+            this.tabAssign.Location = new System.Drawing.Point(4, 22);
+            this.tabAssign.Name = "tabAssign";
+            this.tabAssign.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAssign.Size = new System.Drawing.Size(336, 339);
+            this.tabAssign.TabIndex = 4;
+            this.tabAssign.Text = "Assign";
+            this.tabAssign.UseVisualStyleBackColor = true;
+            // 
+            // lblAssignHeader
+            // 
+            this.lblAssignHeader.AutoSize = true;
+            this.lblAssignHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAssignHeader.Location = new System.Drawing.Point(16, 21);
+            this.lblAssignHeader.Name = "lblAssignHeader";
+            this.lblAssignHeader.Size = new System.Drawing.Size(199, 24);
+            this.lblAssignHeader.TabIndex = 10;
+            this.lblAssignHeader.Text = "Assign [nn] [collection]";
+            // 
+            // cbAssignTeam
+            // 
+            this.cbAssignTeam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAssignTeam.DisplayFormat = "";
+            this.cbAssignTeam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAssignTeam.FormattingEnabled = true;
+            this.cbAssignTeam.Location = new System.Drawing.Point(19, 133);
+            this.cbAssignTeam.Name = "cbAssignTeam";
+            this.cbAssignTeam.Size = new System.Drawing.Size(297, 21);
+            this.cbAssignTeam.TabIndex = 9;
+            this.cbAssignTeam.SelectedIndexChanged += new System.EventHandler(this.cbAssignTeam_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(16, 118);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(34, 13);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Team";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(16, 71);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "User";
+            // 
+            // cbAssignUser
+            // 
+            this.cbAssignUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAssignUser.DisplayFormat = "";
+            this.cbAssignUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAssignUser.FormattingEnabled = true;
+            this.cbAssignUser.Location = new System.Drawing.Point(19, 87);
+            this.cbAssignUser.Name = "cbAssignUser";
+            this.cbAssignUser.Size = new System.Drawing.Size(297, 21);
+            this.cbAssignUser.TabIndex = 6;
+            this.cbAssignUser.SelectedIndexChanged += new System.EventHandler(this.cbAssignUser_SelectedIndexChanged);
+            // 
+            // btnAssign
+            // 
+            this.btnAssign.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAssign.Location = new System.Drawing.Point(207, 389);
+            this.btnAssign.Name = "btnAssign";
+            this.btnAssign.Size = new System.Drawing.Size(109, 23);
+            this.btnAssign.TabIndex = 5;
+            this.btnAssign.Text = "Assign records";
+            this.btnAssign.UseVisualStyleBackColor = true;
+            // 
             // tabSetState
             // 
             this.tabSetState.Controls.Add(this.label1);
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
             this.tabSetState.Name = "tabSetState";
             this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSetState.Size = new System.Drawing.Size(336, 469);
+            this.tabSetState.Size = new System.Drawing.Size(336, 339);
             this.tabSetState.TabIndex = 3;
             this.tabSetState.Text = "Set State";
             this.tabSetState.UseVisualStyleBackColor = true;
@@ -856,7 +935,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(77, 246);
+            this.label1.Location = new System.Drawing.Point(68, 146);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(195, 24);
             this.label1.TabIndex = 1;
@@ -864,87 +943,15 @@
             // 
             // tabDelete
             // 
-            this.tabDelete.Controls.Add(this.lblDelStatus);
-            this.tabDelete.Controls.Add(this.chkDelIgnoreErrors);
-            this.tabDelete.Controls.Add(this.btnDelete);
-            this.tabDelete.Controls.Add(this.cmbDelBatchSize);
-            this.tabDelete.Controls.Add(this.label2);
             this.tabDelete.Controls.Add(this.txtDeleteWarning);
             this.tabDelete.Controls.Add(this.lblDeleteHeader);
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
             this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDelete.Size = new System.Drawing.Size(336, 469);
+            this.tabDelete.Size = new System.Drawing.Size(336, 339);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
             this.tabDelete.UseVisualStyleBackColor = true;
-            // 
-            // lblDelStatus
-            // 
-            this.lblDelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblDelStatus.AutoSize = true;
-            this.lblDelStatus.Location = new System.Drawing.Point(19, 433);
-            this.lblDelStatus.Name = "lblDelStatus";
-            this.lblDelStatus.Size = new System.Drawing.Size(82, 13);
-            this.lblDelStatus.TabIndex = 37;
-            this.lblDelStatus.Text = "Nothing deleted";
-            // 
-            // chkDelIgnoreErrors
-            // 
-            this.chkDelIgnoreErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkDelIgnoreErrors.AutoSize = true;
-            this.chkDelIgnoreErrors.Location = new System.Drawing.Point(211, 328);
-            this.chkDelIgnoreErrors.Name = "chkDelIgnoreErrors";
-            this.chkDelIgnoreErrors.Size = new System.Drawing.Size(85, 17);
-            this.chkDelIgnoreErrors.TabIndex = 4;
-            this.chkDelIgnoreErrors.Text = "Ignore errors";
-            this.chkDelIgnoreErrors.UseVisualStyleBackColor = true;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.ForeColor = System.Drawing.Color.Red;
-            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-            this.btnDelete.Location = new System.Drawing.Point(50, 365);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(280, 50);
-            this.btnDelete.TabIndex = 5;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // cmbDelBatchSize
-            // 
-            this.cmbDelBatchSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cmbDelBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDelBatchSize.FormattingEnabled = true;
-            this.cmbDelBatchSize.Items.AddRange(new object[] {
-            "1",
-            "5",
-            "10",
-            "50",
-            "100",
-            "200",
-            "500",
-            "1000"});
-            this.cmbDelBatchSize.Location = new System.Drawing.Point(106, 326);
-            this.cmbDelBatchSize.Name = "cmbDelBatchSize";
-            this.cmbDelBatchSize.Size = new System.Drawing.Size(75, 21);
-            this.cmbDelBatchSize.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(32, 329);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Batch size";
             // 
             // txtDeleteWarning
             // 
@@ -972,6 +979,16 @@
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
+            // panWaitBetween
+            // 
+            this.panWaitBetween.Controls.Add(this.label4);
+            this.panWaitBetween.Controls.Add(this.label5);
+            this.panWaitBetween.Controls.Add(this.cmbDelayCall);
+            this.panWaitBetween.Location = new System.Drawing.Point(13, 14);
+            this.panWaitBetween.Name = "panWaitBetween";
+            this.panWaitBetween.Size = new System.Drawing.Size(259, 29);
+            this.panWaitBetween.TabIndex = 102;
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -981,7 +998,7 @@
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(847, 526);
+            this.Size = new System.Drawing.Size(847, 513);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
@@ -992,8 +1009,8 @@
             this.gb2attribute.ResumeLayout(false);
             this.pan2value.ResumeLayout(false);
             this.pan2value.PerformLayout();
-            this.gb4update.ResumeLayout(false);
-            this.gb4update.PerformLayout();
+            this.gbExecute.ResumeLayout(false);
+            this.gbExecute.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
@@ -1005,10 +1022,14 @@
             this.tabControl1.ResumeLayout(false);
             this.tabUpdate.ResumeLayout(false);
             this.gb3attributes.ResumeLayout(false);
+            this.tabAssign.ResumeLayout(false);
+            this.tabAssign.PerformLayout();
             this.tabSetState.ResumeLayout(false);
             this.tabSetState.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
+            this.panWaitBetween.ResumeLayout(false);
+            this.panWaitBetween.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1036,7 +1057,6 @@
         internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesCustom;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
         internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesOnlyValidAF;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.Button btnGetEdit;
         private System.Windows.Forms.Label lblRecords;
         private System.Windows.Forms.ComboBox cmbAttribute;
@@ -1047,9 +1067,9 @@
         private System.Windows.Forms.CheckBox chkOnlyChange;
         private System.Windows.Forms.GroupBox gb1select;
         private System.Windows.Forms.GroupBox gb2attribute;
-        private System.Windows.Forms.GroupBox gb4update;
+        private System.Windows.Forms.GroupBox gbExecute;
         private System.Windows.Forms.Label lblUpdateStatus;
-        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Button btnExecute;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private xrmtb.XrmToolBox.Controls.CRMGridView crmGridView1;
@@ -1073,21 +1093,24 @@
         private System.Windows.Forms.Button btnGetFile;
         private System.Windows.Forms.Button btnGetView;
         private System.Windows.Forms.Button btnGetFXB;
-        private System.Windows.Forms.ComboBox cmbDelBatchSize;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtDeleteWarning;
-        private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.CheckBox chkDelIgnoreErrors;
-        private System.Windows.Forms.Label lblDelStatus;
         private System.Windows.Forms.ToolStripButton tsbCancel;
-        private System.Windows.Forms.ComboBox cmbUpdBatchSize;
+        private System.Windows.Forms.ComboBox cmbBatchSize;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton rbIncludeAll;
         private System.Windows.Forms.RadioButton rbIncludeSelected;
         private System.Windows.Forms.Label lblIncludedRecords;
-        private System.Windows.Forms.ComboBox cmbUpdDelayCall;
+        private System.Windows.Forms.ComboBox cmbDelayCall;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TabPage tabAssign;
+        private xrmtb.XrmToolBox.Controls.Controls.CDSDataComboBox cbAssignTeam;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private xrmtb.XrmToolBox.Controls.Controls.CDSDataComboBox cbAssignUser;
+        private System.Windows.Forms.Button btnAssign;
+        private System.Windows.Forms.Label lblAssignHeader;
+        private System.Windows.Forms.Panel panWaitBetween;
     }
 }
