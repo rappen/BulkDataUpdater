@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -187,14 +187,14 @@
             // 
             this.tsmiFriendly.CheckOnClick = true;
             this.tsmiFriendly.Name = "tsmiFriendly";
-            this.tsmiFriendly.Size = new System.Drawing.Size(156, 22);
+            this.tsmiFriendly.Size = new System.Drawing.Size(180, 22);
             this.tsmiFriendly.Text = "Friendly names";
             this.tsmiFriendly.Click += new System.EventHandler(this.tsmiFriendly_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmiShowAttributes
             // 
@@ -212,7 +212,7 @@
             this.toolStripSeparator16,
             this.tsmiAttributesOnlyValidAF});
             this.tsmiShowAttributes.Name = "tsmiShowAttributes";
-            this.tsmiShowAttributes.Size = new System.Drawing.Size(156, 22);
+            this.tsmiShowAttributes.Size = new System.Drawing.Size(180, 22);
             this.tsmiShowAttributes.Text = "Show attributes";
             // 
             // tsmiAttributesAll
@@ -683,8 +683,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -698,6 +698,7 @@
             this.crmGridView1.ShowIdColumn = false;
             this.crmGridView1.Size = new System.Drawing.Size(493, 517);
             this.crmGridView1.TabIndex = 2;
+            this.crmGridView1.RecordDoubleClick += new xrmtb.XrmToolBox.Controls.CRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
             this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
             // 
             // panel1
