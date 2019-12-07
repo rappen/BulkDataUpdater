@@ -85,7 +85,7 @@
                     gb1select.Enabled = enabled && Service != null;
                     gb2attribute.Enabled = gb1select.Enabled && records != null && records.Entities.Count > 0;
                     pan2value.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeItem;
-                    btnAdd.Enabled = pan2value.Enabled && (!rbSetValue.Checked || cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null);
+                    btnAdd.Enabled = pan2value.Enabled && (!rbSetValue.Checked || cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null || txtValueMultiline.Visible);
                     gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
                     gbExecute.Enabled =
                         (tabControl1.SelectedTab == tabUpdate && pan2value.Enabled && lvAttributes.Items.Count > 0) ||
@@ -510,6 +510,7 @@
             var count = GetIncludedRecords().Entities?.Count;
             var entity = entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label;
             lblIncludedRecords.Text = $"{count} records";
+            lblUpdateHeader.Text = $"Update {count} {entity}";
             lblAssignHeader.Text = $"Assign {count} {entity}";
             lblStateHeader.Text = $"Update {count} {entity}";
             lblDeleteHeader.Text = $"Delete {count} {entity}";
@@ -521,6 +522,7 @@
             var attribute = (AttributeItem)cmbAttribute.SelectedItem;
             rbSetNull.Enabled = attribute != null;
             cmbValue.Items.Clear();
+            txtValueMultiline.Visible = false;
             if (attribute != null)
             {
                 if (attribute.Metadata is EnumAttributeMetadata)
@@ -545,6 +547,12 @@
                     }
                     cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
                 }
+                else if (attribute.Metadata is MemoAttributeMetadata)
+                {
+                    txtValueMultiline.Visible = true;
+                    txtValueMultiline.Height = 21;
+                    txtValueMultiline.BringToFront();
+                }
                 else
                 {
                     cmbValue.DropDownStyle = ComboBoxStyle.Simple;
@@ -568,11 +576,6 @@
         private void btnAdd_Click(object sender, EventArgs e)
         {
             AddAttribute();
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            DeleteRecords();
         }
 
         private void btnExecute_Click(object sender, EventArgs e)
@@ -697,6 +700,10 @@
                                 }
                             }
                         }
+                        else if (attribute.Attribute.Metadata is MemoAttributeMetadata)
+                        {
+                            txtValueMultiline.Text = attribute.Value.ToString();
+                        }
                         else
                         {
                             cmbValue.Text = attribute.Value.ToString();
@@ -800,14 +807,14 @@
             RefreshAttributes();
         }
 
-        private void tsmiOpenFile_Click(object sender, EventArgs e)
+        private void txtValueMultiline_Leave(object sender, EventArgs e)
         {
-            OpenFile();
+            txtValueMultiline.Height = 21;
         }
 
-        private void tsmiOpenView_Click(object sender, EventArgs e)
+        private void txtValueMultiline_Enter(object sender, EventArgs e)
         {
-            OpenView();
+            txtValueMultiline.Height = 43;
         }
 
         #endregion Form Event Handlers

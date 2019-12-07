@@ -208,9 +208,9 @@ namespace Cinteros.XTB.BulkDataUpdater
             switch (type)
             {
                 case AttributeTypeCode.String:
-                case AttributeTypeCode.Memo:
                     return cmbValue.Text;
-
+                case AttributeTypeCode.Memo:
+                    return txtValueMultiline.Text;
                 case AttributeTypeCode.BigInt:
                 case AttributeTypeCode.Integer:
                     return int.Parse(cmbValue.Text);
@@ -324,14 +324,14 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private BulkActionItem GetAttributeItemFromUI()
         {
-            if (!(cmbAttribute.SelectedItem is AttributeItem))
+            if (!(cmbAttribute.SelectedItem is AttributeItem attribute))
             {
                 MessageBox.Show("Select an attribute to update from the list.");
                 return null;
             }
             var bai = new BulkActionItem
             {
-                Attribute = (AttributeItem)cmbAttribute.SelectedItem,
+                Attribute = attribute,
                 DontTouch = chkOnlyChange.Checked,
                 Action = rbSetValue.Checked ? BulkActionAction.SetValue : rbSetNull.Checked ? BulkActionAction.Null : BulkActionAction.Touch
             };
@@ -340,7 +340,17 @@ namespace Cinteros.XTB.BulkDataUpdater
             try
             {
                 bai.Value = bai.Action == BulkActionAction.SetValue ? GetValue(bai.Attribute.Metadata.AttributeType) : null;
-                bai.StringValue = bai.Action == BulkActionAction.SetValue ? cmbValue.Text : string.Empty;
+                if (bai.Action== BulkActionAction.SetValue)
+                {
+                    if (attribute.Metadata is MemoAttributeMetadata)
+                    {
+                        bai.StringValue = txtValueMultiline.Text;
+                    }
+                    else
+                    {
+                        bai.StringValue = cmbValue.Text;
+                    }
+                }
             }
             catch (Exception e)
             {
