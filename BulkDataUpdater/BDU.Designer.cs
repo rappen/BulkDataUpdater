@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -70,9 +70,10 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.gbExecute = new System.Windows.Forms.GroupBox();
+            this.panWaitBetween = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.cmbDelayCall = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.cmbBatchSize = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
@@ -101,16 +102,20 @@
             this.cbAssignUser = new xrmtb.XrmToolBox.Controls.Controls.CDSDataComboBox();
             this.btnAssign = new System.Windows.Forms.Button();
             this.tabSetState = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblStateHeader = new System.Windows.Forms.Label();
+            this.cbSetStatusReason = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cbSetStatus = new System.Windows.Forms.ComboBox();
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
-            this.panWaitBetween = new System.Windows.Forms.Panel();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
             this.pan2value.SuspendLayout();
             this.gbExecute.SuspendLayout();
+            this.panWaitBetween.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -124,7 +129,6 @@
             this.tabAssign.SuspendLayout();
             this.tabSetState.SuspendLayout();
             this.tabDelete.SuspendLayout();
-            this.panWaitBetween.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList1
@@ -558,6 +562,26 @@
             this.gbExecute.TabStop = false;
             this.gbExecute.Text = "Execution";
             // 
+            // panWaitBetween
+            // 
+            this.panWaitBetween.Controls.Add(this.label4);
+            this.panWaitBetween.Controls.Add(this.label5);
+            this.panWaitBetween.Controls.Add(this.cmbDelayCall);
+            this.panWaitBetween.Location = new System.Drawing.Point(13, 14);
+            this.panWaitBetween.Name = "panWaitBetween";
+            this.panWaitBetween.Size = new System.Drawing.Size(259, 29);
+            this.panWaitBetween.TabIndex = 102;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(5, 9);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(82, 13);
+            this.label4.TabIndex = 37;
+            this.label4.Text = "Wait betw. calls";
+            // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -585,16 +609,6 @@
             this.cmbDelayCall.Name = "cmbDelayCall";
             this.cmbDelayCall.Size = new System.Drawing.Size(75, 21);
             this.cmbDelayCall.TabIndex = 1;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 9);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 13);
-            this.label4.TabIndex = 37;
-            this.label4.Text = "Wait betw. calls";
             // 
             // cmbBatchSize
             // 
@@ -664,8 +678,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -922,7 +936,11 @@
             // 
             // tabSetState
             // 
-            this.tabSetState.Controls.Add(this.label1);
+            this.tabSetState.Controls.Add(this.lblStateHeader);
+            this.tabSetState.Controls.Add(this.cbSetStatusReason);
+            this.tabSetState.Controls.Add(this.label2);
+            this.tabSetState.Controls.Add(this.label8);
+            this.tabSetState.Controls.Add(this.cbSetStatus);
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
             this.tabSetState.Name = "tabSetState";
             this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
@@ -931,15 +949,57 @@
             this.tabSetState.Text = "Set State";
             this.tabSetState.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // lblStateHeader
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(68, 146);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(195, 24);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Soon to be released...";
+            this.lblStateHeader.AutoSize = true;
+            this.lblStateHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStateHeader.Location = new System.Drawing.Point(16, 21);
+            this.lblStateHeader.Name = "lblStateHeader";
+            this.lblStateHeader.Size = new System.Drawing.Size(202, 24);
+            this.lblStateHeader.TabIndex = 15;
+            this.lblStateHeader.Text = "Update [nn] [collection]";
+            // 
+            // cbSetStatusReason
+            // 
+            this.cbSetStatusReason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbSetStatusReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSetStatusReason.FormattingEnabled = true;
+            this.cbSetStatusReason.Location = new System.Drawing.Point(19, 133);
+            this.cbSetStatusReason.Name = "cbSetStatusReason";
+            this.cbSetStatusReason.Size = new System.Drawing.Size(297, 21);
+            this.cbSetStatusReason.TabIndex = 14;
+            this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.cbSetStatusReason_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(16, 118);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(77, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Status Reason";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 71);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 13);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "Status";
+            // 
+            // cbSetStatus
+            // 
+            this.cbSetStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbSetStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSetStatus.FormattingEnabled = true;
+            this.cbSetStatus.Location = new System.Drawing.Point(19, 87);
+            this.cbSetStatus.Name = "cbSetStatus";
+            this.cbSetStatus.Size = new System.Drawing.Size(297, 21);
+            this.cbSetStatus.TabIndex = 11;
+            this.cbSetStatus.SelectedIndexChanged += new System.EventHandler(this.cbSetStatus_SelectedIndexChanged);
             // 
             // tabDelete
             // 
@@ -979,16 +1039,6 @@
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
-            // panWaitBetween
-            // 
-            this.panWaitBetween.Controls.Add(this.label4);
-            this.panWaitBetween.Controls.Add(this.label5);
-            this.panWaitBetween.Controls.Add(this.cmbDelayCall);
-            this.panWaitBetween.Location = new System.Drawing.Point(13, 14);
-            this.panWaitBetween.Name = "panWaitBetween";
-            this.panWaitBetween.Size = new System.Drawing.Size(259, 29);
-            this.panWaitBetween.TabIndex = 102;
-            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1011,6 +1061,8 @@
             this.pan2value.PerformLayout();
             this.gbExecute.ResumeLayout(false);
             this.gbExecute.PerformLayout();
+            this.panWaitBetween.ResumeLayout(false);
+            this.panWaitBetween.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
@@ -1028,8 +1080,6 @@
             this.tabSetState.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
-            this.panWaitBetween.ResumeLayout(false);
-            this.panWaitBetween.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1089,7 +1139,6 @@
         private System.Windows.Forms.TabPage tabDelete;
         private System.Windows.Forms.Label lblDeleteHeader;
         private System.Windows.Forms.TabPage tabSetState;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnGetFile;
         private System.Windows.Forms.Button btnGetView;
         private System.Windows.Forms.Button btnGetFXB;
@@ -1112,5 +1161,10 @@
         private System.Windows.Forms.Button btnAssign;
         private System.Windows.Forms.Label lblAssignHeader;
         private System.Windows.Forms.Panel panWaitBetween;
+        private System.Windows.Forms.Label lblStateHeader;
+        private System.Windows.Forms.ComboBox cbSetStatusReason;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox cbSetStatus;
     }
 }

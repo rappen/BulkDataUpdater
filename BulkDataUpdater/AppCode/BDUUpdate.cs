@@ -280,11 +280,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                     allattributesexist = false;
                     break;
                 }
-                if (attribute == "statuscode" && !record.Contains("statecode"))
-                {
-                    allattributesexist = false;
-                    break;
-                }
             }
             return allattributesexist;
         }

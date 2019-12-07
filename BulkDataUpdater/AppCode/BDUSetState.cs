@@ -1,14 +1,155 @@
 ﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
+using XrmToolBox.Extensibility;
 
 namespace Cinteros.XTB.BulkDataUpdater
 {
     public partial class BulkDataUpdater
     {
+        private void SetStateRecords()
+        {
+            if (working)
+            {
+                return;
+            }
+            var state = cbSetStatus.SelectedItem as OptionsetItem;
+            var status = cbSetStatusReason.SelectedItem as OptionsetItem;
+            if (state == null || status == null)
+            {
+                return;
+            }
+            if (MessageBox.Show($"All selected records will unconditionally be set to {state.meta.Label.UserLocalizedLabel.Label} {status.meta.Label.UserLocalizedLabel.Label}.\n" +
+                "UI defined rules will NOT be enforced.\n" +
+                "Plugins and workflows WILL trigger.\n" +
+                "User privileges WILL be respected.\n\n" +
+                "Please confirm assignment.",
+                "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
+            {
+                return;
+            }
+            tsbCancel.Enabled = true;
+            splitContainer1.Enabled = false;
+            working = true;
+            var includedrecords = GetIncludedRecords();
+            var ignoreerrors = chkIgnoreErrors.Checked;
+            if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
+            {
+                batchsize = 1;
+            }
+            WorkAsync(new WorkAsyncInfo()
+            {
+                Message = "Assigning records",
+                IsCancelable = true,
+                Work = (bgworker, workargs) =>
+                {
+                    var sw = Stopwatch.StartNew();
+                    var total = includedrecords.Entities.Count;
+                    var current = 0;
+                    var updated = 0;
+                    var failed = 0;
+                    var batch = new ExecuteMultipleRequest
+                    {
+                        Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
+                        Requests = new OrganizationRequestCollection()
+                    };
+                    foreach (var record in includedrecords.Entities)
+                    {
+                        if (bgworker.CancellationPending)
+                        {
+                            workargs.Cancel = true;
+                            break;
+                        }
+                        var clone = new Entity(record.LogicalName, record.Id);
+                        clone.Attributes.Add("statecode", new OptionSetValue((int)state.meta.Value));
+                        clone.Attributes.Add("statuscode", new OptionSetValue((int)status.meta.Value));
+                        current++;
+                        var pct = 100 * current / total;
+                        try
+                        {
+                            if (batchsize == 1)
+                            {
+                                bgworker.ReportProgress(pct, $"Setting status for record {current} of {total}");
+                                Service.Update(clone);
+                                updated++;
+                            }
+                            else
+                            {
+                                batch.Requests.Add(new UpdateRequest { Target = clone });
+                                if (batch.Requests.Count == batchsize || current == total)
+                                {
+                                    bgworker.ReportProgress(pct, $"Setting status for records {current - batch.Requests.Count + 1}-{current} of {total}");
+                                    var response = (ExecuteMultipleResponse)Service.Execute(batch);
+                                    if (response.IsFaulted && !ignoreerrors)
+                                    {
+                                        var firsterror = response.Responses.First(r => r.Fault != null);
+                                        if (firsterror != null)
+                                        {
+                                            throw new Exception(firsterror.Fault.Message);
+                                        }
+                                        throw new Exception("Unknown exception during assignment");
+                                    }
+                                    updated += response.Responses.Count;
+                                    batch.Requests.Clear();
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            failed++;
+                            if (!ignoreerrors)
+                            {
+                                throw ex;
+                            }
+                        }
+                    }
+                    sw.Stop();
+                    workargs.Result = new Tuple<int, int, long>(updated, failed, sw.ElapsedMilliseconds);
+                },
+                PostWorkCallBack = (completedargs) =>
+                {
+                    working = false;
+                    tsbCancel.Enabled = false;
+                    if (completedargs.Error != null)
+                    {
+                        MessageBox.Show(completedargs.Error.Message, "Assign", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else if (completedargs.Cancelled)
+                    {
+                        if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify record information.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                        {
+                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                        }
+                    }
+                    else if (completedargs.Result is Tuple<int, int, long> result)
+                    {
+                        lblUpdateStatus.Text = $"{result.Item1} records reassigned, {result.Item2} records failed.";
+                        LogUse("Assigned", result.Item1, result.Item3);
+                        if (result.Item2 > 0)
+                        {
+                            LogUse("Failed", result.Item2);
+                        }
+                        if (MessageBox.Show("Assign completed!\nRun query to get records again?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                        {
+                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                        }
+                    }
+                    splitContainer1.Enabled = true;
+                },
+                ProgressChanged = (changeargs) =>
+                {
+                    SetWorkingMessage(changeargs.UserState.ToString());
+                }
+            });
+        }
+
         private bool UpdateState(Entity record, List<BulkActionItem> attributes)
         {
             var attribute = attributes.FirstOrDefault(a => a.Attribute.Metadata is StateAttributeMetadata);
@@ -55,5 +196,50 @@ namespace Cinteros.XTB.BulkDataUpdater
             return false;
         }
 
+        private static OptionSetValue GetCurrentStateCodeFromStatusCode(IEnumerable<BulkActionItem> attributes)
+        {
+            var statusattribute = attributes.Where(a => a.Attribute.Metadata is StatusAttributeMetadata && a.Value is OptionSetValue).FirstOrDefault();
+            if (statusattribute != null &&
+                statusattribute.Attribute.Metadata is StatusAttributeMetadata statusmeta &&
+                statusattribute.Value is OptionSetValue osv)
+            {
+                foreach (var statusoption in statusmeta.OptionSet.Options)
+                {
+                    if (statusoption is StatusOptionMetadata && statusoption.Value == osv.Value)
+                    {
+                        return new OptionSetValue((int)((StatusOptionMetadata)statusoption).State);
+                    }
+                }
+            }
+            return null;
+        }
+
+        private void LoadStates(EntityMetadata entity)
+        {
+            cbSetStatus.Items.Clear();
+            cbSetStatusReason.Items.Clear();
+            cbSetStatus.Tag = entity;
+            if (entity.Attributes.Where(a => a.LogicalName == "statecode").FirstOrDefault() is StateAttributeMetadata statemeta)
+            {
+                cbSetStatus.Items.AddRange(
+                    statemeta.OptionSet.Options
+                        .Select(o => new OptionsetItem(o)).ToArray());
+            }
+        }
+
+        private void LoadStatuses()
+        {
+            cbSetStatusReason.Items.Clear();
+            if (cbSetStatus.Tag is EntityMetadata entity &&
+                cbSetStatus.SelectedItem is OptionsetItem state &&
+                entity?.Attributes?.Where(a => a.LogicalName == "statuscode").FirstOrDefault() is StatusAttributeMetadata statusmeta)
+            {
+                cbSetStatusReason.Items.AddRange(
+                    statusmeta.OptionSet.Options
+                        .Select(o => o as StatusOptionMetadata)
+                        .Where(o => o != null && o.State == state.meta.Value)
+                        .Select(o => new OptionsetItem(o)).ToArray());
+            }
+        }
     }
 }

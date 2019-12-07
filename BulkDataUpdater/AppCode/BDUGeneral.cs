@@ -287,6 +287,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             }
             RefreshAttributes();
+            InitializeTab();
         }
 
         private EntityCollection GetIncludedRecords()

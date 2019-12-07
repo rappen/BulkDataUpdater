@@ -34,6 +34,7 @@
         private static Dictionary<string, EntityMetadata> entities;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
         private AppInsights ai = new AppInsights(new AiConfig(aiEndpoint, aiKey) { PluginName = "Bulk Data Updater" });
+        private string deleteWarningText;
         private Dictionary<string, string> entityAttributes = new Dictionary<string, string>();
         private string fetchXml = fetchTemplate;
         private EntityCollection records;
@@ -45,8 +46,6 @@
         private bool showAttributesStandard = true;
         private bool showAttributesUncustomizable = true;
         private bool showAttributesUnmanaged = true;
-        private string deleteWarningText;
-
         // Oops, did I name that one??
         private Entity view;
 
@@ -76,24 +75,6 @@
 
         #region Private Methods
 
-        private static OptionSetValue GetCurrentStateCodeFromStatusCode(IEnumerable<BulkActionItem> attributes)
-        {
-            var statusattribute = attributes.Where(a => a.Attribute.Metadata is StatusAttributeMetadata && a.Value is OptionSetValue).FirstOrDefault();
-            if (statusattribute != null &&
-                statusattribute.Attribute.Metadata is StatusAttributeMetadata statusmeta &&
-                statusattribute.Value is OptionSetValue osv)
-            {
-                foreach (var statusoption in statusmeta.OptionSet.Options)
-                {
-                    if (statusoption is StatusOptionMetadata && statusoption.Value == osv.Value)
-                    {
-                        return new OptionSetValue((int)((StatusOptionMetadata)statusoption).State);
-                    }
-                }
-            }
-            return null;
-        }
-
         private void EnableControls(bool enabled)
         {
             MethodInvoker mi = delegate
@@ -109,6 +90,7 @@
                     gbExecute.Enabled =
                         (tabControl1.SelectedTab == tabUpdate && pan2value.Enabled && lvAttributes.Items.Count > 0) ||
                         (tabControl1.SelectedTab == tabAssign && (cbAssignUser.SelectedEntity != null || cbAssignTeam.SelectedEntity != null)) ||
+                        (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
                         (tabControl1.SelectedTab == tabDelete);
                 }
                 catch
@@ -150,7 +132,7 @@
                         {
                             continue;
                         }
-                        if (attribute.LogicalName == "statecode" || attribute.LogicalName == "statuscode")
+                        if (attribute.LogicalName == "statecode" || attribute.LogicalName == "statuscode" || attribute.LogicalName == "ownerid")
                         {
                             continue;
                         }
@@ -226,6 +208,30 @@
                     break;
             }
             LogUse(tag, records?.Entities?.Count);
+        }
+
+        private void InitializeTab()
+        {
+            if (tabControl1.SelectedTab == tabUpdate)
+            {
+                btnExecute.Text = "Update records";
+            }
+            else if (tabControl1.SelectedTab == tabAssign)
+            {
+                btnExecute.Text = "Assign records";
+                LoadOwners();
+            }
+            else if (tabControl1.SelectedTab == tabSetState)
+            {
+                btnExecute.Text = "Update records";
+                LoadStates(entities?.FirstOrDefault(ent => ent.Key == records?.EntityName).Value);
+            }
+            else if (tabControl1.SelectedTab == tabDelete)
+            {
+                btnExecute.Text = "Delete records";
+            }
+            panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
+            EnableControls(true);
         }
 
         private void LoadEntities(Action AfterLoad)
@@ -501,10 +507,11 @@
 
         private void UpdateIncludeCount()
         {
-            var count = rbIncludeSelected.Checked ? crmGridView1.SelectedCellRecords?.Entities?.Count : records?.Entities?.Count;
+            var count = GetIncludedRecords().Entities?.Count;
             var entity = entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label;
             lblIncludedRecords.Text = $"{count} records";
             lblAssignHeader.Text = $"Assign {count} {entity}";
+            lblStateHeader.Text = $"Update {count} {entity}";
             lblDeleteHeader.Text = $"Delete {count} {entity}";
             txtDeleteWarning.Text = deleteWarningText.Replace("[nn]", rbIncludeSelected.Checked ? count.ToString() : "ALL");
         }
@@ -512,7 +519,7 @@
         private void UpdateValueField()
         {
             var attribute = (AttributeItem)cmbAttribute.SelectedItem;
-            rbSetNull.Enabled = attribute != null && attribute.Metadata.LogicalName != "statecode" && attribute.Metadata.LogicalName != "statuscode";
+            rbSetNull.Enabled = attribute != null;
             cmbValue.Items.Clear();
             if (attribute != null)
             {
@@ -551,12 +558,6 @@
                     entityAttributes.Add(records.EntityName, attribute.GetValue());
                 }
             }
-            if (attribute.Metadata.LogicalName == "statecode")
-            {
-                MessageBox.Show("You selected to update the statecode. In most cases this will probably not work.\n" +
-                    "But if you select to update the statuscode instead, the statecode will be fixed automatically!",
-                    "Statecode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
             EnableControls(true);
         }
 
@@ -574,6 +575,26 @@
             DeleteRecords();
         }
 
+        private void btnExecute_Click(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabUpdate)
+            {
+                UpdateRecords();
+            }
+            else if (tabControl1.SelectedTab == tabAssign)
+            {
+                AssignRecords();
+            }
+            else if (tabControl1.SelectedTab == tabSetState)
+            {
+                SetStateRecords();
+            }
+            else if (tabControl1.SelectedTab == tabDelete)
+            {
+                DeleteRecords();
+            }
+        }
+
         private void btnGetRecords_Click(object sender, EventArgs e)
         {
             if (sender is Button btn)
@@ -587,24 +608,33 @@
             RemoveAttribute();
         }
 
-        private void btnExecute_Click(object sender, EventArgs e)
+        private void cbAssignTeam_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab == tabUpdate)
+            if (cbAssignTeam.SelectedIndex >= 0)
             {
-                UpdateRecords();
+                cbAssignUser.SelectedIndex = -1;
             }
-            else if (tabControl1.SelectedTab == tabAssign)
+            EnableControls(true);
+        }
+
+        private void cbAssignUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbAssignUser.SelectedIndex >= 0)
             {
-                AssignRecords();
+                cbAssignTeam.SelectedIndex = -1;
             }
-            else if (tabControl1.SelectedTab == tabSetState)
-            {
-                
-            }
-            else if (tabControl1.SelectedTab == tabDelete)
-            {
-                DeleteRecords();
-            }
+            EnableControls(true);
+        }
+
+        private void cbSetStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadStatuses();
+            EnableControls(true);
+        }
+
+        private void cbSetStatusReason_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnableControls(true);
         }
 
         private void cmbAttribute_SelectedIndexChanged(object sender, EventArgs e)
@@ -703,25 +733,7 @@
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab == tabUpdate)
-            {
-                btnExecute.Text = "Update records";
-            }
-            else if (tabControl1.SelectedTab == tabAssign)
-            {
-                btnExecute.Text = "Assign records";
-                LoadOwners();
-            }
-            else if (tabControl1.SelectedTab == tabSetState)
-            {
-                btnExecute.Text = "Update records";
-            }
-            else if (tabControl1.SelectedTab == tabDelete)
-            {
-                btnExecute.Text = "Delete records";
-            }
-            panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
-            EnableControls(true);
+            InitializeTab();
         }
 
         private void tsbCancel_Click(object sender, EventArgs e)
@@ -799,23 +811,5 @@
         }
 
         #endregion Form Event Handlers
-
-        private void cbAssignUser_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbAssignUser.SelectedIndex >= 0)
-            {
-                cbAssignTeam.SelectedIndex = -1;
-            }
-            EnableControls(true);
-        }
-
-        private void cbAssignTeam_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbAssignTeam.SelectedIndex >= 0)
-            {
-                cbAssignUser.SelectedIndex = -1;
-            }
-            EnableControls(true);
-        }
     }
 }
