@@ -10,7 +10,7 @@
   <CommonFile>Const</CommonFile>
   <FileName>DisplayName</FileName>
   <ConstantName>DisplayName</ConstantName>
-  <ConstantCamelCased>false</ConstantCamelCased>
+  <ConstantCamelCased>true</ConstantCamelCased>
   <DoStripPrefix>false</DoStripPrefix>
   <StripPrefix>_</StripPrefix>
   <XmlProperties>true</XmlProperties>
@@ -19,7 +19,7 @@
   <RelationShips>false</RelationShips>
   <OptionSets>true</OptionSets>
   <GlobalOptionSets>false</GlobalOptionSets>
-  <CommonAttributes>None</CommonAttributes>
+  <CommonAttributes>CommonInAny</CommonAttributes>
   <EntityFilter>
     <CustomAll>true</CustomAll>
     <CustomFalse>false</CustomFalse>
@@ -28,7 +28,7 @@
     <ManagedTrue>false</ManagedTrue>
     <ManagedFalse>false</ManagedFalse>
     <Intersect>true</Intersect>
-    <SelectedOnly>true</SelectedOnly>
+    <SelectedOnly>false</SelectedOnly>
   </EntityFilter>
   <AttributeFilter>
     <CheckAll>false</CheckAll>
@@ -43,6 +43,9 @@
     <Logical>false</Logical>
   </AttributeFilter>
   <Selection>
+    <string>lead:statecode,statuscode</string>
+    <string>opportunity:statecode,statuscode</string>
+    <string>opportunityclose:opportunityid,statecode,opportunitystatuscode,statuscode</string>
     <string>team:businessunitid,teamid,name,teamtype</string>
     <string>systemuser:accessmode,businessunitid,fullname,internalemailaddress,isdisabled,systemuserid</string>
   </Selection>

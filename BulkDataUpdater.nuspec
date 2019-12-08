@@ -9,10 +9,19 @@
     <projectUrl>https://github.com/rappen/BulkDataUpdater</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/rappen/BulkDataUpdater/master/images/BDU-150-tsp.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values. It can also delete records by the filter specified.</description>
-    <summary>Update or touch attributes on a set of records, or delete the data set completely.</summary>
+    <description>This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values. It can also delete, assign, and set state of records by the filter specified.</description>
+    <summary>Update or touch attributes on a set of records, assign or set state, or delete the data set completely.</summary>
     <releaseNotes>
 Latest version:
+
+#19 Reassing records
+#15 Update Status and Status Reason
+#11 Support multi-line fields
+#31 Open records by double clicking
+
+---
+
+Version 1.2019.6.1:
 
 #29 Added option to wait between calls to server. Thanks Mats Sundbergh @cint-mats!
 #28 XML attribute values with only space got trimmed, now fixed.

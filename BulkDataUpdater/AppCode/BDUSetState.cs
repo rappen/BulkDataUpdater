@@ -67,9 +67,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             workargs.Cancel = true;
                             break;
                         }
-                        var clone = new Entity(record.LogicalName, record.Id);
-                        clone.Attributes.Add("statecode", new OptionSetValue((int)state.meta.Value));
-                        clone.Attributes.Add("statuscode", new OptionSetValue((int)status.meta.Value));
+                        var req = GetSetStateRequest(record, state, status);
                         current++;
                         var pct = 100 * current / total;
                         try
@@ -77,12 +75,12 @@ namespace Cinteros.XTB.BulkDataUpdater
                             if (batchsize == 1)
                             {
                                 bgworker.ReportProgress(pct, $"Setting status for record {current} of {total}");
-                                Service.Update(clone);
+                                Service.Execute(req);
                                 updated++;
                             }
                             else
                             {
-                                batch.Requests.Add(new UpdateRequest { Target = clone });
+                                batch.Requests.Add(req);
                                 if (batch.Requests.Count == batchsize || current == total)
                                 {
                                     bgworker.ReportProgress(pct, $"Setting status for records {current - batch.Requests.Count + 1}-{current} of {total}");
@@ -148,6 +146,57 @@ namespace Cinteros.XTB.BulkDataUpdater
                     SetWorkingMessage(changeargs.UserState.ToString());
                 }
             });
+        }
+
+        private OrganizationRequest GetSetStateRequest(Entity record, OptionsetItem state, OptionsetItem status)
+        {
+            switch (record.LogicalName)
+            {
+                case Opportunity.EntityName:
+                    {
+                        if (state.meta.Value == (int)Opportunity.Status_OptionSet.Won)
+                        {
+                            var req = new WinOpportunityRequest
+                            {
+                                OpportunityClose = new Entity(OpportunityClose.EntityName),
+                                Status = new OptionSetValue((int)status.meta.Value)
+                            };
+                            req.OpportunityClose.Attributes.Add(OpportunityClose.Opportunity, record.ToEntityReference());
+                            return req;
+                        }
+                        if (state.meta.Value == (int)Opportunity.Status_OptionSet.Lost)
+                        {
+                            var req = new LoseOpportunityRequest
+                            {
+                                OpportunityClose = new Entity(OpportunityClose.EntityName),
+                                Status = new OptionSetValue((int)status.meta.Value)
+                            };
+                            req.OpportunityClose.Attributes.Add(OpportunityClose.Opportunity, record.ToEntityReference());
+                            return req;
+                        }
+                    }
+                    break;
+                case Lead.EntityName:
+                    {
+                        if (state.meta.Value == (int)Lead.Status_OptionSet.Qualified)
+                        {
+                            var req = new QualifyLeadRequest
+                            {
+                                LeadId = record.ToEntityReference(),
+                                Status = new OptionSetValue((int)status.meta.Value),
+                                CreateAccount = chkQualifyLeadCreateAccount.Checked,
+                                CreateContact = chkQualifyLeadCreateContact.Checked,
+                                CreateOpportunity = chkQualifyLeadCreateOpportunity.Checked
+                            };
+                            return req;
+                        }
+                    }
+                    break;
+            }
+            var clone = new Entity(record.LogicalName, record.Id);
+            clone.Attributes.Add(_common_.Status, new OptionSetValue((int)state.meta.Value));
+            clone.Attributes.Add(_common_.StatusReason, new OptionSetValue((int)status.meta.Value));
+            return new UpdateRequest { Target = clone };
         }
 
         private bool UpdateState(Entity record, List<BulkActionItem> attributes)
@@ -219,7 +268,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             cbSetStatus.Items.Clear();
             cbSetStatusReason.Items.Clear();
             cbSetStatus.Tag = entity;
-            if (entity.Attributes.Where(a => a.LogicalName == "statecode").FirstOrDefault() is StateAttributeMetadata statemeta)
+            if (entity?.Attributes?.Where(a => a.LogicalName == "statecode").FirstOrDefault() is StateAttributeMetadata statemeta)
             {
                 cbSetStatus.Items.AddRange(
                     statemeta.OptionSet.Options
@@ -230,6 +279,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         private void LoadStatuses()
         {
             cbSetStatusReason.Items.Clear();
+            panQualifyLead.Visible = false;
             if (cbSetStatus.Tag is EntityMetadata entity &&
                 cbSetStatus.SelectedItem is OptionsetItem state &&
                 entity?.Attributes?.Where(a => a.LogicalName == "statuscode").FirstOrDefault() is StatusAttributeMetadata statusmeta)
@@ -239,6 +289,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         .Select(o => o as StatusOptionMetadata)
                         .Where(o => o != null && o.State == state.meta.Value)
                         .Select(o => new OptionsetItem(o)).ToArray());
+                panQualifyLead.Visible = entity.LogicalName == Lead.EntityName && state.meta.Value == (int)Lead.Status_OptionSet.Qualified;
             }
         }
     }

@@ -153,7 +153,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 cbAssignUser.OrganizationService = Service;
                 cbAssignUser.DisplayFormat = $"{{{{{User.PrimaryName}}}}} ({{{{{User.PrimaryEmail}}}}})";
                 var qxUser = new QueryExpression(User.EntityName);
-                qxUser.ColumnSet.AddColumns(User.PrimaryKey, User.PrimaryName, User.PrimaryEmail, User.BusinessUnit);
+                qxUser.ColumnSet.AddColumns(User.PrimaryKey, User.PrimaryName, User.PrimaryEmail, _common_.BusinessUnit);
                 qxUser.AddOrder(User.PrimaryName, OrderType.Ascending);
                 qxUser.Criteria.AddCondition(User.Status, ConditionOperator.Equal, false);
                 qxUser.Criteria.AddCondition(User.AccessMode, ConditionOperator.NotEqual, (int)User.AccessMode_OptionSet.SupportUser);
@@ -184,9 +184,9 @@ namespace Cinteros.XTB.BulkDataUpdater
             if (cbAssignTeam.DataSource == null)
             {
                 cbAssignTeam.OrganizationService = Service;
-                cbAssignTeam.DisplayFormat = $"{{{{{Team.PrimaryName}}}}} ({{{{{Team.BusinessUnit}}}}})";
+                cbAssignTeam.DisplayFormat = $"{{{{{Team.PrimaryName}}}}} ({{{{{_common_.BusinessUnit}}}}})";
                 var qxTeam = new QueryExpression(Team.EntityName);
-                qxTeam.ColumnSet.AddColumns(Team.PrimaryKey, Team.PrimaryName, Team.BusinessUnit);
+                qxTeam.ColumnSet.AddColumns(Team.PrimaryKey, Team.PrimaryName, _common_.BusinessUnit);
                 qxTeam.AddOrder(Team.PrimaryName, OrderType.Ascending);
                 //qxTeam.Criteria.AddCondition(Team.TeamType, ConditionOperator.Equal, (int)Team.TeamType_OptionSet.Owner);
                 WorkAsync(new WorkAsyncInfo
