@@ -14,10 +14,11 @@
     <releaseNotes>
 Latest version:
 
-#19 Reassing records
+#19 Reassing records to Team or User
 #15 Update Status and Status Reason
-#11 Support multi-line fields
-#31 Open records by double clicking
+#11 Support multi-line values for memo type attributes
+#31 Open records by double clicking in the grid
+#32 Handle Qualify/Win/Lose requests when changing status of Lead/Opportunity
 
 ---
 
