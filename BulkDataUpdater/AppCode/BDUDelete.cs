@@ -83,7 +83,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                                         }
                                         throw new Exception("Unknown exception during delete");
                                     }
-                                    deleted += response.Responses.Count;
+                                    deleted += batch.Requests.Count - response.Responses.Count(r => r.Fault != null);
                                     batch.Requests.Clear();
                                 }
                             }
@@ -91,6 +91,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         catch (Exception ex)
                         {
                             failed++;
+                            batch.Requests.Clear();
                             if (!ignoreerrors)
                             {
                                 throw ex;
