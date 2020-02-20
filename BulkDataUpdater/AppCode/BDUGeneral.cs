@@ -4,6 +4,7 @@ using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 using XrmToolBox.Extensibility.Args;
@@ -203,13 +204,14 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 query = new FetchExpression(fetch);
             }
-            WorkAsync(new WorkAsyncInfo("Retrieving records...",
-                (eventargs) =>
-                {
-                    EntityCollection retrieved = RetrieveRecordsAllPages(query);
-                    eventargs.Result = retrieved;
-                })
+            WorkAsync(new WorkAsyncInfo
             {
+                Message = "Retrieving records...",
+                Work = (worker, eventargs) =>
+                {
+                    EntityCollection retrieved = RetrieveRecordsAllPages(worker, query);
+                    eventargs.Result = retrieved;
+                },
                 PostWorkCallBack = (completedargs) =>
                 {
                     working = false;
@@ -222,11 +224,15 @@ namespace Cinteros.XTB.BulkDataUpdater
                         records = (EntityCollection)completedargs.Result;
                     }
                     AfterRetrieve();
+                },
+                ProgressChanged = (changeargs) =>
+                {
+                    SetWorkingMessage(changeargs.UserState.ToString());
                 }
             });
         }
 
-        private EntityCollection RetrieveRecordsAllPages(QueryBase query)
+        private EntityCollection RetrieveRecordsAllPages(BackgroundWorker worker, QueryBase query)
         {
             var start = DateTime.Now;
             EntityCollection resultCollection = null;
@@ -254,6 +260,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 }
                 page++;
                 var duration = DateTime.Now - start;
+                worker.ReportProgress(0, $"Retrieving records... ({resultCollection.Entities.Count})");
                 if (page == 1)
                 {
                     SendMessageToStatusBar(this, new StatusBarMessageEventArgs($"Retrieved {resultCollection.Entities.Count} records on first page in {duration.TotalSeconds:F2} seconds"));
@@ -284,7 +291,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 UpdateIncludeCount();
                 crmGridView1.OrganizationService = Service;
                 crmGridView1.DataSource = records;
-                crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+                crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
             }
             RefreshAttributes();
             InitializeTab();

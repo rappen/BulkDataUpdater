@@ -477,7 +477,7 @@
                 }
             }
             crmGridView1.ShowFriendlyNames = useFriendlyNames;
-            crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+            crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
             EnableControls(true);
         }
 
@@ -508,7 +508,7 @@
 
         private void UpdateIncludeCount()
         {
-            var count = GetIncludedRecords().Entities?.Count;
+            var count = GetIncludedRecords()?.Entities?.Count;
             var entity = entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label;
             lblIncludedRecords.Text = $"{count} records";
             lblUpdateHeader.Text = $"Update {count} {entity}";
@@ -746,6 +746,7 @@
 
         private void tsbCancel_Click(object sender, EventArgs e)
         {
+            tsbCancel.Enabled = false;
             CancelWorker();
         }
 
