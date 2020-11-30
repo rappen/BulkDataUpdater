@@ -508,7 +508,7 @@
 
         private void UpdateIncludeCount()
         {
-            var count = GetIncludedRecords()?.Entities?.Count;
+            var count = GetIncludedRecords()?.Count();
             var entity = entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label;
             lblIncludedRecords.Text = $"{count} records";
             lblUpdateHeader.Text = $"Update {count} {entity}";

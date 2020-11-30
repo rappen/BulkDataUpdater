@@ -297,9 +297,9 @@ namespace Cinteros.XTB.BulkDataUpdater
             InitializeTab();
         }
 
-        private EntityCollection GetIncludedRecords()
+        private IEnumerable<Entity> GetIncludedRecords()
         {
-            return rbIncludeSelected.Checked ? crmGridView1.SelectedRowRecords : records;
+            return rbIncludeSelected.Checked ? crmGridView1.SelectedRowRecords : records.Entities;
         }
 
         private bool ValuesEqual(object value1, object value2)

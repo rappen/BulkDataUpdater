@@ -51,7 +51,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 Work = (bgworker, workargs) =>
                 {
                     var sw = Stopwatch.StartNew();
-                    var total = includedrecords.Entities.Count;
+                    var total = includedrecords.Count();
                     var current = 0;
                     var updated = 0;
                     var failed = 0;
@@ -60,7 +60,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
                         Requests = new OrganizationRequestCollection()
                     };
-                    foreach (var record in includedrecords.Entities)
+                    foreach (var record in includedrecords)
                     {
                         if (bgworker.CancellationPending)
                         {
