@@ -9,10 +9,23 @@
     <projectUrl>https://github.com/rappen/BulkDataUpdater</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/rappen/BulkDataUpdater/master/images/BDU-150-tsp.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values. It can also delete, assign, and set state of records by the filter specified.</description>
-    <summary>Update or touch attributes on a set of records, assign or set state, or delete the data set completely.</summary>
+    <description>
+Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete.
+Empower yourself to achieve more.
+This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
+It can also delete, assign, and set state of records by the filter specified.
+    </description>
+    <summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
     <releaseNotes>
 Latest version:
+
+Nice and shiny lookup dialog used when setting lookup columns
+Improved performance when retrieving records
+Fixed bug when getting errors during Delete
+
+---
+
+Version 1.2019.12.1:
 
 #19 Reassign records to Team or User
 #15 Update Status and Status Reason
@@ -42,7 +55,7 @@ Version 1.2018.10.2:
 #22 Added possibility to cancel long running operations
 #24 Edit XML window did not resize well
     </releaseNotes>
-    <copyright>Copyright 2016-2018 Jonas Rapp</copyright>
+    <copyright>Copyright 2016-2020 Jonas Rapp</copyright>
     <tags>XrmToolBox Plugins BulkDataUpdater</tags>
     <dependencies>
       <dependency id="XrmToolBox" version="1.2018.6.24" />
