@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -66,9 +66,16 @@
             this.btnGetView = new System.Windows.Forms.Button();
             this.btnGetFXB = new System.Windows.Forms.Button();
             this.gb2attribute = new System.Windows.Forms.GroupBox();
-            this.pan2value = new System.Windows.Forms.Panel();
-            this.btnAdd = new System.Windows.Forms.Button();
+            this.panUpdTextMulti = new System.Windows.Forms.Panel();
             this.txtValueMultiline = new System.Windows.Forms.TextBox();
+            this.panUpdButton = new System.Windows.Forms.Panel();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.panUpdLookup = new System.Windows.Forms.Panel();
+            this.cdsLookupValue = new xrmtb.XrmToolBox.Controls.Controls.CDSDataTextBox();
+            this.btnLookupValue = new System.Windows.Forms.Button();
+            this.panUpdValue = new System.Windows.Forms.Panel();
+            this.panUpdAction = new System.Windows.Forms.Panel();
+            this.panUpdAttribute = new System.Windows.Forms.Panel();
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.gbExecute = new System.Windows.Forms.GroupBox();
             this.panWaitBetween = new System.Windows.Forms.Panel();
@@ -88,6 +95,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabUpdate = new System.Windows.Forms.TabPage();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.gb3attributes = new System.Windows.Forms.GroupBox();
             this.lvAttributes = new System.Windows.Forms.ListView();
             this.logicalname = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -105,23 +113,29 @@
             this.cbAssignUser = new xrmtb.XrmToolBox.Controls.Controls.CDSDataComboBox();
             this.btnAssign = new System.Windows.Forms.Button();
             this.tabSetState = new System.Windows.Forms.TabPage();
+            this.panQualifyLead = new System.Windows.Forms.Panel();
+            this.chkQualifyLeadCreateOpportunity = new System.Windows.Forms.CheckBox();
+            this.chkQualifyLeadCreateContact = new System.Windows.Forms.CheckBox();
+            this.chkQualifyLeadCreateAccount = new System.Windows.Forms.CheckBox();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.lblStateHeader = new System.Windows.Forms.Label();
-            this.cbSetStatusReason = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.cbSetStatus = new System.Windows.Forms.ComboBox();
+            this.cbSetStatusReason = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panQualifyLead = new System.Windows.Forms.Panel();
-            this.chkQualifyLeadCreateAccount = new System.Windows.Forms.CheckBox();
-            this.chkQualifyLeadCreateContact = new System.Windows.Forms.CheckBox();
-            this.chkQualifyLeadCreateOpportunity = new System.Windows.Forms.CheckBox();
+            this.cdsLookupDialog = new xrmtb.XrmToolBox.Controls.Controls.CDSLookupDialog();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
-            this.pan2value.SuspendLayout();
+            this.panUpdTextMulti.SuspendLayout();
+            this.panUpdButton.SuspendLayout();
+            this.panUpdLookup.SuspendLayout();
+            this.panUpdValue.SuspendLayout();
+            this.panUpdAction.SuspendLayout();
+            this.panUpdAttribute.SuspendLayout();
             this.gbExecute.SuspendLayout();
             this.panWaitBetween.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -133,13 +147,17 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabUpdate.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.gb3attributes.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabAssign.SuspendLayout();
             this.tabSetState.SuspendLayout();
-            this.tabDelete.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panQualifyLead.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.tabDelete.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList1
@@ -379,7 +397,7 @@
             this.cmbAttribute.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbAttribute.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbAttribute.FormattingEnabled = true;
-            this.cmbAttribute.Location = new System.Drawing.Point(15, 19);
+            this.cmbAttribute.Location = new System.Drawing.Point(12, 3);
             this.cmbAttribute.Name = "cmbAttribute";
             this.cmbAttribute.Size = new System.Drawing.Size(298, 21);
             this.cmbAttribute.Sorted = true;
@@ -428,7 +446,7 @@
             this.cmbValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbValue.FormattingEnabled = true;
-            this.cmbValue.Location = new System.Drawing.Point(9, 26);
+            this.cmbValue.Location = new System.Drawing.Point(12, 1);
             this.cmbValue.Name = "cmbValue";
             this.cmbValue.Size = new System.Drawing.Size(298, 21);
             this.cmbValue.TabIndex = 32;
@@ -438,7 +456,7 @@
             // chkOnlyChange
             // 
             this.chkOnlyChange.AutoSize = true;
-            this.chkOnlyChange.Location = new System.Drawing.Point(9, 53);
+            this.chkOnlyChange.Location = new System.Drawing.Point(12, 7);
             this.chkOnlyChange.Name = "chkOnlyChange";
             this.chkOnlyChange.Size = new System.Drawing.Size(164, 17);
             this.chkOnlyChange.TabIndex = 33;
@@ -510,36 +528,56 @@
             // 
             // gb2attribute
             // 
-            this.gb2attribute.Controls.Add(this.pan2value);
-            this.gb2attribute.Controls.Add(this.cmbAttribute);
-            this.gb2attribute.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gb2attribute.Location = new System.Drawing.Point(3, 60);
+            this.gb2attribute.Controls.Add(this.panUpdTextMulti);
+            this.gb2attribute.Controls.Add(this.panUpdButton);
+            this.gb2attribute.Controls.Add(this.panUpdLookup);
+            this.gb2attribute.Controls.Add(this.panUpdValue);
+            this.gb2attribute.Controls.Add(this.panUpdAction);
+            this.gb2attribute.Controls.Add(this.panUpdAttribute);
+            this.gb2attribute.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb2attribute.Location = new System.Drawing.Point(0, 0);
             this.gb2attribute.Name = "gb2attribute";
-            this.gb2attribute.Size = new System.Drawing.Size(330, 154);
+            this.gb2attribute.Size = new System.Drawing.Size(330, 173);
             this.gb2attribute.TabIndex = 35;
             this.gb2attribute.TabStop = false;
             this.gb2attribute.Text = "Select attribute to update";
             // 
-            // pan2value
+            // panUpdTextMulti
             // 
-            this.pan2value.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panUpdTextMulti.Controls.Add(this.txtValueMultiline);
+            this.panUpdTextMulti.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panUpdTextMulti.Location = new System.Drawing.Point(3, 118);
+            this.panUpdTextMulti.Name = "panUpdTextMulti";
+            this.panUpdTextMulti.Size = new System.Drawing.Size(324, 20);
+            this.panUpdTextMulti.TabIndex = 5;
+            this.panUpdTextMulti.Visible = false;
+            // 
+            // txtValueMultiline
+            // 
+            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pan2value.Controls.Add(this.btnAdd);
-            this.pan2value.Controls.Add(this.chkOnlyChange);
-            this.pan2value.Controls.Add(this.rbSetTouch);
-            this.pan2value.Controls.Add(this.rbSetNull);
-            this.pan2value.Controls.Add(this.cmbValue);
-            this.pan2value.Controls.Add(this.rbSetValue);
-            this.pan2value.Controls.Add(this.txtValueMultiline);
-            this.pan2value.Location = new System.Drawing.Point(6, 46);
-            this.pan2value.Name = "pan2value";
-            this.pan2value.Size = new System.Drawing.Size(318, 105);
-            this.pan2value.TabIndex = 3;
+            this.txtValueMultiline.Location = new System.Drawing.Point(12, 3);
+            this.txtValueMultiline.Multiline = true;
+            this.txtValueMultiline.Name = "txtValueMultiline";
+            this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtValueMultiline.Size = new System.Drawing.Size(298, 14);
+            this.txtValueMultiline.TabIndex = 36;
+            // 
+            // panUpdButton
+            // 
+            this.panUpdButton.Controls.Add(this.btnAdd);
+            this.panUpdButton.Controls.Add(this.chkOnlyChange);
+            this.panUpdButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panUpdButton.Location = new System.Drawing.Point(3, 138);
+            this.panUpdButton.Name = "panUpdButton";
+            this.panUpdButton.Size = new System.Drawing.Size(324, 32);
+            this.panUpdButton.TabIndex = 10;
             // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(198, 75);
+            this.btnAdd.Location = new System.Drawing.Point(201, 3);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(109, 23);
             this.btnAdd.TabIndex = 35;
@@ -547,19 +585,72 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // txtValueMultiline
+            // panUpdLookup
             // 
-            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panUpdLookup.Controls.Add(this.cdsLookupValue);
+            this.panUpdLookup.Controls.Add(this.btnLookupValue);
+            this.panUpdLookup.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panUpdLookup.Location = new System.Drawing.Point(3, 93);
+            this.panUpdLookup.Name = "panUpdLookup";
+            this.panUpdLookup.Size = new System.Drawing.Size(324, 25);
+            this.panUpdLookup.TabIndex = 4;
+            this.panUpdLookup.Visible = false;
+            // 
+            // cdsLookupValue
+            // 
+            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtValueMultiline.Location = new System.Drawing.Point(8, 26);
-            this.txtValueMultiline.Multiline = true;
-            this.txtValueMultiline.Name = "txtValueMultiline";
-            this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueMultiline.Size = new System.Drawing.Size(299, 43);
-            this.txtValueMultiline.TabIndex = 36;
-            this.txtValueMultiline.Visible = false;
-            this.txtValueMultiline.Enter += new System.EventHandler(this.txtValueMultiline_Enter);
-            this.txtValueMultiline.Leave += new System.EventHandler(this.txtValueMultiline_Leave);
+            this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
+            this.cdsLookupValue.DisplayFormat = "";
+            this.cdsLookupValue.Entity = null;
+            this.cdsLookupValue.EntityReference = null;
+            this.cdsLookupValue.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.cdsLookupValue.Location = new System.Drawing.Point(12, 3);
+            this.cdsLookupValue.LogicalName = null;
+            this.cdsLookupValue.Name = "cdsLookupValue";
+            this.cdsLookupValue.OrganizationService = null;
+            this.cdsLookupValue.Size = new System.Drawing.Size(264, 20);
+            this.cdsLookupValue.TabIndex = 0;
+            // 
+            // btnLookupValue
+            // 
+            this.btnLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLookupValue.Image = ((System.Drawing.Image)(resources.GetObject("btnLookupValue.Image")));
+            this.btnLookupValue.Location = new System.Drawing.Point(282, 2);
+            this.btnLookupValue.Name = "btnLookupValue";
+            this.btnLookupValue.Size = new System.Drawing.Size(28, 22);
+            this.btnLookupValue.TabIndex = 1;
+            this.btnLookupValue.UseVisualStyleBackColor = true;
+            this.btnLookupValue.Click += new System.EventHandler(this.btnLookupValue_Click);
+            // 
+            // panUpdValue
+            // 
+            this.panUpdValue.Controls.Add(this.cmbValue);
+            this.panUpdValue.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panUpdValue.Location = new System.Drawing.Point(3, 68);
+            this.panUpdValue.Name = "panUpdValue";
+            this.panUpdValue.Size = new System.Drawing.Size(324, 25);
+            this.panUpdValue.TabIndex = 3;
+            // 
+            // panUpdAction
+            // 
+            this.panUpdAction.Controls.Add(this.rbSetValue);
+            this.panUpdAction.Controls.Add(this.rbSetNull);
+            this.panUpdAction.Controls.Add(this.rbSetTouch);
+            this.panUpdAction.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panUpdAction.Location = new System.Drawing.Point(3, 43);
+            this.panUpdAction.Name = "panUpdAction";
+            this.panUpdAction.Size = new System.Drawing.Size(324, 25);
+            this.panUpdAction.TabIndex = 2;
+            // 
+            // panUpdAttribute
+            // 
+            this.panUpdAttribute.Controls.Add(this.cmbAttribute);
+            this.panUpdAttribute.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panUpdAttribute.Location = new System.Drawing.Point(3, 16);
+            this.panUpdAttribute.Name = "panUpdAttribute";
+            this.panUpdAttribute.Size = new System.Drawing.Size(324, 27);
+            this.panUpdAttribute.TabIndex = 1;
             // 
             // chkIgnoreErrors
             // 
@@ -700,19 +791,18 @@
             // 
             // crmGridView1
             // 
-            this.crmGridView1.AllowUserToAddRows = false;
-            this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.crmGridView1.ColumnOrder = "";
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
             this.crmGridView1.Location = new System.Drawing.Point(3, 40);
             this.crmGridView1.Name = "crmGridView1";
-            this.crmGridView1.ReadOnly = true;
+            this.crmGridView1.OrganizationService = null;
             this.crmGridView1.RowHeadersVisible = false;
             this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.crmGridView1.ShowFriendlyNames = true;
@@ -808,8 +898,7 @@
             // 
             // tabUpdate
             // 
-            this.tabUpdate.Controls.Add(this.gb3attributes);
-            this.tabUpdate.Controls.Add(this.gb2attribute);
+            this.tabUpdate.Controls.Add(this.splitContainer2);
             this.tabUpdate.Controls.Add(this.panel2);
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
@@ -819,14 +908,33 @@
             this.tabUpdate.Text = "Update";
             this.tabUpdate.UseVisualStyleBackColor = true;
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 60);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.gb2attribute);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.gb3attributes);
+            this.splitContainer2.Size = new System.Drawing.Size(330, 445);
+            this.splitContainer2.SplitterDistance = 173;
+            this.splitContainer2.SplitterWidth = 8;
+            this.splitContainer2.TabIndex = 3;
+            // 
             // gb3attributes
             // 
             this.gb3attributes.Controls.Add(this.lvAttributes);
             this.gb3attributes.Controls.Add(this.btnRemove);
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb3attributes.Location = new System.Drawing.Point(3, 214);
+            this.gb3attributes.Location = new System.Drawing.Point(0, 0);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(330, 291);
+            this.gb3attributes.Size = new System.Drawing.Size(330, 264);
             this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Verify attributes to update";
@@ -845,7 +953,7 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(298, 237);
+            this.lvAttributes.Size = new System.Drawing.Size(298, 210);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -874,7 +982,7 @@
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(204, 262);
+            this.btnRemove.Location = new System.Drawing.Point(204, 235);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(109, 23);
             this.btnRemove.TabIndex = 2;
@@ -936,6 +1044,7 @@
             this.cbAssignTeam.FormattingEnabled = true;
             this.cbAssignTeam.Location = new System.Drawing.Point(19, 133);
             this.cbAssignTeam.Name = "cbAssignTeam";
+            this.cbAssignTeam.OrganizationService = null;
             this.cbAssignTeam.Size = new System.Drawing.Size(297, 21);
             this.cbAssignTeam.TabIndex = 9;
             this.cbAssignTeam.SelectedIndexChanged += new System.EventHandler(this.cbAssignTeam_SelectedIndexChanged);
@@ -967,6 +1076,7 @@
             this.cbAssignUser.FormattingEnabled = true;
             this.cbAssignUser.Location = new System.Drawing.Point(19, 87);
             this.cbAssignUser.Name = "cbAssignUser";
+            this.cbAssignUser.OrganizationService = null;
             this.cbAssignUser.Size = new System.Drawing.Size(297, 21);
             this.cbAssignUser.TabIndex = 6;
             this.cbAssignUser.SelectedIndexChanged += new System.EventHandler(this.cbAssignUser_SelectedIndexChanged);
@@ -993,6 +1103,61 @@
             this.tabSetState.Text = "Set State";
             this.tabSetState.UseVisualStyleBackColor = true;
             // 
+            // panQualifyLead
+            // 
+            this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateOpportunity);
+            this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateContact);
+            this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateAccount);
+            this.panQualifyLead.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panQualifyLead.Location = new System.Drawing.Point(3, 164);
+            this.panQualifyLead.Name = "panQualifyLead";
+            this.panQualifyLead.Size = new System.Drawing.Size(330, 78);
+            this.panQualifyLead.TabIndex = 17;
+            this.panQualifyLead.Visible = false;
+            // 
+            // chkQualifyLeadCreateOpportunity
+            // 
+            this.chkQualifyLeadCreateOpportunity.AutoSize = true;
+            this.chkQualifyLeadCreateOpportunity.Location = new System.Drawing.Point(17, 54);
+            this.chkQualifyLeadCreateOpportunity.Name = "chkQualifyLeadCreateOpportunity";
+            this.chkQualifyLeadCreateOpportunity.Size = new System.Drawing.Size(114, 17);
+            this.chkQualifyLeadCreateOpportunity.TabIndex = 2;
+            this.chkQualifyLeadCreateOpportunity.Text = "Create Opportunity";
+            this.chkQualifyLeadCreateOpportunity.UseVisualStyleBackColor = true;
+            // 
+            // chkQualifyLeadCreateContact
+            // 
+            this.chkQualifyLeadCreateContact.AutoSize = true;
+            this.chkQualifyLeadCreateContact.Location = new System.Drawing.Point(17, 31);
+            this.chkQualifyLeadCreateContact.Name = "chkQualifyLeadCreateContact";
+            this.chkQualifyLeadCreateContact.Size = new System.Drawing.Size(97, 17);
+            this.chkQualifyLeadCreateContact.TabIndex = 1;
+            this.chkQualifyLeadCreateContact.Text = "Create Contact";
+            this.chkQualifyLeadCreateContact.UseVisualStyleBackColor = true;
+            // 
+            // chkQualifyLeadCreateAccount
+            // 
+            this.chkQualifyLeadCreateAccount.AutoSize = true;
+            this.chkQualifyLeadCreateAccount.Location = new System.Drawing.Point(17, 7);
+            this.chkQualifyLeadCreateAccount.Name = "chkQualifyLeadCreateAccount";
+            this.chkQualifyLeadCreateAccount.Size = new System.Drawing.Size(100, 17);
+            this.chkQualifyLeadCreateAccount.TabIndex = 0;
+            this.chkQualifyLeadCreateAccount.Text = "Create Account";
+            this.chkQualifyLeadCreateAccount.UseVisualStyleBackColor = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.lblStateHeader);
+            this.panel3.Controls.Add(this.cbSetStatus);
+            this.panel3.Controls.Add(this.cbSetStatusReason);
+            this.panel3.Controls.Add(this.label8);
+            this.panel3.Controls.Add(this.label2);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(330, 161);
+            this.panel3.TabIndex = 16;
+            // 
             // lblStateHeader
             // 
             this.lblStateHeader.AutoSize = true;
@@ -1002,6 +1167,18 @@
             this.lblStateHeader.Size = new System.Drawing.Size(202, 24);
             this.lblStateHeader.TabIndex = 15;
             this.lblStateHeader.Text = "Update [nn] [collection]";
+            // 
+            // cbSetStatus
+            // 
+            this.cbSetStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbSetStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSetStatus.FormattingEnabled = true;
+            this.cbSetStatus.Location = new System.Drawing.Point(16, 84);
+            this.cbSetStatus.Name = "cbSetStatus";
+            this.cbSetStatus.Size = new System.Drawing.Size(297, 21);
+            this.cbSetStatus.TabIndex = 11;
+            this.cbSetStatus.SelectedIndexChanged += new System.EventHandler(this.cbSetStatus_SelectedIndexChanged);
             // 
             // cbSetStatusReason
             // 
@@ -1015,15 +1192,6 @@
             this.cbSetStatusReason.TabIndex = 14;
             this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.cbSetStatusReason_SelectedIndexChanged);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 115);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Status Reason";
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -1033,17 +1201,14 @@
             this.label8.TabIndex = 12;
             this.label8.Text = "Status";
             // 
-            // cbSetStatus
+            // label2
             // 
-            this.cbSetStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbSetStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbSetStatus.FormattingEnabled = true;
-            this.cbSetStatus.Location = new System.Drawing.Point(16, 84);
-            this.cbSetStatus.Name = "cbSetStatus";
-            this.cbSetStatus.Size = new System.Drawing.Size(297, 21);
-            this.cbSetStatus.TabIndex = 11;
-            this.cbSetStatus.SelectedIndexChanged += new System.EventHandler(this.cbSetStatus_SelectedIndexChanged);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 115);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(77, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Status Reason";
             // 
             // tabDelete
             // 
@@ -1083,60 +1248,13 @@
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
-            // panel3
+            // cdsLookupDialog
             // 
-            this.panel3.Controls.Add(this.lblStateHeader);
-            this.panel3.Controls.Add(this.cbSetStatus);
-            this.panel3.Controls.Add(this.cbSetStatusReason);
-            this.panel3.Controls.Add(this.label8);
-            this.panel3.Controls.Add(this.label2);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(3, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(330, 161);
-            this.panel3.TabIndex = 16;
-            // 
-            // panQualifyLead
-            // 
-            this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateOpportunity);
-            this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateContact);
-            this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateAccount);
-            this.panQualifyLead.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panQualifyLead.Location = new System.Drawing.Point(3, 164);
-            this.panQualifyLead.Name = "panQualifyLead";
-            this.panQualifyLead.Size = new System.Drawing.Size(330, 78);
-            this.panQualifyLead.TabIndex = 17;
-            this.panQualifyLead.Visible = false;
-            // 
-            // chkQualifyLeadCreateAccount
-            // 
-            this.chkQualifyLeadCreateAccount.AutoSize = true;
-            this.chkQualifyLeadCreateAccount.Location = new System.Drawing.Point(17, 7);
-            this.chkQualifyLeadCreateAccount.Name = "chkQualifyLeadCreateAccount";
-            this.chkQualifyLeadCreateAccount.Size = new System.Drawing.Size(100, 17);
-            this.chkQualifyLeadCreateAccount.TabIndex = 0;
-            this.chkQualifyLeadCreateAccount.Text = "Create Account";
-            this.chkQualifyLeadCreateAccount.UseVisualStyleBackColor = true;
-            // 
-            // chkQualifyLeadCreateContact
-            // 
-            this.chkQualifyLeadCreateContact.AutoSize = true;
-            this.chkQualifyLeadCreateContact.Location = new System.Drawing.Point(17, 31);
-            this.chkQualifyLeadCreateContact.Name = "chkQualifyLeadCreateContact";
-            this.chkQualifyLeadCreateContact.Size = new System.Drawing.Size(97, 17);
-            this.chkQualifyLeadCreateContact.TabIndex = 1;
-            this.chkQualifyLeadCreateContact.Text = "Create Contact";
-            this.chkQualifyLeadCreateContact.UseVisualStyleBackColor = true;
-            // 
-            // chkQualifyLeadCreateOpportunity
-            // 
-            this.chkQualifyLeadCreateOpportunity.AutoSize = true;
-            this.chkQualifyLeadCreateOpportunity.Location = new System.Drawing.Point(17, 54);
-            this.chkQualifyLeadCreateOpportunity.Name = "chkQualifyLeadCreateOpportunity";
-            this.chkQualifyLeadCreateOpportunity.Size = new System.Drawing.Size(114, 17);
-            this.chkQualifyLeadCreateOpportunity.TabIndex = 2;
-            this.chkQualifyLeadCreateOpportunity.Text = "Create Opportunity";
-            this.chkQualifyLeadCreateOpportunity.UseVisualStyleBackColor = true;
+            this.cdsLookupDialog.Entity = null;
+            this.cdsLookupDialog.LogicalName = "";
+            this.cdsLookupDialog.LogicalNames = null;
+            this.cdsLookupDialog.Service = null;
+            this.cdsLookupDialog.Title = null;
             // 
             // BulkDataUpdater
             // 
@@ -1156,8 +1274,16 @@
             this.gb1select.ResumeLayout(false);
             this.gb1select.PerformLayout();
             this.gb2attribute.ResumeLayout(false);
-            this.pan2value.ResumeLayout(false);
-            this.pan2value.PerformLayout();
+            this.panUpdTextMulti.ResumeLayout(false);
+            this.panUpdTextMulti.PerformLayout();
+            this.panUpdButton.ResumeLayout(false);
+            this.panUpdButton.PerformLayout();
+            this.panUpdLookup.ResumeLayout(false);
+            this.panUpdLookup.PerformLayout();
+            this.panUpdValue.ResumeLayout(false);
+            this.panUpdAction.ResumeLayout(false);
+            this.panUpdAction.PerformLayout();
+            this.panUpdAttribute.ResumeLayout(false);
             this.gbExecute.ResumeLayout(false);
             this.gbExecute.PerformLayout();
             this.panWaitBetween.ResumeLayout(false);
@@ -1172,18 +1298,22 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabUpdate.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.gb3attributes.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tabAssign.ResumeLayout(false);
             this.tabAssign.PerformLayout();
             this.tabSetState.ResumeLayout(false);
-            this.tabDelete.ResumeLayout(false);
-            this.tabDelete.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panQualifyLead.ResumeLayout(false);
             this.panQualifyLead.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.tabDelete.ResumeLayout(false);
+            this.tabDelete.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1231,7 +1361,7 @@
         private System.Windows.Forms.GroupBox gb3attributes;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.Panel pan2value;
+        private System.Windows.Forms.Panel panUpdButton;
         private System.Windows.Forms.ListView lvAttributes;
         private System.Windows.Forms.ColumnHeader logicalname;
         private System.Windows.Forms.ColumnHeader action;
@@ -1278,5 +1408,14 @@
         private System.Windows.Forms.CheckBox chkQualifyLeadCreateContact;
         private System.Windows.Forms.CheckBox chkQualifyLeadCreateAccount;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panUpdAttribute;
+        private System.Windows.Forms.Panel panUpdLookup;
+        private System.Windows.Forms.Button btnLookupValue;
+        private System.Windows.Forms.Panel panUpdTextMulti;
+        private System.Windows.Forms.Panel panUpdValue;
+        private System.Windows.Forms.Panel panUpdAction;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private xrmtb.XrmToolBox.Controls.Controls.CDSDataTextBox cdsLookupValue;
+        private xrmtb.XrmToolBox.Controls.Controls.CDSLookupDialog cdsLookupDialog;
     }
 }

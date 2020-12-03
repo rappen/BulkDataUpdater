@@ -85,11 +85,15 @@
                     Enabled = enabled;
                     gb1select.Enabled = enabled && Service != null;
                     gb2attribute.Enabled = gb1select.Enabled && records != null && records.Entities.Count > 0;
-                    pan2value.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeItem;
-                    btnAdd.Enabled = pan2value.Enabled && (!rbSetValue.Checked || cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null || txtValueMultiline.Visible);
+                    panUpdButton.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeItem;
+                    btnAdd.Enabled = panUpdButton.Enabled &&
+                        (!rbSetValue.Checked ||
+                         cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null ||
+                         cdsLookupValue.Entity != null ||
+                         txtValueMultiline.Visible);
                     gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
                     gbExecute.Enabled =
-                        (tabControl1.SelectedTab == tabUpdate && pan2value.Enabled && lvAttributes.Items.Count > 0) ||
+                        (tabControl1.SelectedTab == tabUpdate && panUpdButton.Enabled && lvAttributes.Items.Count > 0) ||
                         (tabControl1.SelectedTab == tabAssign && (cbAssignUser.SelectedEntity != null || cbAssignTeam.SelectedEntity != null)) ||
                         (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
                         (tabControl1.SelectedTab == tabDelete);
@@ -520,15 +524,27 @@
 
         private void UpdateValueField()
         {
+            cmbValue.Enabled = rbSetValue.Checked;
+            txtValueMultiline.Enabled = rbSetValue.Checked;
+            btnLookupValue.Enabled = rbSetValue.Checked;
+            if (!rbSetValue.Checked && cdsLookupValue.Entity != null)
+            {
+                cdsLookupValue.Entity = null;
+            }
+            chkOnlyChange.Enabled = !rbSetTouch.Checked;
+            chkOnlyChange.Checked = chkOnlyChange.Checked && !rbSetTouch.Checked;
+
             var attribute = (AttributeItem)cmbAttribute.SelectedItem;
             rbSetNull.Enabled = attribute != null;
             cmbValue.Items.Clear();
-            txtValueMultiline.Visible = false;
-            if (attribute != null)
+            var upd = rbSetValue.Checked;
+            var lkp = false;
+            var multi = false;
+            if (rbSetValue.Checked && attribute != null)
             {
-                if (attribute.Metadata is EnumAttributeMetadata)
+                if (attribute.Metadata is EnumAttributeMetadata enummeta)
                 {
-                    var options = ((EnumAttributeMetadata)attribute.Metadata).OptionSet;
+                    var options = enummeta.OptionSet;
                     if (options != null)
                     {
                         foreach (var option in options.Options)
@@ -538,9 +554,9 @@
                     }
                     cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
                 }
-                else if (attribute.Metadata is BooleanAttributeMetadata)
+                else if (attribute.Metadata is BooleanAttributeMetadata boolmeta)
                 {
-                    var options = ((BooleanAttributeMetadata)attribute.Metadata).OptionSet;
+                    var options = boolmeta.OptionSet;
                     if (options != null)
                     {
                         cmbValue.Items.Add(new OptionsetItem(options.TrueOption));
@@ -550,9 +566,19 @@
                 }
                 else if (attribute.Metadata is MemoAttributeMetadata)
                 {
-                    txtValueMultiline.Visible = true;
-                    txtValueMultiline.Height = 21;
-                    txtValueMultiline.BringToFront();
+                    upd = false;
+                    multi = true;
+                }
+                else if (attribute.Metadata is LookupAttributeMetadata lkpmeta)
+                {
+                    upd = false;
+                    lkp = true;
+                    cdsLookupDialog.Service = Service;
+                    cdsLookupDialog.LogicalNames = lkpmeta.Targets;
+                    if (!cdsLookupDialog.LogicalNames.Contains(cdsLookupValue.LogicalName))
+                    {
+                        cdsLookupValue.Entity = null;
+                    }
                 }
                 else
                 {
@@ -567,6 +593,9 @@
                     entityAttributes.Add(records.EntityName, attribute.GetValue());
                 }
             }
+            panUpdValue.Visible = upd;
+            panUpdLookup.Visible = lkp;
+            panUpdTextMulti.Visible = multi;
             EnableControls(true);
         }
 
@@ -581,6 +610,7 @@
 
         private void btnExecute_Click(object sender, EventArgs e)
         {
+            lblUpdateStatus.Text = "Initializing...";
             if (tabControl1.SelectedTab == tabUpdate)
             {
                 UpdateRecords();
@@ -661,7 +691,7 @@
             UpdateIncludeCount();
         }
 
-        private void DataUpdater_ConnectionUpdated(object sender, XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedEventArgs e)
+        private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
             crmGridView1.DataSource = null;
             entities = null;
@@ -701,6 +731,10 @@
                                 }
                             }
                         }
+                        else if (attribute.Value is EntityReference er)
+                        {
+                            cdsLookupValue.EntityReference = er;
+                        }
                         else if (attribute.Attribute.Metadata is MemoAttributeMetadata)
                         {
                             txtValueMultiline.Text = attribute.Value.ToString();
@@ -730,13 +764,7 @@
 
         private void rbSet_CheckedChanged(object sender, EventArgs e)
         {
-            cmbValue.Enabled = rbSetValue.Checked;
-            chkOnlyChange.Enabled = !rbSetTouch.Checked;
-            if (rbSetTouch.Checked)
-            {
-                chkOnlyChange.Checked = false;
-            }
-            EnableControls(true);
+            UpdateValueField();
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -807,16 +835,6 @@
         {
             useFriendlyNames = tsmiFriendly.Checked;
             RefreshAttributes();
-        }
-
-        private void txtValueMultiline_Leave(object sender, EventArgs e)
-        {
-            txtValueMultiline.Height = 21;
-        }
-
-        private void txtValueMultiline_Enter(object sender, EventArgs e)
-        {
-            txtValueMultiline.Height = 43;
         }
 
         #endregion Form Event Handlers
@@ -902,6 +920,21 @@
                 }
             }
             return uri.ToString();
+        }
+
+        private void btnLookupValue_Click(object sender, EventArgs e)
+        {
+            switch (cdsLookupDialog.ShowDialog(this))
+            {
+                case DialogResult.OK:
+                    cdsLookupValue.OrganizationService = Service;
+                    cdsLookupValue.Entity = cdsLookupDialog.Entity;
+                    break;
+                case DialogResult.Abort:
+                    cdsLookupValue.Entity = null;
+                    break;
+            }
+            EnableControls(true);
         }
     }
 }

@@ -209,8 +209,10 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 case AttributeTypeCode.String:
                     return cmbValue.Text;
+
                 case AttributeTypeCode.Memo:
                     return txtValueMultiline.Text;
+
                 case AttributeTypeCode.BigInt:
                 case AttributeTypeCode.Integer:
                     return int.Parse(cmbValue.Text);
@@ -239,29 +241,9 @@ namespace Cinteros.XTB.BulkDataUpdater
                 case AttributeTypeCode.Money:
                     return new Money(decimal.Parse(cmbValue.Text));
 
-                // The following allows to specify an entity reference in the following form:
-                // attribute_name,attribute_guid
-                // eg: account,08e943f8-1ff0-41ea-89c0-5478dd465806
-                // As a security check, the attribute_name MUST be in the targets
-                // specified by the lookup attribute metadata targets
                 case AttributeTypeCode.Lookup:
                 case AttributeTypeCode.Customer:
-                    {
-                        // Get the attribute metadata for the lookup type:
-                        var attr = (LookupAttributeMetadata)((AttributeItem)cmbAttribute.SelectedItem).Metadata;
-
-                        // split the text: first part: attribute meta name, second part: attribute guid to update
-                        var t = cmbValue.Text.Split(',', ';', '/', '\\', ':').ToArray();
-                        // get the first target
-                        string attrname = (attr.Targets != null && attr.Targets.Length > 0) ? attr.Targets[0] : null;
-                        if (attr.Targets != null && t.Length > 1)
-                            attrname = attr.Targets.FirstOrDefault(x => t.First().Equals(x, StringComparison.OrdinalIgnoreCase));
-
-                        if (String.IsNullOrEmpty(attrname))
-                            throw new Exception("Target entity: '" + t.First() + "' is null or not found");
-
-                        return new EntityReference(attrname, new Guid(t.Last()));
-                    }
+                    return cdsLookupValue.EntityReference;
 
                 default:
                     throw new Exception("Attribute of type " + type.ToString() + " is currently not supported.");
@@ -340,11 +322,15 @@ namespace Cinteros.XTB.BulkDataUpdater
             try
             {
                 bai.Value = bai.Action == BulkActionAction.SetValue ? GetValue(bai.Attribute.Metadata.AttributeType) : null;
-                if (bai.Action== BulkActionAction.SetValue)
+                if (bai.Action == BulkActionAction.SetValue)
                 {
                     if (attribute.Metadata is MemoAttributeMetadata)
                     {
                         bai.StringValue = txtValueMultiline.Text;
+                    }
+                    else if (attribute.Metadata is LookupAttributeMetadata)
+                    {
+                        bai.StringValue = cdsLookupValue.Text;
                     }
                     else
                     {

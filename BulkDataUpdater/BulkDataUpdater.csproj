@@ -163,8 +163,8 @@
     <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
       <HintPath>..\packages\DockPanelSuite.ThemeVS2015.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
     </Reference>
-    <Reference Include="xrmtb.XrmToolBox.Controls, Version=2.2.5.0, Culture=neutral, PublicKeyToken=34def2c40500c62c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xrmtb.XrmToolBox.Controls.2.2.5\lib\net47\xrmtb.XrmToolBox.Controls.dll</HintPath>
+    <Reference Include="xrmtb.XrmToolBox.Controls, Version=2.2.6.0, Culture=neutral, PublicKeyToken=34def2c40500c62c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xrmtb.XrmToolBox.Controls.2.2.6\lib\net47\xrmtb.XrmToolBox.Controls.dll</HintPath>
     </Reference>
     <Reference Include="XrmToolBox, Version=1.2020.11.42, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\XrmToolBoxPackage.1.2020.11.42\lib\net462\XrmToolBox.exe</HintPath>
@@ -186,6 +186,7 @@
     </Compile>
     <Compile Include="AppCode\EntityItem.cs" />
     <Compile Include="AppCode\OptionsetItem.cs" />
+    <Compile Include="AppCode\Utils.cs" />
     <Compile Include="AppCode\ViewItem.cs" />
     <Compile Include="AppCode\BulkActionItem.cs" />
     <Compile Include="AppCode\BDUDelete.cs">

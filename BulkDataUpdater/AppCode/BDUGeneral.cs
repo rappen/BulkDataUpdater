@@ -1,4 +1,5 @@
-﻿using Microsoft.Crm.Sdk.Messages;
+﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
@@ -304,21 +305,7 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private bool ValuesEqual(object value1, object value2)
         {
-            if (value1 != null && value2 != null)
-            {
-                if (value1 is OptionSetValue && value2 is OptionSetValue)
-                {
-                    return ((OptionSetValue)value1).Value == ((OptionSetValue)value2).Value;
-                }
-                else
-                {
-                    return value1.ToString().Equals(value2.ToString());
-                }
-            }
-            else
-            {
-                return value1 == null && value2 == null;
-            }
+            return Utils.ValueToString(value1).Equals(Utils.ValueToString(value2));
         }
     }
 }
