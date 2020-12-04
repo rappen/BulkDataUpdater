@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -66,6 +66,10 @@
             this.btnGetView = new System.Windows.Forms.Button();
             this.btnGetFXB = new System.Windows.Forms.Button();
             this.gb2attribute = new System.Windows.Forms.GroupBox();
+            this.panUpdCalc = new System.Windows.Forms.Panel();
+            this.btnCalcHelp = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtValueCalc = new System.Windows.Forms.TextBox();
             this.panUpdTextMulti = new System.Windows.Forms.Panel();
             this.txtValueMultiline = new System.Windows.Forms.TextBox();
             this.panUpdButton = new System.Windows.Forms.Panel();
@@ -75,6 +79,7 @@
             this.btnLookupValue = new System.Windows.Forms.Button();
             this.panUpdValue = new System.Windows.Forms.Panel();
             this.panUpdAction = new System.Windows.Forms.Panel();
+            this.rbCalculate = new System.Windows.Forms.RadioButton();
             this.panUpdAttribute = new System.Windows.Forms.Panel();
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.gbExecute = new System.Windows.Forms.GroupBox();
@@ -130,6 +135,7 @@
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
+            this.panUpdCalc.SuspendLayout();
             this.panUpdTextMulti.SuspendLayout();
             this.panUpdButton.SuspendLayout();
             this.panUpdLookup.SuspendLayout();
@@ -404,15 +410,15 @@
             this.cmbAttribute.TabIndex = 1;
             this.cmbAttribute.Tag = "attribute";
             this.cmbAttribute.SelectedIndexChanged += new System.EventHandler(this.cmbAttribute_SelectedIndexChanged);
-            this.cmbAttribute.TextChanged += new System.EventHandler(this.cmbAttribute_TextChanged);
+            this.cmbAttribute.TextChanged += new System.EventHandler(this.genericInputChanged);
             // 
             // rbSetNull
             // 
             this.rbSetNull.AutoSize = true;
-            this.rbSetNull.Location = new System.Drawing.Point(175, 3);
+            this.rbSetNull.Location = new System.Drawing.Point(228, 3);
             this.rbSetNull.Name = "rbSetNull";
             this.rbSetNull.Size = new System.Drawing.Size(60, 17);
-            this.rbSetNull.TabIndex = 31;
+            this.rbSetNull.TabIndex = 4;
             this.rbSetNull.Text = "Set null";
             this.rbSetNull.UseVisualStyleBackColor = true;
             this.rbSetNull.CheckedChanged += new System.EventHandler(this.rbSet_CheckedChanged);
@@ -420,10 +426,10 @@
             // rbSetTouch
             // 
             this.rbSetTouch.AutoSize = true;
-            this.rbSetTouch.Location = new System.Drawing.Point(96, 3);
+            this.rbSetTouch.Location = new System.Drawing.Point(156, 3);
             this.rbSetTouch.Name = "rbSetTouch";
             this.rbSetTouch.Size = new System.Drawing.Size(56, 17);
-            this.rbSetTouch.TabIndex = 30;
+            this.rbSetTouch.TabIndex = 3;
             this.rbSetTouch.Text = "Touch";
             this.rbSetTouch.UseVisualStyleBackColor = true;
             this.rbSetTouch.CheckedChanged += new System.EventHandler(this.rbSet_CheckedChanged);
@@ -434,10 +440,10 @@
             this.rbSetValue.Checked = true;
             this.rbSetValue.Location = new System.Drawing.Point(12, 3);
             this.rbSetValue.Name = "rbSetValue";
-            this.rbSetValue.Size = new System.Drawing.Size(52, 17);
-            this.rbSetValue.TabIndex = 29;
+            this.rbSetValue.Size = new System.Drawing.Size(66, 17);
+            this.rbSetValue.TabIndex = 1;
             this.rbSetValue.TabStop = true;
-            this.rbSetValue.Text = "Value";
+            this.rbSetValue.Text = "Set fixed";
             this.rbSetValue.UseVisualStyleBackColor = true;
             this.rbSetValue.CheckedChanged += new System.EventHandler(this.rbSet_CheckedChanged);
             // 
@@ -446,12 +452,12 @@
             this.cmbValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbValue.FormattingEnabled = true;
-            this.cmbValue.Location = new System.Drawing.Point(12, 1);
+            this.cmbValue.Location = new System.Drawing.Point(12, 3);
             this.cmbValue.Name = "cmbValue";
             this.cmbValue.Size = new System.Drawing.Size(298, 21);
             this.cmbValue.TabIndex = 32;
             this.cmbValue.Tag = "value";
-            this.cmbValue.SelectedIndexChanged += new System.EventHandler(this.cmbValue_SelectedIndexChanged);
+            this.cmbValue.TextChanged += new System.EventHandler(this.genericInputChanged);
             // 
             // chkOnlyChange
             // 
@@ -528,6 +534,7 @@
             // 
             // gb2attribute
             // 
+            this.gb2attribute.Controls.Add(this.panUpdCalc);
             this.gb2attribute.Controls.Add(this.panUpdTextMulti);
             this.gb2attribute.Controls.Add(this.panUpdButton);
             this.gb2attribute.Controls.Add(this.panUpdLookup);
@@ -537,10 +544,54 @@
             this.gb2attribute.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb2attribute.Location = new System.Drawing.Point(0, 0);
             this.gb2attribute.Name = "gb2attribute";
-            this.gb2attribute.Size = new System.Drawing.Size(330, 173);
+            this.gb2attribute.Size = new System.Drawing.Size(330, 268);
             this.gb2attribute.TabIndex = 35;
             this.gb2attribute.TabStop = false;
             this.gb2attribute.Text = "Select attribute to update";
+            // 
+            // panUpdCalc
+            // 
+            this.panUpdCalc.Controls.Add(this.btnCalcHelp);
+            this.panUpdCalc.Controls.Add(this.label1);
+            this.panUpdCalc.Controls.Add(this.txtValueCalc);
+            this.panUpdCalc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panUpdCalc.Location = new System.Drawing.Point(3, 118);
+            this.panUpdCalc.Name = "panUpdCalc";
+            this.panUpdCalc.Size = new System.Drawing.Size(324, 115);
+            this.panUpdCalc.TabIndex = 11;
+            this.panUpdCalc.Visible = false;
+            // 
+            // btnCalcHelp
+            // 
+            this.btnCalcHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCalcHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnCalcHelp.Image")));
+            this.btnCalcHelp.Location = new System.Drawing.Point(282, 87);
+            this.btnCalcHelp.Name = "btnCalcHelp";
+            this.btnCalcHelp.Size = new System.Drawing.Size(28, 22);
+            this.btnCalcHelp.TabIndex = 38;
+            this.btnCalcHelp.UseVisualStyleBackColor = true;
+            this.btnCalcHelp.Click += new System.EventHandler(this.btnCalcHelp_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 90);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(0, 13);
+            this.label1.TabIndex = 37;
+            // 
+            // txtValueCalc
+            // 
+            this.txtValueCalc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtValueCalc.Location = new System.Drawing.Point(12, 3);
+            this.txtValueCalc.Multiline = true;
+            this.txtValueCalc.Name = "txtValueCalc";
+            this.txtValueCalc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtValueCalc.Size = new System.Drawing.Size(298, 78);
+            this.txtValueCalc.TabIndex = 36;
+            this.txtValueCalc.TextChanged += new System.EventHandler(this.genericInputChanged);
             // 
             // panUpdTextMulti
             // 
@@ -548,7 +599,7 @@
             this.panUpdTextMulti.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panUpdTextMulti.Location = new System.Drawing.Point(3, 118);
             this.panUpdTextMulti.Name = "panUpdTextMulti";
-            this.panUpdTextMulti.Size = new System.Drawing.Size(324, 20);
+            this.panUpdTextMulti.Size = new System.Drawing.Size(324, 115);
             this.panUpdTextMulti.TabIndex = 5;
             this.panUpdTextMulti.Visible = false;
             // 
@@ -561,15 +612,16 @@
             this.txtValueMultiline.Multiline = true;
             this.txtValueMultiline.Name = "txtValueMultiline";
             this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueMultiline.Size = new System.Drawing.Size(298, 14);
+            this.txtValueMultiline.Size = new System.Drawing.Size(298, 109);
             this.txtValueMultiline.TabIndex = 36;
+            this.txtValueMultiline.TextChanged += new System.EventHandler(this.genericInputChanged);
             // 
             // panUpdButton
             // 
             this.panUpdButton.Controls.Add(this.btnAdd);
             this.panUpdButton.Controls.Add(this.chkOnlyChange);
             this.panUpdButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panUpdButton.Location = new System.Drawing.Point(3, 138);
+            this.panUpdButton.Location = new System.Drawing.Point(3, 233);
             this.panUpdButton.Name = "panUpdButton";
             this.panUpdButton.Size = new System.Drawing.Size(324, 32);
             this.panUpdButton.TabIndex = 10;
@@ -634,6 +686,7 @@
             // 
             // panUpdAction
             // 
+            this.panUpdAction.Controls.Add(this.rbCalculate);
             this.panUpdAction.Controls.Add(this.rbSetValue);
             this.panUpdAction.Controls.Add(this.rbSetNull);
             this.panUpdAction.Controls.Add(this.rbSetTouch);
@@ -642,6 +695,17 @@
             this.panUpdAction.Name = "panUpdAction";
             this.panUpdAction.Size = new System.Drawing.Size(324, 25);
             this.panUpdAction.TabIndex = 2;
+            // 
+            // rbCalculate
+            // 
+            this.rbCalculate.AutoSize = true;
+            this.rbCalculate.Location = new System.Drawing.Point(84, 3);
+            this.rbCalculate.Name = "rbCalculate";
+            this.rbCalculate.Size = new System.Drawing.Size(69, 17);
+            this.rbCalculate.TabIndex = 2;
+            this.rbCalculate.Text = "Calculate";
+            this.rbCalculate.UseVisualStyleBackColor = true;
+            this.rbCalculate.CheckedChanged += new System.EventHandler(this.rbSet_CheckedChanged);
             // 
             // panUpdAttribute
             // 
@@ -793,8 +857,8 @@
             // 
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
@@ -923,7 +987,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.gb3attributes);
             this.splitContainer2.Size = new System.Drawing.Size(330, 445);
-            this.splitContainer2.SplitterDistance = 173;
+            this.splitContainer2.SplitterDistance = 268;
             this.splitContainer2.SplitterWidth = 8;
             this.splitContainer2.TabIndex = 3;
             // 
@@ -934,7 +998,7 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(0, 0);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(330, 264);
+            this.gb3attributes.Size = new System.Drawing.Size(330, 169);
             this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Verify attributes to update";
@@ -953,7 +1017,7 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(298, 210);
+            this.lvAttributes.Size = new System.Drawing.Size(298, 115);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -982,7 +1046,7 @@
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(204, 235);
+            this.btnRemove.Location = new System.Drawing.Point(204, 140);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(109, 23);
             this.btnRemove.TabIndex = 2;
@@ -1190,7 +1254,7 @@
             this.cbSetStatusReason.Name = "cbSetStatusReason";
             this.cbSetStatusReason.Size = new System.Drawing.Size(297, 21);
             this.cbSetStatusReason.TabIndex = 14;
-            this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.cbSetStatusReason_SelectedIndexChanged);
+            this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.genericInputChanged);
             // 
             // label8
             // 
@@ -1274,6 +1338,8 @@
             this.gb1select.ResumeLayout(false);
             this.gb1select.PerformLayout();
             this.gb2attribute.ResumeLayout(false);
+            this.panUpdCalc.ResumeLayout(false);
+            this.panUpdCalc.PerformLayout();
             this.panUpdTextMulti.ResumeLayout(false);
             this.panUpdTextMulti.PerformLayout();
             this.panUpdButton.ResumeLayout(false);
@@ -1417,5 +1483,10 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private xrmtb.XrmToolBox.Controls.Controls.CDSDataTextBox cdsLookupValue;
         private xrmtb.XrmToolBox.Controls.Controls.CDSLookupDialog cdsLookupDialog;
+        private System.Windows.Forms.Panel panUpdCalc;
+        private System.Windows.Forms.Button btnCalcHelp;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtValueCalc;
+        private System.Windows.Forms.RadioButton rbCalculate;
     }
 }

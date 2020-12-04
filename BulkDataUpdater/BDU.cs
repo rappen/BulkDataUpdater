@@ -86,11 +86,7 @@
                     gb1select.Enabled = enabled && Service != null;
                     gb2attribute.Enabled = gb1select.Enabled && records != null && records.Entities.Count > 0;
                     panUpdButton.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeItem;
-                    btnAdd.Enabled = panUpdButton.Enabled &&
-                        (!rbSetValue.Checked ||
-                         cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null ||
-                         cdsLookupValue.Entity != null ||
-                         txtValueMultiline.Visible);
+                    btnAdd.Enabled = panUpdButton.Enabled && IsValueValid();
                     gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
                     gbExecute.Enabled =
                         (tabControl1.SelectedTab == tabUpdate && panUpdButton.Enabled && lvAttributes.Items.Count > 0) ||
@@ -537,9 +533,10 @@
             var attribute = (AttributeItem)cmbAttribute.SelectedItem;
             rbSetNull.Enabled = attribute != null;
             cmbValue.Items.Clear();
-            var upd = rbSetValue.Checked;
-            var lkp = false;
+            var value = rbSetValue.Checked;
+            var lookup = false;
             var multi = false;
+            var calc = rbCalculate.Checked;
             if (rbSetValue.Checked && attribute != null)
             {
                 if (attribute.Metadata is EnumAttributeMetadata enummeta)
@@ -566,13 +563,13 @@
                 }
                 else if (attribute.Metadata is MemoAttributeMetadata)
                 {
-                    upd = false;
+                    value = false;
                     multi = true;
                 }
                 else if (attribute.Metadata is LookupAttributeMetadata lkpmeta)
                 {
-                    upd = false;
-                    lkp = true;
+                    value = false;
+                    lookup = true;
                     cdsLookupDialog.Service = Service;
                     cdsLookupDialog.LogicalNames = lkpmeta.Targets;
                     if (!cdsLookupDialog.LogicalNames.Contains(cdsLookupValue.LogicalName))
@@ -593,8 +590,9 @@
                     entityAttributes.Add(records.EntityName, attribute.GetValue());
                 }
             }
-            panUpdValue.Visible = upd;
-            panUpdLookup.Visible = lkp;
+            panUpdValue.Visible = value;
+            panUpdLookup.Visible = lookup;
+            panUpdCalc.Visible = calc;
             panUpdTextMulti.Visible = multi;
             EnableControls(true);
         }
@@ -666,7 +664,7 @@
             EnableControls(true);
         }
 
-        private void cbSetStatusReason_SelectedIndexChanged(object sender, EventArgs e)
+        private void genericInputChanged(object sender, EventArgs e)
         {
             EnableControls(true);
         }
@@ -674,16 +672,6 @@
         private void cmbAttribute_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateValueField();
-        }
-
-        private void cmbAttribute_TextChanged(object sender, EventArgs e)
-        {
-            EnableControls(true);
-        }
-
-        private void cmbValue_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            EnableControls(true);
         }
 
         private void crmGridView1_SelectionChanged(object sender, EventArgs e)
@@ -709,52 +697,7 @@
 
         private void lvAttributes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lvAttributes.SelectedItems.Count == 0)
-            {
-                return;
-            }
-            if (lvAttributes.SelectedItems[0].Tag is BulkActionItem attribute)
-            {
-                cmbAttribute.Text = attribute.Attribute.ToString();
-                switch (attribute.Action)
-                {
-                    case BulkActionAction.SetValue:
-                        rbSetValue.Checked = true;
-                        if (attribute.Value is OptionSetValue osv)
-                        {
-                            foreach (var option in cmbValue.Items.Cast<object>().Where(i => i is OptionsetItem).Select(i => i as OptionsetItem))
-                            {
-                                if (option.meta.Value == osv.Value)
-                                {
-                                    cmbValue.SelectedItem = option;
-                                    break;
-                                }
-                            }
-                        }
-                        else if (attribute.Value is EntityReference er)
-                        {
-                            cdsLookupValue.EntityReference = er;
-                        }
-                        else if (attribute.Attribute.Metadata is MemoAttributeMetadata)
-                        {
-                            txtValueMultiline.Text = attribute.Value.ToString();
-                        }
-                        else
-                        {
-                            cmbValue.Text = attribute.Value.ToString();
-                        }
-                        break;
-                    case BulkActionAction.Touch:
-                        rbSetTouch.Checked = true;
-                        cmbValue.Text = string.Empty;
-                        break;
-                    case BulkActionAction.Null:
-                        rbSetNull.Checked = true;
-                        cmbValue.Text = string.Empty;
-                        break;
-                }
-                chkOnlyChange.Checked = attribute.DontTouch;
-            }
+            PopulateFromAddedAttribute();
         }
 
         private void rbInclude_CheckedChanged(object sender, EventArgs e)
@@ -935,6 +878,24 @@
                     break;
             }
             EnableControls(true);
+        }
+
+        private void btnCalcHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(@"You must make sure attribute type work with the calculation you are composing.
+
+
+Value from other attribute:
+  {{logicalname}}
+May also lookup related information from M:1 relationships:
+  {{lookupfield.parentattribute}}
+
+Enumeration:
+  #:n:format
+Where n is start number of the sequence, and format standard C# formatting.
+Start number and format may be omitted.
+
+Plain text, value from other attribute, and enumeration may be combined.", "Value calulation help", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

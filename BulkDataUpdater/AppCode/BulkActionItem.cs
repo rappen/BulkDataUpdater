@@ -38,6 +38,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
     internal enum BulkActionAction
     {
         SetValue = 0,
+        Calc = 3,
         Touch = 1,
         Null = 2
     }

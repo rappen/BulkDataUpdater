@@ -1,4 +1,5 @@
 ﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using xrmtb.XrmToolBox.Controls.Helper;
 using XrmToolBox.Extensibility;
 
 namespace Cinteros.XTB.BulkDataUpdater
@@ -100,7 +102,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         try
                         {
-                            if (GetUpdateRecord(record, attributes) is Entity updateentity)
+                            if (GetUpdateRecord(record, attributes, current) is Entity updateentity)
                             {
                                 if (batchsize == 1)
                                 {
@@ -172,7 +174,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             });
         }
 
-        private Entity GetUpdateRecord(Entity record, List<BulkActionItem> attributes)
+        private Entity GetUpdateRecord(Entity record, List<BulkActionItem> attributes, int sequence)
         {
             if (attributes.Count == 0)
             {
@@ -183,27 +185,134 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 var attribute = bai.Attribute.Metadata.LogicalName;
                 var currentvalue = record.Contains(attribute) ? record[attribute] : null;
-                if (bai.Action == BulkActionAction.Touch)
+                var newvalue = bai.Value;
+                switch (bai.Action)
                 {
-                    bai.Value = currentvalue;
+                    case BulkActionAction.Touch:
+                        newvalue = currentvalue;
+                        break;
+                    case BulkActionAction.Calc:
+                        newvalue = CalculateValue(record, bai);
+                        break;
                 }
-                if (!bai.DontTouch || !ValuesEqual(bai.Value, currentvalue))
+                if (!bai.DontTouch || !ValuesEqual(newvalue, currentvalue))
                 {
-                    updaterecord.Attributes.Add(attribute, bai.Value);
-                    if (record.Contains(attribute))
-                    {
-                        record[attribute] = bai.Value;
-                    }
-                    else
-                    {
-                        record.Attributes.Add(attribute, bai.Value);
-                    }
+                    updaterecord[attribute] = newvalue;
+                    record[attribute] = newvalue;
                 }
             }
             return updaterecord;
         }
 
-        private object GetValue(AttributeTypeCode? type)
+        private static bool CheckAllUpdateAttributesExistOnRecord(Entity record, List<BulkActionItem> attributes)
+        {
+            var allattributesexist = true;
+            foreach (var attribute in attributes
+                .Where(a => a.Action == BulkActionAction.Touch || (a.Action == BulkActionAction.SetValue && a.DontTouch))
+                .Select(a => a.Attribute.Metadata.LogicalName))
+            {
+                if (!record.Contains(attribute))
+                {
+                    allattributesexist = false;
+                    break;
+                }
+            }
+            return allattributesexist;
+        }
+
+        private void AddAttribute()
+        {
+            if (!(GetAttributeItemFromUI() is BulkActionItem bai))
+            {
+                return;
+            }
+            if (lvAttributes.Items
+                .Cast<ListViewItem>()
+                .Select(i => i.Tag as BulkActionItem)
+                .Any(i => i.Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName))
+            {
+                if (MessageBox.Show($"Replace already added attribute {bai.Attribute} ?", "Attribute added", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
+                {
+                    return;
+                }
+                var removeitem = lvAttributes.Items
+                    .Cast<ListViewItem>()
+                    .FirstOrDefault(i => (i.Tag as BulkActionItem).Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName);
+                lvAttributes.Items.Remove(removeitem);
+            }
+            var item = lvAttributes.Items.Add(bai.Attribute.ToString());
+            item.Tag = bai;
+            item.SubItems.Add(bai.Action.ToString());
+            item.SubItems.Add(bai.StringValue);
+            item.SubItems.Add(bai.DontTouch ? "Yes" : "No");
+            EnableControls(true);
+        }
+
+        private void RemoveAttribute()
+        {
+            var items = lvAttributes.SelectedItems;
+            foreach (ListViewItem item in items)
+            {
+                lvAttributes.Items.Remove(item);
+            }
+            EnableControls(true);
+        }
+
+        private BulkActionItem GetAttributeItemFromUI()
+        {
+            if (!(cmbAttribute.SelectedItem is AttributeItem attribute))
+            {
+                MessageBox.Show("Select an attribute to update from the list.");
+                return null;
+            }
+            var bai = new BulkActionItem
+            {
+                Attribute = attribute,
+                DontTouch = chkOnlyChange.Checked,
+                Action =
+                    rbSetValue.Checked ? BulkActionAction.SetValue :
+                    rbCalculate.Checked ? BulkActionAction.Calc :
+                    rbSetNull.Checked ? BulkActionAction.Null :
+                    BulkActionAction.Touch
+            };
+            try
+            {
+                switch (bai.Action)
+                {
+                    case BulkActionAction.SetValue:
+                        bai.Value = GetValueFromUI(bai.Attribute.Metadata.AttributeType);
+                        if (attribute.Metadata is MemoAttributeMetadata)
+                        {
+                            bai.StringValue = txtValueMultiline.Text;
+                        }
+                        else if (attribute.Metadata is LookupAttributeMetadata)
+                        {
+                            bai.StringValue = cdsLookupValue.Text;
+                        }
+                        else
+                        {
+                            bai.StringValue = cmbValue.Text;
+                        }
+                        break;
+                    case BulkActionAction.Calc:
+                        bai.Value = txtValueCalc.Text;
+                        bai.StringValue = txtValueCalc.Text;
+                        break;
+                    default:
+                        bai.Value = null;
+                        bai.StringValue = string.Empty;
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Value error:\n" + e.Message, "Set value", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+            return bai;
+        }
+
+        private object GetValueFromUI(AttributeTypeCode? type)
         {
             switch (type)
             {
@@ -250,100 +359,94 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
         }
 
-        private static bool CheckAllUpdateAttributesExistOnRecord(Entity record, List<BulkActionItem> attributes)
+        private void PopulateFromAddedAttribute()
         {
-            var allattributesexist = true;
-            foreach (var attribute in attributes
-                .Where(a => a.Action == BulkActionAction.Touch || (a.Action == BulkActionAction.SetValue && a.DontTouch))
-                .Select(a => a.Attribute.Metadata.LogicalName))
-            {
-                if (!record.Contains(attribute))
-                {
-                    allattributesexist = false;
-                    break;
-                }
-            }
-            return allattributesexist;
-        }
-
-        private void AddAttribute()
-        {
-            if (!(GetAttributeItemFromUI() is BulkActionItem bai))
+            if (lvAttributes.SelectedItems.Count == 0)
             {
                 return;
             }
-            if (lvAttributes.Items
-                .Cast<ListViewItem>()
-                .Select(i => i.Tag as BulkActionItem)
-                .Any(i => i.Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName))
+            if (lvAttributes.SelectedItems[0].Tag is BulkActionItem attribute)
             {
-                if (MessageBox.Show($"Replace already added attribute {bai.Attribute} ?", "Attribute added", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
+                cmbAttribute.Text = attribute.Attribute.ToString();
+                switch (attribute.Action)
                 {
-                    return;
+                    case BulkActionAction.SetValue:
+                        rbSetValue.Checked = true;
+                        if (attribute.Value is OptionSetValue osv)
+                        {
+                            foreach (var option in cmbValue.Items.Cast<object>().Where(i => i is OptionsetItem).Select(i => i as OptionsetItem))
+                            {
+                                if (option.meta.Value == osv.Value)
+                                {
+                                    cmbValue.SelectedItem = option;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (attribute.Value is EntityReference er)
+                        {
+                            cdsLookupValue.EntityReference = er;
+                        }
+                        else if (attribute.Attribute.Metadata is MemoAttributeMetadata)
+                        {
+                            txtValueMultiline.Text = attribute.Value.ToString();
+                        }
+                        else
+                        {
+                            cmbValue.Text = attribute.Value.ToString();
+                        }
+                        break;
+                    case BulkActionAction.Calc:
+                        rbCalculate.Checked = true;
+                        txtValueCalc.Text = attribute.Value.ToString();
+                        break;
+                    case BulkActionAction.Touch:
+                        rbSetTouch.Checked = true;
+                        cmbValue.Text = string.Empty;
+                        break;
+                    case BulkActionAction.Null:
+                        rbSetNull.Checked = true;
+                        cmbValue.Text = string.Empty;
+                        break;
                 }
-                var removeitem = lvAttributes.Items
-                    .Cast<ListViewItem>()
-                    .FirstOrDefault(i => (i.Tag as BulkActionItem).Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName);
-                lvAttributes.Items.Remove(removeitem);
+                chkOnlyChange.Checked = attribute.DontTouch;
             }
-            var item = lvAttributes.Items.Add(bai.Attribute.ToString());
-            item.Tag = bai;
-            item.SubItems.Add(bai.Action.ToString());
-            item.SubItems.Add(bai.Action == BulkActionAction.SetValue ? bai.StringValue : string.Empty);
-            item.SubItems.Add(bai.DontTouch ? "Yes" : "No");
-            EnableControls(true);
         }
 
-        private void RemoveAttribute()
+        private bool IsValueValid()
         {
-            var items = lvAttributes.SelectedItems;
-            foreach (ListViewItem item in items)
+            if (rbSetValue.Checked)
             {
-                lvAttributes.Items.Remove(item);
-            }
-            EnableControls(true);
-        }
-
-        private BulkActionItem GetAttributeItemFromUI()
-        {
-            if (!(cmbAttribute.SelectedItem is AttributeItem attribute))
-            {
-                MessageBox.Show("Select an attribute to update from the list.");
-                return null;
-            }
-            var bai = new BulkActionItem
-            {
-                Attribute = attribute,
-                DontTouch = chkOnlyChange.Checked,
-                Action = rbSetValue.Checked ? BulkActionAction.SetValue : rbSetNull.Checked ? BulkActionAction.Null : BulkActionAction.Touch
-            };
-            var logicalname = bai.Attribute.GetValue();
-            bai.Value = null;
-            try
-            {
-                bai.Value = bai.Action == BulkActionAction.SetValue ? GetValue(bai.Attribute.Metadata.AttributeType) : null;
-                if (bai.Action == BulkActionAction.SetValue)
+                if (panUpdValue.Visible && (cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null))
                 {
-                    if (attribute.Metadata is MemoAttributeMetadata)
-                    {
-                        bai.StringValue = txtValueMultiline.Text;
-                    }
-                    else if (attribute.Metadata is LookupAttributeMetadata)
-                    {
-                        bai.StringValue = cdsLookupValue.Text;
-                    }
-                    else
-                    {
-                        bai.StringValue = cmbValue.Text;
-                    }
+                    return !string.IsNullOrWhiteSpace(cmbValue.Text);
+                }
+                if (panUpdLookup.Visible && cdsLookupValue.Entity != null)
+                {
+                    return true;
+                }
+                if (panUpdTextMulti.Visible && !string.IsNullOrWhiteSpace(txtValueMultiline.Text))
+                {
+                    return true;
                 }
             }
-            catch (Exception e)
+            if (rbCalculate.Checked && IsCalcValid(txtValueCalc.Text))
             {
-                MessageBox.Show("Value error:\n" + e.Message, "Set value", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                return true;
             }
-            return bai;
+            return rbSetTouch.Checked || rbSetNull.Checked;
+        }
+
+        private bool IsCalcValid(string text)
+        {
+            return !string.IsNullOrWhiteSpace(text);
+        }
+
+        private object CalculateValue(Entity record, BulkActionItem bai)
+        {
+            var format = bai.Value.ToString();
+            var value = EntityWrapper.EntityToString(record, Service, format);
+            return value;
         }
     }
 }
