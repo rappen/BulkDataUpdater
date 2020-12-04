@@ -355,7 +355,7 @@
         private void LoadSetting()
         {
             Settings settings;
-            if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out settings, "Settings"))
+            if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out settings, ConnectionDetail?.ConnectionName))
             {
                 settings = new Settings();
             }
@@ -503,7 +503,7 @@
                 DelayCallTime = int.TryParse(cmbDelayCall.Text, out int upddel) ? upddel : 0,
                 UpdateBatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
             };
-            SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, "Settings");
+            SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
         }
 
         private void UpdateIncludeCount()
@@ -692,6 +692,10 @@
             EnableControls(false);
             LoadSetting();
             LogUse("Load");
+            if (!string.IsNullOrWhiteSpace(fetchXml))
+            {
+                FetchUpdated(fetchXml);
+            }
             EnableControls(true);
         }
 
