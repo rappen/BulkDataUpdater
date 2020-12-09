@@ -1,14 +1,13 @@
 ﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
-using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Rappen.XTB.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using xrmtb.XrmToolBox.Controls.Helper;
 using XrmToolBox.Extensibility;
 
 namespace Cinteros.XTB.BulkDataUpdater
@@ -445,7 +444,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         private object CalculateValue(Entity record, BulkActionItem bai)
         {
             var format = bai.Value.ToString();
-            var value = EntityWrapper.EntityToString(record, Service, format);
+            var value = record.Populate(bag, format);
             return value;
         }
     }

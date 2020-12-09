@@ -5,17 +5,20 @@
     using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
+    using Rappen.XTB.Helpers;
+    using Rappen.XTB.Helpers.Interfaces;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Reflection;
     using System.Windows.Forms;
     using System.Xml;
     using Xrm.Common.Forms;
     using Xrm.XmlEditorUtils;
     using XrmToolBox.Extensibility;
 
-    public partial class BulkDataUpdater : PluginControlBase
+    public partial class BulkDataUpdater : PluginControlBase, ILogger
     {
         #region Internal Fields
 
@@ -28,13 +31,13 @@
         #region Private Fields
 
         private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
-
-        //private const string aiKey = "cc7cb081-b489-421d-bb61-2ee53495c336";    // jonas@rappen.net tenant, TestAI
         private const string aiKey = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
+        private AppInsights ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
 
+        private XTBBag bag;
         private static Dictionary<string, EntityMetadata> entities;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
-        private AppInsights ai = new AppInsights(new AiConfig(aiEndpoint, aiKey) { PluginName = "Bulk Data Updater" });
+
         private string deleteWarningText;
         private Dictionary<string, string> entityAttributes = new Dictionary<string, string>();
         private string fetchXml = fetchTemplate;
@@ -47,7 +50,6 @@
         private bool showAttributesStandard = true;
         private bool showAttributesUncustomizable = true;
         private bool showAttributesUnmanaged = true;
-        // Oops, did I name that one??
         private Entity view;
 
         private bool working = false;
@@ -681,6 +683,7 @@
 
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
+            bag = new XTBBag(Service, this);
             crmGridView1.DataSource = null;
             entities = null;
             entityShitList.Clear();
@@ -900,6 +903,26 @@ Where n is start number of the sequence, and format standard C# formatting.
 Start number and format may be omitted.
 
 Plain text, value from other attribute, and enumeration may be combined.", "Value calulation help", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public void EndSection()
+        {
+            LogInfo("<----");
+        }
+
+        public void Log(string message)
+        {
+            LogInfo(message);
+        }
+
+        public void Log(Exception ex)
+        {
+            LogError(ex.ToString());
+        }
+
+        public void StartSection(string name = null)
+        {
+            LogInfo($"----> {name}");
         }
     }
 }

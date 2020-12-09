@@ -186,7 +186,6 @@
     </Compile>
     <Compile Include="AppCode\EntityItem.cs" />
     <Compile Include="AppCode\OptionsetItem.cs" />
-    <Compile Include="AppCode\Utils.cs" />
     <Compile Include="AppCode\ViewItem.cs" />
     <Compile Include="AppCode\BulkActionItem.cs" />
     <Compile Include="AppCode\BDUDelete.cs">
@@ -237,7 +236,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="XTBAppInsights.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -274,6 +272,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <Import Project="..\Rappen.XTB.Helper\Rappen.XTB.Helpers.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>ilmerge.exe /target:library /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319" "/out:Rappen.XTB.BDU.dll" "$(TargetFileName)" "xrmtb.XrmToolBox.Controls.dll" "Rappen.XmlEditorUtils.dll"
