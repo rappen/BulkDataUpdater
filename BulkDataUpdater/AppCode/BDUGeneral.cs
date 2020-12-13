@@ -7,6 +7,7 @@ using Rappen.XTB.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 using XrmToolBox.Extensibility.Args;
@@ -301,7 +302,12 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private IEnumerable<Entity> GetIncludedRecords()
         {
-            return rbIncludeSelected.Checked ? crmGridView1.SelectedRowRecords : records.Entities;
+            // The following line can be restored when xrmtb controls version > 2.2.6 is used
+            //return rbIncludeSelected.Checked ? crmGridView1.SelectedRowRecords : records.Entities;
+            var rows = rbIncludeSelected.Checked ? crmGridView1.SelectedRows.OfType<DataGridViewRow>() : crmGridView1.Rows.OfType<DataGridViewRow>();
+            rows = rows.OrderBy(r => r.Index);
+            var result = rows.Where(r => r.Cells["#entity"]?.Value is Entity).Select(r => r.Cells["#entity"].Value as Entity);
+            return result;
         }
 
         private bool ValuesEqual(object value1, object value2)
