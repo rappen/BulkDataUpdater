@@ -184,8 +184,6 @@
     <Compile Include="AppCode\BDUAssign.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="AppCode\EntityItem.cs" />
-    <Compile Include="AppCode\OptionsetItem.cs" />
     <Compile Include="AppCode\ViewItem.cs" />
     <Compile Include="AppCode\BulkActionItem.cs" />
     <Compile Include="AppCode\BDUDelete.cs">
@@ -236,6 +234,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="XrmToolBoxToolIds.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

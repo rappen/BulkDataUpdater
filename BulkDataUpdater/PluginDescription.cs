@@ -14,13 +14,8 @@
         ExportMetadata("SecondaryFontColor", "#0000FF")]
     public class BulkDataUpdaterTool : PluginBase
     {
-        #region Public Methods
+        public override IXrmToolBoxPluginControl GetControl() => new BulkDataUpdater();
 
-        public override IXrmToolBoxPluginControl GetControl()
-        {
-            return new BulkDataUpdater();
-        }
-
-        #endregion Public Methods
+        //public override Guid GetId() => XrmToolBoxToolIds.BulkDataUpdater;
     }
 }

@@ -889,20 +889,7 @@
 
         private void btnCalcHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(@"You must make sure attribute type work with the calculation you are composing.
-
-
-Value from other attribute:
-  {{logicalname}}
-May also lookup related information from M:1 relationships:
-  {{lookupfield.parentattribute}}
-
-Enumeration:
-  #:n:format
-Where n is start number of the sequence, and format standard C# formatting.
-Start number and format may be omitted.
-
-Plain text, value from other attribute, and enumeration may be combined.", "Value calulation help", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Process.Start("https://jonasr.app/bdu/#calc");
         }
 
         public void EndSection()
@@ -923,6 +910,18 @@ Plain text, value from other attribute, and enumeration may be combined.", "Valu
         public void StartSection(string name = null)
         {
             LogInfo($"----> {name}");
+        }
+
+        private void btnCalcPreview_Click(object sender, EventArgs e)
+        {
+            var record = crmGridView1.SelectedCellRecords.FirstOrDefault();
+            if (record == null)
+            {
+                MessageBox.Show("Please select a record to the left to see preview of calculation.", "Calculation Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            var preview = record.Populate(bag, txtValueCalc.Text);
+            MessageBox.Show($"Preview of calculation:\n{preview}", "Calculation Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
     }
 }

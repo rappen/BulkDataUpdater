@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -132,6 +132,7 @@
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.cdsLookupDialog = new xrmtb.XrmToolBox.Controls.Controls.CDSLookupDialog();
+            this.btnCalcPreview = new System.Windows.Forms.Button();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -551,6 +552,7 @@
             // 
             // panUpdCalc
             // 
+            this.panUpdCalc.Controls.Add(this.btnCalcPreview);
             this.panUpdCalc.Controls.Add(this.btnCalcHelp);
             this.panUpdCalc.Controls.Add(this.label1);
             this.panUpdCalc.Controls.Add(this.txtValueCalc);
@@ -857,8 +859,8 @@
             // 
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
@@ -1320,6 +1322,17 @@
             this.cdsLookupDialog.Service = null;
             this.cdsLookupDialog.Title = null;
             // 
+            // btnCalcPreview
+            // 
+            this.btnCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCalcPreview.Location = new System.Drawing.Point(11, 85);
+            this.btnCalcPreview.Name = "btnCalcPreview";
+            this.btnCalcPreview.Size = new System.Drawing.Size(75, 23);
+            this.btnCalcPreview.TabIndex = 39;
+            this.btnCalcPreview.Text = "Preview";
+            this.btnCalcPreview.UseVisualStyleBackColor = true;
+            this.btnCalcPreview.Click += new System.EventHandler(this.btnCalcPreview_Click);
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1488,5 +1501,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtValueCalc;
         private System.Windows.Forms.RadioButton rbCalculate;
+        private System.Windows.Forms.Button btnCalcPreview;
     }
 }
