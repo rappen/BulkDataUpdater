@@ -58,7 +58,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             bdu.LogUse("About-OpenHomepage");
-            System.Diagnostics.Process.Start("https://github.com/rappen/BulkDataUpdater");
+            System.Diagnostics.Process.Start("https://jonasr.app/bdu/");
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
