@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
@@ -67,6 +67,7 @@
             this.btnGetFXB = new System.Windows.Forms.Button();
             this.gb2attribute = new System.Windows.Forms.GroupBox();
             this.panUpdCalc = new System.Windows.Forms.Panel();
+            this.txtCalcPreview = new System.Windows.Forms.TextBox();
             this.btnCalcHelp = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtValueCalc = new System.Windows.Forms.TextBox();
@@ -132,7 +133,7 @@
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.cdsLookupDialog = new xrmtb.XrmToolBox.Controls.Controls.CDSLookupDialog();
-            this.btnCalcPreview = new System.Windows.Forms.Button();
+            this.tmCalc = new System.Windows.Forms.Timer(this.components);
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -184,7 +185,7 @@
             this.tsbCancel});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(847, 31);
+            this.toolStripMain.Size = new System.Drawing.Size(979, 31);
             this.toolStripMain.TabIndex = 23;
             this.toolStripMain.Text = "toolStrip1";
             // 
@@ -480,10 +481,10 @@
             this.gb1select.Dock = System.Windows.Forms.DockStyle.Top;
             this.gb1select.Location = new System.Drawing.Point(0, 0);
             this.gb1select.Name = "gb1select";
-            this.gb1select.Size = new System.Drawing.Size(499, 91);
+            this.gb1select.Size = new System.Drawing.Size(631, 91);
             this.gb1select.TabIndex = 1;
             this.gb1select.TabStop = false;
-            this.gb1select.Text = "1. Select records to update";
+            this.gb1select.Text = "Select records to update";
             // 
             // btnGetFile
             // 
@@ -552,7 +553,7 @@
             // 
             // panUpdCalc
             // 
-            this.panUpdCalc.Controls.Add(this.btnCalcPreview);
+            this.panUpdCalc.Controls.Add(this.txtCalcPreview);
             this.panUpdCalc.Controls.Add(this.btnCalcHelp);
             this.panUpdCalc.Controls.Add(this.label1);
             this.panUpdCalc.Controls.Add(this.txtValueCalc);
@@ -562,6 +563,18 @@
             this.panUpdCalc.Size = new System.Drawing.Size(324, 115);
             this.panUpdCalc.TabIndex = 11;
             this.panUpdCalc.Visible = false;
+            // 
+            // txtCalcPreview
+            // 
+            this.txtCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCalcPreview.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCalcPreview.Location = new System.Drawing.Point(12, 88);
+            this.txtCalcPreview.Name = "txtCalcPreview";
+            this.txtCalcPreview.ReadOnly = true;
+            this.txtCalcPreview.Size = new System.Drawing.Size(264, 20);
+            this.txtCalcPreview.TabIndex = 39;
+            this.txtCalcPreview.TabStop = false;
             // 
             // btnCalcHelp
             // 
@@ -593,7 +606,7 @@
             this.txtValueCalc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtValueCalc.Size = new System.Drawing.Size(298, 78);
             this.txtValueCalc.TabIndex = 36;
-            this.txtValueCalc.TextChanged += new System.EventHandler(this.genericInputChanged);
+            this.txtValueCalc.TextChanged += new System.EventHandler(this.txtValueCalc_TextChanged);
             // 
             // panUpdTextMulti
             // 
@@ -850,7 +863,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 91);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(499, 560);
+            this.groupBox5.Size = new System.Drawing.Size(631, 560);
             this.groupBox5.TabIndex = 38;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
@@ -859,21 +872,21 @@
             // 
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
-            this.crmGridView1.Location = new System.Drawing.Point(3, 40);
+            this.crmGridView1.Location = new System.Drawing.Point(3, 54);
             this.crmGridView1.Name = "crmGridView1";
             this.crmGridView1.OrganizationService = null;
             this.crmGridView1.RowHeadersVisible = false;
             this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(493, 517);
+            this.crmGridView1.Size = new System.Drawing.Size(625, 503);
             this.crmGridView1.TabIndex = 2;
             this.crmGridView1.RecordDoubleClick += new xrmtb.XrmToolBox.Controls.CRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
             this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
@@ -886,13 +899,13 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(493, 24);
+            this.panel1.Size = new System.Drawing.Size(625, 38);
             this.panel1.TabIndex = 1;
             // 
             // rbIncludeSelected
             // 
             this.rbIncludeSelected.AutoSize = true;
-            this.rbIncludeSelected.Location = new System.Drawing.Point(180, 3);
+            this.rbIncludeSelected.Location = new System.Drawing.Point(180, 9);
             this.rbIncludeSelected.Name = "rbIncludeSelected";
             this.rbIncludeSelected.Size = new System.Drawing.Size(163, 17);
             this.rbIncludeSelected.TabIndex = 4;
@@ -905,7 +918,7 @@
             // 
             this.rbIncludeAll.AutoSize = true;
             this.rbIncludeAll.Checked = true;
-            this.rbIncludeAll.Location = new System.Drawing.Point(12, 3);
+            this.rbIncludeAll.Location = new System.Drawing.Point(12, 9);
             this.rbIncludeAll.Name = "rbIncludeAll";
             this.rbIncludeAll.Size = new System.Drawing.Size(153, 17);
             this.rbIncludeAll.TabIndex = 3;
@@ -917,7 +930,7 @@
             // lblIncludedRecords
             // 
             this.lblIncludedRecords.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblIncludedRecords.Location = new System.Drawing.Point(349, 5);
+            this.lblIncludedRecords.Location = new System.Drawing.Point(481, 11);
             this.lblIncludedRecords.Name = "lblIncludedRecords";
             this.lblIncludedRecords.Size = new System.Drawing.Size(141, 16);
             this.lblIncludedRecords.TabIndex = 5;
@@ -944,8 +957,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.gbExecute);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(847, 651);
-            this.splitContainer1.SplitterDistance = 499;
+            this.splitContainer1.Size = new System.Drawing.Size(979, 651);
+            this.splitContainer1.SplitterDistance = 631;
             this.splitContainer1.TabIndex = 39;
             // 
             // tabControl1
@@ -1322,16 +1335,10 @@
             this.cdsLookupDialog.Service = null;
             this.cdsLookupDialog.Title = null;
             // 
-            // btnCalcPreview
+            // tmCalc
             // 
-            this.btnCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCalcPreview.Location = new System.Drawing.Point(11, 85);
-            this.btnCalcPreview.Name = "btnCalcPreview";
-            this.btnCalcPreview.Size = new System.Drawing.Size(75, 23);
-            this.btnCalcPreview.TabIndex = 39;
-            this.btnCalcPreview.Text = "Preview";
-            this.btnCalcPreview.UseVisualStyleBackColor = true;
-            this.btnCalcPreview.Click += new System.EventHandler(this.btnCalcPreview_Click);
+            this.tmCalc.Interval = 1000;
+            this.tmCalc.Tick += new System.EventHandler(this.tmCalc_Tick);
             // 
             // BulkDataUpdater
             // 
@@ -1342,7 +1349,7 @@
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(847, 682);
+            this.Size = new System.Drawing.Size(979, 682);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
@@ -1501,6 +1508,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtValueCalc;
         private System.Windows.Forms.RadioButton rbCalculate;
-        private System.Windows.Forms.Button btnCalcPreview;
+        private System.Windows.Forms.TextBox txtCalcPreview;
+        private System.Windows.Forms.Timer tmCalc;
     }
 }

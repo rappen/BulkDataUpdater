@@ -10,6 +10,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Drawing;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
@@ -169,12 +170,7 @@
 
         private void GetFromFXB()
         {
-            var messageBusEventArgs = new MessageBusEventArgs("FetchXML Builder")
-            {
-                //SourcePlugin = "Bulk Data Updater"
-            };
-            messageBusEventArgs.TargetArgument = fetchXml;
-            OnOutgoingMessage(this, messageBusEventArgs);
+            OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder") { TargetArgument = fetchXml });
         }
 
         private void GetRecords(string tag)
@@ -679,6 +675,7 @@
         private void crmGridView1_SelectionChanged(object sender, EventArgs e)
         {
             UpdateIncludeCount();
+            PreviewCalc();
         }
 
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
@@ -892,6 +889,8 @@
             Process.Start("https://jonasr.app/bdu/#calc");
         }
 
+        #region Implementation of ILogger
+
         public void EndSection()
         {
             LogInfo("<----");
@@ -912,6 +911,8 @@
             LogInfo($"----> {name}");
         }
 
+        #endregion Implementation of ILogger
+
         private void btnCalcPreview_Click(object sender, EventArgs e)
         {
             var record = crmGridView1.SelectedCellRecords.FirstOrDefault();
@@ -920,8 +921,52 @@
                 MessageBox.Show("Please select a record to the left to see preview of calculation.", "Calculation Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            var preview = record.Populate(bag, txtValueCalc.Text);
+            var preview = record.Substitute(bag, txtValueCalc.Text);
             MessageBox.Show($"Preview of calculation:\n{preview}", "Calculation Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
+        private void txtValueCalc_TextChanged(object sender, EventArgs e)
+        {
+            AwaitCalc();
+            EnableControls(true);
+        }
+
+        private void AwaitCalc()
+        {
+            txtCalcPreview.ForeColor = SystemColors.GrayText;
+            tmCalc.Stop();
+            tmCalc.Start();
+        }
+
+        private void PreviewCalc()
+        {
+            tmCalc.Enabled = false;
+            if (tabControl1.SelectedTab == tabUpdate &&
+                rbCalculate.Checked &&
+                bag?.Service != null &&
+                crmGridView1.SelectedCellRecords.FirstOrDefault() is Entity record)
+            {
+                try
+                {
+                    var preview = record.Substitute(bag, txtValueCalc.Text, null, true);
+                    preview = XrmSubstituter.InjectSequence(preview, crmGridView1.SelectedRows.Count);
+                    txtCalcPreview.Text = preview;
+                }
+                catch (Exception ex)
+                {
+                    txtCalcPreview.Text = $"Error: {ex.Message}";
+                }
+                txtCalcPreview.ForeColor = SystemColors.WindowText;
+            }
+            else if (!string.IsNullOrEmpty(txtCalcPreview.Text))
+            {
+                txtCalcPreview.Text = string.Empty;
+            }
+        }
+
+        private void tmCalc_Tick(object sender, EventArgs e)
+        {
+            PreviewCalc();
         }
     }
 }
