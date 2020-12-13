@@ -191,7 +191,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         newvalue = currentvalue;
                         break;
                     case BulkActionAction.Calc:
-                        newvalue = CalculateValue(record, bai);
+                        newvalue = CalculateValue(record, bai, sequence);
                         break;
                 }
                 if (!bai.DontTouch || !ValuesEqual(newvalue, currentvalue))
@@ -441,10 +441,11 @@ namespace Cinteros.XTB.BulkDataUpdater
             return !string.IsNullOrWhiteSpace(text);
         }
 
-        private object CalculateValue(Entity record, BulkActionItem bai)
+        private object CalculateValue(Entity record, BulkActionItem bai, int sequence)
         {
             var format = bai.Value.ToString();
-            var value = record.Populate(bag, format);
+            var value = record.Substitute(bag, format, string.Empty, true);
+            value = XrmSubstituter.InjectSequence(value, sequence);
             return value;
         }
     }
