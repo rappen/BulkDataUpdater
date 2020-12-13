@@ -19,7 +19,9 @@ It can also delete, assign, and set state of records by the filter specified.
     <releaseNotes>
 Latest version:
 
+Calculated column values! Read more at https://jonasr.app/BDU
 Nice and shiny lookup dialog used when setting lookup columns
+Reloading last used query when opening the tool
 Improved performance when retrieving records
 Fixed bug when getting errors during Delete
 
