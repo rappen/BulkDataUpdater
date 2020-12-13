@@ -444,8 +444,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         private object CalculateValue(Entity record, BulkActionItem bai, int sequence)
         {
             var format = bai.Value.ToString();
-            var value = record.Substitute(bag, format, string.Empty, true);
-            value = XrmSubstituter.InjectSequence(value, sequence);
+            var value = record.Substitute(bag, format, sequence, string.Empty, true);
             return value;
         }
     }

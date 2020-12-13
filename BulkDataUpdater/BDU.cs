@@ -948,8 +948,7 @@
             {
                 try
                 {
-                    var preview = record.Substitute(bag, txtValueCalc.Text, null, true);
-                    preview = XrmSubstituter.InjectSequence(preview, crmGridView1.SelectedRows.Count);
+                    var preview = record.Substitute(bag, txtValueCalc.Text, 1, string.Empty, true);
                     txtCalcPreview.Text = preview;
                 }
                 catch (Exception ex)
