@@ -193,7 +193,8 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             if (working)
             {
-                return;
+                CancelWorker();
+                working = false;
             }
             lblRecords.Text = "Retrieving records...";
             records = null;
@@ -210,6 +211,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Retrieving records...",
+                IsCancelable = true,
                 Work = (worker, eventargs) =>
                 {
                     EntityCollection retrieved = RetrieveRecordsAllPages(worker, query);
@@ -222,9 +224,9 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         MessageBox.Show(completedargs.Error.Message, "Retrieve Records", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    else if (completedargs.Result is EntityCollection)
+                    else if (!completedargs.Cancelled && completedargs.Result is EntityCollection result)
                     {
-                        records = (EntityCollection)completedargs.Result;
+                        records = result;
                     }
                     AfterRetrieve();
                 },
