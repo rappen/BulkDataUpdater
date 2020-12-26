@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Forms;
-    using Cinteros.Xrm.XmlEditorUtils;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Query;
+    using Rappen.XTB.Helpers;
     using XrmToolBox.Extensibility;
     using XTB.BulkDataUpdater.AppCode;
     public partial class SelectViewDialog : Form

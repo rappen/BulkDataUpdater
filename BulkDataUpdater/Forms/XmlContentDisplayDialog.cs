@@ -1,9 +1,9 @@
 ﻿namespace Cinteros.Xrm.Common.Forms
 {
+    using Cinteros.XTB.BulkDataUpdater.AppCode;
     using System;
     using System.Windows.Forms;
     using System.Xml;
-    using Cinteros.Xrm.XmlEditorUtils;
 
     public partial class XmlContentDisplayDialog : Form
     {

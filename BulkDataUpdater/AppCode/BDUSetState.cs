@@ -3,6 +3,7 @@ using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Rappen.XTB.Helpers.ControlWrappers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

@@ -6,6 +6,7 @@
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XTB.Helpers;
+    using Rappen.XTB.Helpers.ControlWrappers;
     using Rappen.XTB.Helpers.Interfaces;
     using System;
     using System.Collections.Generic;
@@ -16,7 +17,6 @@
     using System.Windows.Forms;
     using System.Xml;
     using Xrm.Common.Forms;
-    using Xrm.XmlEditorUtils;
     using XrmToolBox.Extensibility;
 
     public partial class BulkDataUpdater : PluginControlBase, ILogger
@@ -464,14 +464,14 @@
                 var attributes = GetDisplayAttributes(entityName);
                 foreach (var attribute in attributes)
                 {
-                    AttributeItem.AddAttributeToComboBox(cmbAttribute, attribute, true);
+                    AttributeItem.AddAttributeToComboBox(cmbAttribute, attribute, true, useFriendlyNames);
                 }
                 if (entityAttributes.ContainsKey(records.EntityName))
                 {
                     var attr = entityAttributes[records.EntityName];
                     var coll = new Dictionary<string, string>();
                     coll.Add("attribute", attr);
-                    ControlUtils.FillControl(coll, cmbAttribute);
+                    ControlUtils.FillControl(coll, cmbAttribute, null);
                 }
             }
             crmGridView1.ShowFriendlyNames = useFriendlyNames;

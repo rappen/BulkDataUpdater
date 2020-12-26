@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            CSRichTextBoxSyntaxHighlighting.XMLViewerSettings xmlViewerSettings1 = new CSRichTextBoxSyntaxHighlighting.XMLViewerSettings();
+            xrmtb.XrmToolBox.Controls.XMLViewerSettings xmlViewerSettings1 = new xrmtb.XrmToolBox.Controls.XMLViewerSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectViewDialog));
             this.panel1 = new System.Windows.Forms.Panel();
             this.cmbView = new System.Windows.Forms.ComboBox();
@@ -42,7 +42,7 @@
             this.panCancel = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.txtFetch = new CSRichTextBoxSyntaxHighlighting.XMLViewer();
+            this.txtFetch = new xrmtb.XrmToolBox.Controls.XMLViewer();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panOk.SuspendLayout();
@@ -233,7 +233,7 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Panel panCancel;
         private System.Windows.Forms.Button btnCancel;
-        internal CSRichTextBoxSyntaxHighlighting.XMLViewer txtFetch;
+        internal xrmtb.XrmToolBox.Controls.XMLViewer txtFetch;
         private System.Windows.Forms.Button btnRefresh;
 
     }

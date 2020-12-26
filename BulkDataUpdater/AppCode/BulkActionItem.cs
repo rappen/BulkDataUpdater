@@ -1,6 +1,4 @@
-﻿using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Metadata;
-using System.Collections.Generic;
+﻿using Rappen.XTB.Helpers.ControlWrappers;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
