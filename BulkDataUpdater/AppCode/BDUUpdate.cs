@@ -3,7 +3,7 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Rappen.XTB.Helpers;
-using Rappen.XTB.Helpers.ControlWrappers;
+using Rappen.XTB.Helpers.ControlItems;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -260,7 +260,7 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private BulkActionItem GetAttributeItemFromUI()
         {
-            if (!(cmbAttribute.SelectedItem is AttributeItem attribute))
+            if (!(cmbAttribute.SelectedItem is AttributeMetadataItem attribute))
             {
                 MessageBox.Show("Select an attribute to update from the list.");
                 return null;
@@ -335,7 +335,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 case AttributeTypeCode.Picklist:
                 case AttributeTypeCode.State:
                 case AttributeTypeCode.Status:
-                    var value = ((OptionsetItem)cmbValue.SelectedItem).meta.Value;
+                    var value = ((OptionMetadataItem)cmbValue.SelectedItem).meta.Value;
                     return new OptionSetValue((int)value);
 
                 case AttributeTypeCode.DateTime:
@@ -344,8 +344,8 @@ namespace Cinteros.XTB.BulkDataUpdater
                 case AttributeTypeCode.Boolean:
                     {
                         // Is checking the cmbAttribute ok? I hope so...
-                        var attr = (BooleanAttributeMetadata)((AttributeItem)cmbAttribute.SelectedItem).Metadata;
-                        return ((OptionsetItem)cmbValue.SelectedItem).meta == attr.OptionSet.TrueOption;
+                        var attr = (BooleanAttributeMetadata)((AttributeMetadataItem)cmbAttribute.SelectedItem).Metadata;
+                        return ((OptionMetadataItem)cmbValue.SelectedItem).meta == attr.OptionSet.TrueOption;
                     }
                 case AttributeTypeCode.Money:
                     return new Money(decimal.Parse(cmbValue.Text));
@@ -374,7 +374,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         rbSetValue.Checked = true;
                         if (attribute.Value is OptionSetValue osv)
                         {
-                            foreach (var option in cmbValue.Items.Cast<object>().Where(i => i is OptionsetItem).Select(i => i as OptionsetItem))
+                            foreach (var option in cmbValue.Items.Cast<object>().Where(i => i is OptionMetadataItem).Select(i => i as OptionMetadataItem))
                             {
                                 if (option.meta.Value == osv.Value)
                                 {
@@ -445,7 +445,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         private object CalculateValue(Entity record, BulkActionItem bai, int sequence)
         {
             var format = bai.Value.ToString();
-            var value = record.Substitute(bag, format, sequence, string.Empty, true);
+            var value = record.Substitute(new GenericBag(Service), format, sequence, string.Empty, true);
             return value;
         }
     }

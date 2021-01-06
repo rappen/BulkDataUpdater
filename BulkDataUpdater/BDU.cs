@@ -6,7 +6,7 @@
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XTB.Helpers;
-    using Rappen.XTB.Helpers.ControlWrappers;
+    using Rappen.XTB.Helpers.ControlItems;
     using Rappen.XTB.Helpers.Interfaces;
     using System;
     using System.Collections.Generic;
@@ -19,7 +19,7 @@
     using Xrm.Common.Forms;
     using XrmToolBox.Extensibility;
 
-    public partial class BulkDataUpdater : PluginControlBase, ILogger
+    public partial class BulkDataUpdater : PluginControlBase
     {
         #region Internal Fields
 
@@ -35,7 +35,6 @@
         private const string aiKey = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
         private AppInsights ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
 
-        private XTBBag bag;
         private static Dictionary<string, EntityMetadata> entities;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
 
@@ -88,7 +87,7 @@
                     Enabled = enabled;
                     gb1select.Enabled = enabled && Service != null;
                     gb2attribute.Enabled = gb1select.Enabled && records != null && records.Entities.Count > 0;
-                    panUpdButton.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeItem;
+                    panUpdButton.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeMetadataItem;
                     btnAdd.Enabled = panUpdButton.Enabled && IsValueValid();
                     gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
                     gbExecute.Enabled =
@@ -464,7 +463,7 @@
                 var attributes = GetDisplayAttributes(entityName);
                 foreach (var attribute in attributes)
                 {
-                    AttributeItem.AddAttributeToComboBox(cmbAttribute, attribute, true, useFriendlyNames);
+                    AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, attribute, true, useFriendlyNames);
                 }
                 if (entityAttributes.ContainsKey(records.EntityName))
                 {
@@ -528,7 +527,7 @@
             chkOnlyChange.Enabled = !rbSetTouch.Checked;
             chkOnlyChange.Checked = chkOnlyChange.Checked && !rbSetTouch.Checked;
 
-            var attribute = (AttributeItem)cmbAttribute.SelectedItem;
+            var attribute = (AttributeMetadataItem)cmbAttribute.SelectedItem;
             rbSetNull.Enabled = attribute != null;
             cmbValue.Items.Clear();
             var value = rbSetValue.Checked;
@@ -544,7 +543,7 @@
                     {
                         foreach (var option in options.Options)
                         {
-                            cmbValue.Items.Add(new OptionsetItem(option));
+                            cmbValue.Items.Add(new OptionMetadataItem(option));
                         }
                     }
                     cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -554,8 +553,8 @@
                     var options = boolmeta.OptionSet;
                     if (options != null)
                     {
-                        cmbValue.Items.Add(new OptionsetItem(options.TrueOption));
-                        cmbValue.Items.Add(new OptionsetItem(options.FalseOption));
+                        cmbValue.Items.Add(new OptionMetadataItem(options.TrueOption));
+                        cmbValue.Items.Add(new OptionMetadataItem(options.FalseOption));
                     }
                     cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
                 }
@@ -680,7 +679,6 @@
 
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
-            bag = new XTBBag(Service, this);
             crmGridView1.DataSource = null;
             entities = null;
             entityShitList.Clear();
@@ -921,7 +919,7 @@
                 MessageBox.Show("Please select a record to the left to see preview of calculation.", "Calculation Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            var preview = record.Substitute(bag, txtValueCalc.Text);
+            var preview = record.Substitute(Service, txtValueCalc.Text);
             MessageBox.Show($"Preview of calculation:\n{preview}", "Calculation Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
@@ -943,12 +941,12 @@
             tmCalc.Enabled = false;
             if (tabControl1.SelectedTab == tabUpdate &&
                 rbCalculate.Checked &&
-                bag?.Service != null &&
+                Service != null &&
                 crmGridView1.SelectedCellRecords.FirstOrDefault() is Entity record)
             {
                 try
                 {
-                    var preview = record.Substitute(bag, txtValueCalc.Text, 1, string.Empty, true);
+                    var preview = record.Substitute(new GenericBag(Service), txtValueCalc.Text, 1, string.Empty, true);
                     txtCalcPreview.Text = preview;
                 }
                 catch (Exception ex)

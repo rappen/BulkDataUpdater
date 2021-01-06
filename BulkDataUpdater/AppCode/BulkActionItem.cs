@@ -1,10 +1,10 @@
-﻿using Rappen.XTB.Helpers.ControlWrappers;
+﻿using Rappen.XTB.Helpers.ControlItems;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
     internal class BulkActionItem
     {
-        public AttributeItem Attribute { get; internal set; }
+        public AttributeMetadataItem Attribute { get; internal set; }
         public bool DontTouch { get; internal set; }
         public BulkActionAction Action { get; internal set; }
         public object Value { get; internal set; }

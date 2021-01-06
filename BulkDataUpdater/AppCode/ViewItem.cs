@@ -3,7 +3,7 @@
     using Microsoft.Xrm.Sdk;
     using Rappen.XTB.Helpers.Interfaces;
 
-    public class ViewItem : IComboBoxItem
+    public class ViewItem : ICDSControlItem
     {
         private Entity view = null;
 

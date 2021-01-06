@@ -3,7 +3,7 @@ using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
-using Rappen.XTB.Helpers.ControlWrappers;
+using Rappen.XTB.Helpers.ControlItems;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,8 +21,8 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            var state = cbSetStatus.SelectedItem as OptionsetItem;
-            var status = cbSetStatusReason.SelectedItem as OptionsetItem;
+            var state = cbSetStatus.SelectedItem as OptionMetadataItem;
+            var status = cbSetStatusReason.SelectedItem as OptionMetadataItem;
             if (state == null || status == null)
             {
                 return;
@@ -149,7 +149,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             });
         }
 
-        private OrganizationRequest GetSetStateRequest(Entity record, OptionsetItem state, OptionsetItem status)
+        private OrganizationRequest GetSetStateRequest(Entity record, OptionMetadataItem state, OptionMetadataItem status)
         {
             switch (record.LogicalName)
             {
@@ -273,7 +273,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 cbSetStatus.Items.AddRange(
                     statemeta.OptionSet.Options
-                        .Select(o => new OptionsetItem(o)).ToArray());
+                        .Select(o => new OptionMetadataItem(o)).ToArray());
             }
         }
 
@@ -282,14 +282,14 @@ namespace Cinteros.XTB.BulkDataUpdater
             cbSetStatusReason.Items.Clear();
             panQualifyLead.Visible = false;
             if (cbSetStatus.Tag is EntityMetadata entity &&
-                cbSetStatus.SelectedItem is OptionsetItem state &&
+                cbSetStatus.SelectedItem is OptionMetadataItem state &&
                 entity?.Attributes?.Where(a => a.LogicalName == "statuscode").FirstOrDefault() is StatusAttributeMetadata statusmeta)
             {
                 cbSetStatusReason.Items.AddRange(
                     statusmeta.OptionSet.Options
                         .Select(o => o as StatusOptionMetadata)
                         .Where(o => o != null && o.State == state.meta.Value)
-                        .Select(o => new OptionsetItem(o)).ToArray());
+                        .Select(o => new OptionMetadataItem(o)).ToArray());
                 panQualifyLead.Visible = entity.LogicalName == Lead.EntityName && state.meta.Value == (int)Lead.Status_OptionSet.Qualified;
             }
         }
