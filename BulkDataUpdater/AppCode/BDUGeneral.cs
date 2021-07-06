@@ -293,10 +293,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                     return;
                 }
                 lblRecords.Text = $"{records.Entities.Count} records of entity {records.EntityName} loaded";
-                UpdateIncludeCount();
                 crmGridView1.OrganizationService = Service;
                 crmGridView1.DataSource = records;
                 crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
+                UpdateIncludeCount();
             }
             RefreshAttributes();
             InitializeTab();
