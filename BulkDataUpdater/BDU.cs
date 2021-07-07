@@ -543,7 +543,7 @@
                     {
                         foreach (var option in options.Options)
                         {
-                            cmbValue.Items.Add(new OptionMetadataItem(option));
+                            cmbValue.Items.Add(new OptionMetadataItem(option, true));
                         }
                     }
                     cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -553,8 +553,8 @@
                     var options = boolmeta.OptionSet;
                     if (options != null)
                     {
-                        cmbValue.Items.Add(new OptionMetadataItem(options.TrueOption));
-                        cmbValue.Items.Add(new OptionMetadataItem(options.FalseOption));
+                        cmbValue.Items.Add(new OptionMetadataItem(options.TrueOption, true));
+                        cmbValue.Items.Add(new OptionMetadataItem(options.FalseOption, true));
                     }
                     cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
                 }

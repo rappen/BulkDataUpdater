@@ -335,7 +335,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 case AttributeTypeCode.Picklist:
                 case AttributeTypeCode.State:
                 case AttributeTypeCode.Status:
-                    var value = ((OptionMetadataItem)cmbValue.SelectedItem).meta.Value;
+                    var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
                     return new OptionSetValue((int)value);
 
                 case AttributeTypeCode.DateTime:
@@ -345,7 +345,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         // Is checking the cmbAttribute ok? I hope so...
                         var attr = (BooleanAttributeMetadata)((AttributeMetadataItem)cmbAttribute.SelectedItem).Metadata;
-                        return ((OptionMetadataItem)cmbValue.SelectedItem).meta == attr.OptionSet.TrueOption;
+                        return ((OptionMetadataItem)cmbValue.SelectedItem).Metadata == attr.OptionSet.TrueOption;
                     }
                 case AttributeTypeCode.Money:
                     return new Money(decimal.Parse(cmbValue.Text));
@@ -376,7 +376,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         {
                             foreach (var option in cmbValue.Items.Cast<object>().Where(i => i is OptionMetadataItem).Select(i => i as OptionMetadataItem))
                             {
-                                if (option.meta.Value == osv.Value)
+                                if (option.Metadata.Value == osv.Value)
                                 {
                                     cmbValue.SelectedItem = option;
                                     break;
