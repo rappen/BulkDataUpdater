@@ -352,7 +352,7 @@ namespace Cinteros.XTB.BulkDataUpdater
 
                 case AttributeTypeCode.Lookup:
                 case AttributeTypeCode.Customer:
-                    return cdsLookupValue.EntityReference;
+                    return xrmRecordAttribute.Record.ToEntityReference();
 
                 default:
                     throw new Exception("Attribute of type " + type.ToString() + " is currently not supported.");
@@ -385,7 +385,8 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         else if (attribute.Value is EntityReference er)
                         {
-                            cdsLookupValue.EntityReference = er;
+                            xrmRecordAttribute.LogicalName = er.LogicalName;
+                            xrmRecordAttribute.Id = er.Id;
                         }
                         else if (attribute.Attribute.Metadata is MemoAttributeMetadata)
                         {
@@ -421,7 +422,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     return !string.IsNullOrWhiteSpace(cmbValue.Text);
                 }
-                if (panUpdLookup.Visible && cdsLookupValue.Entity != null)
+                if (panUpdLookup.Visible && xrmRecordAttribute.Record != null)
                 {
                     return true;
                 }

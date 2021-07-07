@@ -17,8 +17,8 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            var owner = cbAssignUser.SelectedEntity != null ? cbAssignUser.SelectedEntity : cbAssignTeam.SelectedEntity;
-            var ownername = cbAssignUser.SelectedEntity != null ? "User " + cbAssignUser.Text : "Team " + cbAssignTeam.Text;
+            var owner = cbAssignUser.SelectedRecord != null ? cbAssignUser.SelectedRecord : cbAssignTeam.SelectedRecord;
+            var ownername = cbAssignUser.SelectedRecord != null ? "User " + cbAssignUser.Text : "Team " + cbAssignTeam.Text;
             if (owner == null)
             {
                 return;
@@ -150,8 +150,8 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             if (cbAssignUser.DataSource == null)
             {
-                cbAssignUser.OrganizationService = Service;
-                cbAssignUser.DisplayFormat = $"{{{{{User.PrimaryName}}}}} ({{{{{User.PrimaryEmail}}}}})";
+                cbAssignUser.Service = Service;
+                cbAssignUser.DisplayFormat = $"{{{User.PrimaryName}}} ({{{User.PrimaryEmail}}})";
                 var qxUser = new QueryExpression(User.EntityName);
                 qxUser.ColumnSet.AddColumns(User.PrimaryKey, User.PrimaryName, User.PrimaryEmail, _common_.BusinessUnit);
                 qxUser.AddOrder(User.PrimaryName, OrderType.Ascending);
@@ -183,8 +183,8 @@ namespace Cinteros.XTB.BulkDataUpdater
 
             if (cbAssignTeam.DataSource == null)
             {
-                cbAssignTeam.OrganizationService = Service;
-                cbAssignTeam.DisplayFormat = $"{{{{{Team.PrimaryName}}}}} ({{{{{_common_.BusinessUnit}}}}})";
+                cbAssignTeam.Service = Service;
+                cbAssignTeam.DisplayFormat = $"{{{Team.PrimaryName}}} ({{{_common_.BusinessUnit}}})";
                 var qxTeam = new QueryExpression(Team.EntityName);
                 qxTeam.ColumnSet.AddColumns(Team.PrimaryKey, Team.PrimaryName, _common_.BusinessUnit);
                 qxTeam.AddOrder(Team.PrimaryName, OrderType.Ascending);

@@ -92,7 +92,7 @@
                     gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
                     gbExecute.Enabled =
                         (tabControl1.SelectedTab == tabUpdate && panUpdButton.Enabled && lvAttributes.Items.Count > 0) ||
-                        (tabControl1.SelectedTab == tabAssign && (cbAssignUser.SelectedEntity != null || cbAssignTeam.SelectedEntity != null)) ||
+                        (tabControl1.SelectedTab == tabAssign && (cbAssignUser.SelectedRecord != null || cbAssignTeam.SelectedRecord != null)) ||
                         (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
                         (tabControl1.SelectedTab == tabDelete);
                 }
@@ -520,9 +520,9 @@
             cmbValue.Enabled = rbSetValue.Checked;
             txtValueMultiline.Enabled = rbSetValue.Checked;
             btnLookupValue.Enabled = rbSetValue.Checked;
-            if (!rbSetValue.Checked && cdsLookupValue.Entity != null)
+            if (!rbSetValue.Checked && xrmRecordAttribute.Record != null)
             {
-                cdsLookupValue.Entity = null;
+                xrmRecordAttribute.Record = null;
             }
             chkOnlyChange.Enabled = !rbSetTouch.Checked;
             chkOnlyChange.Checked = chkOnlyChange.Checked && !rbSetTouch.Checked;
@@ -569,9 +569,9 @@
                     lookup = true;
                     cdsLookupDialog.Service = Service;
                     cdsLookupDialog.LogicalNames = lkpmeta.Targets;
-                    if (!cdsLookupDialog.LogicalNames.Contains(cdsLookupValue.LogicalName))
+                    if (!cdsLookupDialog.LogicalNames.Contains(xrmRecordAttribute.LogicalName))
                     {
-                        cdsLookupValue.Entity = null;
+                        xrmRecordAttribute.Record = null;
                     }
                 }
                 else
@@ -784,7 +784,7 @@
 
         #endregion Form Event Handlers
 
-        private void crmGridView1_RecordDoubleClick(object sender, xrmtb.XrmToolBox.Controls.CRMRecordEventArgs e)
+        private void crmGridView1_RecordDoubleClick(object sender, Rappen.XTB.Helpers.Controls.XRMRecordEventArgs e)
         {
             if (e.Entity != null)
             {
@@ -872,11 +872,11 @@
             switch (cdsLookupDialog.ShowDialog(this))
             {
                 case DialogResult.OK:
-                    cdsLookupValue.OrganizationService = Service;
-                    cdsLookupValue.Entity = cdsLookupDialog.Entity;
+                    xrmRecordAttribute.Service = Service;
+                    xrmRecordAttribute.Record = cdsLookupDialog.Record;
                     break;
                 case DialogResult.Abort:
-                    cdsLookupValue.Entity = null;
+                    xrmRecordAttribute.Record = null;
                     break;
             }
             EnableControls(true);
