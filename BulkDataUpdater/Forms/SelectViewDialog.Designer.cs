@@ -183,6 +183,7 @@
             this.txtFetch.Name = "txtFetch";
             this.txtFetch.Size = new System.Drawing.Size(584, 252);
             this.txtFetch.TabIndex = 4;
+            this.txtFetch.WrapMode = ScintillaNET.WrapMode.Whitespace;
             // 
             // SelectViewDialog
             // 
