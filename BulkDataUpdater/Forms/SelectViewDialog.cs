@@ -7,6 +7,7 @@
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XTB.Helpers;
+    using ScintillaNET;
     using XrmToolBox.Extensibility;
     using XTB.BulkDataUpdater.AppCode;
     public partial class SelectViewDialog : Form
@@ -31,6 +32,10 @@
         {
             InitializeComponent();
             this.host = sender;
+            txtFetch.StyleResetDefault();
+            txtFetch.Styles[Style.Default].Font = "Consolas";
+            txtFetch.Styles[Style.Default].Size = 10;
+            txtFetch.StyleClearAll();
         }
 
         #endregion Public Constructors
@@ -125,7 +130,7 @@
             if (cmbView.SelectedItem is ViewItem)
             {
                 txtFetch.Text = ((ViewItem)cmbView.SelectedItem).GetFetch();
-                txtFetch.Process();
+                //txtFetch.Process();
                 btnOk.Enabled = true;
             }
             else

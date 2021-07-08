@@ -1,6 +1,7 @@
 ﻿namespace Cinteros.Xrm.Common.Forms
 {
     using Cinteros.XTB.BulkDataUpdater.AppCode;
+    using ScintillaNET;
     using System;
     using System.Windows.Forms;
     using System.Xml;
@@ -19,7 +20,8 @@
 
         #endregion Private Fields
 
-        #region Public Constructors
+        #region Public Constructor
+
 
         public XmlContentDisplayDialog(string xmlString, string header, bool allowEdit, bool allowFormat)
         {
@@ -46,6 +48,11 @@
                 }
             }
             txtXML.Text = xmlString;
+            txtXML.StyleResetDefault();
+            txtXML.Styles[Style.Default].Font = "Consolas";
+            txtXML.Styles[Style.Default].Size = 10;
+            txtXML.StyleClearAll();
+
             FormatXML(true);
         }
 
@@ -92,7 +99,7 @@
         {
             try
             {
-                txtXML.Process();
+               // txtXML.Process();
             }
             catch (Exception ex)
             {
@@ -115,8 +122,8 @@
 
         private void XmlContentDisplayDialog_KeyDown(object sender, KeyEventArgs e)
         {
-            RichTextBox textBox = txtXML;
-            findtext = FindTextHandler.HandleFindKeyPress(e, textBox, findtext);
+            //RichTextBox textBox = txtXML;
+            //findtext = FindTextHandler.HandleFindKeyPress(e, textBox, findtext);
         }
 
         #endregion Private Methods

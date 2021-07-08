@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            xrmtb.XrmToolBox.Controls.XMLViewerSettings xmlViewerSettings1 = new xrmtb.XrmToolBox.Controls.XMLViewerSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XmlContentDisplayDialog));
             this.panBottom = new System.Windows.Forms.Panel();
             this.panOk = new System.Windows.Forms.Panel();
@@ -37,7 +36,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnFormat = new System.Windows.Forms.Button();
             this.gbXml = new System.Windows.Forms.GroupBox();
-            this.txtXML = new xrmtb.XrmToolBox.Controls.XMLViewer();
+            this.txtXML = new ScintillaNET.Scintilla();
             this.panBottom.SuspendLayout();
             this.panOk.SuspendLayout();
             this.panCancel.SuspendLayout();
@@ -120,20 +119,12 @@
             // txtXML
             // 
             this.txtXML.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtXML.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtXML.Lexer = ScintillaNET.Lexer.Xml;
             this.txtXML.Location = new System.Drawing.Point(3, 16);
             this.txtXML.Name = "txtXML";
-            xmlViewerSettings1.AttributeKey = System.Drawing.Color.Red;
-            xmlViewerSettings1.AttributeValue = System.Drawing.Color.Blue;
-            xmlViewerSettings1.Comment = System.Drawing.Color.Empty;
-            xmlViewerSettings1.Element = System.Drawing.Color.DarkRed;
-            xmlViewerSettings1.QuoteCharacter = '\"';
-            xmlViewerSettings1.Tag = System.Drawing.Color.Blue;
-            xmlViewerSettings1.Value = System.Drawing.Color.Black;
-            this.txtXML.Settings = xmlViewerSettings1;
             this.txtXML.Size = new System.Drawing.Size(530, 290);
-            this.txtXML.TabIndex = 2;
-            this.txtXML.Text = "";
+            this.txtXML.TabIndex = 3;
+            this.txtXML.WrapMode = ScintillaNET.WrapMode.Whitespace;
             // 
             // XmlContentDisplayDialog
             // 
@@ -166,6 +157,6 @@
         private System.Windows.Forms.Button btnCancel;
         internal System.Windows.Forms.Button btnFormat;
         private System.Windows.Forms.GroupBox gbXml;
-        internal xrmtb.XrmToolBox.Controls.XMLViewer txtXML;
+        internal ScintillaNET.Scintilla txtXML;
     }
 }
