@@ -48,12 +48,7 @@
                 }
             }
             txtXML.Text = xmlString;
-            txtXML.StyleResetDefault();
-            txtXML.Styles[Style.Default].Font = "Consolas";
-            txtXML.Styles[Style.Default].Size = 10;
-            txtXML.StyleClearAll();
-
-            FormatXML(true);
+            ScintillaInitialize.InitXML(txtXML, true);
         }
 
         #endregion Public Constructors
@@ -63,7 +58,7 @@
         public void UpdateXML(string xmlString)
         {
             txtXML.Text = xmlString;
-            FormatXML(true);
+            ScintillaInitialize.Format(txtXML);
         }
 
         #endregion Public Methods
@@ -92,22 +87,7 @@
 
         private void button3_Click(object sender, EventArgs e)
         {
-            FormatXML(false);
-        }
-
-        private void FormatXML(bool silent)
-        {
-            try
-            {
-               // txtXML.Process();
-            }
-            catch (Exception ex)
-            {
-                if (!silent)
-                {
-                    MessageBox.Show(ex.Message, "XML Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            ScintillaInitialize.Format(txtXML);
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

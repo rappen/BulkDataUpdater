@@ -32,10 +32,7 @@
         {
             InitializeComponent();
             this.host = sender;
-            txtFetch.StyleResetDefault();
-            txtFetch.Styles[Style.Default].Font = "Consolas";
-            txtFetch.Styles[Style.Default].Size = 10;
-            txtFetch.StyleClearAll();
+            ScintillaInitialize.InitXML(txtFetch, false);
         }
 
         #endregion Public Constructors
@@ -130,7 +127,7 @@
             if (cmbView.SelectedItem is ViewItem)
             {
                 txtFetch.Text = ((ViewItem)cmbView.SelectedItem).GetFetch();
-                //txtFetch.Process();
+                ScintillaInitialize.Format(txtFetch);
                 btnOk.Enabled = true;
             }
             else
