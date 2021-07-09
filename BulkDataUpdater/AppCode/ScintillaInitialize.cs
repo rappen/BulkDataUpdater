@@ -1,6 +1,7 @@
 ﻿using ScintillaNET;
 using System;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
@@ -75,13 +76,14 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
         public static void Format(Scintilla scintilla)
         {
-            var txt = scintilla.Text.Replace("\n", "");
-            txt = txt.Replace("\r", "");
-            while (txt.Contains("> "))
+            try
             {
-                txt = txt.Replace("> ", ">");
+                scintilla.Text = XDocument.Parse(scintilla.Text).ToString();
             }
-            txt = txt.Replace("><", ">\n<");
-            scintilla.Text = txt;        }
+            catch (Exception)
+            {
+                // Handle and throw if fatal exception here; don't just ignore them
+            }
+        }
     }
 }
