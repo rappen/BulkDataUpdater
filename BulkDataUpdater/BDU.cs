@@ -475,6 +475,7 @@
                 }
             }
             crmGridView1.ShowFriendlyNames = useFriendlyNames;
+            crmGridView1.ShowLocalTimes = useFriendlyNames;
             crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
             EnableControls(true);
         }
