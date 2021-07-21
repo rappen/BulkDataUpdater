@@ -76,8 +76,6 @@
             this.panUpdButton = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.panUpdLookup = new System.Windows.Forms.Panel();
-            this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
-            this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.btnLookupValue = new System.Windows.Forms.Button();
             this.panUpdValue = new System.Windows.Forms.Panel();
             this.panUpdAction = new System.Windows.Forms.Panel();
@@ -94,7 +92,6 @@
             this.lblUpdateStatus = new System.Windows.Forms.Label();
             this.btnExecute = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbIncludeSelected = new System.Windows.Forms.RadioButton();
             this.rbIncludeAll = new System.Windows.Forms.RadioButton();
@@ -114,10 +111,8 @@
             this.lblUpdateHeader = new System.Windows.Forms.Label();
             this.tabAssign = new System.Windows.Forms.TabPage();
             this.lblAssignHeader = new System.Windows.Forms.Label();
-            this.cbAssignTeam = new Rappen.XTB.Helpers.Controls.XRMColumnLookup();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.cbAssignUser = new Rappen.XTB.Helpers.Controls.XRMColumnLookup();
             this.btnAssign = new System.Windows.Forms.Button();
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.panQualifyLead = new System.Windows.Forms.Panel();
@@ -133,8 +128,15 @@
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
-            this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.tmCalc = new System.Windows.Forms.Timer(this.components);
+            this.chkMultiSelects = new System.Windows.Forms.CheckedListBox();
+            this.panMultiChoices = new System.Windows.Forms.Panel();
+            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
+            this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
+            this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
+            this.cbAssignTeam = new Rappen.XTB.Helpers.Controls.XRMColumnLookup();
+            this.cbAssignUser = new Rappen.XTB.Helpers.Controls.XRMColumnLookup();
+            this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -148,7 +150,6 @@
             this.gbExecute.SuspendLayout();
             this.panWaitBetween.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -167,6 +168,8 @@
             this.panQualifyLead.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabDelete.SuspendLayout();
+            this.panMultiChoices.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -537,8 +540,9 @@
             // 
             // gb2attribute
             // 
-            this.gb2attribute.Controls.Add(this.panUpdCalc);
             this.gb2attribute.Controls.Add(this.panUpdTextMulti);
+            this.gb2attribute.Controls.Add(this.panUpdCalc);
+            this.gb2attribute.Controls.Add(this.panMultiChoices);
             this.gb2attribute.Controls.Add(this.panUpdButton);
             this.gb2attribute.Controls.Add(this.panUpdLookup);
             this.gb2attribute.Controls.Add(this.panUpdValue);
@@ -554,6 +558,7 @@
             // 
             // panUpdCalc
             // 
+            this.panUpdCalc.BackColor = System.Drawing.Color.Transparent;
             this.panUpdCalc.Controls.Add(this.txtCalcPreview);
             this.panUpdCalc.Controls.Add(this.btnCalcHelp);
             this.panUpdCalc.Controls.Add(this.label1);
@@ -618,6 +623,7 @@
             this.panUpdTextMulti.Size = new System.Drawing.Size(324, 115);
             this.panUpdTextMulti.TabIndex = 5;
             this.panUpdTextMulti.Visible = false;
+            this.panUpdTextMulti.Paint += new System.Windows.Forms.PaintEventHandler(this.panUpdTextMulti_Paint);
             // 
             // txtValueMultiline
             // 
@@ -655,6 +661,7 @@
             // 
             // panUpdLookup
             // 
+            this.panUpdLookup.BackColor = System.Drawing.Color.Transparent;
             this.panUpdLookup.Controls.Add(this.cdsLookupValue);
             this.panUpdLookup.Controls.Add(this.btnLookupValue);
             this.panUpdLookup.Dock = System.Windows.Forms.DockStyle.Top;
@@ -663,26 +670,6 @@
             this.panUpdLookup.Size = new System.Drawing.Size(324, 25);
             this.panUpdLookup.TabIndex = 4;
             this.panUpdLookup.Visible = false;
-            // 
-            // cdsLookupValue
-            // 
-            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
-            this.cdsLookupValue.Column = null;
-            this.cdsLookupValue.DisplayFormat = "";
-            this.cdsLookupValue.Location = new System.Drawing.Point(12, 3);
-            this.cdsLookupValue.Name = "cdsLookupValue";
-            this.cdsLookupValue.RecordHost = this.xrmRecordAttribute;
-            this.cdsLookupValue.Size = new System.Drawing.Size(264, 20);
-            this.cdsLookupValue.TabIndex = 0;
-            // 
-            // xrmRecordAttribute
-            // 
-            this.xrmRecordAttribute.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.xrmRecordAttribute.LogicalName = null;
-            this.xrmRecordAttribute.Record = null;
-            this.xrmRecordAttribute.Service = null;
             // 
             // btnLookupValue
             // 
@@ -697,6 +684,7 @@
             // 
             // panUpdValue
             // 
+            this.panUpdValue.BackColor = System.Drawing.Color.Transparent;
             this.panUpdValue.Controls.Add(this.cmbValue);
             this.panUpdValue.Dock = System.Windows.Forms.DockStyle.Top;
             this.panUpdValue.Location = new System.Drawing.Point(3, 68);
@@ -872,32 +860,6 @@
             this.groupBox5.TabIndex = 38;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
-            // 
-            // crmGridView1
-            // 
-            this.crmGridView1.AllowUserToAddRows = false;
-            this.crmGridView1.AllowUserToDeleteRows = false;
-            this.crmGridView1.AllowUserToOrderColumns = true;
-            this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.crmGridView1.ColumnOrder = "";
-            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crmGridView1.FilterColumns = "";
-            this.crmGridView1.Location = new System.Drawing.Point(3, 54);
-            this.crmGridView1.Name = "crmGridView1";
-            this.crmGridView1.ReadOnly = true;
-            this.crmGridView1.RowHeadersVisible = false;
-            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.crmGridView1.Service = null;
-            this.crmGridView1.ShowFriendlyNames = true;
-            this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(625, 503);
-            this.crmGridView1.TabIndex = 2;
-            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
-            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
             // 
             // panel1
             // 
@@ -1099,11 +1061,11 @@
             // tabAssign
             // 
             this.tabAssign.Controls.Add(this.lblAssignHeader);
-            this.tabAssign.Controls.Add(this.cbAssignTeam);
             this.tabAssign.Controls.Add(this.label7);
             this.tabAssign.Controls.Add(this.label6);
-            this.tabAssign.Controls.Add(this.cbAssignUser);
             this.tabAssign.Controls.Add(this.btnAssign);
+            this.tabAssign.Controls.Add(this.cbAssignTeam);
+            this.tabAssign.Controls.Add(this.cbAssignUser);
             this.tabAssign.Location = new System.Drawing.Point(4, 22);
             this.tabAssign.Name = "tabAssign";
             this.tabAssign.Padding = new System.Windows.Forms.Padding(3);
@@ -1122,23 +1084,6 @@
             this.lblAssignHeader.TabIndex = 10;
             this.lblAssignHeader.Text = "Assign [nn] [collection]";
             // 
-            // cbAssignTeam
-            // 
-            this.cbAssignTeam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAssignTeam.Column = null;
-            this.cbAssignTeam.DisplayFormat = "";
-            this.cbAssignTeam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbAssignTeam.Filter = null;
-            this.cbAssignTeam.FormattingEnabled = true;
-            this.cbAssignTeam.Location = new System.Drawing.Point(19, 133);
-            this.cbAssignTeam.Name = "cbAssignTeam";
-            this.cbAssignTeam.RecordHost = null;
-            this.cbAssignTeam.Service = null;
-            this.cbAssignTeam.Size = new System.Drawing.Size(297, 21);
-            this.cbAssignTeam.TabIndex = 9;
-            this.cbAssignTeam.SelectedIndexChanged += new System.EventHandler(this.cbAssignTeam_SelectedIndexChanged);
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -1156,23 +1101,6 @@
             this.label6.Size = new System.Drawing.Size(29, 13);
             this.label6.TabIndex = 7;
             this.label6.Text = "User";
-            // 
-            // cbAssignUser
-            // 
-            this.cbAssignUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAssignUser.Column = null;
-            this.cbAssignUser.DisplayFormat = "";
-            this.cbAssignUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbAssignUser.Filter = null;
-            this.cbAssignUser.FormattingEnabled = true;
-            this.cbAssignUser.Location = new System.Drawing.Point(19, 87);
-            this.cbAssignUser.Name = "cbAssignUser";
-            this.cbAssignUser.RecordHost = null;
-            this.cbAssignUser.Service = null;
-            this.cbAssignUser.Size = new System.Drawing.Size(297, 21);
-            this.cbAssignUser.TabIndex = 6;
-            this.cbAssignUser.SelectedIndexChanged += new System.EventHandler(this.cbAssignUser_SelectedIndexChanged);
             // 
             // btnAssign
             // 
@@ -1341,6 +1269,113 @@
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
+            // tmCalc
+            // 
+            this.tmCalc.Interval = 1000;
+            this.tmCalc.Tick += new System.EventHandler(this.tmCalc_Tick);
+            // 
+            // chkMultiSelects
+            // 
+            this.chkMultiSelects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkMultiSelects.FormattingEnabled = true;
+            this.chkMultiSelects.Location = new System.Drawing.Point(9, 6);
+            this.chkMultiSelects.Name = "chkMultiSelects";
+            this.chkMultiSelects.Size = new System.Drawing.Size(301, 94);
+            this.chkMultiSelects.TabIndex = 3;
+            this.chkMultiSelects.SelectedIndexChanged += new System.EventHandler(this.chkMultiSelects_SelectedIndexChanged);
+            // 
+            // panMultiChoices
+            // 
+            this.panMultiChoices.Controls.Add(this.chkMultiSelects);
+            this.panMultiChoices.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panMultiChoices.Location = new System.Drawing.Point(3, 118);
+            this.panMultiChoices.Name = "panMultiChoices";
+            this.panMultiChoices.Size = new System.Drawing.Size(324, 115);
+            this.panMultiChoices.TabIndex = 11;
+            this.panMultiChoices.Visible = false;
+            // 
+            // crmGridView1
+            // 
+            this.crmGridView1.AllowUserToAddRows = false;
+            this.crmGridView1.AllowUserToDeleteRows = false;
+            this.crmGridView1.AllowUserToOrderColumns = true;
+            this.crmGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.crmGridView1.ColumnOrder = "";
+            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crmGridView1.FilterColumns = "";
+            this.crmGridView1.Location = new System.Drawing.Point(3, 54);
+            this.crmGridView1.Name = "crmGridView1";
+            this.crmGridView1.ReadOnly = true;
+            this.crmGridView1.RowHeadersVisible = false;
+            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.crmGridView1.Service = null;
+            this.crmGridView1.ShowFriendlyNames = true;
+            this.crmGridView1.ShowIdColumn = false;
+            this.crmGridView1.Size = new System.Drawing.Size(625, 503);
+            this.crmGridView1.TabIndex = 2;
+            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
+            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
+            // 
+            // cdsLookupValue
+            // 
+            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
+            this.cdsLookupValue.Column = null;
+            this.cdsLookupValue.DisplayFormat = "";
+            this.cdsLookupValue.Location = new System.Drawing.Point(12, 3);
+            this.cdsLookupValue.Name = "cdsLookupValue";
+            this.cdsLookupValue.RecordHost = this.xrmRecordAttribute;
+            this.cdsLookupValue.Size = new System.Drawing.Size(264, 20);
+            this.cdsLookupValue.TabIndex = 0;
+            // 
+            // xrmRecordAttribute
+            // 
+            this.xrmRecordAttribute.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.xrmRecordAttribute.LogicalName = null;
+            this.xrmRecordAttribute.Record = null;
+            this.xrmRecordAttribute.Service = null;
+            // 
+            // cbAssignTeam
+            // 
+            this.cbAssignTeam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAssignTeam.Column = null;
+            this.cbAssignTeam.DisplayFormat = "";
+            this.cbAssignTeam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAssignTeam.Filter = null;
+            this.cbAssignTeam.FormattingEnabled = true;
+            this.cbAssignTeam.Location = new System.Drawing.Point(19, 133);
+            this.cbAssignTeam.Name = "cbAssignTeam";
+            this.cbAssignTeam.RecordHost = null;
+            this.cbAssignTeam.Service = null;
+            this.cbAssignTeam.Size = new System.Drawing.Size(297, 21);
+            this.cbAssignTeam.TabIndex = 9;
+            this.cbAssignTeam.SelectedIndexChanged += new System.EventHandler(this.cbAssignTeam_SelectedIndexChanged);
+            // 
+            // cbAssignUser
+            // 
+            this.cbAssignUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAssignUser.Column = null;
+            this.cbAssignUser.DisplayFormat = "";
+            this.cbAssignUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAssignUser.Filter = null;
+            this.cbAssignUser.FormattingEnabled = true;
+            this.cbAssignUser.Location = new System.Drawing.Point(19, 87);
+            this.cbAssignUser.Name = "cbAssignUser";
+            this.cbAssignUser.RecordHost = null;
+            this.cbAssignUser.Service = null;
+            this.cbAssignUser.Size = new System.Drawing.Size(297, 21);
+            this.cbAssignUser.TabIndex = 6;
+            this.cbAssignUser.SelectedIndexChanged += new System.EventHandler(this.cbAssignUser_SelectedIndexChanged);
+            // 
             // cdsLookupDialog
             // 
             this.cdsLookupDialog.LogicalName = "";
@@ -1348,11 +1383,6 @@
             this.cdsLookupDialog.Record = null;
             this.cdsLookupDialog.Service = null;
             this.cdsLookupDialog.Title = null;
-            // 
-            // tmCalc
-            // 
-            this.tmCalc.Interval = 1000;
-            this.tmCalc.Tick += new System.EventHandler(this.tmCalc_Tick);
             // 
             // BulkDataUpdater
             // 
@@ -1389,7 +1419,6 @@
             this.panWaitBetween.ResumeLayout(false);
             this.panWaitBetween.PerformLayout();
             this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1414,6 +1443,8 @@
             this.panel3.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
+            this.panMultiChoices.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1525,5 +1556,7 @@
         private System.Windows.Forms.TextBox txtCalcPreview;
         private System.Windows.Forms.Timer tmCalc;
         private Rappen.XTB.Helpers.Controls.XRMRecordHost xrmRecordAttribute;
+        private System.Windows.Forms.CheckedListBox chkMultiSelects;
+        private System.Windows.Forms.Panel panMultiChoices;
     }
 }

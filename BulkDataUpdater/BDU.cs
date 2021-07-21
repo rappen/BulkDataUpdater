@@ -535,13 +535,14 @@
             cmbValue.Items.Clear();
             var value = rbSetValue.Checked;
             var lookup = false;
-            var multi = false;
+            var multitext = false;
+            var multisel = false;
             var calc = rbCalculate.Checked;
             if (rbSetValue.Checked && attribute != null)
             {
-                if (attribute.Metadata is EnumAttributeMetadata enummeta)
+                if (attribute.Metadata is PicklistAttributeMetadata pickmeta)
                 {
-                    var options = enummeta.OptionSet;
+                    var options = pickmeta.OptionSet;
                     if (options != null)
                     {
                         foreach (var option in options.Options)
@@ -550,6 +551,20 @@
                         }
                     }
                     cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
+                }
+                else if (attribute.Metadata is MultiSelectPicklistAttributeMetadata multimeta)
+                {
+                    chkMultiSelects.Items.Clear();
+                    var options = multimeta.OptionSet;
+                    if (options != null)
+                    {
+                        foreach (var option in options.Options)
+                        {
+                            chkMultiSelects.Items.Add(new OptionMetadataItem(option, true));
+                        }
+                    }
+                    value = false;
+                    multisel = true;
                 }
                 else if (attribute.Metadata is BooleanAttributeMetadata boolmeta)
                 {
@@ -564,7 +579,7 @@
                 else if (attribute.Metadata is MemoAttributeMetadata)
                 {
                     value = false;
-                    multi = true;
+                    multitext = true;
                 }
                 else if (attribute.Metadata is LookupAttributeMetadata lkpmeta)
                 {
@@ -593,7 +608,8 @@
             panUpdValue.Visible = value;
             panUpdLookup.Visible = lookup;
             panUpdCalc.Visible = calc;
-            panUpdTextMulti.Visible = multi;
+            panUpdTextMulti.Visible = multitext;
+            panMultiChoices.Visible = multisel;
             EnableControls(true);
         }
 
@@ -967,6 +983,16 @@
         private void tmCalc_Tick(object sender, EventArgs e)
         {
             PreviewCalc();
+        }
+
+        private void panUpdTextMulti_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void chkMultiSelects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnableControls(true);
         }
     }
 }

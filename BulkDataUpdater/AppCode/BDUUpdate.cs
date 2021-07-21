@@ -289,6 +289,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                         {
                             bai.StringValue = cdsLookupValue.Text;
                         }
+                        else if (bai.Value is OptionSetValueCollection osvc)
+                        {
+                            bai.StringValue = $"({osvc.Count})";
+                        }
                         else
                         {
                             bai.StringValue = cmbValue.Text;
@@ -341,8 +345,8 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             if (meta is MultiSelectPicklistAttributeMetadata)
             {
-                var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
-                return new OptionSetValueCollection(new List<OptionSetValue>() { new OptionSetValue((int)value) });
+                var values = chkMultiSelects.CheckedItems.OfType<OptionMetadataItem>().Select(o => o.Metadata.Value);
+                return new OptionSetValueCollection(values.Select(v => new OptionSetValue((int)v)).ToList());
             };
             if (meta is DateTimeAttributeMetadata)
             {
@@ -432,6 +436,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                     return true;
                 }
                 if (panUpdTextMulti.Visible && !string.IsNullOrWhiteSpace(txtValueMultiline.Text))
+                {
+                    return true;
+                }
+                if (panMultiChoices.Visible && chkMultiSelects.CheckedItems.Count > 0)
                 {
                     return true;
                 }
