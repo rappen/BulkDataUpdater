@@ -280,7 +280,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 switch (bai.Action)
                 {
                     case BulkActionAction.SetValue:
-                        bai.Value = GetValueFromUI(bai.Attribute.Metadata.AttributeType);
+                        bai.Value = GetValueFromUI(bai.Attribute.Metadata);
                         if (attribute.Metadata is MemoAttributeMetadata)
                         {
                             bai.StringValue = txtValueMultiline.Text;
@@ -312,51 +312,51 @@ namespace Cinteros.XTB.BulkDataUpdater
             return bai;
         }
 
-        private object GetValueFromUI(AttributeTypeCode? type)
+        private object GetValueFromUI(AttributeMetadata meta)
         {
-            switch (type)
+            if (meta is StringAttributeMetadata)
             {
-                case AttributeTypeCode.String:
-                    return cmbValue.Text;
-
-                case AttributeTypeCode.Memo:
-                    return txtValueMultiline.Text;
-
-                case AttributeTypeCode.BigInt:
-                case AttributeTypeCode.Integer:
-                    return int.Parse(cmbValue.Text);
-
-                case AttributeTypeCode.Decimal:
-                    return decimal.Parse(cmbValue.Text);
-
-                case AttributeTypeCode.Double:
-                    return double.Parse(cmbValue.Text);
-
-                case AttributeTypeCode.Picklist:
-                case AttributeTypeCode.State:
-                case AttributeTypeCode.Status:
-                    var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
-                    return new OptionSetValue((int)value);
-
-                case AttributeTypeCode.DateTime:
-                    return DateTime.Parse(cmbValue.Text);
-
-                case AttributeTypeCode.Boolean:
-                    {
-                        // Is checking the cmbAttribute ok? I hope so...
-                        var attr = (BooleanAttributeMetadata)((AttributeMetadataItem)cmbAttribute.SelectedItem).Metadata;
-                        return ((OptionMetadataItem)cmbValue.SelectedItem).Metadata == attr.OptionSet.TrueOption;
-                    }
-                case AttributeTypeCode.Money:
-                    return new Money(decimal.Parse(cmbValue.Text));
-
-                case AttributeTypeCode.Lookup:
-                case AttributeTypeCode.Customer:
-                    return xrmRecordAttribute.Record.ToEntityReference();
-
-                default:
-                    throw new Exception("Attribute of type " + type.ToString() + " is currently not supported.");
+                return cmbValue.Text;
             }
+            if (meta is MemoAttributeMetadata)
+            {
+                return txtValueMultiline.Text;
+            }
+            if (meta is IntegerAttributeMetadata || meta is BigIntAttributeMetadata)
+            {
+                return int.Parse(cmbValue.Text);
+            }
+            if (meta is DecimalAttributeMetadata)
+            {
+                return decimal.Parse(cmbValue.Text);
+            }
+            if (meta is DoubleAttributeMetadata)
+            {
+                return double.Parse(cmbValue.Text);
+            }
+            if (meta is PicklistAttributeMetadata || meta is StateAttributeMetadata)
+            {
+                var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
+                return new OptionSetValue((int)value);
+            }
+            if (meta is DateTimeAttributeMetadata)
+            {
+                return DateTime.Parse(cmbValue.Text);
+            }
+            if (meta is BooleanAttributeMetadata boo)
+            {
+                // Is checking the cmbAttribute ok? I hope so...
+                return ((OptionMetadataItem)cmbValue.SelectedItem).Metadata == boo.OptionSet.TrueOption;
+            }
+            if (meta is MoneyAttributeMetadata)
+            {
+                return new Money(decimal.Parse(cmbValue.Text));
+            }
+            if (meta is LookupAttributeMetadata)
+            {
+                return xrmRecordAttribute.Record.ToEntityReference();
+            }
+            throw new Exception($"Attribute of type {meta.AttributeTypeName.Value} is currently not supported.");
         }
 
         private void PopulateFromAddedAttribute()
