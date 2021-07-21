@@ -41,6 +41,7 @@
         private string deleteWarningText;
         private Dictionary<string, string> entityAttributes = new Dictionary<string, string>();
         private string fetchXml = fetchTemplate;
+        private int fetchResulCount = -1;
         private EntityCollection records;
         private bool showAttributesAll = true;
         private bool showAttributesCustom = true;
@@ -351,13 +352,13 @@
 
         private void LoadSetting()
         {
-            Settings settings;
-            if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out settings, ConnectionDetail?.ConnectionName))
+            if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out Settings settings, ConnectionDetail?.ConnectionName))
             {
                 settings = new Settings();
             }
 
             fetchXml = settings.FetchXML;
+            fetchResulCount = settings.FetchResultCount;
             if (settings.EntityAttributes != null)
             {
                 entityAttributes = settings.EntityAttributes.ToDictionary(i => i.key, i => i.value);
@@ -488,6 +489,7 @@
             var settings = new Settings()
             {
                 FetchXML = fetchXml,
+                FetchResultCount = fetchResulCount,
                 EntityAttributes = entityAttributes.Select(p => new KeyValuePair() { key = p.Key, value = p.Value }).ToList(),
                 Friendly = tsmiFriendly.Checked,
                 AttributesManaged = tsmiAttributesManaged.Checked,
@@ -690,7 +692,7 @@
             EnableControls(false);
             LoadSetting();
             LogUse("Load");
-            if (!string.IsNullOrWhiteSpace(fetchXml))
+            if (!string.IsNullOrWhiteSpace(fetchXml) && fetchResulCount > 0 && fetchResulCount < 100)
             {
                 FetchUpdated(fetchXml);
             }

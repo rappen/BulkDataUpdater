@@ -197,6 +197,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 working = false;
             }
             lblRecords.Text = "Retrieving records...";
+            fetchResulCount = -1;
             records = null;
             working = true;
             QueryBase query;
@@ -227,6 +228,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     else if (!completedargs.Cancelled && completedargs.Result is EntityCollection result)
                     {
                         records = result;
+                        fetchResulCount = records.Entities.Count;
                     }
                     AfterRetrieve();
                 },

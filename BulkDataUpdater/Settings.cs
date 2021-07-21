@@ -13,6 +13,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         public bool AttributesUnmanaged { get; set; } = true;
         public List<KeyValuePair> EntityAttributes { get; set; }
         public string FetchXML { get; set; }
+        public int FetchResultCount { get; set; }
         public bool Friendly { get; set; } = false;
         public int DelayCallTime { get; set; } = 0;
         public int UpdateBatchSize { get; set; } = 1;
