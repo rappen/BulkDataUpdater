@@ -339,6 +339,11 @@ namespace Cinteros.XTB.BulkDataUpdater
                 var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
                 return new OptionSetValue((int)value);
             }
+            if (meta is MultiSelectPicklistAttributeMetadata)
+            {
+                var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
+                return new OptionSetValueCollection(new List<OptionSetValue>() { new OptionSetValue((int)value) });
+            };
             if (meta is DateTimeAttributeMetadata)
             {
                 return DateTime.Parse(cmbValue.Text);
