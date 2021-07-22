@@ -6,7 +6,7 @@ using XrmToolBox.Extensibility.Interfaces;
 
 namespace Cinteros.XTB.BulkDataUpdater
 {
-    public partial class BulkDataUpdater : IGitHubPlugin, IPayPalPlugin, IMessageBusHost, IAboutPlugin, IStatusBarMessenger
+    public partial class BulkDataUpdater : IGitHubPlugin, IPayPalPlugin, IMessageBusHost, IAboutPlugin, IStatusBarMessenger, IHelpPlugin
     {
         public event EventHandler<XrmToolBox.Extensibility.MessageBusEventArgs> OnOutgoingMessage;
         public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
@@ -38,5 +38,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         public string RepositoryName => "BulkDataUpdater";
 
         public string UserName => "rappen";
+
+        public string HelpUrl => "https://jonasr.app/BDU/";
     }
 }
