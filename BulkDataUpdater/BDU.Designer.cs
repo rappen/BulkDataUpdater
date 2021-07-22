@@ -51,7 +51,9 @@
             this.tsmiAttributesCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiAttributesOnlyValidAF = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
+            this.tslDoc = new System.Windows.Forms.ToolStripLabel();
             this.tsbCancel = new System.Windows.Forms.ToolStripButton();
             this.btnGetEdit = new System.Windows.Forms.Button();
             this.lblRecords = new System.Windows.Forms.Label();
@@ -187,7 +189,9 @@
             this.toolStripSeparator4,
             this.tsbOptions,
             this.tslAbout,
-            this.tsbCancel});
+            this.tsbCancel,
+            this.toolStripSeparator17,
+            this.tslDoc});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(979, 31);
@@ -368,6 +372,20 @@
             this.tslAbout.Text = "by Jonas Rapp";
             this.tslAbout.Click += new System.EventHandler(this.tslAbout_Click);
             // 
+            // tslDoc
+            // 
+            //  this.tslDoc.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslDoc.IsLink = true;
+            this.tslDoc.Name = "tslDoc";
+            this.tslDoc.Size = new System.Drawing.Size(106, 28);
+            this.tslDoc.Text = "Documentation";
+            this.tslDoc.Click += new System.EventHandler(this.tslDoc_Click);
+            // 
+            // toolStripSeparator17
+            // 
+            this.toolStripSeparator17.Name = "toolStripSeparator17";
+            this.toolStripSeparator17.Size = new System.Drawing.Size(192, 6);
+            // 
             // tsbCancel
             // 
             this.tsbCancel.Enabled = false;
@@ -405,7 +423,7 @@
             // 
             // cmbAttribute
             // 
-            this.cmbAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cmbAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbAttribute.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbAttribute.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
@@ -456,7 +474,7 @@
             // 
             // cmbValue
             // 
-            this.cmbValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cmbValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbValue.FormattingEnabled = true;
             this.cmbValue.Location = new System.Drawing.Point(12, 3);
@@ -573,7 +591,7 @@
             // 
             // txtCalcPreview
             // 
-            this.txtCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCalcPreview.BackColor = System.Drawing.SystemColors.Window;
             this.txtCalcPreview.Location = new System.Drawing.Point(12, 88);
@@ -604,8 +622,8 @@
             // 
             // txtValueCalc
             // 
-            this.txtValueCalc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtValueCalc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtValueCalc.Location = new System.Drawing.Point(12, 3);
             this.txtValueCalc.Multiline = true;
@@ -628,8 +646,8 @@
             // 
             // txtValueMultiline
             // 
-            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtValueMultiline.Location = new System.Drawing.Point(12, 3);
             this.txtValueMultiline.Multiline = true;
@@ -991,8 +1009,8 @@
             // 
             // lvAttributes
             // 
-            this.lvAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.lvAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvAttributes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.logicalname,
@@ -1193,7 +1211,7 @@
             // 
             // cbSetStatus
             // 
-            this.cbSetStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbSetStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSetStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSetStatus.FormattingEnabled = true;
@@ -1205,7 +1223,7 @@
             // 
             // cbSetStatusReason
             // 
-            this.cbSetStatusReason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbSetStatusReason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSetStatusReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSetStatusReason.FormattingEnabled = true;
@@ -1247,7 +1265,7 @@
             // 
             // txtDeleteWarning
             // 
-            this.txtDeleteWarning.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtDeleteWarning.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDeleteWarning.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDeleteWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1278,8 +1296,8 @@
             // 
             // chkMultiSelects
             // 
-            this.chkMultiSelects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.chkMultiSelects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chkMultiSelects.FormattingEnabled = true;
             this.chkMultiSelects.Location = new System.Drawing.Point(9, 6);
@@ -1326,7 +1344,7 @@
             // 
             // cdsLookupValue
             // 
-            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
             this.cdsLookupValue.Column = null;
@@ -1346,7 +1364,7 @@
             // 
             // cbAssignTeam
             // 
-            this.cbAssignTeam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbAssignTeam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAssignTeam.Column = null;
             this.cbAssignTeam.DisplayFormat = "";
@@ -1363,7 +1381,7 @@
             // 
             // cbAssignUser
             // 
-            this.cbAssignUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbAssignUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAssignUser.Column = null;
             this.cbAssignUser.DisplayFormat = "";
@@ -1512,6 +1530,8 @@
         private System.Windows.Forms.ColumnHeader value;
         private System.Windows.Forms.ColumnHeader onlychange;
         private System.Windows.Forms.ToolStripLabel tslAbout;
+        private System.Windows.Forms.ToolStripLabel tslDoc;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator17; 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabUpdate;
         private System.Windows.Forms.TabPage tabDelete;

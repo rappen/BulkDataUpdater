@@ -756,6 +756,11 @@
         {
             ShowAboutDialog();
         }
+    
+        private void tslDoc_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jonasr.app/BDU/");
+        }
 
         private void tsmiAttributes_Click(object sender, EventArgs e)
         {
