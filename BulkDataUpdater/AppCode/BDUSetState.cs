@@ -194,6 +194,15 @@ namespace Cinteros.XTB.BulkDataUpdater
                     }
                     break;
             }
+            if (chkSetState.Checked)
+            {
+                return new SetStateRequest
+                {
+                    EntityMoniker = record.ToEntityReference(),
+                    State = new OptionSetValue((int)state.Metadata.Value),
+                    Status = new OptionSetValue((int)status.Metadata.Value)
+                };
+            }
             var clone = new Entity(record.LogicalName, record.Id);
             clone.Attributes.Add(_common_.Status, new OptionSetValue((int)state.Metadata.Value));
             clone.Attributes.Add(_common_.StatusReason, new OptionSetValue((int)status.Metadata.Value));

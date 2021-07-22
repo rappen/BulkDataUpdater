@@ -137,6 +137,7 @@
             this.cbAssignTeam = new Rappen.XTB.Helpers.Controls.XRMColumnLookup();
             this.cbAssignUser = new Rappen.XTB.Helpers.Controls.XRMColumnLookup();
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
+            this.chkSetState = new System.Windows.Forms.CheckBox();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -1114,6 +1115,7 @@
             // 
             // tabSetState
             // 
+            this.tabSetState.Controls.Add(this.chkSetState);
             this.tabSetState.Controls.Add(this.panQualifyLead);
             this.tabSetState.Controls.Add(this.panel3);
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
@@ -1384,6 +1386,17 @@
             this.cdsLookupDialog.Service = null;
             this.cdsLookupDialog.Title = null;
             // 
+            // chkSetState
+            // 
+            this.chkSetState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkSetState.AutoSize = true;
+            this.chkSetState.Location = new System.Drawing.Point(19, 472);
+            this.chkSetState.Name = "chkSetState";
+            this.chkSetState.Size = new System.Drawing.Size(118, 21);
+            this.chkSetState.TabIndex = 18;
+            this.chkSetState.Text = "Try old SetState";
+            this.chkSetState.UseVisualStyleBackColor = true;
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1558,5 +1571,6 @@
         private Rappen.XTB.Helpers.Controls.XRMRecordHost xrmRecordAttribute;
         private System.Windows.Forms.CheckedListBox chkMultiSelects;
         private System.Windows.Forms.Panel panMultiChoices;
+        private System.Windows.Forms.CheckBox chkSetState;
     }
 }
