@@ -19,6 +19,24 @@ It can also delete, assign, and set state of records by the filter specified.
     <releaseNotes>
 Latest version:
 
+Now using Rappen.XTB.Helpers with major support open source
+Also removed the xrmtb.XrmToolBox.Controls library
+Not now use ILMerge for more library
+Using Scintilla for XML texts
+
+Supporting updating Multi Select (Choices) (#30)
+Fixed 'Update xx entitys' info (#139)
+Only reload only small data (#149)
+Showing local times for Friendly (#100)
+Older Dynamics can try SetState (#117)
+Performance improved (#150)
+Calculate is only for string/memo (#148 start)
+Added Documention link
+
+---
+
+Version 1.2020.12.5:
+
 Calculated column values! Read more at https://jonasr.app/BDU #18 #20 #38 #86 
 Nice and shiny lookup dialog used when setting lookup columns #36
 Reloading last used query when opening the tool
@@ -58,10 +76,10 @@ Bulk Data Updater can now Bulk Delete too #21
 Added possibility to cancel long running operations #22
 Edit XML window did not resize well #24
     </releaseNotes>
-    <copyright>Copyright 2016-2020 Jonas Rapp</copyright>
+    <copyright>Copyright 2016-2021 Jonas Rapp</copyright>
     <tags>XrmToolBox Plugins BulkDataUpdater</tags>
     <dependencies>
-      <dependency id="XrmToolBox" version="1.2020.11.42" />
+      <dependency id="XrmToolBox" version="1.2021.5.47" />
     </dependencies>
   </metadata>
   <files>
