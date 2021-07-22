@@ -291,7 +291,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         else if (bai.Value is OptionSetValueCollection osvc)
                         {
-                            bai.StringValue = $"({osvc.Count})";
+                            bai.StringValue = $"({osvc.Count} choices)";
                         }
                         else
                         {
