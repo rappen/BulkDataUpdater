@@ -531,6 +531,11 @@
             chkOnlyChange.Checked = chkOnlyChange.Checked && !rbSetTouch.Checked;
 
             var attribute = (AttributeMetadataItem)cmbAttribute.SelectedItem;
+            rbCalculate.Enabled = attribute?.Metadata is MemoAttributeMetadata || attribute.Metadata is StringAttributeMetadata;
+            if (!rbCalculate.Enabled)
+            {
+                rbCalculate.Checked = false;
+            }
             rbSetNull.Enabled = attribute != null;
             cmbValue.Items.Clear();
             var value = rbSetValue.Checked;
