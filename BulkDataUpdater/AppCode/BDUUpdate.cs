@@ -102,7 +102,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         try
                         {
-                            if (GetUpdateRecord(record, attributes, current) is Entity updateentity)
+                            if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
                             {
                                 if (batchsize == 1)
                                 {
