@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -28,8 +29,10 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private ListViewItem GetListItem(AssemblyName a)
         {
+            var assembly = Assembly.Load(a);
+            var fi = FileVersionInfo.GetVersionInfo(assembly.Location);
             var item = new ListViewItem(a.Name);
-            item.SubItems.Add(a.Version.ToString());
+            item.SubItems.Add(fi.FileVersion.ToString());
             return item;
         }
 
