@@ -19,6 +19,13 @@ It can also delete, assign, and set state of records by the filter specified.
     <releaseNotes>
 Latest version:
 
+Use the tool to create calculated tokens: XRM Tokens Runner - now integrated with a simple click!
+
+
+---
+
+Version 1.2021.7.1:
+
 Now using Rappen.XTB.Helpers with major support open source
 Also removed the xrmtb.XrmToolBox.Controls library
 Not now use ILMerge for more library
@@ -76,10 +83,10 @@ Bulk Data Updater can now Bulk Delete too #21
 Added possibility to cancel long running operations #22
 Edit XML window did not resize well #24
     </releaseNotes>
-    <copyright>Copyright 2016-2021 Jonas Rapp</copyright>
+    <copyright>Copyright 2016-2022 Jonas Rapp</copyright>
     <tags>XrmToolBox Plugins BulkDataUpdater</tags>
     <dependencies>
-      <dependency id="XrmToolBox" version="1.2021.5.47" />
+      <dependency id="XrmToolBox" version="1.2021.12.53" />
     </dependencies>
   </metadata>
   <files>
