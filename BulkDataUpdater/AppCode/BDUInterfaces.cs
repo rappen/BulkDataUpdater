@@ -18,6 +18,10 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 FetchUpdated(message.TargetArgument);
             }
+            else if (message.SourcePlugin == "XRM Tokens Runner" && message.TargetArgument is string tokens)
+            {
+                txtValueCalc.Text = tokens;
+            }
         }
 
         public void ShowAboutDialog()

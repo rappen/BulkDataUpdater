@@ -7,7 +7,6 @@
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XTB.Helpers;
     using Rappen.XTB.Helpers.ControlItems;
-    using Rappen.XTB.Helpers.Interfaces;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -17,6 +16,7 @@
     using System.Windows.Forms;
     using System.Xml;
     using Xrm.Common.Forms;
+    using XrmToolBox;
     using XrmToolBox.Extensibility;
 
     public partial class BulkDataUpdater : PluginControlBase
@@ -756,7 +756,7 @@
         {
             ShowAboutDialog();
         }
-    
+
         private void tslDoc_Click(object sender, EventArgs e)
         {
             Process.Start("https://jonasr.app/BDU/");
@@ -1003,6 +1003,23 @@
         private void chkMultiSelects_SelectedIndexChanged(object sender, EventArgs e)
         {
             EnableControls(true);
+        }
+
+        private void link_XRMTRname_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!PluginManagerExtended.Instance.Plugins.Any(p => p.Metadata.Name == "XRM Tokens Runner"))
+            {
+                MessageBox.Show("Please install the tool 'XRM Tokens Runner'!", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!(crmGridView1.SelectedCellRecords.FirstOrDefault() is Entity record))
+            {
+                MessageBox.Show("A record must be available to work with XRM Tokens Runner.", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                OnOutgoingMessage(this, new MessageBusEventArgs("XRM Tokens Runner") { TargetArgument = record });
+            }
         }
     }
 }
