@@ -747,11 +747,6 @@
             CancelWorker();
         }
 
-        private void tsbCloseThisTab_Click(object sender, EventArgs e)
-        {
-            CloseTool();
-        }
-
         private void tslAbout_Click(object sender, EventArgs e)
         {
             ShowAboutDialog();

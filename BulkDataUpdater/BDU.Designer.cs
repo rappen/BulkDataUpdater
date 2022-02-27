@@ -30,11 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
-            this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOptions = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiFriendly = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
@@ -68,13 +66,15 @@
             this.btnGetView = new System.Windows.Forms.Button();
             this.btnGetFXB = new System.Windows.Forms.Button();
             this.gb2attribute = new System.Windows.Forms.GroupBox();
+            this.panUpdTextMulti = new System.Windows.Forms.Panel();
+            this.txtValueMultiline = new System.Windows.Forms.TextBox();
             this.panUpdCalc = new System.Windows.Forms.Panel();
+            this.link_XRMTRname = new System.Windows.Forms.LinkLabel();
+            this.linkXRMTRlogo = new System.Windows.Forms.LinkLabel();
             this.txtCalcPreview = new System.Windows.Forms.TextBox();
             this.btnCalcHelp = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtValueCalc = new System.Windows.Forms.TextBox();
-            this.panUpdTextMulti = new System.Windows.Forms.Panel();
-            this.txtValueMultiline = new System.Windows.Forms.TextBox();
             this.panMultiChoices = new System.Windows.Forms.Panel();
             this.chkMultiSelects = new System.Windows.Forms.CheckedListBox();
             this.panUpdButton = new System.Windows.Forms.Panel();
@@ -140,13 +140,11 @@
             this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.tmCalc = new System.Windows.Forms.Timer(this.components);
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
-            this.linkXRMTRlogo = new System.Windows.Forms.LinkLabel();
-            this.link_XRMTRname = new System.Windows.Forms.LinkLabel();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
-            this.panUpdCalc.SuspendLayout();
             this.panUpdTextMulti.SuspendLayout();
+            this.panUpdCalc.SuspendLayout();
             this.panMultiChoices.SuspendLayout();
             this.panUpdButton.SuspendLayout();
             this.panUpdLookup.SuspendLayout();
@@ -187,8 +185,6 @@
             // 
             this.toolStripMain.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbCloseThisTab,
-            this.toolStripSeparator4,
             this.tsbOptions,
             this.tslAbout,
             this.tsbCancel,
@@ -199,21 +195,6 @@
             this.toolStripMain.Size = new System.Drawing.Size(979, 31);
             this.toolStripMain.TabIndex = 23;
             this.toolStripMain.Text = "toolStrip1";
-            // 
-            // tsbCloseThisTab
-            // 
-            this.tsbCloseThisTab.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCloseThisTab.Image = ((System.Drawing.Image)(resources.GetObject("tsbCloseThisTab.Image")));
-            this.tsbCloseThisTab.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCloseThisTab.Name = "tsbCloseThisTab";
-            this.tsbCloseThisTab.Size = new System.Drawing.Size(28, 28);
-            this.tsbCloseThisTab.Text = "Close this tab";
-            this.tsbCloseThisTab.Click += new System.EventHandler(this.tsbCloseThisTab_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 31);
             // 
             // tsbOptions
             // 
@@ -231,14 +212,14 @@
             // 
             this.tsmiFriendly.CheckOnClick = true;
             this.tsmiFriendly.Name = "tsmiFriendly";
-            this.tsmiFriendly.Size = new System.Drawing.Size(156, 22);
+            this.tsmiFriendly.Size = new System.Drawing.Size(180, 22);
             this.tsmiFriendly.Text = "Friendly names";
             this.tsmiFriendly.Click += new System.EventHandler(this.tsmiFriendly_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmiShowAttributes
             // 
@@ -256,7 +237,7 @@
             this.toolStripSeparator16,
             this.tsmiAttributesOnlyValidAF});
             this.tsmiShowAttributes.Name = "tsmiShowAttributes";
-            this.tsmiShowAttributes.Size = new System.Drawing.Size(156, 22);
+            this.tsmiShowAttributes.Size = new System.Drawing.Size(180, 22);
             this.tsmiShowAttributes.Text = "Show attributes";
             // 
             // tsmiAttributesAll
@@ -576,6 +557,30 @@
             this.gb2attribute.TabStop = false;
             this.gb2attribute.Text = "Select attribute to update";
             // 
+            // panUpdTextMulti
+            // 
+            this.panUpdTextMulti.Controls.Add(this.txtValueMultiline);
+            this.panUpdTextMulti.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panUpdTextMulti.Location = new System.Drawing.Point(3, 118);
+            this.panUpdTextMulti.Name = "panUpdTextMulti";
+            this.panUpdTextMulti.Size = new System.Drawing.Size(324, 115);
+            this.panUpdTextMulti.TabIndex = 5;
+            this.panUpdTextMulti.Visible = false;
+            this.panUpdTextMulti.Paint += new System.Windows.Forms.PaintEventHandler(this.panUpdTextMulti_Paint);
+            // 
+            // txtValueMultiline
+            // 
+            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtValueMultiline.Location = new System.Drawing.Point(12, 3);
+            this.txtValueMultiline.Multiline = true;
+            this.txtValueMultiline.Name = "txtValueMultiline";
+            this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtValueMultiline.Size = new System.Drawing.Size(298, 109);
+            this.txtValueMultiline.TabIndex = 36;
+            this.txtValueMultiline.TextChanged += new System.EventHandler(this.genericInputChanged);
+            // 
             // panUpdCalc
             // 
             this.panUpdCalc.BackColor = System.Drawing.Color.Transparent;
@@ -591,6 +596,29 @@
             this.panUpdCalc.Size = new System.Drawing.Size(324, 115);
             this.panUpdCalc.TabIndex = 11;
             this.panUpdCalc.Visible = false;
+            // 
+            // link_XRMTRname
+            // 
+            this.link_XRMTRname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.link_XRMTRname.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.link_XRMTRname.Location = new System.Drawing.Point(30, 6);
+            this.link_XRMTRname.Name = "link_XRMTRname";
+            this.link_XRMTRname.Size = new System.Drawing.Size(280, 16);
+            this.link_XRMTRname.TabIndex = 41;
+            this.link_XRMTRname.TabStop = true;
+            this.link_XRMTRname.Text = "Build with XRM Tokens Runner";
+            this.link_XRMTRname.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_XRMTRname_LinkClicked);
+            // 
+            // linkXRMTRlogo
+            // 
+            this.linkXRMTRlogo.Image = ((System.Drawing.Image)(resources.GetObject("linkXRMTRlogo.Image")));
+            this.linkXRMTRlogo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkXRMTRlogo.Location = new System.Drawing.Point(11, 3);
+            this.linkXRMTRlogo.Name = "linkXRMTRlogo";
+            this.linkXRMTRlogo.Size = new System.Drawing.Size(21, 21);
+            this.linkXRMTRlogo.TabIndex = 40;
+            this.linkXRMTRlogo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_XRMTRname_LinkClicked);
             // 
             // txtCalcPreview
             // 
@@ -635,30 +663,6 @@
             this.txtValueCalc.Size = new System.Drawing.Size(298, 56);
             this.txtValueCalc.TabIndex = 36;
             this.txtValueCalc.TextChanged += new System.EventHandler(this.txtValueCalc_TextChanged);
-            // 
-            // panUpdTextMulti
-            // 
-            this.panUpdTextMulti.Controls.Add(this.txtValueMultiline);
-            this.panUpdTextMulti.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panUpdTextMulti.Location = new System.Drawing.Point(3, 118);
-            this.panUpdTextMulti.Name = "panUpdTextMulti";
-            this.panUpdTextMulti.Size = new System.Drawing.Size(324, 115);
-            this.panUpdTextMulti.TabIndex = 5;
-            this.panUpdTextMulti.Visible = false;
-            this.panUpdTextMulti.Paint += new System.Windows.Forms.PaintEventHandler(this.panUpdTextMulti_Paint);
-            // 
-            // txtValueMultiline
-            // 
-            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtValueMultiline.Location = new System.Drawing.Point(12, 3);
-            this.txtValueMultiline.Multiline = true;
-            this.txtValueMultiline.Name = "txtValueMultiline";
-            this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueMultiline.Size = new System.Drawing.Size(298, 109);
-            this.txtValueMultiline.TabIndex = 36;
-            this.txtValueMultiline.TextChanged += new System.EventHandler(this.genericInputChanged);
             // 
             // panMultiChoices
             // 
@@ -931,8 +935,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
@@ -1419,29 +1423,6 @@
             this.cdsLookupDialog.Service = null;
             this.cdsLookupDialog.Title = null;
             // 
-            // linkXRMTRlogo
-            // 
-            this.linkXRMTRlogo.Image = ((System.Drawing.Image)(resources.GetObject("linkXRMTRlogo.Image")));
-            this.linkXRMTRlogo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkXRMTRlogo.Location = new System.Drawing.Point(11, 3);
-            this.linkXRMTRlogo.Name = "linkXRMTRlogo";
-            this.linkXRMTRlogo.Size = new System.Drawing.Size(21, 21);
-            this.linkXRMTRlogo.TabIndex = 40;
-            this.linkXRMTRlogo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_XRMTRname_LinkClicked);
-            // 
-            // link_XRMTRname
-            // 
-            this.link_XRMTRname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.link_XRMTRname.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.link_XRMTRname.Location = new System.Drawing.Point(30, 6);
-            this.link_XRMTRname.Name = "link_XRMTRname";
-            this.link_XRMTRname.Size = new System.Drawing.Size(280, 16);
-            this.link_XRMTRname.TabIndex = 41;
-            this.link_XRMTRname.TabStop = true;
-            this.link_XRMTRname.Text = "Build with XRM Tokens Runner";
-            this.link_XRMTRname.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_XRMTRname_LinkClicked);
-            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1460,10 +1441,10 @@
             this.gb1select.ResumeLayout(false);
             this.gb1select.PerformLayout();
             this.gb2attribute.ResumeLayout(false);
-            this.panUpdCalc.ResumeLayout(false);
-            this.panUpdCalc.PerformLayout();
             this.panUpdTextMulti.ResumeLayout(false);
             this.panUpdTextMulti.PerformLayout();
+            this.panUpdCalc.ResumeLayout(false);
+            this.panUpdCalc.PerformLayout();
             this.panMultiChoices.ResumeLayout(false);
             this.panUpdButton.ResumeLayout(false);
             this.panUpdButton.PerformLayout();
@@ -1513,8 +1494,6 @@
 
         private System.Windows.Forms.ImageList imageList1;
         internal System.Windows.Forms.ToolStrip toolStripMain;
-        private System.Windows.Forms.ToolStripButton tsbCloseThisTab;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripDropDownButton tsbOptions;
         private System.Windows.Forms.ToolStripMenuItem tsmiFriendly;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
