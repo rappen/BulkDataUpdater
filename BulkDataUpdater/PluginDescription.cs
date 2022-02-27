@@ -1,6 +1,8 @@
 ﻿namespace Cinteros.XTB.BulkDataUpdater
 {
+    using System;
     using System.ComponentModel.Composition;
+    using XrmToolBox.Constants;
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Interfaces;
 
@@ -12,10 +14,14 @@
         ExportMetadata("BackgroundColor", "#FFFFC0"),
         ExportMetadata("PrimaryFontColor", "#0000C0"),
         ExportMetadata("SecondaryFontColor", "#0000FF")]
-    public class BulkDataUpdaterTool : PluginBase
+    public class BulkDataUpdaterTool : PluginBase, IPayPalPlugin
     {
+        public string DonationDescription => "Bulk Data Updater Fan Club";
+
+        public string EmailAccount => "jonas@rappen.net";
+
         public override IXrmToolBoxPluginControl GetControl() => new BulkDataUpdater();
 
-        //public override Guid GetId() => XrmToolBoxToolIds.BulkDataUpdater;
+        public override Guid GetId() => XrmToolBoxToolIds.BulkDataUpdater;
     }
 }

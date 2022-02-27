@@ -67,13 +67,13 @@ namespace Cinteros.XTB.BulkDataUpdater
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             bdu.LogUse("About-OpenBlog");
-            System.Diagnostics.Process.Start("http://jonasr.app");
+            System.Diagnostics.Process.Start("https://jonasr.app");
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             bdu.LogUse("About-OpenTwitter");
-            System.Diagnostics.Process.Start("http://twitter.com/rappen");
+            System.Diagnostics.Process.Start("https://twitter.com/rappen");
         }
 
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

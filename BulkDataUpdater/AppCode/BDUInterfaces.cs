@@ -35,7 +35,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             about.ShowDialog();
         }
 
-        public string DonationDescription => "Donation to Bulk Data Updater for XrmToolBox";
+        public string DonationDescription => "Bulk Data Updater Fan Club";
 
         public string EmailAccount => "jonas@rappen.net";
 
