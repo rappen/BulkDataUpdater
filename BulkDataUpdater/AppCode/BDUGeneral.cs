@@ -162,7 +162,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     EnableControls(true);
                     if (completedargs.Error != null)
                     {
-                        MessageBox.Show(completedargs.Error.Message);
+                        ShowErrorDialog(completedargs.Error, "Load Views");
                     }
                     else
                     {
@@ -223,7 +223,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     working = false;
                     if (completedargs.Error != null)
                     {
-                        MessageBox.Show(completedargs.Error.Message, "Retrieve Records", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ShowErrorDialog(completedargs.Error, "Retrieve Records");
                     }
                     else if (!completedargs.Cancelled && completedargs.Result is EntityCollection result)
                     {

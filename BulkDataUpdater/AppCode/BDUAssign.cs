@@ -115,7 +115,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     tsbCancel.Enabled = false;
                     if (completedargs.Error != null)
                     {
-                        MessageBox.Show(completedargs.Error.Message, "Assign", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ShowErrorDialog(completedargs.Error, "Assign");
                     }
                     else if (completedargs.Cancelled)
                     {
@@ -170,7 +170,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         if (args.Error != null)
                         {
-                            MessageBox.Show(args.Error.Message, "Getting users", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            ShowErrorDialog(args.Error, "Gettinh users");
                         }
                         else if (args.Result is EntityCollection users)
                         {
@@ -201,7 +201,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         if (args.Error != null)
                         {
-                            MessageBox.Show(args.Error.Message, "Getting Teams", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            ShowErrorDialog(args.Error, "Getting Teams");
                         }
                         else if (args.Result is EntityCollection teams)
                         {

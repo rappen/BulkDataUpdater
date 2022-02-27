@@ -31,7 +31,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 "UI defined rules will NOT be enforced.\n" +
                 "Plugins and workflows WILL trigger.\n" +
                 "User privileges WILL be respected.\n\n" +
-                "Please confirm assignment.",
+                "Please confirm set state.",
                 "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
             {
                 return;
@@ -47,7 +47,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             WorkAsync(new WorkAsyncInfo()
             {
-                Message = "Assigning records",
+                Message = "Set State for records",
                 IsCancelable = true,
                 Work = (bgworker, workargs) =>
                 {
@@ -118,7 +118,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     tsbCancel.Enabled = false;
                     if (completedargs.Error != null)
                     {
-                        MessageBox.Show(completedargs.Error.Message, "Assign", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ShowErrorDialog(completedargs.Error, "Set State");
                     }
                     else if (completedargs.Cancelled)
                     {

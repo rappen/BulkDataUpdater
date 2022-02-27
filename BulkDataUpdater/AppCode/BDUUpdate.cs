@@ -143,7 +143,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     tsbCancel.Enabled = false;
                     if (completedargs.Error != null)
                     {
-                        MessageBox.Show(completedargs.Error.Message, "Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ShowErrorDialog(completedargs.Error, "Update");
                     }
                     else if (completedargs.Cancelled)
                     {

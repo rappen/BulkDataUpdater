@@ -259,7 +259,7 @@
                     working = false;
                     if (completedargs.Error != null)
                     {
-                        MessageBox.Show(completedargs.Error.Message);
+                        ShowErrorDialog(completedargs.Error, "Load Entities");
                     }
                     else
                     {
@@ -306,7 +306,7 @@
                     if (completedargs.Error != null)
                     {
                         entityShitList.Add(entityName);
-                        MessageBox.Show(completedargs.Error.Message, "Load attribute metadata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        ShowErrorDialog(completedargs.Error, "Load attribute metadata");
                     }
                     else
                     {
