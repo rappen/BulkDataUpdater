@@ -273,7 +273,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="XrmToolBoxToolIds.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
