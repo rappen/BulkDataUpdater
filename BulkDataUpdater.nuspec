@@ -92,7 +92,7 @@ Edit XML window did not resize well #24
     <copyright>Copyright 2016-2022 Jonas Rapp</copyright>
     <tags>XrmToolBox Plugins BulkDataUpdater</tags>
     <dependencies>
-      <dependency id="XrmToolBox" version="1.2021.12.53" />
+      <dependency id="XrmToolBox" version="1.2022.2.54" />
     </dependencies>
   </metadata>
   <files>
