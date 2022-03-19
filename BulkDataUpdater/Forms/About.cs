@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -61,19 +60,19 @@ namespace Cinteros.XTB.BulkDataUpdater
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             bdu.LogUse("About-OpenHomepage");
-            System.Diagnostics.Process.Start("https://jonasr.app/bdu/");
+            Process.Start("https://jonasr.app/bdu/");
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             bdu.LogUse("About-OpenBlog");
-            System.Diagnostics.Process.Start("https://jonasr.app");
+            Process.Start("https://jonasr.app");
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             bdu.LogUse("About-OpenTwitter");
-            System.Diagnostics.Process.Start("https://twitter.com/rappen");
+            Process.Start("https://twitter.com/rappen");
         }
 
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -83,6 +82,11 @@ The statistics are a valuable source of information for continuing the developme
 
 Thank You,
 Jonas", "Anonymous statistics", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://jonasr.app/bdu/releases");
         }
     }
 }
