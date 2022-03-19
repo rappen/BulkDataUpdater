@@ -1,101 +1,32 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>Cinteros.XrmToolBox.BulkDataUpdater</id>
-    <version>1.0.0</version>
-    <title>Bulk Data Updater for XrmToolBox</title>
-    <authors>Jonas Rapp</authors>
-    <owners>rappen</owners>
-    <projectUrl>https://jonasr.app/BDU/</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/rappen/BulkDataUpdater/master/images/BDU-150-tsp.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>
-Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete.
-Empower yourself to achieve more.
-This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
-It can also delete, assign, and set state of records by the filter specified.
-    </description>
-    <summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
-    <releaseNotes>
-Latest version:
-
-* Minor fixes - gets a bit better!
-* Using XrmToolBox error messages.
-
----
-
-Version 1.2022.1.1:
-
-Use the tool to create calculated tokens: XRM Tokens Runner - now integrated with a simple click!
-
----
-
-Version 1.2021.7.1:
-
-Now using Rappen.XTB.Helpers with major support open source
-Also removed the xrmtb.XrmToolBox.Controls library
-Not now use ILMerge for more library
-Using Scintilla for XML texts
-
-Supporting updating Multi Select (Choices) (#30)
-Fixed 'Update xx entitys' info (#139)
-Only reload only small data (#149)
-Showing local times for Friendly (#100)
-Older Dynamics can try SetState (#117)
-Performance improved (#150)
-Calculate is only for string/memo (#148 start)
-Added Documention link
-
----
-
-Version 1.2020.12.5:
-
-Calculated column values! Read more at https://jonasr.app/BDU #18 #20 #38 #86 
-Nice and shiny lookup dialog used when setting lookup columns #36
-Reloading last used query when opening the tool
-Improved performance when retrieving records
-Fixed bug when getting errors during Delete
-Fixing integration from FetchXML Builder
-
----
-
-Version 1.2019.12.1:
-
-Reassign records to Team or User #19 
-Update Status and Status Reason #15
-Support multi-line values for memo type attributes #11
-Open records by double clicking in the grid #31
-Handle Qualify/Win/Lose requests when changing status of Lead/Opportunity #32
-
----
-
-Version 1.2019.6.1:
-
-Added option to wait between calls to server. Thanks Mats Sundbergh @cint-mats! #29
-XML attribute values with only space got trimmed, now fixed. #28
-Incorrect warning text during Delete. #26
-Errors were always ignored during Delete, not anymore. #25
-Fixed tab-order for usability.
-Rebranded for 2019.
-
----
-
-Version 1.2018.10.2:
-
-Option to only update/delete selected records #1
-ExecuteMultiple for updates to improve performance #3
-Retrieve all pages instead of just first page (5000 records) #16
-Bulk Data Updater can now Bulk Delete too #21
-Added possibility to cancel long running operations #22
-Edit XML window did not resize well #24
-    </releaseNotes>
-    <copyright>Copyright 2016-2022 Jonas Rapp</copyright>
-    <tags>XrmToolBox Plugins BulkDataUpdater</tags>
-    <dependencies>
-      <dependency id="XrmToolBox" version="1.2022.2.54" />
-    </dependencies>
-  </metadata>
-  <files>
-    <file src="BulkDataUpdater\bin\Release\Rappen.XTB.BDU.dll" target="lib\net452\Plugins" />
-  </files>
+	<metadata>
+		<id>Cinteros.XrmToolBox.BulkDataUpdater</id>
+		<version>1.0.0</version>
+		<title>Bulk Data Updater for XrmToolBox</title>
+		<authors>Jonas Rapp</authors>
+		<owners>rappen</owners>
+		<projectUrl>https://jonasr.app/BDU/</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/rappen/BulkDataUpdater/master/images/BDU-150-tsp.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>
+			Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete.
+			Empower yourself to achieve more.
+			This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
+			It can also delete, assign, and set state of records by the filter specified.
+		</description>
+		<summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
+		<releaseNotes>
+See latest release notes, and all history:
+https://jonasr.app/bdu/releases/#$versionnumber$
+		</releaseNotes>
+		<copyright>Copyright 2016-2022 Jonas Rapp</copyright>
+		<tags>XrmToolBox Plugins BulkDataUpdater</tags>
+		<dependencies>
+			<dependency id="XrmToolBox" version="1.2022.2.54" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="BulkDataUpdater\bin\Release\Rappen.XTB.BDU.dll" target="lib\net452\Plugins" />
+	</files>
 </package>
