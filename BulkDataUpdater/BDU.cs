@@ -362,7 +362,7 @@
                 // Reset some settings when new version is deployed
                 globalsettings.CurrentVersion = version;
                 SettingsManager.Instance.Save(typeof(BulkDataUpdater), globalsettings, "[Global]");
-                Process.Start("https://jonasr.app/BDU/releases");
+                Process.Start($"https://jonasr.app/BDU/releases/#{version}");
             }
         }
 
