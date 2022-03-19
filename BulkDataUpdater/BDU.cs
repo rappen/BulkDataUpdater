@@ -350,13 +350,28 @@
             }
         }
 
+        private void LoadGlobalSetting()
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out GlobalSettings globalsettings, "[Global]"))
+            {
+                globalsettings = new GlobalSettings();
+            }
+            if (!version.Equals(globalsettings.CurrentVersion))
+            {
+                // Reset some settings when new version is deployed
+                globalsettings.CurrentVersion = version;
+                SettingsManager.Instance.Save(typeof(BulkDataUpdater), globalsettings, "[Global]");
+                Process.Start("https://jonasr.app/BDU/releases");
+            }
+        }
+
         private void LoadSetting()
         {
             if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out Settings settings, ConnectionDetail?.ConnectionName))
             {
                 settings = new Settings();
             }
-
             fetchXml = settings.FetchXML;
             fetchResulCount = settings.FetchResultCount;
             if (settings.EntityAttributes != null)
@@ -712,6 +727,7 @@
         private void DataUpdater_Load(object sender, EventArgs e)
         {
             EnableControls(false);
+            LoadGlobalSetting();
             LoadSetting();
             LogUse("Load");
             if (!string.IsNullOrWhiteSpace(fetchXml) && fetchResulCount > 0 && fetchResulCount < 100)
