@@ -14,6 +14,8 @@
 			Empower yourself to achieve more.
 			This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
 			It can also delete, assign, and set state of records by the filter specified.
+			
+			Read more: https://jonasr.app/BDU
 		</description>
 		<summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
 		<releaseNotes>
