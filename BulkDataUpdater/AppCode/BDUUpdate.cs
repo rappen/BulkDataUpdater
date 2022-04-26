@@ -3,7 +3,6 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Rappen.XRM.Helpers;
-using Rappen.XTB.Helpers;
 using Rappen.XTB.Helpers.ControlItems;
 using System;
 using System.Collections.Generic;
@@ -34,6 +33,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             var includedrecords = GetIncludedRecords();
             working = true;
             var ignoreerrors = chkIgnoreErrors.Checked;
+            var bypassplugins = chkBypassPlugins.Checked;
             if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
             {
                 batchsize = 1;
@@ -105,16 +105,18 @@ namespace Cinteros.XTB.BulkDataUpdater
                         {
                             if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
                             {
+                                var request = new UpdateRequest { Target = updateentity };
+                                request.Parameters[bypasspluginsparam] = bypassplugins;
                                 if (batchsize == 1)
                                 {
                                     bgworker.ReportProgress(pct, $"Updating record {current} of {total}");
-                                    Service.Update(updateentity);
+                                    Service.Execute(request);
                                     updated++;
                                     waitnow = true;
                                 }
                                 else
                                 {
-                                    batch.Requests.Add(new UpdateRequest { Target = updateentity });
+                                    batch.Requests.Add(request);
                                     if (batch.Requests.Count == batchsize || current == total)
                                     {
                                         bgworker.ReportProgress(pct, $"Updating records {current - batch.Requests.Count + 1}-{current} of {total}");

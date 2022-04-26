@@ -32,6 +32,7 @@
 
         #region Private Fields
 
+        private const string bypasspluginsparam = "BypassCustomPluginExecution";
         private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
         private const string aiKey = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
         private AppInsights ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
@@ -1013,6 +1014,26 @@
         private void btnAssignSelect_Click(object sender, EventArgs e)
         {
             SelectingAssigner();
+        }
+
+        private void linkBypassPlugins_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://docs.microsoft.com/en-us/power-apps/developer/data-platform/bypass-custom-business-logic?WT.mc_id=BA-MVP-5002475");
+        }
+
+        private void chkBypassPlugins_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkBypassPlugins.Checked)
+            {
+                if (MessageBox.Show(
+                    "Make sure you know exactly what this checkbox means.\n" +
+                    "Please read the docs - click the link first!\n\n" +
+                    "Are you OK to continue?", "Bypass Custom Business Logic",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
+                {
+                    chkBypassPlugins.Checked = false;
+                }
+            }
         }
     }
 }

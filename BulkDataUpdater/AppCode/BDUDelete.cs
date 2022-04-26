@@ -30,6 +30,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             working = true;
             var includedrecords = GetIncludedRecords();
             var ignoreerrors = chkIgnoreErrors.Checked;
+            var bypassplugins = chkBypassPlugins.Checked;
             if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
             {
                 batchsize = 1;
@@ -61,15 +62,17 @@ namespace Cinteros.XTB.BulkDataUpdater
                         var pct = 100 * current / total;
                         try
                         {
+                            var request = new DeleteRequest { Target = record.ToEntityReference() };
+                            request.Parameters[bypasspluginsparam] = bypassplugins;
                             if (batchsize == 1)
                             {
                                 bgworker.ReportProgress(pct, $"Deleting record {current} of {total}");
-                                Service.Delete(record.LogicalName, record.Id);
+                                Service.Execute(request);
                                 deleted++;
                             }
                             else
                             {
-                                batch.Requests.Add(new DeleteRequest { Target = record.ToEntityReference() });
+                                batch.Requests.Add(request);
                                 if (batch.Requests.Count == batchsize || current == total)
                                 {
                                     bgworker.ReportProgress(pct, $"Deleting records {current - batch.Requests.Count + 1}-{current} of {total}");

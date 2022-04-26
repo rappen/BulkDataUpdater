@@ -41,6 +41,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             working = true;
             var includedrecords = GetIncludedRecords();
             var ignoreerrors = chkIgnoreErrors.Checked;
+            var bypassplugins = chkBypassPlugins.Checked;
             if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
             {
                 batchsize = 1;
@@ -69,6 +70,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             break;
                         }
                         var req = GetSetStateRequest(record, state, status);
+                        req.Parameters[bypasspluginsparam] = bypassplugins;
                         current++;
                         var pct = 100 * current / total;
                         try

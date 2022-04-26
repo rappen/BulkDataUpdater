@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
-using Microsoft.Xrm.Sdk.Query;
 using Rappen.XRM.Helpers.Extensions;
 using System;
 using System.Diagnostics;
@@ -61,6 +60,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             working = true;
             var includedrecords = GetIncludedRecords();
             var ignoreerrors = chkIgnoreErrors.Checked;
+            var bypassplugins = chkBypassPlugins.Checked;
             if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
             {
                 batchsize = 1;
@@ -94,15 +94,17 @@ namespace Cinteros.XTB.BulkDataUpdater
                         {
                             var clone = new Entity(record.LogicalName, record.Id);
                             clone.Attributes.Add("ownerid", owner.ToEntityReference());
+                            var request = new UpdateRequest { Target = clone };
+                            request.Parameters[bypasspluginsparam] = bypassplugins;
                             if (batchsize == 1)
                             {
                                 bgworker.ReportProgress(pct, $"Assigning record {current} of {total}");
-                                Service.Update(clone);
+                                Service.Execute(request);
                                 assigned++;
                             }
                             else
                             {
-                                batch.Requests.Add(new UpdateRequest { Target = clone });
+                                batch.Requests.Add(request);
                                 if (batch.Requests.Count == batchsize || current == total)
                                 {
                                     bgworker.ReportProgress(pct, $"Assigning records {current - batch.Requests.Count + 1}-{current} of {total}");
