@@ -2,6 +2,7 @@
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Rappen.XRM.Helpers;
 using Rappen.XTB.Helpers;
 using Rappen.XTB.Helpers.ControlItems;
 using System;

@@ -5,6 +5,7 @@
     using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
+    using Rappen.XRM.Helpers;
     using Rappen.XTB.Helpers;
     using Rappen.XTB.Helpers.ControlItems;
     using System;
