@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
+using Rappen.XRM.Helpers.Extensions;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -11,19 +12,42 @@ namespace Cinteros.XTB.BulkDataUpdater
 {
     public partial class BulkDataUpdater
     {
+        private void SelectingAssigner()
+        {
+            xrmLookupAssign.Service = Service;
+            switch (xrmLookupAssign.ShowDialog(this))
+            {
+                case DialogResult.OK:
+                    xrmRecordAssign.Service = Service;
+                    xrmRecordAssign.Record = xrmLookupAssign.Record;
+                    break;
+                case DialogResult.Abort:
+                    xrmRecordAssign.Record = null;
+                    break;
+            }
+            if (xrmRecordAssign.Record != null)
+            {
+                txtAssignEntity.Text = Service.GetEntity(xrmRecordAssign.LogicalName)?.DisplayName?.UserLocalizedLabel?.Label ?? xrmLookupAssign.LogicalName;
+            }
+            else
+            {
+                txtAssignEntity.Text = null;
+            }
+            EnableControls(true);
+        }
+
         private void AssignRecords()
         {
             if (working)
             {
                 return;
             }
-            var owner = cbAssignUser.SelectedRecord != null ? cbAssignUser.SelectedRecord : cbAssignTeam.SelectedRecord;
-            var ownername = cbAssignUser.SelectedRecord != null ? "User " + cbAssignUser.Text : "Team " + cbAssignTeam.Text;
+            var owner = xrmLookupAssign.Record;
             if (owner == null)
             {
                 return;
             }
-            if (MessageBox.Show($"All selected records will unconditionally be reassigned to {ownername}.\n" +
+            if (MessageBox.Show($"All selected records will unconditionally be reassigned to {txtAssignEntity.Text} {xrmAssignText.Text}.\n" +
                 "UI defined rules will NOT be enforced.\n" +
                 "Plugins and workflows WILL trigger.\n" +
                 "User privileges WILL be respected.\n\n" +
@@ -144,73 +168,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                     SetWorkingMessage(changeargs.UserState.ToString());
                 }
             });
-        }
-
-        private void LoadOwners()
-        {
-            if (cbAssignUser.DataSource == null)
-            {
-                cbAssignUser.Service = Service;
-                cbAssignUser.DisplayFormat = $"{{{User.PrimaryName}}} ({{{User.PrimaryEmail}}})";
-                var qxUser = new QueryExpression(User.EntityName);
-                qxUser.ColumnSet.AddColumns(User.PrimaryKey, User.PrimaryName, User.PrimaryEmail, _common_.BusinessUnit);
-                qxUser.AddOrder(User.PrimaryName, OrderType.Ascending);
-                qxUser.Criteria.AddCondition(User.Status, ConditionOperator.Equal, false);
-                qxUser.Criteria.AddCondition(User.AccessMode, ConditionOperator.NotEqual, (int)User.AccessMode_OptionSet.SupportUser);
-                qxUser.Criteria.AddCondition(User.AccessMode, ConditionOperator.NotEqual, (int)User.AccessMode_OptionSet.DelegatedAdmin);
-                WorkAsync(new WorkAsyncInfo
-                {
-                    Message = "Loading Users",
-                    AsyncArgument = qxUser,
-                    Work = (worker, args) =>
-                    {
-                        args.Result = Service.RetrieveMultiple(args.Argument as QueryExpression);
-                    },
-                    PostWorkCallBack = (args) =>
-                    {
-                        if (args.Error != null)
-                        {
-                            ShowErrorDialog(args.Error, "Gettinh users");
-                        }
-                        else if (args.Result is EntityCollection users)
-                        {
-                            cbAssignUser.DataSource = users;
-                            cbAssignUser.SelectedIndex = -1;
-                        }
-                    }
-                });
-            }
-
-            if (cbAssignTeam.DataSource == null)
-            {
-                cbAssignTeam.Service = Service;
-                cbAssignTeam.DisplayFormat = $"{{{Team.PrimaryName}}} ({{{_common_.BusinessUnit}}})";
-                var qxTeam = new QueryExpression(Team.EntityName);
-                qxTeam.ColumnSet.AddColumns(Team.PrimaryKey, Team.PrimaryName, _common_.BusinessUnit);
-                qxTeam.AddOrder(Team.PrimaryName, OrderType.Ascending);
-                //qxTeam.Criteria.AddCondition(Team.TeamType, ConditionOperator.Equal, (int)Team.TeamType_OptionSet.Owner);
-                WorkAsync(new WorkAsyncInfo
-                {
-                    Message = "Loading Teams",
-                    AsyncArgument = qxTeam,
-                    Work = (worker, args) =>
-                    {
-                        args.Result = Service.RetrieveMultiple(args.Argument as QueryExpression);
-                    },
-                    PostWorkCallBack = (args) =>
-                    {
-                        if (args.Error != null)
-                        {
-                            ShowErrorDialog(args.Error, "Getting Teams");
-                        }
-                        else if (args.Result is EntityCollection teams)
-                        {
-                            cbAssignTeam.DataSource = teams;
-                            cbAssignTeam.SelectedIndex = -1;
-                        }
-                    }
-                });
-            }
         }
     }
 }

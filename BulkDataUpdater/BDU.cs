@@ -94,7 +94,7 @@
                     gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
                     gbExecute.Enabled =
                         (tabControl1.SelectedTab == tabUpdate && panUpdButton.Enabled && lvAttributes.Items.Count > 0) ||
-                        (tabControl1.SelectedTab == tabAssign && (cbAssignUser.SelectedRecord != null || cbAssignTeam.SelectedRecord != null)) ||
+                        (tabControl1.SelectedTab == tabAssign && xrmRecordAssign.Record != null) ||
                         (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
                         (tabControl1.SelectedTab == tabDelete);
                 }
@@ -219,7 +219,6 @@
             else if (tabControl1.SelectedTab == tabAssign)
             {
                 btnExecute.Text = "Assign records";
-                LoadOwners();
             }
             else if (tabControl1.SelectedTab == tabSetState)
             {
@@ -677,24 +676,6 @@
             RemoveAttribute();
         }
 
-        private void cbAssignTeam_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbAssignTeam.SelectedIndex >= 0)
-            {
-                cbAssignUser.SelectedIndex = -1;
-            }
-            EnableControls(true);
-        }
-
-        private void cbAssignUser_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbAssignUser.SelectedIndex >= 0)
-            {
-                cbAssignTeam.SelectedIndex = -1;
-            }
-            EnableControls(true);
-        }
-
         private void cbSetStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadStatuses();
@@ -1007,11 +988,6 @@
             PreviewCalc();
         }
 
-        private void panUpdTextMulti_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void chkMultiSelects_SelectedIndexChanged(object sender, EventArgs e)
         {
             EnableControls(true);
@@ -1032,6 +1008,11 @@
             {
                 OnOutgoingMessage(this, new MessageBusEventArgs("XRM Tokens Runner") { TargetArgument = record });
             }
+        }
+
+        private void btnAssignSelect_Click(object sender, EventArgs e)
+        {
+            SelectingAssigner();
         }
     }
 }

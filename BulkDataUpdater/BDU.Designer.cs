@@ -117,12 +117,13 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblUpdateHeader = new System.Windows.Forms.Label();
             this.tabAssign = new System.Windows.Forms.TabPage();
+            this.btnAssignSelect = new System.Windows.Forms.Button();
+            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
+            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
+            this.txtAssignEntity = new System.Windows.Forms.TextBox();
             this.lblAssignHeader = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.btnAssign = new System.Windows.Forms.Button();
-            this.cbAssignTeam = new Rappen.XTB.Helpers.Controls.XRMColumnLookup();
-            this.cbAssignUser = new Rappen.XTB.Helpers.Controls.XRMColumnLookup();
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.chkSetState = new System.Windows.Forms.CheckBox();
             this.panQualifyLead = new System.Windows.Forms.Panel();
@@ -140,6 +141,7 @@
             this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.tmCalc = new System.Windows.Forms.Timer(this.components);
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
+            this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -212,14 +214,14 @@
             // 
             this.tsmiFriendly.CheckOnClick = true;
             this.tsmiFriendly.Name = "tsmiFriendly";
-            this.tsmiFriendly.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFriendly.Size = new System.Drawing.Size(156, 22);
             this.tsmiFriendly.Text = "Friendly names";
             this.tsmiFriendly.Click += new System.EventHandler(this.tsmiFriendly_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(153, 6);
             // 
             // tsmiShowAttributes
             // 
@@ -237,7 +239,7 @@
             this.toolStripSeparator16,
             this.tsmiAttributesOnlyValidAF});
             this.tsmiShowAttributes.Name = "tsmiShowAttributes";
-            this.tsmiShowAttributes.Size = new System.Drawing.Size(180, 22);
+            this.tsmiShowAttributes.Size = new System.Drawing.Size(156, 22);
             this.tsmiShowAttributes.Text = "Show attributes";
             // 
             // tsmiAttributesAll
@@ -566,7 +568,6 @@
             this.panUpdTextMulti.Size = new System.Drawing.Size(324, 115);
             this.panUpdTextMulti.TabIndex = 5;
             this.panUpdTextMulti.Visible = false;
-            this.panUpdTextMulti.Paint += new System.Windows.Forms.PaintEventHandler(this.panUpdTextMulti_Paint);
             // 
             // txtValueMultiline
             // 
@@ -1154,12 +1155,12 @@
             // 
             // tabAssign
             // 
+            this.tabAssign.Controls.Add(this.btnAssignSelect);
+            this.tabAssign.Controls.Add(this.xrmAssignText);
+            this.tabAssign.Controls.Add(this.txtAssignEntity);
             this.tabAssign.Controls.Add(this.lblAssignHeader);
-            this.tabAssign.Controls.Add(this.label7);
             this.tabAssign.Controls.Add(this.label6);
             this.tabAssign.Controls.Add(this.btnAssign);
-            this.tabAssign.Controls.Add(this.cbAssignTeam);
-            this.tabAssign.Controls.Add(this.cbAssignUser);
             this.tabAssign.Location = new System.Drawing.Point(4, 22);
             this.tabAssign.Name = "tabAssign";
             this.tabAssign.Padding = new System.Windows.Forms.Padding(3);
@@ -1167,6 +1168,47 @@
             this.tabAssign.TabIndex = 4;
             this.tabAssign.Text = "Assign";
             this.tabAssign.UseVisualStyleBackColor = true;
+            // 
+            // btnAssignSelect
+            // 
+            this.btnAssignSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAssignSelect.Location = new System.Drawing.Point(291, 122);
+            this.btnAssignSelect.Name = "btnAssignSelect";
+            this.btnAssignSelect.Size = new System.Drawing.Size(29, 22);
+            this.btnAssignSelect.TabIndex = 13;
+            this.btnAssignSelect.Text = "...";
+            this.btnAssignSelect.UseVisualStyleBackColor = true;
+            this.btnAssignSelect.Click += new System.EventHandler(this.btnAssignSelect_Click);
+            // 
+            // xrmAssignText
+            // 
+            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.xrmAssignText.Column = null;
+            this.xrmAssignText.DisplayFormat = "";
+            this.xrmAssignText.Location = new System.Drawing.Point(17, 123);
+            this.xrmAssignText.Name = "xrmAssignText";
+            this.xrmAssignText.ReadOnly = true;
+            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
+            this.xrmAssignText.Size = new System.Drawing.Size(268, 20);
+            this.xrmAssignText.TabIndex = 12;
+            // 
+            // xrmRecordAssign
+            // 
+            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.xrmRecordAssign.LogicalName = null;
+            this.xrmRecordAssign.Record = null;
+            this.xrmRecordAssign.Service = null;
+            // 
+            // txtAssignEntity
+            // 
+            this.txtAssignEntity.BackColor = System.Drawing.SystemColors.Window;
+            this.txtAssignEntity.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtAssignEntity.Location = new System.Drawing.Point(20, 104);
+            this.txtAssignEntity.Name = "txtAssignEntity";
+            this.txtAssignEntity.ReadOnly = true;
+            this.txtAssignEntity.Size = new System.Drawing.Size(77, 13);
+            this.txtAssignEntity.TabIndex = 11;
             // 
             // lblAssignHeader
             // 
@@ -1178,23 +1220,14 @@
             this.lblAssignHeader.TabIndex = 10;
             this.lblAssignHeader.Text = "Assign [nn] [collection]";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(16, 118);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(34, 13);
-            this.label7.TabIndex = 8;
-            this.label7.Text = "Team";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(16, 71);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(29, 13);
+            this.label6.Size = new System.Drawing.Size(104, 13);
             this.label6.TabIndex = 7;
-            this.label6.Text = "User";
+            this.label6.Text = "Select User or Team";
             // 
             // btnAssign
             // 
@@ -1205,40 +1238,6 @@
             this.btnAssign.TabIndex = 5;
             this.btnAssign.Text = "Assign records";
             this.btnAssign.UseVisualStyleBackColor = true;
-            // 
-            // cbAssignTeam
-            // 
-            this.cbAssignTeam.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAssignTeam.Column = null;
-            this.cbAssignTeam.DisplayFormat = "";
-            this.cbAssignTeam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbAssignTeam.Filter = null;
-            this.cbAssignTeam.FormattingEnabled = true;
-            this.cbAssignTeam.Location = new System.Drawing.Point(19, 133);
-            this.cbAssignTeam.Name = "cbAssignTeam";
-            this.cbAssignTeam.RecordHost = null;
-            this.cbAssignTeam.Service = null;
-            this.cbAssignTeam.Size = new System.Drawing.Size(297, 21);
-            this.cbAssignTeam.TabIndex = 9;
-            this.cbAssignTeam.SelectedIndexChanged += new System.EventHandler(this.cbAssignTeam_SelectedIndexChanged);
-            // 
-            // cbAssignUser
-            // 
-            this.cbAssignUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAssignUser.Column = null;
-            this.cbAssignUser.DisplayFormat = "";
-            this.cbAssignUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbAssignUser.Filter = null;
-            this.cbAssignUser.FormattingEnabled = true;
-            this.cbAssignUser.Location = new System.Drawing.Point(19, 87);
-            this.cbAssignUser.Name = "cbAssignUser";
-            this.cbAssignUser.RecordHost = null;
-            this.cbAssignUser.Service = null;
-            this.cbAssignUser.Size = new System.Drawing.Size(297, 21);
-            this.cbAssignUser.TabIndex = 6;
-            this.cbAssignUser.SelectedIndexChanged += new System.EventHandler(this.cbAssignUser_SelectedIndexChanged);
             // 
             // tabSetState
             // 
@@ -1423,6 +1422,17 @@
             this.cdsLookupDialog.Service = null;
             this.cdsLookupDialog.Title = null;
             // 
+            // xrmLookupAssign
+            // 
+            this.xrmLookupAssign.AdditionalViews = ((System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<Microsoft.Xrm.Sdk.Entity>>)(resources.GetObject("xrmLookupAssign.AdditionalViews")));
+            this.xrmLookupAssign.LogicalName = "";
+            this.xrmLookupAssign.LogicalNames = new string[] {
+        "systemuser",
+        "team"};
+            this.xrmLookupAssign.Record = null;
+            this.xrmLookupAssign.Service = null;
+            this.xrmLookupAssign.Title = "Select User or Team to assign to";
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1559,10 +1569,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tabAssign;
-        private Rappen.XTB.Helpers.Controls.XRMColumnLookup cbAssignTeam;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private Rappen.XTB.Helpers.Controls.XRMColumnLookup cbAssignUser;
         private System.Windows.Forms.Button btnAssign;
         private System.Windows.Forms.Label lblAssignHeader;
         private System.Windows.Forms.Panel panWaitBetween;
@@ -1601,5 +1608,10 @@
         private System.Windows.Forms.CheckBox chkSetState;
         private System.Windows.Forms.LinkLabel link_XRMTRname;
         private System.Windows.Forms.LinkLabel linkXRMTRlogo;
+        private System.Windows.Forms.Button btnAssignSelect;
+        private Rappen.XTB.Helpers.Controls.XRMColumnText xrmAssignText;
+        private System.Windows.Forms.TextBox txtAssignEntity;
+        private Rappen.XTB.Helpers.Controls.XRMLookupDialog xrmLookupAssign;
+        private Rappen.XTB.Helpers.Controls.XRMRecordHost xrmRecordAssign;
     }
 }
