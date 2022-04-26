@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jonas Rapp, Sweden")]
 [assembly: AssemblyProduct("BulkDataUpdater")]
-[assembly: AssemblyCopyright("Copyright © Jonas Rapp 2016-2018")]
+[assembly: AssemblyCopyright("Copyright © Jonas Rapp 2016-2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2018.10.1004")]
-[assembly: AssemblyFileVersion("1.2018.10.1004")]
+[assembly: AssemblyVersion("1.2022.02.1007")]
+[assembly: AssemblyFileVersion("1.2022.02.1004")]
