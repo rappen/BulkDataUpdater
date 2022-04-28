@@ -472,14 +472,27 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             switch (attribute?.AttributeType)
             {
-                case AttributeTypeCode.Lookup:
+                case AttributeTypeCode.Boolean:
+                    if (bool.TryParse(substituted, out bool boolvalue))
+                    {
+                        return boolvalue;
+                    }
+                    if (substituted == "1" || substituted == "0")
+                    {
+                        return substituted == "1";
+                    }
+                    throw new Exception("Not valid format [True|False] or [1|0]");
                 case AttributeTypeCode.Customer:
+                case AttributeTypeCode.Lookup:
                     var entity = string.Empty;
                     var id = Guid.Empty;
                     if (Guid.TryParse(substituted, out id))
                     {
                         var lookupmeta = attribute as LookupAttributeMetadata;
-                        entity = lookupmeta.Targets.FirstOrDefault();
+                        if (lookupmeta?.Targets?.Length == 1)
+                        {
+                            entity = lookupmeta.Targets[0];
+                        }
                     }
                     else if (substituted.Contains(":"))
                     {
@@ -492,9 +505,65 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         return new EntityReference(entity, id);
                     }
-                    throw new Exception("Not valid [Entity:]Guid");
+                    throw new Exception("Not valid format [Entity:]Guid");
+                case AttributeTypeCode.DateTime:
+                    if (DateTime.TryParse(substituted, out DateTime datetime))
+                    {
+                        return datetime;
+                    }
+                    throw new Exception("Not valid format Date[Time]");
+                case AttributeTypeCode.Decimal:
+                    if (decimal.TryParse(substituted, out decimal decimalvalue))
+                    {
+                        return decimalvalue;
+                    }
+                    break;
+                case AttributeTypeCode.Double:
+                    if (double.TryParse(substituted, out double doublevalue))
+                    {
+                        return doublevalue;
+                    }
+                    break;
+                case AttributeTypeCode.Integer:
+                case AttributeTypeCode.BigInt:
+                    if (int.TryParse(substituted, out int intvalue))
+                    {
+                        return intvalue;
+                    }
+                    break;
+                case AttributeTypeCode.Money:
+                    if (decimal.TryParse(substituted, out decimal moneyvalue))
+                    {
+                        return new Money(moneyvalue);
+                    }
+                    break;
+                case AttributeTypeCode.Picklist:
+                    if (int.TryParse(substituted, out int pickvalue))
+                    {
+                        return new OptionSetValue(pickvalue);
+                    }
+                    break;
+                case AttributeTypeCode.String:
+                case AttributeTypeCode.Memo:
+                    return substituted;
+                case AttributeTypeCode.Uniqueidentifier:
+                    if (Guid.TryParse(substituted, out Guid guidvalue))
+                    {
+                        return guidvalue;
+                    }
+                    break;
+                case AttributeTypeCode.Owner:
+                case AttributeTypeCode.PartyList:
+                case AttributeTypeCode.State:
+                case AttributeTypeCode.Status:
+                case AttributeTypeCode.CalendarRules:
+                case AttributeTypeCode.EntityName:
+                case AttributeTypeCode.ManagedProperty:
+                case AttributeTypeCode.Virtual:
+                    throw new Exception($"Not supporting {attribute.AttributeTypeName.Value.Replace("Type", "")}");
+
             }
-            return substituted;
+            throw new Exception($"Not valid {attribute.AttributeTypeName.Value.Replace("Type", "")}");
         }
     }
 }

@@ -547,14 +547,6 @@
             chkOnlyChange.Checked = chkOnlyChange.Checked && !rbSetTouch.Checked;
 
             var attribute = (AttributeMetadataItem)cmbAttribute.SelectedItem;
-            rbCalculate.Enabled = 
-                attribute?.Metadata is MemoAttributeMetadata || 
-                attribute?.Metadata is StringAttributeMetadata || 
-                attribute?.Metadata is LookupAttributeMetadata;
-            if (!rbCalculate.Enabled)
-            {
-                rbCalculate.Checked = false;
-            }
             rbSetNull.Enabled = attribute != null;
             cmbValue.Items.Clear();
             var value = rbSetValue.Checked;
@@ -634,6 +626,7 @@
             panUpdCalc.Visible = calc;
             panUpdTextMulti.Visible = multitext;
             panMultiChoices.Visible = multisel;
+            PreviewCalc();
             EnableControls(true);
         }
 
@@ -976,12 +969,17 @@
                     var preview = CalculateValue(record, attmeta?.Metadata, txtValueCalc.Text, 1);
                     if (preview is EntityReference refent)
                     {
-                        txtCalcPreview.Text = $"{refent.LogicalName}:{refent.Id}";
+                        preview = $"{refent.LogicalName}:{refent.Id}";
                     }
-                    else
+                    else if (preview is OptionSetValue opt)
                     {
-                        txtCalcPreview.Text = preview?.ToString();
+                        preview = opt.Value;
                     }
+                    else if (preview is Money money)
+                    {
+                        preview = money.Value;
+                    }
+                    txtCalcPreview.Text = preview?.ToString();
                 }
                 catch (Exception ex)
                 {
