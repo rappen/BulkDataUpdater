@@ -195,7 +195,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         newvalue = currentvalue;
                         break;
                     case BulkActionAction.Calc:
-                        newvalue = CalculateValue(record, bai, sequence);
+                        newvalue = CalculateValue(record, bai.Attribute.Metadata, bai.Value.ToString(), sequence);
                         break;
                 }
                 if (!bai.DontTouch || !ValuesEqual(newvalue, currentvalue))
@@ -459,11 +459,42 @@ namespace Cinteros.XTB.BulkDataUpdater
             return !string.IsNullOrWhiteSpace(text);
         }
 
-        private object CalculateValue(Entity record, BulkActionItem bai, int sequence)
+        private object CalculateValue(Entity record, AttributeMetadata attribute, string format, int sequence)
         {
-            var format = bai.Value.ToString();
-            var value = record.Substitute(new GenericBag(Service), format, sequence, string.Empty, true);
-            return value;
+            if (string.IsNullOrEmpty(format))
+            {
+                return null;
+            }
+            var substituted = record.Substitute(new GenericBag(Service), format, sequence, string.Empty, true);
+            if (string.IsNullOrEmpty(substituted))
+            {
+                return null;
+            }
+            switch (attribute?.AttributeType)
+            {
+                case AttributeTypeCode.Lookup:
+                case AttributeTypeCode.Customer:
+                    var entity = string.Empty;
+                    var id = Guid.Empty;
+                    if (Guid.TryParse(substituted, out id))
+                    {
+                        var lookupmeta = attribute as LookupAttributeMetadata;
+                        entity = lookupmeta.Targets.FirstOrDefault();
+                    }
+                    else if (substituted.Contains(":"))
+                    {
+                        if (Guid.TryParse(substituted.Split(':')[1], out id))
+                        {
+                            entity = substituted.Split(':')[0];
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(entity) && !id.Equals(Guid.Empty))
+                    {
+                        return new EntityReference(entity, id);
+                    }
+                    throw new Exception("Not valid [Entity:]Guid");
+            }
+            return substituted;
         }
     }
 }

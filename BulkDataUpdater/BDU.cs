@@ -547,7 +547,10 @@
             chkOnlyChange.Checked = chkOnlyChange.Checked && !rbSetTouch.Checked;
 
             var attribute = (AttributeMetadataItem)cmbAttribute.SelectedItem;
-            rbCalculate.Enabled = attribute?.Metadata is MemoAttributeMetadata || attribute.Metadata is StringAttributeMetadata;
+            rbCalculate.Enabled = 
+                attribute?.Metadata is MemoAttributeMetadata || 
+                attribute?.Metadata is StringAttributeMetadata || 
+                attribute?.Metadata is LookupAttributeMetadata;
             if (!rbCalculate.Enabled)
             {
                 rbCalculate.Checked = false;
@@ -969,8 +972,16 @@
             {
                 try
                 {
-                    var preview = record.Substitute(new GenericBag(Service), txtValueCalc.Text, 1, string.Empty, true);
-                    txtCalcPreview.Text = preview;
+                    var attmeta = cmbAttribute.SelectedItem as AttributeMetadataItem;
+                    var preview = CalculateValue(record, attmeta?.Metadata, txtValueCalc.Text, 1);
+                    if (preview is EntityReference refent)
+                    {
+                        txtCalcPreview.Text = $"{refent.LogicalName}:{refent.Id}";
+                    }
+                    else
+                    {
+                        txtCalcPreview.Text = preview?.ToString();
+                    }
                 }
                 catch (Exception ex)
                 {
