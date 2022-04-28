@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -10,16 +11,19 @@ namespace Cinteros.XTB.BulkDataUpdater
     public partial class About : Form
     {
         private BulkDataUpdater bdu;
+        private Version version;
 
         public About(BulkDataUpdater bdu)
         {
             InitializeComponent();
             this.bdu = bdu;
+            version = Assembly.GetExecutingAssembly().GetName().Version;
             PopulateAssemblies();
         }
 
         private void PopulateAssemblies()
         {
+            lblVersion.Text = version.ToString();
             var assemblies = GetReferencedAssemblies();
             var items = assemblies.Select(a => GetListItem(a)).ToArray();
             listAssemblies.Items.Clear();
@@ -86,7 +90,7 @@ Jonas", "Anonymous statistics", MessageBoxButtons.OK, MessageBoxIcon.Information
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://jonasr.app/bdu/releases");
+            Process.Start($"https://jonasr.app/bdu/releases#{version}");
         }
     }
 }

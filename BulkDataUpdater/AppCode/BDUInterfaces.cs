@@ -27,12 +27,10 @@ namespace Cinteros.XTB.BulkDataUpdater
         public void ShowAboutDialog()
         {
             LogUse("OpenAbout");
-            var about = new About(this)
+            new About(this)
             {
                 StartPosition = FormStartPosition.CenterParent
-            };
-            about.lblVersion.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            about.ShowDialog();
+            }.ShowDialog();
         }
 
         public string DonationDescription => "Bulk Data Updater Fan Club";
