@@ -95,7 +95,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             var clone = new Entity(record.LogicalName, record.Id);
                             clone.Attributes.Add("ownerid", owner.ToEntityReference());
                             var request = new UpdateRequest { Target = clone };
-                            request.Parameters[bypasspluginsparam] = bypassplugins;
+                            SetBypassPlugins(request, bypassplugins);
                             if (batchsize == 1)
                             {
                                 bgworker.ReportProgress(pct, $"Assigning record {current} of {total}");

@@ -319,5 +319,17 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             return Utils.ValueToString(value1).Equals(Utils.ValueToString(value2));
         }
+
+        private void SetBypassPlugins(OrganizationRequest request, bool value)
+        {
+            if (value && currentversion >= bypasspluginminversion)
+            {
+                request.Parameters["BypassCustomPluginExecution"] = value;
+            }
+            else
+            {
+                request.Parameters.Remove("BypassCustomPluginExecution");
+            }
+        }
     }
 }

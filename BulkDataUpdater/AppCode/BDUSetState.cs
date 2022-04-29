@@ -70,7 +70,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             break;
                         }
                         var req = GetSetStateRequest(record, state, status);
-                        req.Parameters[bypasspluginsparam] = bypassplugins;
+                        SetBypassPlugins(req, bypassplugins);
                         current++;
                         var pct = 100 * current / total;
                         try

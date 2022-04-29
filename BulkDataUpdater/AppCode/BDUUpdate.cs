@@ -106,7 +106,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
                             {
                                 var request = new UpdateRequest { Target = updateentity };
-                                request.Parameters[bypasspluginsparam] = bypassplugins;
+                                SetBypassPlugins(request, bypassplugins);
                                 if (batchsize == 1)
                                 {
                                     bgworker.ReportProgress(pct, $"Updating record {current} of {total}");

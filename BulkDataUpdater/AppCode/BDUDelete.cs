@@ -63,7 +63,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         try
                         {
                             var request = new DeleteRequest { Target = record.ToEntityReference() };
-                            request.Parameters[bypasspluginsparam] = bypassplugins;
+                            SetBypassPlugins(request, bypassplugins);
                             if (batchsize == 1)
                             {
                                 bgworker.ReportProgress(pct, $"Deleting record {current} of {total}");

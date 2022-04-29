@@ -32,7 +32,6 @@
 
         #region Private Fields
 
-        private const string bypasspluginsparam = "BypassCustomPluginExecution";
         private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
         private const string aiKey = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
         private AppInsights ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
@@ -54,6 +53,8 @@
         private bool showAttributesUncustomizable = true;
         private bool showAttributesUnmanaged = true;
         private Entity view;
+        private Version currentversion;
+        private readonly Version bypasspluginminversion = new Version(9, 2);
 
         private bool working = false;
 
@@ -697,6 +698,7 @@
 
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
+            currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
             crmGridView1.DataSource = null;
             entities = null;
             entityShitList.Clear();
@@ -1034,7 +1036,15 @@
         {
             if (chkBypassPlugins.Checked)
             {
-                if (MessageBox.Show(
+                if (currentversion < bypasspluginminversion)
+                {
+                    MessageBox.Show(
+                        $"This feature is not available in version {ConnectionDetail?.OrganizationVersion}\n" +
+                        $"Need version {bypasspluginminversion} or later.", "Bypass Custom Business Logic",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    chkBypassPlugins.Checked = false;
+                }
+                else if (MessageBox.Show(
                     "Make sure you know exactly what this checkbox means.\n" +
                     "Please read the docs - click the link first!\n\n" +
                     "Are you OK to continue?", "Bypass Custom Business Logic",
