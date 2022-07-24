@@ -2,13 +2,27 @@
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
-    internal class BulkActionItem
+    public class BulkActionItem
     {
-        public AttributeMetadataItem Attribute { get; internal set; }
-        public bool DontTouch { get; internal set; }
-        public BulkActionAction Action { get; internal set; }
-        public object Value { get; internal set; }
-        public string StringValue { get; internal set; }
+        private string attributename;
+
+        public string AttributeName
+        {
+            get
+            {
+                return Attribute?.Metadata?.LogicalName ?? attributename;
+            }
+            set
+            {
+                attributename = value;
+            }
+        }
+
+        internal AttributeMetadataItem Attribute { get; set; }
+        public bool DontTouch { get; set; }
+        public BulkActionAction Action { get; set; }
+        public object Value { get; set; }
+        public string StringValue { get; set; }
 
         public override string ToString()
         {
@@ -18,9 +32,11 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
                 case BulkActionAction.SetValue:
                     text += " = " + StringValue;
                     break;
+
                 case BulkActionAction.Touch:
                     text += " touch";
                     break;
+
                 case BulkActionAction.Null:
                     text += " = null";
                     break;
@@ -33,7 +49,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         }
     }
 
-    internal enum BulkActionAction
+    public enum BulkActionAction
     {
         SetValue = 0,
         Calc = 3,
