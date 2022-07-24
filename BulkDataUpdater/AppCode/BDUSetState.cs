@@ -40,11 +40,10 @@ namespace Cinteros.XTB.BulkDataUpdater
             splitContainer1.Enabled = false;
             working = true;
             var includedrecords = GetIncludedRecords();
-            var ignoreerrors = chkIgnoreErrors.Checked;
-            var bypassplugins = chkBypassPlugins.Checked;
-            if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
+            var executeoptions = GetExecuteOptions();
+            if (job != null && job.SetState != null)
             {
-                batchsize = 1;
+                job.SetState.ExecuteOptions = executeoptions;
             }
             WorkAsync(new WorkAsyncInfo()
             {
@@ -59,7 +58,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     var failed = 0;
                     var batch = new ExecuteMultipleRequest
                     {
-                        Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
+                        Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
                         Requests = new OrganizationRequestCollection()
                     };
                     foreach (var record in includedrecords)
@@ -70,12 +69,12 @@ namespace Cinteros.XTB.BulkDataUpdater
                             break;
                         }
                         var req = GetSetStateRequest(record, state, status);
-                        SetBypassPlugins(req, bypassplugins);
+                        SetBypassPlugins(req, executeoptions.BypassCustom);
                         current++;
                         var pct = 100 * current / total;
                         try
                         {
-                            if (batchsize == 1)
+                            if (executeoptions.BatchSize == 1)
                             {
                                 bgworker.ReportProgress(pct, $"Setting status for record {current} of {total}");
                                 Service.Execute(req);
@@ -84,11 +83,11 @@ namespace Cinteros.XTB.BulkDataUpdater
                             else
                             {
                                 batch.Requests.Add(req);
-                                if (batch.Requests.Count == batchsize || current == total)
+                                if (batch.Requests.Count == executeoptions.BatchSize || current == total)
                                 {
                                     bgworker.ReportProgress(pct, $"Setting status for records {current - batch.Requests.Count + 1}-{current} of {total}");
                                     var response = (ExecuteMultipleResponse)Service.Execute(batch);
-                                    if (response.IsFaulted && !ignoreerrors)
+                                    if (response.IsFaulted && !executeoptions.IgnoreErrors)
                                     {
                                         var firsterror = response.Responses.First(r => r.Fault != null);
                                         if (firsterror != null)
@@ -105,7 +104,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         catch (Exception ex)
                         {
                             failed++;
-                            if (!ignoreerrors)
+                            if (!executeoptions.IgnoreErrors)
                             {
                                 throw ex;
                             }
@@ -179,6 +178,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                     }
                     break;
+
                 case Lead.EntityName:
                     {
                         if (state.Metadata.Value == (int)Lead.Status_OptionSet.Qualified)
@@ -303,6 +303,14 @@ namespace Cinteros.XTB.BulkDataUpdater
                         .Select(o => new OptionMetadataItem(o, true)).ToArray());
                 panQualifyLead.Visible = entity.LogicalName == Lead.EntityName && state.Metadata.Value == (int)Lead.Status_OptionSet.Qualified;
             }
+        }
+
+        private void UpdateJobSetState(JobSetState job)
+        {
+            job.State = (cbSetStatus.SelectedItem as OptionMetadataItem)?.Metadata?.Value ?? 0;
+            job.Status = (cbSetStatusReason.SelectedItem as OptionMetadataItem)?.Metadata?.Value ?? 0;
+            job.StateName = cbSetStatus.Text;
+            job.StatusName = cbSetStatusReason.Text;
         }
     }
 }

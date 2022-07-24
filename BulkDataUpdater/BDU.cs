@@ -1075,11 +1075,10 @@
                 return;
             }
             job.IncludeAll = rbIncludeAll.Checked;
-            job.Update.Attributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
-            job.Update.BatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1;
-            job.Update.DelayCallTime = int.TryParse(cmbDelayCall.Text, out int upddel) ? upddel : 0;
-            job.Update.IgnoreErrors = chkIgnoreErrors.Checked;
-            job.Update.BypassCustom = chkBypassPlugins.Checked;
+            UpdateJobUpdate(job.Update);
+            UpdateJobAssign(job.Assign);
+            UpdateJobSetState(job.SetState);
+            UpdateJobDelete(job.Delete);
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), job, ConnectionDetail?.ConnectionName + "_Job");
         }
     }

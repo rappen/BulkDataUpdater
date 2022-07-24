@@ -286,12 +286,16 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             if (records != null)
             {
-                var entityName = records.EntityName;
-                if (NeedToLoadEntity(entityName))
+                if (job == null)
+                {
+                    job = new BDUJob();
+                }
+                job.Entity = records.EntityName;
+                if (NeedToLoadEntity(job.Entity))
                 {
                     if (!working)
                     {
-                        LoadEntityDetails(entityName, RetrieveRecordsReady);
+                        LoadEntityDetails(job.Entity, RetrieveRecordsReady);
                     }
                     return;
                 }
@@ -330,6 +334,17 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 request.Parameters.Remove("BypassCustomPluginExecution");
             }
+        }
+
+        private JobExecuteOptions GetExecuteOptions()
+        {
+            return new JobExecuteOptions
+            {
+                DelayCallTime = int.TryParse(cmbDelayCall.Text, out var delay) ? delay : 0,
+                BatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
+                IgnoreErrors = chkIgnoreErrors.Checked,
+                BypassCustom = chkBypassPlugins.Checked
+            };
         }
     }
 }
