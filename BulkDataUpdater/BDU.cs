@@ -38,6 +38,7 @@
 
         private static Dictionary<string, EntityMetadata> entities;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
+        private BDUJob job;
 
         private string deleteWarningText;
         private Dictionary<string, string> entityAttributes = new Dictionary<string, string>();
@@ -117,6 +118,10 @@
 
         private void FetchUpdated(string fetch)
         {
+            job = new BDUJob
+            {
+                FetchXML = fetch
+            };
             if (!string.IsNullOrWhiteSpace(fetch))
             {
                 fetchXml = fetch;
@@ -183,6 +188,7 @@
                 case "Edit": // Edit
                     GetFromEditor();
                     break;
+
                 case "FXB": // FXB
                     try
                     {
@@ -199,12 +205,15 @@
                                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     break;
+
                 case "File": // File
                     FetchUpdated(OpenFile());
                     break;
+
                 case "View": // View
                     OpenView();
                     break;
+
                 default:
                     MessageBox.Show("Select record source.", "Get Records", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     break;
@@ -702,6 +711,7 @@
             crmGridView1.DataSource = null;
             entities = null;
             entityShitList.Clear();
+            job = null;
             EnableControls(true);
         }
 
@@ -833,6 +843,7 @@
                         entref.LogicalName = entity["activitytypecode"].ToString();
                     }
                     break;
+
                 case "activityparty":
                     if (!entity.Contains("partyid"))
                     {
@@ -896,6 +907,7 @@
                     xrmRecordAttribute.Service = Service;
                     xrmRecordAttribute.Record = cdsLookupDialog.Record;
                     break;
+
                 case DialogResult.Abort:
                     xrmRecordAttribute.Record = null;
                     break;
@@ -1053,6 +1065,22 @@
                     chkBypassPlugins.Checked = false;
                 }
             }
+        }
+
+        private void tsmiJobsSave_Click(object sender, EventArgs e)
+        {
+            if (job == null)
+            {
+                MessageBox.Show("Nothing to save.");
+                return;
+            }
+            job.IncludeAll = rbIncludeAll.Checked;
+            job.Update.Attributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
+            job.Update.BatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1;
+            job.Update.DelayCallTime = int.TryParse(cmbDelayCall.Text, out int upddel) ? upddel : 0;
+            job.Update.IgnoreErrors = chkIgnoreErrors.Checked;
+            job.Update.BypassCustom = chkBypassPlugins.Checked;
+            SettingsManager.Instance.Save(typeof(BulkDataUpdater), job, ConnectionDetail?.ConnectionName + "_Job");
         }
     }
 }
