@@ -1,6 +1,7 @@
 ﻿namespace Cinteros.XTB.BulkDataUpdater
 {
     using AppCode;
+    using McTools.Xrm.Connection;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
@@ -1074,12 +1075,29 @@
                 MessageBox.Show("Nothing to save.");
                 return;
             }
+            var path = @"C:\Dev\GitHub\BulkDataUpdater\BulkDataUpdater\bin\Debug\Settings\bdujob.xml";
             job.IncludeAll = rbIncludeAll.Checked;
             UpdateJobUpdate(job.Update);
             UpdateJobAssign(job.Assign);
             UpdateJobSetState(job.SetState);
             UpdateJobDelete(job.Delete);
-            SettingsManager.Instance.Save(typeof(BulkDataUpdater), job, ConnectionDetail?.ConnectionName + "_Job");
+            XmlSerializerHelper.SerializeToFile(job, path);
+        }
+
+        private void tsmiJobsOpen_Click(object sender, EventArgs e)
+        {
+            var path = @"C:\Dev\GitHub\BulkDataUpdater\BulkDataUpdater\bin\Debug\Settings\bdujob.xml";
+            try
+            {
+                var document = new XmlDocument();
+                document.Load(path);
+                job = (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
+            }
+            catch (Exception ex)
+            {
+                job = null;
+                ShowErrorDialog(ex, $"Loading and deserializing file \"{path}\"");
+            }
         }
     }
 }
