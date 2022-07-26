@@ -252,21 +252,17 @@
             {
                 return;
             }
+            EnableControls(false);
             entities = null;
             entityShitList = new List<string>();
             working = true;
-            WorkAsync(new WorkAsyncInfo("Loading entities metadata...",
-                (eventargs) =>
-                {
-                    EnableControls(false);
-                    var req = new RetrieveAllEntitiesRequest()
-                    {
-                        EntityFilters = EntityFilters.Entity,
-                        RetrieveAsIfPublished = true
-                    };
-                    eventargs.Result = Service.Execute(req);
-                })
+            WorkAsync(new WorkAsyncInfo
             {
+                Message = "Loading entities metadata...",
+                Work = (worker, eventargs) =>
+                {
+                    eventargs.Result = Service.LoadEntities(ConnectionDetail.OrganizationMajorVersion, ConnectionDetail.OrganizationMinorVersion).EntityMetadata;
+                },
                 PostWorkCallBack = (completedargs) =>
                 {
                     working = false;
@@ -274,16 +270,17 @@
                     {
                         ShowErrorDialog(completedargs.Error, "Load Entities");
                     }
-                    else
+                    else if (completedargs.Result is RetrieveAllEntitiesResponse)
                     {
-                        if (completedargs.Result is RetrieveAllEntitiesResponse)
+                        entities = new Dictionary<string, EntityMetadata>();
+                        foreach (var entity in ((RetrieveAllEntitiesResponse)completedargs.Result).EntityMetadata)
                         {
-                            entities = new Dictionary<string, EntityMetadata>();
-                            foreach (var entity in ((RetrieveAllEntitiesResponse)completedargs.Result).EntityMetadata)
-                            {
-                                entities.Add(entity.LogicalName, entity);
-                            }
+                            entities.Add(entity.LogicalName, entity);
                         }
+                    }
+                    else if (completedargs.Result is EntityMetadataCollection metas)
+                    {
+                        entities = metas.ToDictionary(e => e.LogicalName);
                     }
                     EnableControls(true);
                     if (AfterLoad != null)
@@ -726,11 +723,16 @@
             LoadGlobalSetting();
             LoadSetting();
             LogUse("Load");
+            LoadEntities(AfterEntitiesLoaded);
+            EnableControls(true);
+        }
+
+        private void AfterEntitiesLoaded()
+        {
             if (!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100)
             {
                 RetrieveRecords(job.FetchXML);
             }
-            EnableControls(true);
         }
 
         private void lvAttributes_SelectedIndexChanged(object sender, EventArgs e)
