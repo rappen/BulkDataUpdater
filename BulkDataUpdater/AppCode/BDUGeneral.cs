@@ -190,12 +190,23 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
         }
 
-        private void RetrieveRecords(string fetch, Action AfterRetrieve)
+        private void RetrieveRecords(string fetch = null)
         {
             if (working)
             {
                 CancelWorker();
                 working = false;
+            }
+            if (string.IsNullOrEmpty(fetch))
+            {
+                fetch = job?.FetchXML;
+            }
+            if (string.IsNullOrEmpty(fetch))
+            {
+                crmGridView1.DataSource = null;
+                records = null;
+                RetrieveRecordsReady();
+                return;
             }
             lblRecords.Text = "Retrieving records...";
             fetchResulCount = -1;
@@ -231,7 +242,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         records = result;
                         fetchResulCount = records.Entities.Count;
                     }
-                    AfterRetrieve();
+                    RetrieveRecordsReady();
                 },
                 ProgressChanged = (changeargs) =>
                 {
@@ -290,7 +301,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     job = new BDUJob();
                 }
-                job.Entity = records.EntityName;
                 if (NeedToLoadEntity(job.Entity))
                 {
                     if (!working)

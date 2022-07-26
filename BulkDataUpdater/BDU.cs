@@ -7,6 +7,7 @@
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XRM.Helpers;
+    using Rappen.XRM.Helpers.Extensions;
     using Rappen.XTB.Helpers;
     using Rappen.XTB.Helpers.ControlItems;
     using System;
@@ -43,8 +44,9 @@
 
         private string deleteWarningText;
         private Dictionary<string, string> entityAttributes = new Dictionary<string, string>();
-        private string fetchXml = fetchTemplate;
+
         private int fetchResulCount = -1;
+
         private EntityCollection records;
         private bool showAttributesAll = true;
         private bool showAttributesCustom = true;
@@ -125,8 +127,7 @@
             };
             if (!string.IsNullOrWhiteSpace(fetch))
             {
-                fetchXml = fetch;
-                RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                RetrieveRecords(job.FetchXML);
             }
         }
 
@@ -169,7 +170,7 @@
 
         private void GetFromEditor()
         {
-            var fetchwin = new XmlContentDisplayDialog(fetchXml, "Enter FetchXML to retrieve records to update", true, true);
+            var fetchwin = new XmlContentDisplayDialog(job?.FetchXML ?? fetchTemplate, "Enter FetchXML to retrieve records to update", true, true);
             fetchwin.StartPosition = FormStartPosition.CenterParent;
             if (fetchwin.ShowDialog() == DialogResult.OK)
             {
@@ -179,7 +180,7 @@
 
         private void GetFromFXB()
         {
-            OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder") { TargetArgument = fetchXml });
+            OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder") { TargetArgument = job?.FetchXML });
         }
 
         private void GetRecords(string tag)
@@ -384,7 +385,10 @@
             {
                 settings = new Settings();
             }
-            fetchXml = settings.FetchXML;
+            job = new BDUJob
+            {
+                FetchXML = settings.FetchXML
+            };
             fetchResulCount = settings.FetchResultCount;
             if (settings.EntityAttributes != null)
             {
@@ -516,7 +520,7 @@
             //}
             var settings = new Settings()
             {
-                FetchXML = fetchXml,
+                FetchXML = job?.FetchXML,
                 FetchResultCount = fetchResulCount,
                 EntityAttributes = entityAttributes.Select(p => new KeyValuePair() { key = p.Key, value = p.Value }).ToList(),
                 Friendly = tsmiFriendly.Checked,
@@ -722,9 +726,9 @@
             LoadGlobalSetting();
             LoadSetting();
             LogUse("Load");
-            if (!string.IsNullOrWhiteSpace(fetchXml) && fetchResulCount > 0 && fetchResulCount < 100)
+            if (!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100)
             {
-                FetchUpdated(fetchXml);
+                RetrieveRecords(job.FetchXML);
             }
             EnableControls(true);
         }
@@ -1076,11 +1080,7 @@
                 return;
             }
             var path = @"C:\Dev\GitHub\BulkDataUpdater\BulkDataUpdater\bin\Debug\Settings\bdujob.xml";
-            job.IncludeAll = rbIncludeAll.Checked;
-            UpdateJobUpdate(job.Update);
-            UpdateJobAssign(job.Assign);
-            UpdateJobSetState(job.SetState);
-            UpdateJobDelete(job.Delete);
+            UpdateJob(job);
             XmlSerializerHelper.SerializeToFile(job, path);
         }
 
@@ -1092,12 +1092,27 @@
                 var document = new XmlDocument();
                 document.Load(path);
                 job = (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
+                UseJob(job);
             }
             catch (Exception ex)
             {
                 job = null;
                 ShowErrorDialog(ex, $"Loading and deserializing file \"{path}\"");
             }
+        }
+
+        private void UpdateJob(BDUJob bdujob)
+        {
+            bdujob.IncludeAll = rbIncludeAll.Checked;
+            UpdateJobUpdate(bdujob.Update);
+            UpdateJobAssign(bdujob.Assign);
+            UpdateJobSetState(bdujob.SetState);
+            UpdateJobDelete(bdujob.Delete);
+        }
+
+        private void UseJob(BDUJob bdujob)
+        {
+            RetrieveRecords(bdujob.FetchXML);
         }
     }
 }

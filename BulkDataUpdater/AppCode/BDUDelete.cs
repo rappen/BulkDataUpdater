@@ -116,7 +116,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify remaining records.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                         {
-                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                            RetrieveRecords();
                         }
                     }
                     else if (completedargs.Result is Tuple<int, int, long> result)
@@ -129,7 +129,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         if (MessageBox.Show("Delete completed!\nRun query to get records again?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                         {
-                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                            RetrieveRecords();
                         }
                     }
                     splitContainer1.Enabled = true;

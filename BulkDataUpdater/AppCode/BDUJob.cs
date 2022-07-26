@@ -1,12 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
     public class BDUJob
     {
+        private string fetchXML;
+
         public string Entity { get; set; }
-        public string FetchXML { get; set; }
+
+        public string FetchXML
+        {
+            get => fetchXML;
+            set
+            {
+                fetchXML = null;
+                Entity = null;
+                try
+                {
+                    var doc = new XmlDocument();
+                    doc.LoadXml(value);
+                    fetchXML = value;
+                    Entity = doc.SelectSingleNode("fetch/entity").Attributes["name"].Value;
+                }
+                catch (Exception)
+                {
+                    fetchXML = null;
+                    Entity = null;
+                }
+            }
+        }
+
         public bool IncludeAll { get; set; }
         public JobUpdate Update { get; set; } = new JobUpdate();
         public JobAssign Assign { get; set; } = new JobAssign();
