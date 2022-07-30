@@ -239,12 +239,22 @@ namespace Cinteros.XTB.BulkDataUpdater
                     .FirstOrDefault(i => (i.Tag as BulkActionItem).Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName);
                 lvAttributes.Items.Remove(removeitem);
             }
+            AddBAI(bai);
+            EnableControls(true);
+            UpdateJobUpdate(job.Update);
+        }
+
+        private void AddBAI(BulkActionItem bai)
+        {
+            if (bai.Attribute == null)
+            {
+                return;
+            }
             var item = lvAttributes.Items.Add(bai.Attribute.ToString());
             item.Tag = bai;
             item.SubItems.Add(bai.Action.ToString());
             item.SubItems.Add(bai.StringValue);
             item.SubItems.Add(bai.DontTouch ? "Yes" : "No");
-            EnableControls(true);
         }
 
         private void RemoveAttribute()
@@ -255,6 +265,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 lvAttributes.Items.Remove(item);
             }
             EnableControls(true);
+            UpdateJobUpdate(job.Update);
         }
 
         private BulkActionItem GetAttributeItemFromUI()
@@ -576,6 +587,13 @@ namespace Cinteros.XTB.BulkDataUpdater
         private void UpdateJobUpdate(JobUpdate job)
         {
             job.Attributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
+        }
+
+        private void FixLoadedBAI(JobUpdate job)
+        {
+            job.Attributes
+                .Where(bai => bai.Attribute == null).ToList()
+                .ForEach(bai => bai.SetAttribute(Service, useFriendlyNames, true));
         }
     }
 }

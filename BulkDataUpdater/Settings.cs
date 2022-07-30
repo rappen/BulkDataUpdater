@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
 
 namespace Cinteros.XTB.BulkDataUpdater
 {
@@ -11,18 +11,8 @@ namespace Cinteros.XTB.BulkDataUpdater
         public bool AttributesStandard { get; set; } = true;
         public bool AttributesUncustomizable { get; set; } = true;
         public bool AttributesUnmanaged { get; set; } = true;
-        public List<KeyValuePair> EntityAttributes { get; set; }
-        public string FetchXML { get; set; }
+        public BDUJob Job { get; set; } = new BDUJob();
         public int FetchResultCount { get; set; }
         public bool Friendly { get; set; } = false;
-        public int DelayCallTime { get; set; } = 0;
-        public int UpdateBatchSize { get; set; } = 1;
-        public int DeleteBatchSize { get; set; } = 1;
-    }
-
-    public class KeyValuePair
-    {
-        public string key { get; set; }
-        public string value { get; set; }
     }
 }

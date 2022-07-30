@@ -42,7 +42,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
     public class JobUpdate
     {
         public List<BulkActionItem> Attributes { get; set; } = new List<BulkActionItem>();
-        public JobExecuteOptions ExecuteOptions { get; set; }
+        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }
 
     public class JobAssign
@@ -50,7 +50,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         public string Entity { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public JobExecuteOptions ExecuteOptions { get; set; }
+        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }
 
     public class JobSetState
@@ -59,12 +59,12 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         public int Status { get; set; }
         public string StateName { get; set; }
         public string StatusName { get; set; }
-        public JobExecuteOptions ExecuteOptions { get; set; }
+        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }
 
     public class JobDelete
     {
-        public JobExecuteOptions ExecuteOptions { get; set; }
+        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }
 
     public class JobExecuteOptions

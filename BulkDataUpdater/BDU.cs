@@ -8,7 +8,6 @@
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XRM.Helpers;
     using Rappen.XRM.Helpers.Extensions;
-    using Rappen.XTB.Helpers;
     using Rappen.XTB.Helpers.ControlItems;
     using System;
     using System.Collections.Generic;
@@ -43,7 +42,6 @@
         private BDUJob job;
 
         private string deleteWarningText;
-        private Dictionary<string, string> entityAttributes = new Dictionary<string, string>();
 
         private int fetchResulCount = -1;
 
@@ -69,6 +67,9 @@
         public BulkDataUpdater()
         {
             InitializeComponent();
+            var prop = MetadataExtensions.entityProperties.ToList();
+            prop.Add("Attributes");
+            MetadataExtensions.entityProperties = prop.ToArray();
             deleteWarningText = txtDeleteWarning.Text;
         }
 
@@ -225,24 +226,49 @@
 
         private void InitializeTab()
         {
+            var tempworker = working;
+            working = true;
             if (tabControl1.SelectedTab == tabUpdate)
             {
                 btnExecute.Text = "Update records";
+                cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == job.Update.ExecuteOptions.DelayCallTime.ToString());
+                cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.Update.ExecuteOptions.BatchSize.ToString());
+                chkIgnoreErrors.Checked = job.Update.ExecuteOptions.IgnoreErrors;
+                chkBypassPlugins.Checked = job.Update.ExecuteOptions.BypassCustom;
+                lvAttributes.Items.Clear();
+                job.Update.Attributes.ForEach(a => AddBAI(a));
+                if (lvAttributes.Items.Count > 0)
+                {
+                    lvAttributes.Items[0].Selected = true;
+                }
             }
             else if (tabControl1.SelectedTab == tabAssign)
             {
                 btnExecute.Text = "Assign records";
+                cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
+                cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.Assign.ExecuteOptions.BatchSize.ToString());
+                chkIgnoreErrors.Checked = job.Assign.ExecuteOptions.IgnoreErrors;
+                chkBypassPlugins.Checked = job.Assign.ExecuteOptions.BypassCustom;
             }
             else if (tabControl1.SelectedTab == tabSetState)
             {
                 btnExecute.Text = "Update records";
+                cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
+                cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.SetState.ExecuteOptions.BatchSize.ToString());
+                chkIgnoreErrors.Checked = job.SetState.ExecuteOptions.IgnoreErrors;
+                chkBypassPlugins.Checked = job.SetState.ExecuteOptions.BypassCustom;
                 LoadStates(entities?.FirstOrDefault(ent => ent.Key == records?.EntityName).Value);
             }
             else if (tabControl1.SelectedTab == tabDelete)
             {
                 btnExecute.Text = "Delete records";
+                cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
+                cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.Delete.ExecuteOptions.BatchSize.ToString());
+                chkIgnoreErrors.Checked = job.Delete.ExecuteOptions.IgnoreErrors;
+                chkBypassPlugins.Checked = job.Delete.ExecuteOptions.BypassCustom;
             }
             panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
+            working = tempworker;
             EnableControls(true);
         }
 
@@ -291,58 +317,6 @@
             });
         }
 
-        private void LoadEntityDetails(string entityName, Action detailsLoaded)
-        {
-            if (working)
-            {
-                return;
-            }
-            working = true;
-            WorkAsync(new WorkAsyncInfo("Loading " + GetEntityDisplayName(entityName) + " metadata...",
-                (eventargs) =>
-                {
-                    var req = new RetrieveEntityRequest()
-                    {
-                        LogicalName = entityName,
-                        EntityFilters = EntityFilters.Attributes | EntityFilters.Relationships,
-                        RetrieveAsIfPublished = true
-                    };
-                    eventargs.Result = Service.Execute(req);
-                })
-            {
-                PostWorkCallBack = (completedargs) =>
-                {
-                    working = false;
-                    if (completedargs.Error != null)
-                    {
-                        entityShitList.Add(entityName);
-                        ShowErrorDialog(completedargs.Error, "Load attribute metadata");
-                    }
-                    else
-                    {
-                        if (completedargs.Result is RetrieveEntityResponse)
-                        {
-                            var resp = (RetrieveEntityResponse)completedargs.Result;
-                            if (entities == null)
-                            {
-                                entities = new Dictionary<string, EntityMetadata>();
-                            }
-                            if (entities.ContainsKey(entityName))
-                            {
-                                entities[entityName] = resp.EntityMetadata;
-                            }
-                            else
-                            {
-                                entities.Add(entityName, resp.EntityMetadata);
-                            }
-                        }
-                        detailsLoaded();
-                    }
-                    working = false;
-                }
-            });
-        }
-
         private void LoadMissingAttributesForRecord(Entity record, string entity, IEnumerable<BulkActionItem> attributes)
         {
             var newcols = new ColumnSet(attributes.Select(a => a.Attribute.Metadata.LogicalName).ToArray());
@@ -382,19 +356,8 @@
             {
                 settings = new Settings();
             }
-            job = new BDUJob
-            {
-                FetchXML = settings.FetchXML
-            };
+            job = settings.Job;
             fetchResulCount = settings.FetchResultCount;
-            if (settings.EntityAttributes != null)
-            {
-                entityAttributes = settings.EntityAttributes.ToDictionary(i => i.key, i => i.value);
-            }
-            else
-            {
-                entityAttributes = new Dictionary<string, string>();
-            }
             tsmiFriendly.Checked = settings.Friendly;
             tsmiAttributesManaged.Checked = settings.AttributesManaged;
             tsmiAttributesUnmanaged.Checked = settings.AttributesUnmanaged;
@@ -403,21 +366,8 @@
             tsmiAttributesCustom.Checked = settings.AttributesCustom;
             tsmiAttributesStandard.Checked = settings.AttributesStandard;
             tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
-            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == settings.DelayCallTime.ToString());
-            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.UpdateBatchSize.ToString());
             tsmiFriendly_Click(null, null);
             tsmiAttributes_Click(null, null);
-        }
-
-        private bool NeedToLoadEntity(string entityName)
-        {
-            return
-                !string.IsNullOrEmpty(entityName) &&
-                !entityShitList.Contains(entityName) &&
-                Service != null &&
-                (entities == null ||
-                 !entities.ContainsKey(entityName) ||
-                 entities[entityName].Attributes == null);
         }
 
         private string OpenFile()
@@ -481,25 +431,10 @@
             if (records != null)
             {
                 var entityName = records.EntityName;
-                if (NeedToLoadEntity(entityName))
-                {
-                    if (!working)
-                    {
-                        LoadEntityDetails(entityName, RefreshAttributes);
-                    }
-                    return;
-                }
                 var attributes = GetDisplayAttributes(entityName);
                 foreach (var attribute in attributes)
                 {
                     AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, attribute, true, useFriendlyNames);
-                }
-                if (entityAttributes.ContainsKey(records.EntityName))
-                {
-                    var attr = entityAttributes[records.EntityName];
-                    var coll = new Dictionary<string, string>();
-                    coll.Add("attribute", attr);
-                    ControlUtils.FillControl(coll, cmbAttribute, null);
                 }
             }
             crmGridView1.ShowFriendlyNames = useFriendlyNames;
@@ -510,16 +445,10 @@
 
         private void SaveSetting()
         {
-            //var entattrstr = "";
-            //foreach (var entattr in entityAttributes)
-            //{
-            //    entattrstr += entattr.Key + ":" + entattr.Value + "|";
-            //}
             var settings = new Settings()
             {
-                FetchXML = job?.FetchXML,
+                Job = job,
                 FetchResultCount = fetchResulCount,
-                EntityAttributes = entityAttributes.Select(p => new KeyValuePair() { key = p.Key, value = p.Value }).ToList(),
                 Friendly = tsmiFriendly.Checked,
                 AttributesManaged = tsmiAttributesManaged.Checked,
                 AttributesUnmanaged = tsmiAttributesUnmanaged.Checked,
@@ -528,8 +457,6 @@
                 AttributesCustom = tsmiAttributesCustom.Checked,
                 AttributesStandard = tsmiAttributesStandard.Checked,
                 AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
-                DelayCallTime = int.TryParse(cmbDelayCall.Text, out int upddel) ? upddel : 0,
-                UpdateBatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
             };
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
         }
@@ -623,14 +550,6 @@
                 else
                 {
                     cmbValue.DropDownStyle = ComboBoxStyle.Simple;
-                }
-                if (entityAttributes.ContainsKey(records.EntityName))
-                {
-                    entityAttributes[records.EntityName] = attribute.GetValue();
-                }
-                else
-                {
-                    entityAttributes.Add(records.EntityName, attribute.GetValue());
                 }
             }
             panUpdValue.Visible = value;
@@ -729,6 +648,7 @@
 
         private void AfterEntitiesLoaded()
         {
+            FixLoadedBAI(job.Update);
             if (!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100)
             {
                 RetrieveRecords(job.FetchXML);
@@ -1053,7 +973,7 @@
 
         private void chkBypassPlugins_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkBypassPlugins.Checked)
+            if (!working && chkBypassPlugins.Checked)
             {
                 if (currentversion < bypasspluginminversion)
                 {

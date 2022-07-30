@@ -1,10 +1,24 @@
-﻿using Rappen.XTB.Helpers.ControlItems;
+﻿using Microsoft.Xrm.Sdk;
+using Rappen.XTB.Helpers.ControlItems;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
     public class BulkActionItem
     {
+        private string entityname;
         private string attributename;
+
+        public string EntityName
+        {
+            get
+            {
+                return Attribute?.Metadata?.EntityLogicalName ?? entityname;
+            }
+            set
+            {
+                entityname = value;
+            }
+        }
 
         public string AttributeName
         {
@@ -46,6 +60,14 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
                 text += ", don't touch";
             }
             return text;
+        }
+
+        internal void SetAttribute(IOrganizationService service, bool friendly, bool types)
+        {
+            if (!string.IsNullOrEmpty(entityname) && !string.IsNullOrEmpty(attributename))
+            {
+                Attribute = new AttributeMetadataItem(service, entityname, attributename, friendly, types);
+            }
         }
     }
 

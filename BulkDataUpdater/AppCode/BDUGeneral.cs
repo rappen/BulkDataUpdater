@@ -190,7 +190,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
         }
 
-        private void RetrieveRecords(string fetch = null)
+        private void RetrieveRecords(string fetch = null, Action nextmethod = null)
         {
             if (working)
             {
@@ -205,7 +205,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 crmGridView1.DataSource = null;
                 records = null;
-                RetrieveRecordsReady();
+                RetrieveRecordsReady(nextmethod);
                 return;
             }
             lblRecords.Text = "Retrieving records...";
@@ -242,7 +242,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         records = result;
                         fetchResulCount = records.Entities.Count;
                     }
-                    RetrieveRecordsReady();
+                    RetrieveRecordsReady(nextmethod);
                 },
                 ProgressChanged = (changeargs) =>
                 {
@@ -293,21 +293,13 @@ namespace Cinteros.XTB.BulkDataUpdater
             return resultCollection;
         }
 
-        private void RetrieveRecordsReady()
+        private void RetrieveRecordsReady(Action nextmethod)
         {
             if (records != null)
             {
                 if (job == null)
                 {
                     job = new BDUJob();
-                }
-                if (NeedToLoadEntity(job.Entity))
-                {
-                    if (!working)
-                    {
-                        LoadEntityDetails(job.Entity, RetrieveRecordsReady);
-                    }
-                    return;
                 }
                 lblRecords.Text = $"{records.Entities.Count} records of entity {records.EntityName} loaded";
                 crmGridView1.Service = Service;
@@ -317,6 +309,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             RefreshAttributes();
             InitializeTab();
+            nextmethod?.Invoke();
         }
 
         private IEnumerable<Entity> GetIncludedRecords()

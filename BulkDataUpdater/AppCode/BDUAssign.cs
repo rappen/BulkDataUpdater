@@ -35,6 +35,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 txtAssignEntity.Text = null;
             }
             EnableControls(true);
+            UpdateJobAssign(job.Assign);
         }
 
         private void AssignRecords()
