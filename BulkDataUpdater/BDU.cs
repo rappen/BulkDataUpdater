@@ -458,6 +458,7 @@
                 AttributesStandard = tsmiAttributesStandard.Checked,
                 AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
             };
+            settings.Job.Info = null;
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
         }
 
@@ -1002,7 +1003,8 @@
                 return;
             }
             var path = @"C:\Dev\GitHub\BulkDataUpdater\BulkDataUpdater\bin\Debug\Settings\bdujob.xml";
-            UpdateJob(job);
+            UpdateJob();
+            job.Info = new JobInfo(path, ConnectionDetail);
             XmlSerializerHelper.SerializeToFile(job, path);
         }
 
@@ -1014,7 +1016,7 @@
                 var document = new XmlDocument();
                 document.Load(path);
                 job = (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
-                UseJob(job);
+                UseJob();
             }
             catch (Exception ex)
             {
@@ -1023,18 +1025,23 @@
             }
         }
 
-        private void UpdateJob(BDUJob bdujob)
+        private void UpdateJob()
         {
-            bdujob.IncludeAll = rbIncludeAll.Checked;
-            UpdateJobUpdate(bdujob.Update);
-            UpdateJobAssign(bdujob.Assign);
-            UpdateJobSetState(bdujob.SetState);
-            UpdateJobDelete(bdujob.Delete);
+            job.IncludeAll = rbIncludeAll.Checked;
+            UpdateJobUpdate(job.Update);
+            UpdateJobAssign(job.Assign);
+            UpdateJobSetState(job.SetState);
+            UpdateJobDelete(job.Delete);
         }
 
-        private void UseJob(BDUJob bdujob)
+        private void UseJob()
         {
-            RetrieveRecords(bdujob.FetchXML);
+            RetrieveRecords(job.FetchXML, UseJob2);
+        }
+
+        private void UseJob2()
+        {
+            MessageBox.Show($"BDU Job '{job.Info.Name}' is now loaded.", "Bulk Data Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

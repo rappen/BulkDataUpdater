@@ -1,5 +1,7 @@
-﻿using System;
+﻿using McTools.Xrm.Connection;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
@@ -8,6 +10,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
     {
         private string fetchXML;
 
+        public JobInfo Info { get; set; }
         public string Entity { get; set; }
 
         public string FetchXML
@@ -37,6 +40,25 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         public JobAssign Assign { get; set; } = new JobAssign();
         public JobSetState SetState { get; set; } = new JobSetState();
         public JobDelete Delete { get; set; } = new JobDelete();
+    }
+
+    public class JobInfo
+    {
+        public string Name { get; set; }
+        public string OriginalPath { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string EnvironmentURL { get; set; }
+
+        private JobInfo()
+        { }
+
+        public JobInfo(string path, ConnectionDetail connectionDetail)
+        {
+            Name = Path.GetFileNameWithoutExtension(path);
+            OriginalPath = path;
+            CreatedOn = DateTime.Now;
+            EnvironmentURL = connectionDetail.OriginalUrl;
+        }
     }
 
     public class JobUpdate
