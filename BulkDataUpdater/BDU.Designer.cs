@@ -30,12 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
-            this.tslJobs = new System.Windows.Forms.ToolStripDropDownButton();
-            this.tsmiJobsOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiJobsSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbOpenJob = new System.Windows.Forms.ToolStripButton();
+            this.tsbSaveJob = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOptions = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiFriendly = new System.Windows.Forms.ToolStripMenuItem();
@@ -148,6 +147,7 @@
             this.tmCalc = new System.Windows.Forms.Timer(this.components);
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -194,10 +194,12 @@
             this.toolStripMain.BackColor = System.Drawing.SystemColors.Window;
             this.toolStripMain.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tslJobs,
+            this.tsbOpenJob,
+            this.tsbSaveJob,
             this.toolStripSeparator1,
             this.tsbOptions,
             this.tslAbout,
+            this.toolStripSeparator2,
             this.tsbCancel,
             this.toolStripSeparator17,
             this.tslDoc});
@@ -208,28 +210,23 @@
             this.toolStripMain.TabIndex = 23;
             this.toolStripMain.Text = "toolStrip1";
             // 
-            // tslJobs
+            // tsbOpenJob
             // 
-            this.tslJobs.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiJobsOpen,
-            this.tsmiJobsSave});
-            this.tslJobs.Name = "tslJobs";
-            this.tslJobs.Size = new System.Drawing.Size(69, 28);
-            this.tslJobs.Text = "BDU Jobs";
+            this.tsbOpenJob.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpenJob.Image")));
+            this.tsbOpenJob.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOpenJob.Name = "tsbOpenJob";
+            this.tsbOpenJob.Size = new System.Drawing.Size(94, 28);
+            this.tsbOpenJob.Text = "Open Job...";
+            this.tsbOpenJob.Click += new System.EventHandler(this.tsbOpenJob_Click);
             // 
-            // tsmiJobsOpen
+            // tsbSaveJob
             // 
-            this.tsmiJobsOpen.Name = "tsmiJobsOpen";
-            this.tsmiJobsOpen.Size = new System.Drawing.Size(180, 22);
-            this.tsmiJobsOpen.Text = "Open...";
-            this.tsmiJobsOpen.Click += new System.EventHandler(this.tsmiJobsOpen_Click);
-            // 
-            // tsmiJobsSave
-            // 
-            this.tsmiJobsSave.Name = "tsmiJobsSave";
-            this.tsmiJobsSave.Size = new System.Drawing.Size(112, 22);
-            this.tsmiJobsSave.Text = "Save...";
-            this.tsmiJobsSave.Click += new System.EventHandler(this.tsmiJobsSave_Click);
+            this.tsbSaveJob.Image = ((System.Drawing.Image)(resources.GetObject("tsbSaveJob.Image")));
+            this.tsbSaveJob.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSaveJob.Name = "tsbSaveJob";
+            this.tsbSaveJob.Size = new System.Drawing.Size(89, 28);
+            this.tsbSaveJob.Text = "Save Job...";
+            this.tsbSaveJob.Click += new System.EventHandler(this.tsbSaveJob_Click);
             // 
             // toolStripSeparator1
             // 
@@ -1000,8 +997,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
@@ -1497,6 +1494,11 @@
             this.xrmLookupAssign.Service = null;
             this.xrmLookupAssign.Title = "Select User or Team to assign to";
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1680,8 +1682,8 @@
         private System.Windows.Forms.LinkLabel linkBypassPlugins;
         private System.Windows.Forms.CheckBox chkBypassPlugins;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripDropDownButton tslJobs;
-        private System.Windows.Forms.ToolStripMenuItem tsmiJobsOpen;
-        private System.Windows.Forms.ToolStripMenuItem tsmiJobsSave;
+        private System.Windows.Forms.ToolStripButton tsbOpenJob;
+        private System.Windows.Forms.ToolStripButton tsbSaveJob;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

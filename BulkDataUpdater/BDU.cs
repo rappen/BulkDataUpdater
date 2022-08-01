@@ -944,33 +944,7 @@
             }
         }
 
-        private void tsmiJobsSave_Click(object sender, EventArgs e)
-        {
-            if (job == null)
-            {
-                MessageBox.Show("Nothing to save.");
-                return;
-            }
-            var savedlg = new SaveFileDialog
-            {
-                Filter = "BDU xml (*.bdu.xml)|*.bdu.xml",
-                DefaultExt = ".bdu.xml",
-                FileName = job.Info?.Name,
-                Title = "Save a BDU job"
-            };
-            if (!string.IsNullOrEmpty(job.Info?.OriginalPath))
-            {
-                savedlg.InitialDirectory = Path.GetDirectoryName(job.Info.OriginalPath);
-            }
-            if (savedlg.ShowDialog() == DialogResult.OK)
-            {
-                UpdateJob();
-                job.Info = new JobInfo(savedlg.FileName, ConnectionDetail);
-                XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
-            }
-        }
-
-        private void tsmiJobsOpen_Click(object sender, EventArgs e)
+        private void tsbOpenJob_Click(object sender, EventArgs e)
         {
             var opendld = new OpenFileDialog
             {
@@ -996,6 +970,32 @@
                     job = new BDUJob();
                     ShowErrorDialog(ex);
                 }
+            }
+        }
+
+        private void tsbSaveJob_Click(object sender, EventArgs e)
+        {
+            if (job == null)
+            {
+                MessageBox.Show("Nothing to save.");
+                return;
+            }
+            var savedlg = new SaveFileDialog
+            {
+                Filter = "BDU xml (*.bdu.xml)|*.bdu.xml",
+                DefaultExt = ".bdu.xml",
+                FileName = job.Info?.Name,
+                Title = "Save a BDU job"
+            };
+            if (!string.IsNullOrEmpty(job.Info?.OriginalPath))
+            {
+                savedlg.InitialDirectory = Path.GetDirectoryName(job.Info.OriginalPath);
+            }
+            if (savedlg.ShowDialog() == DialogResult.OK)
+            {
+                UpdateJob();
+                job.Info = new JobInfo(savedlg.FileName, ConnectionDetail);
+                XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
             }
         }
     }
