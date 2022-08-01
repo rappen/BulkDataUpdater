@@ -275,7 +275,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             return null;
         }
 
-        private void LoadStates(EntityMetadata entity)
+        private void LoadStates(EntityMetadata entity, int? selected)
         {
             cbSetStatus.Items.Clear();
             cbSetStatusReason.Items.Clear();
@@ -286,9 +286,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                     statemeta.OptionSet.Options
                         .Select(o => new OptionMetadataItem(o, true)).ToArray());
             }
+            cbSetStatus.SelectedItem = cbSetStatus.Items.Cast<OptionMetadataItem>().FirstOrDefault(s => s.Metadata.Value == selected);
         }
 
-        private void LoadStatuses()
+        private void LoadStatuses(int? selected)
         {
             cbSetStatusReason.Items.Clear();
             panQualifyLead.Visible = false;
@@ -303,6 +304,16 @@ namespace Cinteros.XTB.BulkDataUpdater
                         .Select(o => new OptionMetadataItem(o, true)).ToArray());
                 panQualifyLead.Visible = entity.LogicalName == Lead.EntityName && state.Metadata.Value == (int)Lead.Status_OptionSet.Qualified;
             }
+            cbSetStatusReason.SelectedItem = cbSetStatusReason.Items.Cast<OptionMetadataItem>().FirstOrDefault(s => s.Metadata.Value == selected);
+        }
+
+        private void SetSetStateFromJob(JobSetState job)
+        {
+            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
+            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
+            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
+            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
+            LoadStates(entities?.FirstOrDefault(ent => ent.LogicalName == records?.EntityName), job?.State);
         }
 
         private void UpdateJobSetState(JobSetState job)

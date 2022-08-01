@@ -1414,7 +1414,7 @@
             this.cbSetStatusReason.Name = "cbSetStatusReason";
             this.cbSetStatusReason.Size = new System.Drawing.Size(297, 21);
             this.cbSetStatusReason.TabIndex = 14;
-            this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.genericInputChanged);
+            this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.cbSetStatusReason_SelectedIndexChanged);
             // 
             // label8
             // 

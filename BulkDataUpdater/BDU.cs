@@ -122,10 +122,11 @@
 
         private void FetchUpdated(string fetch)
         {
-            job = new BDUJob
+            if (job == null)
             {
-                FetchXML = fetch
-            };
+                job = new BDUJob();
+            }
+            job.FetchXML = fetch;
             if (!string.IsNullOrWhiteSpace(fetch))
             {
                 RetrieveRecords(job.FetchXML);
@@ -231,42 +232,22 @@
             if (tabControl1.SelectedTab == tabUpdate)
             {
                 btnExecute.Text = "Update records";
-                cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == job.Update.ExecuteOptions.DelayCallTime.ToString());
-                cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.Update.ExecuteOptions.BatchSize.ToString());
-                chkIgnoreErrors.Checked = job.Update.ExecuteOptions.IgnoreErrors;
-                chkBypassPlugins.Checked = job.Update.ExecuteOptions.BypassCustom;
-                lvAttributes.Items.Clear();
-                job.Update.Attributes.ForEach(a => AddBAI(a));
-                if (lvAttributes.Items.Count > 0)
-                {
-                    lvAttributes.Items[0].Selected = true;
-                }
+                SetUpdateFromJob(job.Update);
             }
             else if (tabControl1.SelectedTab == tabAssign)
             {
                 btnExecute.Text = "Assign records";
-                cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
-                cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.Assign.ExecuteOptions.BatchSize.ToString());
-                chkIgnoreErrors.Checked = job.Assign.ExecuteOptions.IgnoreErrors;
-                chkBypassPlugins.Checked = job.Assign.ExecuteOptions.BypassCustom;
-                SetAssignerFromJob(job.Assign);
+                SetAssignFromJob(job.Assign);
             }
             else if (tabControl1.SelectedTab == tabSetState)
             {
                 btnExecute.Text = "Update records";
-                cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
-                cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.SetState.ExecuteOptions.BatchSize.ToString());
-                chkIgnoreErrors.Checked = job.SetState.ExecuteOptions.IgnoreErrors;
-                chkBypassPlugins.Checked = job.SetState.ExecuteOptions.BypassCustom;
-                LoadStates(entities?.FirstOrDefault(ent => ent.LogicalName == records?.EntityName));
+                SetSetStateFromJob(job.SetState);
             }
             else if (tabControl1.SelectedTab == tabDelete)
             {
                 btnExecute.Text = "Delete records";
-                cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
-                cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.Delete.ExecuteOptions.BatchSize.ToString());
-                chkIgnoreErrors.Checked = job.Delete.ExecuteOptions.IgnoreErrors;
-                chkBypassPlugins.Checked = job.Delete.ExecuteOptions.BypassCustom;
+                SetDeleteFromJob(job.Delete);
             }
             panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
             working = tempworker;
@@ -569,7 +550,13 @@
 
         private void cbSetStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadStatuses();
+            LoadStatuses(job?.SetState?.Status);
+            EnableControls(true);
+        }
+
+        private void cbSetStatusReason_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateJobSetState(job?.SetState);
             EnableControls(true);
         }
 
@@ -612,11 +599,7 @@
             EnableControls(true);
             if (entities != null)
             {
-                FixLoadedBAI(job.Update);
-                if (!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100)
-                {
-                    RetrieveRecords(job.FetchXML);
-                }
+                UseJob(!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100);
             }
         }
 
@@ -627,6 +610,7 @@
 
         private void rbInclude_CheckedChanged(object sender, EventArgs e)
         {
+            job.IncludeAll = rbIncludeAll.Checked;
             UpdateIncludeCount();
         }
 
@@ -1005,11 +989,11 @@
                     var document = new XmlDocument();
                     document.Load(opendld.FileName);
                     job = (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
-                    UseJob();
+                    UseJob(true);
                 }
                 catch (Exception ex)
                 {
-                    job = null;
+                    job = new BDUJob();
                     ShowErrorDialog(ex);
                 }
             }

@@ -584,6 +584,20 @@ namespace Cinteros.XTB.BulkDataUpdater
             throw new Exception($"Not valid {attribute.AttributeTypeName.Value.Replace("Type", "")}");
         }
 
+        private void SetUpdateFromJob(JobUpdate job)
+        {
+            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.DelayCallTime.ToString());
+            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
+            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
+            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
+            lvAttributes.Items.Clear();
+            job.Attributes.ForEach(a => AddBAI(a));
+            if (lvAttributes.Items.Count > 0)
+            {
+                lvAttributes.Items[0].Selected = true;
+            }
+        }
+
         private void UpdateJobUpdate(JobUpdate job)
         {
             job.Attributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();

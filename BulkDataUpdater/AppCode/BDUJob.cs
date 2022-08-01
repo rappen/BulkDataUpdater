@@ -81,8 +81,8 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
     public class JobSetState
     {
-        public int State { get; set; }
-        public int Status { get; set; }
+        public int? State { get; set; }
+        public int? Status { get; set; }
         public string StateName { get; set; }
         public string StatusName { get; set; }
         public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();

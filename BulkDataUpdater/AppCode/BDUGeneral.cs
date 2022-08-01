@@ -358,15 +358,15 @@ namespace Cinteros.XTB.BulkDataUpdater
             UpdateJobDelete(job.Delete);
         }
 
-        private void UseJob()
+        private void UseJob(bool retrieve)
         {
+            rbIncludeAll.Checked = job.IncludeAll;
+            rbIncludeSelected.Checked = !job.IncludeAll;
             FixLoadedBAI(job.Update);
-            RetrieveRecords(job.FetchXML, UseJob2);
-        }
-
-        private void UseJob2()
-        {
-            MessageBox.Show($"BDU Job '{job.Info.Name}' is now loaded.", "Bulk Data Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (retrieve)
+            {
+                RetrieveRecords(job.FetchXML);
+            }
         }
     }
 }
