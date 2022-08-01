@@ -1,15 +1,15 @@
 ﻿namespace Cinteros.Xrm.Common.Forms
 {
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Query;
+    using Rappen.XTB.Helpers;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Forms;
-    using Microsoft.Xrm.Sdk;
-    using Microsoft.Xrm.Sdk.Query;
-    using Rappen.XTB.Helpers;
-    using ScintillaNET;
     using XrmToolBox.Extensibility;
     using XTB.BulkDataUpdater.AppCode;
+
     public partial class SelectViewDialog : Form
     {
         #region Public Fields
@@ -31,7 +31,7 @@
         public SelectViewDialog(PluginControlBase sender)
         {
             InitializeComponent();
-            this.host = sender;
+            host = sender;
             ScintillaInitialize.InitXML(txtFetch, false);
         }
 
@@ -41,10 +41,11 @@
 
         internal void LoadViews(Action action)
         {
-            this.host.WorkAsync(new WorkAsyncInfo("Loading views...",
+            Enabled = false;
+            host.WorkAsync(new WorkAsyncInfo("Loading views...",
                 (a) =>
                 {
-                    this.views = new Dictionary<string, List<Entity>>();
+                    views = new Dictionary<string, List<Entity>>();
 
                     if (views.Count == 0)
                     {
@@ -78,10 +79,10 @@
 
                     foreach (var key in allViews.Keys)
                     {
-                        this.ExtractViews(allViews[key]);
+                        ExtractViews(allViews[key]);
                     }
 
-                    this.entities = this.views.Keys.Select(x => x.Split('|')[0]).Distinct().ToList();
+                    entities = views.Keys.Select(x => x.Split('|')[0]).Distinct().ToList();
 
                     action();
                 }
@@ -114,7 +115,7 @@
 
             txtFetch.Text = string.Empty;
 
-            this.LoadViews(this.PopulateForm);
+            LoadViews(PopulateForm);
         }
 
         private void cmbEntity_SelectedIndexChanged(object sender, EventArgs e)
@@ -169,21 +170,22 @@
                     cmbEntity.Items.Add(entity);
                 }
             }
+            Enabled = true;
         }
 
         private void SelectViewDialog_Load(object sender, EventArgs e)
         {
-            if (this.host.Service == null)
+            if (host.Service == null)
             {
                 MessageBox.Show("Need a connection to load views!", "Connection problem", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                this.DialogResult = System.Windows.Forms.DialogResult.Abort;
-                this.Close();
+                DialogResult = System.Windows.Forms.DialogResult.Abort;
+                Close();
 
                 return;
             }
 
-            this.LoadViews(this.PopulateForm);
+            LoadViews(PopulateForm);
         }
 
         private void UpdateViews()
