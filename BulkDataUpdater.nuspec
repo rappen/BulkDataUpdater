@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package>
 	<metadata>
 		<id>Cinteros.XrmToolBox.BulkDataUpdater</id>
 		<version>1.0.0</version>
@@ -14,18 +14,18 @@
 			Empower yourself to achieve more.
 			This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
 			It can also delete, assign, and set state of records by the filter specified.
-			
+
 			Read more: https://jonasr.app/BDU
 		</description>
 		<summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
 		<releaseNotes>
-See latest release notes, and all history:
-https://jonasr.app/bdu/releases/#$versionnumber$
+			See latest release notes, and all history:
+			https://jonasr.app/bdu/releases/#$versionnumber$
 		</releaseNotes>
 		<copyright>Copyright 2016-2022 Jonas Rapp</copyright>
 		<tags>XrmToolBox Plugins BulkDataUpdater</tags>
 		<dependencies>
-			<dependency id="XrmToolBox" version="1.2022.2.54" />
+			<dependency id="XrmToolBox" version="1.2022.5.56" />
 		</dependencies>
 	</metadata>
 	<files>
