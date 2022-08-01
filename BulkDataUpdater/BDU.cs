@@ -1,17 +1,19 @@
 ﻿namespace Cinteros.XTB.BulkDataUpdater
 {
     using AppCode;
+    using McTools.Xrm.Connection;
     using Microsoft.Xrm.Sdk;
-    using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XRM.Helpers;
-    using Rappen.XTB.Helpers;
+    using Rappen.XRM.Helpers.Extensions;
     using Rappen.XTB.Helpers.ControlItems;
+    using Rappen.XTB.Helpers.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Drawing;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
@@ -26,7 +28,6 @@
 
         internal static bool useFriendlyNames = false;
         internal static Dictionary<string, List<Entity>> views;
-        internal List<string> entityShitList = new List<string>();
 
         #endregion Internal Fields
 
@@ -36,13 +37,14 @@
         private const string aiKey = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
         private AppInsights ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
 
-        private static Dictionary<string, EntityMetadata> entities;
+        private static List<EntityMetadata> entities;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
+        private BDUJob job;
 
         private string deleteWarningText;
-        private Dictionary<string, string> entityAttributes = new Dictionary<string, string>();
-        private string fetchXml = fetchTemplate;
+
         private int fetchResulCount = -1;
+
         private EntityCollection records;
         private bool showAttributesAll = true;
         private bool showAttributesCustom = true;
@@ -65,6 +67,9 @@
         public BulkDataUpdater()
         {
             InitializeComponent();
+            var prop = Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties.ToList();
+            prop.Add("Attributes");
+            Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties = prop.ToArray();
             deleteWarningText = txtDeleteWarning.Text;
         }
 
@@ -117,20 +122,24 @@
 
         private void FetchUpdated(string fetch)
         {
+            if (job == null)
+            {
+                job = new BDUJob();
+            }
+            job.FetchXML = fetch;
             if (!string.IsNullOrWhiteSpace(fetch))
             {
-                fetchXml = fetch;
-                RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                RetrieveRecords(job.FetchXML);
             }
         }
 
-        private AttributeMetadata[] GetDisplayAttributes(string entityName)
+        private List<AttributeMetadata> GetDisplayAttributes(string entityName)
         {
             var result = new List<AttributeMetadata>();
             AttributeMetadata[] attributes = null;
-            if (entities != null && entities.ContainsKey(entityName))
+            if (entities?.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
             {
-                attributes = entities[entityName].Attributes;
+                attributes = entity.Attributes;
                 if (attributes != null)
                 {
                     foreach (var attribute in attributes)
@@ -158,12 +167,12 @@
                     }
                 }
             }
-            return result.ToArray();
+            return result;
         }
 
         private void GetFromEditor()
         {
-            var fetchwin = new XmlContentDisplayDialog(fetchXml, "Enter FetchXML to retrieve records to update", true, true);
+            var fetchwin = new XmlContentDisplayDialog(job?.FetchXML ?? fetchTemplate, "Enter FetchXML to retrieve records to update", true, true);
             fetchwin.StartPosition = FormStartPosition.CenterParent;
             if (fetchwin.ShowDialog() == DialogResult.OK)
             {
@@ -173,7 +182,7 @@
 
         private void GetFromFXB()
         {
-            OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder") { TargetArgument = fetchXml });
+            OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder") { TargetArgument = job?.FetchXML });
         }
 
         private void GetRecords(string tag)
@@ -183,6 +192,7 @@
                 case "Edit": // Edit
                     GetFromEditor();
                     break;
+
                 case "FXB": // FXB
                     try
                     {
@@ -199,12 +209,15 @@
                                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     break;
+
                 case "File": // File
                     FetchUpdated(OpenFile());
                     break;
+
                 case "View": // View
                     OpenView();
                     break;
+
                 default:
                     MessageBox.Show("Select record source.", "Get Records", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     break;
@@ -214,125 +227,31 @@
 
         private void InitializeTab()
         {
+            var tempworker = working;
+            working = true;
             if (tabControl1.SelectedTab == tabUpdate)
             {
                 btnExecute.Text = "Update records";
+                SetUpdateFromJob(job.Update);
             }
             else if (tabControl1.SelectedTab == tabAssign)
             {
                 btnExecute.Text = "Assign records";
+                SetAssignFromJob(job.Assign);
             }
             else if (tabControl1.SelectedTab == tabSetState)
             {
                 btnExecute.Text = "Update records";
-                LoadStates(entities?.FirstOrDefault(ent => ent.Key == records?.EntityName).Value);
+                SetSetStateFromJob(job.SetState);
             }
             else if (tabControl1.SelectedTab == tabDelete)
             {
                 btnExecute.Text = "Delete records";
+                SetDeleteFromJob(job.Delete);
             }
             panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
+            working = tempworker;
             EnableControls(true);
-        }
-
-        private void LoadEntities(Action AfterLoad)
-        {
-            if (working)
-            {
-                return;
-            }
-            entities = null;
-            entityShitList = new List<string>();
-            working = true;
-            WorkAsync(new WorkAsyncInfo("Loading entities metadata...",
-                (eventargs) =>
-                {
-                    EnableControls(false);
-                    var req = new RetrieveAllEntitiesRequest()
-                    {
-                        EntityFilters = EntityFilters.Entity,
-                        RetrieveAsIfPublished = true
-                    };
-                    eventargs.Result = Service.Execute(req);
-                })
-            {
-                PostWorkCallBack = (completedargs) =>
-                {
-                    working = false;
-                    if (completedargs.Error != null)
-                    {
-                        ShowErrorDialog(completedargs.Error, "Load Entities");
-                    }
-                    else
-                    {
-                        if (completedargs.Result is RetrieveAllEntitiesResponse)
-                        {
-                            entities = new Dictionary<string, EntityMetadata>();
-                            foreach (var entity in ((RetrieveAllEntitiesResponse)completedargs.Result).EntityMetadata)
-                            {
-                                entities.Add(entity.LogicalName, entity);
-                            }
-                        }
-                    }
-                    EnableControls(true);
-                    if (AfterLoad != null)
-                    {
-                        AfterLoad();
-                    }
-                }
-            });
-        }
-
-        private void LoadEntityDetails(string entityName, Action detailsLoaded)
-        {
-            if (working)
-            {
-                return;
-            }
-            working = true;
-            WorkAsync(new WorkAsyncInfo("Loading " + GetEntityDisplayName(entityName) + " metadata...",
-                (eventargs) =>
-                {
-                    var req = new RetrieveEntityRequest()
-                    {
-                        LogicalName = entityName,
-                        EntityFilters = EntityFilters.Attributes | EntityFilters.Relationships,
-                        RetrieveAsIfPublished = true
-                    };
-                    eventargs.Result = Service.Execute(req);
-                })
-            {
-                PostWorkCallBack = (completedargs) =>
-                {
-                    working = false;
-                    if (completedargs.Error != null)
-                    {
-                        entityShitList.Add(entityName);
-                        ShowErrorDialog(completedargs.Error, "Load attribute metadata");
-                    }
-                    else
-                    {
-                        if (completedargs.Result is RetrieveEntityResponse)
-                        {
-                            var resp = (RetrieveEntityResponse)completedargs.Result;
-                            if (entities == null)
-                            {
-                                entities = new Dictionary<string, EntityMetadata>();
-                            }
-                            if (entities.ContainsKey(entityName))
-                            {
-                                entities[entityName] = resp.EntityMetadata;
-                            }
-                            else
-                            {
-                                entities.Add(entityName, resp.EntityMetadata);
-                            }
-                        }
-                        detailsLoaded();
-                    }
-                    working = false;
-                }
-            });
         }
 
         private void LoadMissingAttributesForRecord(Entity record, string entity, IEnumerable<BulkActionItem> attributes)
@@ -374,16 +293,8 @@
             {
                 settings = new Settings();
             }
-            fetchXml = settings.FetchXML;
+            job = settings.Job;
             fetchResulCount = settings.FetchResultCount;
-            if (settings.EntityAttributes != null)
-            {
-                entityAttributes = settings.EntityAttributes.ToDictionary(i => i.key, i => i.value);
-            }
-            else
-            {
-                entityAttributes = new Dictionary<string, string>();
-            }
             tsmiFriendly.Checked = settings.Friendly;
             tsmiAttributesManaged.Checked = settings.AttributesManaged;
             tsmiAttributesUnmanaged.Checked = settings.AttributesUnmanaged;
@@ -392,21 +303,8 @@
             tsmiAttributesCustom.Checked = settings.AttributesCustom;
             tsmiAttributesStandard.Checked = settings.AttributesStandard;
             tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
-            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == settings.DelayCallTime.ToString());
-            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == settings.UpdateBatchSize.ToString());
             tsmiFriendly_Click(null, null);
             tsmiAttributes_Click(null, null);
-        }
-
-        private bool NeedToLoadEntity(string entityName)
-        {
-            return
-                !string.IsNullOrEmpty(entityName) &&
-                !entityShitList.Contains(entityName) &&
-                Service != null &&
-                (entities == null ||
-                 !entities.ContainsKey(entityName) ||
-                 entities[entityName].Attributes == null);
         }
 
         private string OpenFile()
@@ -465,32 +363,23 @@
 
         private void RefreshAttributes()
         {
-            EnableControls(false);
+            var selected = cmbAttribute.SelectedItem as AttributeMetadataItem;
             cmbAttribute.Items.Clear();
             if (records != null)
             {
                 var entityName = records.EntityName;
-                if (NeedToLoadEntity(entityName))
-                {
-                    if (!working)
-                    {
-                        LoadEntityDetails(entityName, RefreshAttributes);
-                    }
-                    return;
-                }
                 var attributes = GetDisplayAttributes(entityName);
-                foreach (var attribute in attributes)
+                attributes.ForEach(a => AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, a, true, useFriendlyNames));
+                if (selected != null)
                 {
-                    AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, attribute, true, useFriendlyNames);
-                }
-                if (entityAttributes.ContainsKey(records.EntityName))
-                {
-                    var attr = entityAttributes[records.EntityName];
-                    var coll = new Dictionary<string, string>();
-                    coll.Add("attribute", attr);
-                    ControlUtils.FillControl(coll, cmbAttribute, null);
+                    cmbAttribute.SelectedItem = cmbAttribute.Items.Cast<AttributeMetadataItem>().FirstOrDefault(a => a.Metadata?.LogicalName == selected.Metadata?.LogicalName);
                 }
             }
+        }
+
+        private void RefreshGridRecords()
+        {
+            EnableControls(false);
             crmGridView1.ShowFriendlyNames = useFriendlyNames;
             crmGridView1.ShowLocalTimes = useFriendlyNames;
             crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
@@ -499,16 +388,10 @@
 
         private void SaveSetting()
         {
-            //var entattrstr = "";
-            //foreach (var entattr in entityAttributes)
-            //{
-            //    entattrstr += entattr.Key + ":" + entattr.Value + "|";
-            //}
             var settings = new Settings()
             {
-                FetchXML = fetchXml,
+                Job = job,
                 FetchResultCount = fetchResulCount,
-                EntityAttributes = entityAttributes.Select(p => new KeyValuePair() { key = p.Key, value = p.Value }).ToList(),
                 Friendly = tsmiFriendly.Checked,
                 AttributesManaged = tsmiAttributesManaged.Checked,
                 AttributesUnmanaged = tsmiAttributesUnmanaged.Checked,
@@ -517,16 +400,15 @@
                 AttributesCustom = tsmiAttributesCustom.Checked,
                 AttributesStandard = tsmiAttributesStandard.Checked,
                 AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
-                DelayCallTime = int.TryParse(cmbDelayCall.Text, out int upddel) ? upddel : 0,
-                UpdateBatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
             };
+            settings.Job.Info = null;
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
         }
 
         private void UpdateIncludeCount()
         {
             var count = GetIncludedRecords()?.Count();
-            var entity = entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label;
+            var entity = entities?.FirstOrDefault(e => e.LogicalName == records?.EntityName)?.DisplayCollectionName?.UserLocalizedLabel?.Label;
             lblIncludedRecords.Text = $"{count} records";
             lblUpdateHeader.Text = $"Update {count} {entity}";
             lblAssignHeader.Text = $"Assign {count} {entity}";
@@ -613,14 +495,6 @@
                 {
                     cmbValue.DropDownStyle = ComboBoxStyle.Simple;
                 }
-                if (entityAttributes.ContainsKey(records.EntityName))
-                {
-                    entityAttributes[records.EntityName] = attribute.GetValue();
-                }
-                else
-                {
-                    entityAttributes.Add(records.EntityName, attribute.GetValue());
-                }
             }
             panUpdValue.Visible = value;
             panUpdLookup.Visible = lookup;
@@ -676,7 +550,13 @@
 
         private void cbSetStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadStatuses();
+            LoadStatuses(job?.SetState?.Status);
+            EnableControls(true);
+        }
+
+        private void cbSetStatusReason_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateJobSetState(job?.SetState);
             EnableControls(true);
         }
 
@@ -701,21 +581,26 @@
             currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
             crmGridView1.DataSource = null;
             entities = null;
-            entityShitList.Clear();
-            EnableControls(true);
+            job = null;
+            LoadSetting();
+            EnableControls(false);
+            this.GetAllEntityMetadatas(AfterEntitiesLoaded);
         }
 
         private void DataUpdater_Load(object sender, EventArgs e)
         {
-            EnableControls(false);
             LoadGlobalSetting();
-            LoadSetting();
             LogUse("Load");
-            if (!string.IsNullOrWhiteSpace(fetchXml) && fetchResulCount > 0 && fetchResulCount < 100)
-            {
-                FetchUpdated(fetchXml);
-            }
+        }
+
+        private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas)
+        {
+            entities = metadatas?.ToList();
             EnableControls(true);
+            if (entities != null)
+            {
+                UseJob(!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100);
+            }
         }
 
         private void lvAttributes_SelectedIndexChanged(object sender, EventArgs e)
@@ -725,6 +610,7 @@
 
         private void rbInclude_CheckedChanged(object sender, EventArgs e)
         {
+            job.IncludeAll = rbIncludeAll.Checked;
             UpdateIncludeCount();
         }
 
@@ -801,6 +687,7 @@
         {
             useFriendlyNames = tsmiFriendly.Checked;
             RefreshAttributes();
+            RefreshGridRecords();
         }
 
         #endregion Form Event Handlers
@@ -833,6 +720,7 @@
                         entref.LogicalName = entity["activitytypecode"].ToString();
                     }
                     break;
+
                 case "activityparty":
                     if (!entity.Contains("partyid"))
                     {
@@ -896,6 +784,7 @@
                     xrmRecordAttribute.Service = Service;
                     xrmRecordAttribute.Record = cdsLookupDialog.Record;
                     break;
+
                 case DialogResult.Abort:
                     xrmRecordAttribute.Record = null;
                     break;
@@ -963,7 +852,7 @@
             if (tabControl1.SelectedTab == tabUpdate &&
                 rbCalculate.Checked &&
                 Service != null &&
-                crmGridView1.SelectedCellRecords.FirstOrDefault() is Entity record)
+                crmGridView1.SelectedCellRecords?.FirstOrDefault() is Entity record)
             {
                 try
                 {
@@ -1034,7 +923,7 @@
 
         private void chkBypassPlugins_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkBypassPlugins.Checked)
+            if (!working && chkBypassPlugins.Checked)
             {
                 if (currentversion < bypasspluginminversion)
                 {
@@ -1052,6 +941,61 @@
                 {
                     chkBypassPlugins.Checked = false;
                 }
+            }
+        }
+
+        private void tsbOpenJob_Click(object sender, EventArgs e)
+        {
+            var opendld = new OpenFileDialog
+            {
+                Filter = "BDU xml (*.bdu.xml)|*.bdu.xml",
+                DefaultExt = ".bdu.xml",
+                Title = "Open a BDU job"
+            };
+            if (!string.IsNullOrEmpty(job.Info?.OriginalPath))
+            {
+                opendld.InitialDirectory = Path.GetDirectoryName(job.Info.OriginalPath);
+            }
+            if (opendld.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var document = new XmlDocument();
+                    document.Load(opendld.FileName);
+                    job = (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
+                    UseJob(true);
+                }
+                catch (Exception ex)
+                {
+                    job = new BDUJob();
+                    ShowErrorDialog(ex);
+                }
+            }
+        }
+
+        private void tsbSaveJob_Click(object sender, EventArgs e)
+        {
+            if (job == null)
+            {
+                MessageBox.Show("Nothing to save.");
+                return;
+            }
+            var savedlg = new SaveFileDialog
+            {
+                Filter = "BDU xml (*.bdu.xml)|*.bdu.xml",
+                DefaultExt = ".bdu.xml",
+                FileName = job.Info?.Name,
+                Title = "Save a BDU job"
+            };
+            if (!string.IsNullOrEmpty(job.Info?.OriginalPath))
+            {
+                savedlg.InitialDirectory = Path.GetDirectoryName(job.Info.OriginalPath);
+            }
+            if (savedlg.ShowDialog() == DialogResult.OK)
+            {
+                UpdateJob();
+                job.Info = new JobInfo(savedlg.FileName, ConnectionDetail);
+                XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
             }
         }
     }

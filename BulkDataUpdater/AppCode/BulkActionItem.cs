@@ -1,14 +1,42 @@
-﻿using Rappen.XTB.Helpers.ControlItems;
+﻿using Microsoft.Xrm.Sdk;
+using Rappen.XTB.Helpers.ControlItems;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
-    internal class BulkActionItem
+    public class BulkActionItem
     {
-        public AttributeMetadataItem Attribute { get; internal set; }
-        public bool DontTouch { get; internal set; }
-        public BulkActionAction Action { get; internal set; }
-        public object Value { get; internal set; }
-        public string StringValue { get; internal set; }
+        private string entityname;
+        private string attributename;
+
+        public string EntityName
+        {
+            get
+            {
+                return Attribute?.Metadata?.EntityLogicalName ?? entityname;
+            }
+            set
+            {
+                entityname = value;
+            }
+        }
+
+        public string AttributeName
+        {
+            get
+            {
+                return Attribute?.Metadata?.LogicalName ?? attributename;
+            }
+            set
+            {
+                attributename = value;
+            }
+        }
+
+        internal AttributeMetadataItem Attribute { get; set; }
+        public bool DontTouch { get; set; }
+        public BulkActionAction Action { get; set; }
+        public object Value { get; set; }
+        public string StringValue { get; set; }
 
         public override string ToString()
         {
@@ -18,9 +46,11 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
                 case BulkActionAction.SetValue:
                     text += " = " + StringValue;
                     break;
+
                 case BulkActionAction.Touch:
                     text += " touch";
                     break;
+
                 case BulkActionAction.Null:
                     text += " = null";
                     break;
@@ -31,9 +61,17 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             }
             return text;
         }
+
+        internal void SetAttribute(IOrganizationService service, bool friendly, bool types)
+        {
+            if (!string.IsNullOrEmpty(entityname) && !string.IsNullOrEmpty(attributename))
+            {
+                Attribute = new AttributeMetadataItem(service, entityname, attributename, friendly, types);
+            }
+        }
     }
 
-    internal enum BulkActionAction
+    public enum BulkActionAction
     {
         SetValue = 0,
         Calc = 3,

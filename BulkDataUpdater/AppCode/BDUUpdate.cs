@@ -32,15 +32,10 @@ namespace Cinteros.XTB.BulkDataUpdater
             var entity = records.EntityName;
             var includedrecords = GetIncludedRecords();
             working = true;
-            var ignoreerrors = chkIgnoreErrors.Checked;
-            var bypassplugins = chkBypassPlugins.Checked;
-            if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
+            var executeoptions = GetExecuteOptions();
+            if (job != null && job.Update != null)
             {
-                batchsize = 1;
-            }
-            if (!int.TryParse(cmbDelayCall.Text, out int delaytime))
-            {
-                delaytime = 0;
+                job.Update.ExecuteOptions = executeoptions;
             }
             WorkAsync(new WorkAsyncInfo()
             {
@@ -59,7 +54,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     var attributes = workargs.Argument as List<BulkActionItem>;
                     var batch = new ExecuteMultipleRequest
                     {
-                        Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
+                        Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
                         Requests = new OrganizationRequestCollection()
                     };
                     foreach (var record in includedrecords)
@@ -71,9 +66,9 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         current++;
                         var pct = 100 * current / total;
-                        if (waitnow && delaytime > 0)
+                        if (waitnow && executeoptions.DelayCallTime > 0)
                         {
-                            waitcur = delaytime;
+                            waitcur = executeoptions.DelayCallTime;
                             while (waitcur > 0)
                             {
                                 bgworker.ReportProgress(pct, $"Waiting between calls - {waitcur} sec{Environment.NewLine}(Next update {current} of {total})");
@@ -106,8 +101,8 @@ namespace Cinteros.XTB.BulkDataUpdater
                             if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
                             {
                                 var request = new UpdateRequest { Target = updateentity };
-                                SetBypassPlugins(request, bypassplugins);
-                                if (batchsize == 1)
+                                SetBypassPlugins(request, executeoptions.BypassCustom);
+                                if (executeoptions.BatchSize == 1)
                                 {
                                     bgworker.ReportProgress(pct, $"Updating record {current} of {total}");
                                     Service.Execute(request);
@@ -117,7 +112,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                                 else
                                 {
                                     batch.Requests.Add(request);
-                                    if (batch.Requests.Count == batchsize || current == total)
+                                    if (batch.Requests.Count == executeoptions.BatchSize || current == total)
                                     {
                                         bgworker.ReportProgress(pct, $"Updating records {current - batch.Requests.Count + 1}-{current} of {total}");
                                         Service.Execute(batch);
@@ -152,7 +147,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                         {
-                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                            RetrieveRecords();
                         }
                     }
                     else if (completedargs.Result is Tuple<int, int, long> result)
@@ -165,7 +160,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         if (MessageBox.Show("Update completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                         {
-                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                            RetrieveRecords();
                         }
                     }
                     splitContainer1.Enabled = true;
@@ -194,6 +189,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     case BulkActionAction.Touch:
                         newvalue = currentvalue;
                         break;
+
                     case BulkActionAction.Calc:
                         newvalue = CalculateValue(record, bai.Attribute.Metadata, bai.Value.ToString(), sequence);
                         break;
@@ -243,12 +239,22 @@ namespace Cinteros.XTB.BulkDataUpdater
                     .FirstOrDefault(i => (i.Tag as BulkActionItem).Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName);
                 lvAttributes.Items.Remove(removeitem);
             }
+            AddBAI(bai);
+            EnableControls(true);
+            UpdateJobUpdate(job.Update);
+        }
+
+        private void AddBAI(BulkActionItem bai)
+        {
+            if (bai.Attribute == null)
+            {
+                return;
+            }
             var item = lvAttributes.Items.Add(bai.Attribute.ToString());
             item.Tag = bai;
             item.SubItems.Add(bai.Action.ToString());
             item.SubItems.Add(bai.StringValue);
             item.SubItems.Add(bai.DontTouch ? "Yes" : "No");
-            EnableControls(true);
         }
 
         private void RemoveAttribute()
@@ -259,6 +265,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 lvAttributes.Items.Remove(item);
             }
             EnableControls(true);
+            UpdateJobUpdate(job.Update);
         }
 
         private BulkActionItem GetAttributeItemFromUI()
@@ -301,10 +308,12 @@ namespace Cinteros.XTB.BulkDataUpdater
                             bai.StringValue = cmbValue.Text;
                         }
                         break;
+
                     case BulkActionAction.Calc:
                         bai.Value = txtValueCalc.Text;
                         bai.StringValue = txtValueCalc.Text;
                         break;
+
                     default:
                         bai.Value = null;
                         bai.StringValue = string.Empty;
@@ -379,7 +388,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             if (lvAttributes.SelectedItems[0].Tag is BulkActionItem attribute)
             {
-                cmbAttribute.Text = attribute.Attribute.ToString();
+                cmbAttribute.SelectedItem = cmbAttribute.Items.Cast<AttributeMetadataItem>().FirstOrDefault(a => a.Metadata?.LogicalName == attribute?.Attribute?.Metadata?.LogicalName);
                 switch (attribute.Action)
                 {
                     case BulkActionAction.SetValue:
@@ -409,14 +418,17 @@ namespace Cinteros.XTB.BulkDataUpdater
                             cmbValue.Text = attribute.Value.ToString();
                         }
                         break;
+
                     case BulkActionAction.Calc:
                         rbCalculate.Checked = true;
                         txtValueCalc.Text = attribute.Value.ToString();
                         break;
+
                     case BulkActionAction.Touch:
                         rbSetTouch.Checked = true;
                         cmbValue.Text = string.Empty;
                         break;
+
                     case BulkActionAction.Null:
                         rbSetNull.Checked = true;
                         cmbValue.Text = string.Empty;
@@ -518,12 +530,14 @@ namespace Cinteros.XTB.BulkDataUpdater
                         return decimalvalue;
                     }
                     break;
+
                 case AttributeTypeCode.Double:
                     if (double.TryParse(substituted, out double doublevalue))
                     {
                         return doublevalue;
                     }
                     break;
+
                 case AttributeTypeCode.Integer:
                 case AttributeTypeCode.BigInt:
                     if (int.TryParse(substituted, out int intvalue))
@@ -531,27 +545,32 @@ namespace Cinteros.XTB.BulkDataUpdater
                         return intvalue;
                     }
                     break;
+
                 case AttributeTypeCode.Money:
                     if (decimal.TryParse(substituted, out decimal moneyvalue))
                     {
                         return new Money(moneyvalue);
                     }
                     break;
+
                 case AttributeTypeCode.Picklist:
                     if (int.TryParse(substituted, out int pickvalue))
                     {
                         return new OptionSetValue(pickvalue);
                     }
                     break;
+
                 case AttributeTypeCode.String:
                 case AttributeTypeCode.Memo:
                     return substituted;
+
                 case AttributeTypeCode.Uniqueidentifier:
                     if (Guid.TryParse(substituted, out Guid guidvalue))
                     {
                         return guidvalue;
                     }
                     break;
+
                 case AttributeTypeCode.Owner:
                 case AttributeTypeCode.PartyList:
                 case AttributeTypeCode.State:
@@ -561,9 +580,34 @@ namespace Cinteros.XTB.BulkDataUpdater
                 case AttributeTypeCode.ManagedProperty:
                 case AttributeTypeCode.Virtual:
                     throw new Exception($"Not supporting {attribute.AttributeTypeName.Value.Replace("Type", "")}");
-
             }
             throw new Exception($"Not valid {attribute.AttributeTypeName.Value.Replace("Type", "")}");
+        }
+
+        private void SetUpdateFromJob(JobUpdate job)
+        {
+            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.DelayCallTime.ToString());
+            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
+            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
+            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
+            lvAttributes.Items.Clear();
+            job.Attributes.ForEach(a => AddBAI(a));
+            if (lvAttributes.Items.Count > 0)
+            {
+                lvAttributes.Items[0].Selected = true;
+            }
+        }
+
+        private void UpdateJobUpdate(JobUpdate job)
+        {
+            job.Attributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
+        }
+
+        private void FixLoadedBAI(JobUpdate job)
+        {
+            job.Attributes
+                .Where(bai => bai.Attribute == null).ToList()
+                .ForEach(bai => bai.SetAttribute(Service, useFriendlyNames, true));
         }
     }
 }

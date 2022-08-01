@@ -1,4 +1,5 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Rappen.XRM.Helpers.Extensions;
 using System;
@@ -20,19 +21,13 @@ namespace Cinteros.XTB.BulkDataUpdater
                     xrmRecordAssign.Service = Service;
                     xrmRecordAssign.Record = xrmLookupAssign.Record;
                     break;
+
                 case DialogResult.Abort:
                     xrmRecordAssign.Record = null;
                     break;
             }
-            if (xrmRecordAssign.Record != null)
-            {
-                txtAssignEntity.Text = Service.GetEntity(xrmRecordAssign.LogicalName)?.DisplayName?.UserLocalizedLabel?.Label ?? xrmLookupAssign.LogicalName;
-            }
-            else
-            {
-                txtAssignEntity.Text = null;
-            }
             EnableControls(true);
+            UpdateJobAssign(job.Assign);
         }
 
         private void AssignRecords()
@@ -41,7 +36,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            var owner = xrmLookupAssign.Record;
+            var owner = xrmRecordAssign.Record;
             if (owner == null)
             {
                 return;
@@ -59,11 +54,10 @@ namespace Cinteros.XTB.BulkDataUpdater
             splitContainer1.Enabled = false;
             working = true;
             var includedrecords = GetIncludedRecords();
-            var ignoreerrors = chkIgnoreErrors.Checked;
-            var bypassplugins = chkBypassPlugins.Checked;
-            if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
+            var executeoptions = GetExecuteOptions();
+            if (job != null && job.Assign != null)
             {
-                batchsize = 1;
+                job.Assign.ExecuteOptions = executeoptions;
             }
             WorkAsync(new WorkAsyncInfo()
             {
@@ -78,7 +72,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     var failed = 0;
                     var batch = new ExecuteMultipleRequest
                     {
-                        Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
+                        Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
                         Requests = new OrganizationRequestCollection()
                     };
                     foreach (var record in includedrecords)
@@ -95,8 +89,8 @@ namespace Cinteros.XTB.BulkDataUpdater
                             var clone = new Entity(record.LogicalName, record.Id);
                             clone.Attributes.Add("ownerid", owner.ToEntityReference());
                             var request = new UpdateRequest { Target = clone };
-                            SetBypassPlugins(request, bypassplugins);
-                            if (batchsize == 1)
+                            SetBypassPlugins(request, executeoptions.BypassCustom);
+                            if (executeoptions.BatchSize == 1)
                             {
                                 bgworker.ReportProgress(pct, $"Assigning record {current} of {total}");
                                 Service.Execute(request);
@@ -105,11 +99,11 @@ namespace Cinteros.XTB.BulkDataUpdater
                             else
                             {
                                 batch.Requests.Add(request);
-                                if (batch.Requests.Count == batchsize || current == total)
+                                if (batch.Requests.Count == executeoptions.BatchSize || current == total)
                                 {
                                     bgworker.ReportProgress(pct, $"Assigning records {current - batch.Requests.Count + 1}-{current} of {total}");
                                     var response = (ExecuteMultipleResponse)Service.Execute(batch);
-                                    if (response.IsFaulted && !ignoreerrors)
+                                    if (response.IsFaulted && !executeoptions.IgnoreErrors)
                                     {
                                         var firsterror = response.Responses.First(r => r.Fault != null);
                                         if (firsterror != null)
@@ -126,7 +120,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         catch (Exception ex)
                         {
                             failed++;
-                            if (!ignoreerrors)
+                            if (!executeoptions.IgnoreErrors)
                             {
                                 throw ex;
                             }
@@ -147,7 +141,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify record information.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                         {
-                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                            RetrieveRecords();
                         }
                     }
                     else if (completedargs.Result is Tuple<int, int, long> result)
@@ -160,7 +154,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         if (MessageBox.Show("Assign completed!\nRun query to get records again?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                         {
-                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                            RetrieveRecords();
                         }
                     }
                     splitContainer1.Enabled = true;
@@ -170,6 +164,31 @@ namespace Cinteros.XTB.BulkDataUpdater
                     SetWorkingMessage(changeargs.UserState.ToString());
                 }
             });
+        }
+
+        private void SetAssignFromJob(JobAssign job)
+        {
+            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
+            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
+            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
+            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
+            if (!string.IsNullOrEmpty(job.Entity) && !job.Id.Equals(Guid.Empty))
+            {
+                xrmRecordAssign.Service = Service;
+                xrmRecordAssign.LogicalName = job.Entity;
+                xrmRecordAssign.Id = job.Id;
+            }
+            else
+            {
+                xrmRecordAssign.Record = null;
+            }
+        }
+
+        private void UpdateJobAssign(JobAssign job)
+        {
+            job.Entity = xrmRecordAssign.Record?.LogicalName;
+            job.Id = xrmRecordAssign.Record?.Id ?? Guid.Empty;
+            job.Name = xrmAssignText.Text;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using System;
 using System.Diagnostics;
@@ -29,11 +30,10 @@ namespace Cinteros.XTB.BulkDataUpdater
             splitContainer1.Enabled = false;
             working = true;
             var includedrecords = GetIncludedRecords();
-            var ignoreerrors = chkIgnoreErrors.Checked;
-            var bypassplugins = chkBypassPlugins.Checked;
-            if (!int.TryParse(cmbBatchSize.Text, out int batchsize))
+            var executeoptions = GetExecuteOptions();
+            if (job != null && job.Delete != null)
             {
-                batchsize = 1;
+                job.Delete.ExecuteOptions = executeoptions;
             }
             WorkAsync(new WorkAsyncInfo()
             {
@@ -48,7 +48,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     var failed = 0;
                     var batch = new ExecuteMultipleRequest
                     {
-                        Settings = new ExecuteMultipleSettings { ContinueOnError = ignoreerrors },
+                        Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
                         Requests = new OrganizationRequestCollection()
                     };
                     foreach (var record in includedrecords)
@@ -63,8 +63,8 @@ namespace Cinteros.XTB.BulkDataUpdater
                         try
                         {
                             var request = new DeleteRequest { Target = record.ToEntityReference() };
-                            SetBypassPlugins(request, bypassplugins);
-                            if (batchsize == 1)
+                            SetBypassPlugins(request, executeoptions.BypassCustom);
+                            if (executeoptions.BatchSize == 1)
                             {
                                 bgworker.ReportProgress(pct, $"Deleting record {current} of {total}");
                                 Service.Execute(request);
@@ -73,11 +73,11 @@ namespace Cinteros.XTB.BulkDataUpdater
                             else
                             {
                                 batch.Requests.Add(request);
-                                if (batch.Requests.Count == batchsize || current == total)
+                                if (batch.Requests.Count == executeoptions.BatchSize || current == total)
                                 {
                                     bgworker.ReportProgress(pct, $"Deleting records {current - batch.Requests.Count + 1}-{current} of {total}");
                                     var response = (ExecuteMultipleResponse)Service.Execute(batch);
-                                    if (response.IsFaulted && !ignoreerrors)
+                                    if (response.IsFaulted && !executeoptions.IgnoreErrors)
                                     {
                                         var firsterror = response.Responses.First(r => r.Fault != null);
                                         if (firsterror != null)
@@ -95,7 +95,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         {
                             failed++;
                             batch.Requests.Clear();
-                            if (!ignoreerrors)
+                            if (!executeoptions.IgnoreErrors)
                             {
                                 throw ex;
                             }
@@ -116,7 +116,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     {
                         if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify remaining records.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                         {
-                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                            RetrieveRecords();
                         }
                     }
                     else if (completedargs.Result is Tuple<int, int, long> result)
@@ -129,7 +129,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         if (MessageBox.Show("Delete completed!\nRun query to get records again?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                         {
-                            RetrieveRecords(fetchXml, RetrieveRecordsReady);
+                            RetrieveRecords();
                         }
                     }
                     splitContainer1.Enabled = true;
@@ -139,6 +139,18 @@ namespace Cinteros.XTB.BulkDataUpdater
                     SetWorkingMessage(changeargs.UserState.ToString());
                 }
             });
+        }
+
+        private void SetDeleteFromJob(JobDelete job)
+        {
+            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
+            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
+            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
+            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
+        }
+
+        private void UpdateJobDelete(JobDelete job)
+        {
         }
     }
 }

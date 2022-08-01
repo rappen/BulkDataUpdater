@@ -35,9 +35,9 @@ namespace Cinteros.XTB.BulkDataUpdater
             return attributeName;
         }
 
-        internal static Dictionary<string, EntityMetadata> GetDisplayEntities()
+        internal static List<EntityMetadata> GetDisplayEntities()
         {
-            var result = new Dictionary<string, EntityMetadata>();
+            var result = new List<EntityMetadata>();
             if (entities != null)
             {
                 foreach (var entity in entities)
@@ -53,7 +53,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     //    if (!showEntitiesIntersect && entity.Value.IsIntersect == true) { continue; }
                     //    if (showEntitiesOnlyValidAF && entity.Value.IsValidForAdvancedFind == false) { continue; }
                     //}
-                    result.Add(entity.Key, entity.Value);
+                    result.Add(entity);
                 }
             }
             return result;
@@ -65,9 +65,9 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return entityName;
             }
-            if (entities != null && entities.ContainsKey(entityName))
+            if (entities?.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
             {
-                entityName = GetEntityDisplayName(entities[entityName]);
+                entityName = GetEntityDisplayName(entity);
             }
             return entityName;
         }
@@ -95,11 +95,6 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            if (entities == null || entities.Count == 0)
-            {
-                LoadEntities(viewsLoaded);
-                return;
-            }
             working = true;
             WorkAsync(new WorkAsyncInfo("Loading views...",
                 (bgworker, workargs) =>
@@ -121,7 +116,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         foreach (var view in sysviews.Entities)
                         {
                             var entityname = view["returnedtypecode"].ToString();
-                            if (!string.IsNullOrWhiteSpace(entityname) && entities.ContainsKey(entityname))
+                            if (!string.IsNullOrWhiteSpace(entityname) && entities.Any(e => e.LogicalName == entityname))
                             {
                                 if (views == null)
                                 {
@@ -140,7 +135,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         foreach (var view in userviews.Entities)
                         {
                             var entityname = view["returnedtypecode"].ToString();
-                            if (!string.IsNullOrWhiteSpace(entityname) && entities.ContainsKey(entityname))
+                            if (!string.IsNullOrWhiteSpace(entityname) && entities.Any(e => e.LogicalName == entityname))
                             {
                                 if (views == null)
                                 {
@@ -190,13 +185,25 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
         }
 
-        private void RetrieveRecords(string fetch, Action AfterRetrieve)
+        private void RetrieveRecords(string fetch = null, Action nextmethod = null)
         {
             if (working)
             {
                 CancelWorker();
                 working = false;
             }
+            if (string.IsNullOrEmpty(fetch))
+            {
+                fetch = job?.FetchXML;
+            }
+            if (string.IsNullOrEmpty(fetch))
+            {
+                crmGridView1.DataSource = null;
+                records = null;
+                RetrieveRecordsReady(nextmethod);
+                return;
+            }
+            EnableControls(false);
             lblRecords.Text = "Retrieving records...";
             fetchResulCount = -1;
             records = null;
@@ -231,7 +238,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         records = result;
                         fetchResulCount = records.Entities.Count;
                     }
-                    AfterRetrieve();
+                    RetrieveRecordsReady(nextmethod);
                 },
                 ProgressChanged = (changeargs) =>
                 {
@@ -282,27 +289,26 @@ namespace Cinteros.XTB.BulkDataUpdater
             return resultCollection;
         }
 
-        private void RetrieveRecordsReady()
+        private void RetrieveRecordsReady(Action nextmethod)
         {
             if (records != null)
             {
-                var entityName = records.EntityName;
-                if (NeedToLoadEntity(entityName))
+                if (job == null)
                 {
-                    if (!working)
-                    {
-                        LoadEntityDetails(entityName, RetrieveRecordsReady);
-                    }
-                    return;
+                    job = new BDUJob();
                 }
                 lblRecords.Text = $"{records.Entities.Count} records of entity {records.EntityName} loaded";
                 crmGridView1.Service = Service;
                 crmGridView1.DataSource = records;
+                crmGridView1.ShowFriendlyNames = useFriendlyNames;
+                crmGridView1.ShowLocalTimes = useFriendlyNames;
                 crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
                 UpdateIncludeCount();
             }
+            EnableControls(true);
             RefreshAttributes();
             InitializeTab();
+            nextmethod?.Invoke();
         }
 
         private IEnumerable<Entity> GetIncludedRecords()
@@ -329,6 +335,37 @@ namespace Cinteros.XTB.BulkDataUpdater
             else
             {
                 request.Parameters.Remove("BypassCustomPluginExecution");
+            }
+        }
+
+        private JobExecuteOptions GetExecuteOptions()
+        {
+            return new JobExecuteOptions
+            {
+                DelayCallTime = int.TryParse(cmbDelayCall.Text, out var delay) ? delay : 0,
+                BatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
+                IgnoreErrors = chkIgnoreErrors.Checked,
+                BypassCustom = chkBypassPlugins.Checked
+            };
+        }
+
+        private void UpdateJob()
+        {
+            job.IncludeAll = rbIncludeAll.Checked;
+            UpdateJobUpdate(job.Update);
+            UpdateJobAssign(job.Assign);
+            UpdateJobSetState(job.SetState);
+            UpdateJobDelete(job.Delete);
+        }
+
+        private void UseJob(bool retrieve)
+        {
+            rbIncludeAll.Checked = job.IncludeAll;
+            rbIncludeSelected.Checked = !job.IncludeAll;
+            FixLoadedBAI(job.Update);
+            if (retrieve)
+            {
+                RetrieveRecords(job.FetchXML);
             }
         }
     }
