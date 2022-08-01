@@ -13,6 +13,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Drawing;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
@@ -965,46 +966,52 @@
                 MessageBox.Show("Nothing to save.");
                 return;
             }
-            var path = @"C:\Dev\GitHub\BulkDataUpdater\BulkDataUpdater\bin\Debug\Settings\bdujob.xml";
-            UpdateJob();
-            job.Info = new JobInfo(path, ConnectionDetail);
-            XmlSerializerHelper.SerializeToFile(job, path);
+            var savedlg = new SaveFileDialog
+            {
+                Filter = "BDU xml (*.bdu.xml)|*.bdu.xml",
+                DefaultExt = ".bdu.xml",
+                FileName = job.Info?.Name,
+                Title = "Save a BDU job"
+            };
+            if (!string.IsNullOrEmpty(job.Info?.OriginalPath))
+            {
+                savedlg.InitialDirectory = Path.GetDirectoryName(job.Info.OriginalPath);
+            }
+            if (savedlg.ShowDialog() == DialogResult.OK)
+            {
+                UpdateJob();
+                job.Info = new JobInfo(savedlg.FileName, ConnectionDetail);
+                XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
+            }
         }
 
         private void tsmiJobsOpen_Click(object sender, EventArgs e)
         {
-            var path = @"C:\Dev\GitHub\BulkDataUpdater\BulkDataUpdater\bin\Debug\Settings\bdujob.xml";
-            try
+            var opendld = new OpenFileDialog
             {
-                var document = new XmlDocument();
-                document.Load(path);
-                job = (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
-                UseJob();
-            }
-            catch (Exception ex)
+                Filter = "BDU xml (*.bdu.xml)|*.bdu.xml",
+                DefaultExt = ".bdu.xml",
+                Title = "Open a BDU job"
+            };
+            if (!string.IsNullOrEmpty(job.Info?.OriginalPath))
             {
-                job = null;
-                ShowErrorDialog(ex, $"Loading and deserializing file \"{path}\"");
+                opendld.InitialDirectory = Path.GetDirectoryName(job.Info.OriginalPath);
             }
-        }
-
-        private void UpdateJob()
-        {
-            job.IncludeAll = rbIncludeAll.Checked;
-            UpdateJobUpdate(job.Update);
-            UpdateJobAssign(job.Assign);
-            UpdateJobSetState(job.SetState);
-            UpdateJobDelete(job.Delete);
-        }
-
-        private void UseJob()
-        {
-            RetrieveRecords(job.FetchXML, UseJob2);
-        }
-
-        private void UseJob2()
-        {
-            MessageBox.Show($"BDU Job '{job.Info.Name}' is now loaded.", "Bulk Data Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (opendld.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var document = new XmlDocument();
+                    document.Load(opendld.FileName);
+                    job = (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
+                    UseJob();
+                }
+                catch (Exception ex)
+                {
+                    job = null;
+                    ShowErrorDialog(ex);
+                }
+            }
         }
     }
 }

@@ -348,5 +348,25 @@ namespace Cinteros.XTB.BulkDataUpdater
                 BypassCustom = chkBypassPlugins.Checked
             };
         }
+
+        private void UpdateJob()
+        {
+            job.IncludeAll = rbIncludeAll.Checked;
+            UpdateJobUpdate(job.Update);
+            UpdateJobAssign(job.Assign);
+            UpdateJobSetState(job.SetState);
+            UpdateJobDelete(job.Delete);
+        }
+
+        private void UseJob()
+        {
+            FixLoadedBAI(job.Update);
+            RetrieveRecords(job.FetchXML, UseJob2);
+        }
+
+        private void UseJob2()
+        {
+            MessageBox.Show($"BDU Job '{job.Info.Name}' is now loaded.", "Bulk Data Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

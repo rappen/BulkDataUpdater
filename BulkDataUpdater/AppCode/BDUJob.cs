@@ -55,6 +55,10 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         public JobInfo(string path, ConnectionDetail connectionDetail)
         {
             Name = Path.GetFileNameWithoutExtension(path);
+            if (Name.EndsWith(".bdu"))
+            {
+                Name = Name.Substring(0, Name.Length - 4);
+            }
             OriginalPath = path;
             CreatedOn = DateTime.Now;
             EnvironmentURL = connectionDetail.OriginalUrl;
