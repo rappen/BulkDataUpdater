@@ -187,6 +187,7 @@
 
         private void GetRecords(string tag)
         {
+            EnableControls(false);
             switch (tag)
             {
                 case "Edit": // Edit
@@ -200,12 +201,12 @@
                     }
                     catch (System.IO.FileNotFoundException)
                     {
-                        MessageBox.Show("FetchXML Builder is not installed.\nDownload latest version from the Plugins Store.", "FetchXML Builder",
+                        MessageBox.Show("FetchXML Builder is not installed.\nDownload latest version from the Tool Library.", "FetchXML Builder",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     catch (PluginNotFoundException)
                     {
-                        MessageBox.Show("FetchXML Builder was not found.\nInstall it from the XrmToolBox Plugin Store.", "FetchXML Builder",
+                        MessageBox.Show("FetchXML Builder was not found.\nInstall it from the XrmToolBox Tool Library.", "FetchXML Builder",
                                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     break;
@@ -223,6 +224,7 @@
                     break;
             }
             LogUse(tag, records?.Entities?.Count);
+            EnableControls(true);
         }
 
         private void InitializeTab()
