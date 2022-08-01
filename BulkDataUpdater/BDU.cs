@@ -135,7 +135,7 @@
         {
             var result = new List<AttributeMetadata>();
             AttributeMetadata[] attributes = null;
-            if (entities.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
+            if (entities?.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
             {
                 attributes = entity.Attributes;
                 if (attributes != null)
@@ -589,12 +589,12 @@
 
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
-            EnableControls(false);
             currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
             crmGridView1.DataSource = null;
             entities = null;
             job = null;
             LoadSetting();
+            EnableControls(false);
             this.GetAllEntityMetadatas(AfterEntitiesLoaded);
         }
 
@@ -866,7 +866,7 @@
             if (tabControl1.SelectedTab == tabUpdate &&
                 rbCalculate.Checked &&
                 Service != null &&
-                crmGridView1.SelectedCellRecords.FirstOrDefault() is Entity record)
+                crmGridView1.SelectedCellRecords?.FirstOrDefault() is Entity record)
             {
                 try
                 {

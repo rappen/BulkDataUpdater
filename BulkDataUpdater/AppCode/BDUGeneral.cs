@@ -65,7 +65,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return entityName;
             }
-            if (entities.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
+            if (entities?.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
             {
                 entityName = GetEntityDisplayName(entity);
             }
