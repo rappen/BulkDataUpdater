@@ -249,6 +249,7 @@
                 cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.Assign.ExecuteOptions.BatchSize.ToString());
                 chkIgnoreErrors.Checked = job.Assign.ExecuteOptions.IgnoreErrors;
                 chkBypassPlugins.Checked = job.Assign.ExecuteOptions.BypassCustom;
+                SetAssignerFromJob(job.Assign);
             }
             else if (tabControl1.SelectedTab == tabSetState)
             {

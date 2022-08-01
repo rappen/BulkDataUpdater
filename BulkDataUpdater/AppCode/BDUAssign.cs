@@ -26,14 +26,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                     xrmRecordAssign.Record = null;
                     break;
             }
-            if (xrmRecordAssign.Record != null)
-            {
-                txtAssignEntity.Text = Service.GetEntity(xrmRecordAssign.LogicalName)?.DisplayName?.UserLocalizedLabel?.Label ?? xrmLookupAssign.LogicalName;
-            }
-            else
-            {
-                txtAssignEntity.Text = null;
-            }
             EnableControls(true);
             UpdateJobAssign(job.Assign);
         }
@@ -44,7 +36,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            var owner = xrmLookupAssign.Record;
+            var owner = xrmRecordAssign.Record;
             if (owner == null)
             {
                 return;
@@ -174,10 +166,24 @@ namespace Cinteros.XTB.BulkDataUpdater
             });
         }
 
+        private void SetAssignerFromJob(JobAssign job)
+        {
+            if (!string.IsNullOrEmpty(job.Entity) && !job.Id.Equals(Guid.Empty))
+            {
+                xrmRecordAssign.Service = Service;
+                xrmRecordAssign.LogicalName = job.Entity;
+                xrmRecordAssign.Id = job.Id;
+            }
+            else
+            {
+                xrmRecordAssign.Record = null;
+            }
+        }
+
         private void UpdateJobAssign(JobAssign job)
         {
-            job.Entity = xrmLookupAssign.Record?.LogicalName;
-            job.Id = xrmLookupAssign.Record?.Id ?? Guid.Empty;
+            job.Entity = xrmRecordAssign.Record?.LogicalName;
+            job.Id = xrmRecordAssign.Record?.Id ?? Guid.Empty;
             job.Name = xrmAssignText.Text;
         }
     }
