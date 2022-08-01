@@ -132,7 +132,7 @@
             }
         }
 
-        private AttributeMetadata[] GetDisplayAttributes(string entityName)
+        private List<AttributeMetadata> GetDisplayAttributes(string entityName)
         {
             var result = new List<AttributeMetadata>();
             AttributeMetadata[] attributes = null;
@@ -166,7 +166,7 @@
                     }
                 }
             }
-            return result.ToArray();
+            return result;
         }
 
         private void GetFromEditor()
@@ -309,10 +309,7 @@
                         entities = metas.ToDictionary(e => e.LogicalName);
                     }
                     EnableControls(true);
-                    if (AfterLoad != null)
-                    {
-                        AfterLoad();
-                    }
+                    AfterLoad?.Invoke();
                 }
             });
         }
@@ -426,17 +423,23 @@
 
         private void RefreshAttributes()
         {
-            EnableControls(false);
+            var selected = cmbAttribute.SelectedItem as AttributeMetadataItem;
             cmbAttribute.Items.Clear();
             if (records != null)
             {
                 var entityName = records.EntityName;
                 var attributes = GetDisplayAttributes(entityName);
-                foreach (var attribute in attributes)
+                attributes.ForEach(a => AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, a, true, useFriendlyNames));
+                if (selected != null)
                 {
-                    AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, attribute, true, useFriendlyNames);
+                    cmbAttribute.SelectedItem = cmbAttribute.Items.Cast<AttributeMetadataItem>().FirstOrDefault(a => a.Metadata?.LogicalName == selected.Metadata?.LogicalName);
                 }
             }
+        }
+
+        private void RefreshGridRecords()
+        {
+            EnableControls(false);
             crmGridView1.ShowFriendlyNames = useFriendlyNames;
             crmGridView1.ShowLocalTimes = useFriendlyNames;
             crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
@@ -644,12 +647,12 @@
             LoadSetting();
             LogUse("Load");
             LoadEntities(AfterEntitiesLoaded);
-            EnableControls(true);
         }
 
         private void AfterEntitiesLoaded()
         {
             FixLoadedBAI(job.Update);
+            EnableControls(true);
             if (!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100)
             {
                 RetrieveRecords(job.FetchXML);
@@ -739,6 +742,7 @@
         {
             useFriendlyNames = tsmiFriendly.Checked;
             RefreshAttributes();
+            RefreshGridRecords();
         }
 
         #endregion Form Event Handlers

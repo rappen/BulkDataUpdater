@@ -388,7 +388,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             if (lvAttributes.SelectedItems[0].Tag is BulkActionItem attribute)
             {
-                cmbAttribute.Text = attribute.Attribute.ToString();
+                cmbAttribute.SelectedItem = cmbAttribute.Items.Cast<AttributeMetadataItem>().FirstOrDefault(a => a.Metadata?.LogicalName == attribute?.Attribute?.Metadata?.LogicalName);
                 switch (attribute.Action)
                 {
                     case BulkActionAction.SetValue:

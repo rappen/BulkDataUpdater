@@ -208,6 +208,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 RetrieveRecordsReady(nextmethod);
                 return;
             }
+            EnableControls(false);
             lblRecords.Text = "Retrieving records...";
             fetchResulCount = -1;
             records = null;
@@ -304,9 +305,12 @@ namespace Cinteros.XTB.BulkDataUpdater
                 lblRecords.Text = $"{records.Entities.Count} records of entity {records.EntityName} loaded";
                 crmGridView1.Service = Service;
                 crmGridView1.DataSource = records;
+                crmGridView1.ShowFriendlyNames = useFriendlyNames;
+                crmGridView1.ShowLocalTimes = useFriendlyNames;
                 crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
                 UpdateIncludeCount();
             }
+            EnableControls(true);
             RefreshAttributes();
             InitializeTab();
             nextmethod?.Invoke();
