@@ -35,9 +35,9 @@ namespace Cinteros.XTB.BulkDataUpdater
             return attributeName;
         }
 
-        internal static Dictionary<string, EntityMetadata> GetDisplayEntities()
+        internal static List<EntityMetadata> GetDisplayEntities()
         {
-            var result = new Dictionary<string, EntityMetadata>();
+            var result = new List<EntityMetadata>();
             if (entities != null)
             {
                 foreach (var entity in entities)
@@ -53,7 +53,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     //    if (!showEntitiesIntersect && entity.Value.IsIntersect == true) { continue; }
                     //    if (showEntitiesOnlyValidAF && entity.Value.IsValidForAdvancedFind == false) { continue; }
                     //}
-                    result.Add(entity.Key, entity.Value);
+                    result.Add(entity);
                 }
             }
             return result;
@@ -65,9 +65,9 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return entityName;
             }
-            if (entities != null && entities.ContainsKey(entityName))
+            if (entities.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
             {
-                entityName = GetEntityDisplayName(entities[entityName]);
+                entityName = GetEntityDisplayName(entity);
             }
             return entityName;
         }
@@ -95,11 +95,6 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            if (entities == null || entities.Count == 0)
-            {
-                LoadEntities(viewsLoaded);
-                return;
-            }
             working = true;
             WorkAsync(new WorkAsyncInfo("Loading views...",
                 (bgworker, workargs) =>
@@ -121,7 +116,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         foreach (var view in sysviews.Entities)
                         {
                             var entityname = view["returnedtypecode"].ToString();
-                            if (!string.IsNullOrWhiteSpace(entityname) && entities.ContainsKey(entityname))
+                            if (!string.IsNullOrWhiteSpace(entityname) && entities.Any(e => e.LogicalName == entityname))
                             {
                                 if (views == null)
                                 {
@@ -140,7 +135,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         foreach (var view in userviews.Entities)
                         {
                             var entityname = view["returnedtypecode"].ToString();
-                            if (!string.IsNullOrWhiteSpace(entityname) && entities.ContainsKey(entityname))
+                            if (!string.IsNullOrWhiteSpace(entityname) && entities.Any(e => e.LogicalName == entityname))
                             {
                                 if (views == null)
                                 {

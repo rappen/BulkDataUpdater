@@ -3,12 +3,12 @@
     using AppCode;
     using McTools.Xrm.Connection;
     using Microsoft.Xrm.Sdk;
-    using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XRM.Helpers;
     using Rappen.XRM.Helpers.Extensions;
     using Rappen.XTB.Helpers.ControlItems;
+    using Rappen.XTB.Helpers.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -27,7 +27,6 @@
 
         internal static bool useFriendlyNames = false;
         internal static Dictionary<string, List<Entity>> views;
-        internal List<string> entityShitList = new List<string>();
 
         #endregion Internal Fields
 
@@ -37,7 +36,7 @@
         private const string aiKey = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
         private AppInsights ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
 
-        private static Dictionary<string, EntityMetadata> entities;
+        private static List<EntityMetadata> entities;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
         private BDUJob job;
 
@@ -67,9 +66,9 @@
         public BulkDataUpdater()
         {
             InitializeComponent();
-            var prop = MetadataExtensions.entityProperties.ToList();
+            var prop = Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties.ToList();
             prop.Add("Attributes");
-            MetadataExtensions.entityProperties = prop.ToArray();
+            Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties = prop.ToArray();
             deleteWarningText = txtDeleteWarning.Text;
         }
 
@@ -136,9 +135,9 @@
         {
             var result = new List<AttributeMetadata>();
             AttributeMetadata[] attributes = null;
-            if (entities != null && entities.ContainsKey(entityName))
+            if (entities.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
             {
-                attributes = entities[entityName].Attributes;
+                attributes = entity.Attributes;
                 if (attributes != null)
                 {
                     foreach (var attribute in attributes)
@@ -257,7 +256,7 @@
                 cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.SetState.ExecuteOptions.BatchSize.ToString());
                 chkIgnoreErrors.Checked = job.SetState.ExecuteOptions.IgnoreErrors;
                 chkBypassPlugins.Checked = job.SetState.ExecuteOptions.BypassCustom;
-                LoadStates(entities?.FirstOrDefault(ent => ent.Key == records?.EntityName).Value);
+                LoadStates(entities?.FirstOrDefault(ent => ent.LogicalName == records?.EntityName));
             }
             else if (tabControl1.SelectedTab == tabDelete)
             {
@@ -270,48 +269,6 @@
             panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
             working = tempworker;
             EnableControls(true);
-        }
-
-        private void LoadEntities(Action AfterLoad)
-        {
-            if (working)
-            {
-                return;
-            }
-            EnableControls(false);
-            entities = null;
-            entityShitList = new List<string>();
-            working = true;
-            WorkAsync(new WorkAsyncInfo
-            {
-                Message = "Loading entities metadata...",
-                Work = (worker, eventargs) =>
-                {
-                    eventargs.Result = Service.LoadEntities(ConnectionDetail.OrganizationMajorVersion, ConnectionDetail.OrganizationMinorVersion).EntityMetadata;
-                },
-                PostWorkCallBack = (completedargs) =>
-                {
-                    working = false;
-                    if (completedargs.Error != null)
-                    {
-                        ShowErrorDialog(completedargs.Error, "Load Entities");
-                    }
-                    else if (completedargs.Result is RetrieveAllEntitiesResponse)
-                    {
-                        entities = new Dictionary<string, EntityMetadata>();
-                        foreach (var entity in ((RetrieveAllEntitiesResponse)completedargs.Result).EntityMetadata)
-                        {
-                            entities.Add(entity.LogicalName, entity);
-                        }
-                    }
-                    else if (completedargs.Result is EntityMetadataCollection metas)
-                    {
-                        entities = metas.ToDictionary(e => e.LogicalName);
-                    }
-                    EnableControls(true);
-                    AfterLoad?.Invoke();
-                }
-            });
         }
 
         private void LoadMissingAttributesForRecord(Entity record, string entity, IEnumerable<BulkActionItem> attributes)
@@ -468,7 +425,7 @@
         private void UpdateIncludeCount()
         {
             var count = GetIncludedRecords()?.Count();
-            var entity = entities?.FirstOrDefault(e => e.Key == records?.EntityName).Value?.DisplayCollectionName?.UserLocalizedLabel?.Label;
+            var entity = entities?.FirstOrDefault(e => e.LogicalName == records?.EntityName)?.DisplayCollectionName?.UserLocalizedLabel?.Label;
             lblIncludedRecords.Text = $"{count} records";
             lblUpdateHeader.Text = $"Update {count} {entity}";
             lblAssignHeader.Text = $"Assign {count} {entity}";
@@ -632,30 +589,32 @@
 
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
+            EnableControls(false);
             currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
             crmGridView1.DataSource = null;
             entities = null;
-            entityShitList.Clear();
             job = null;
-            EnableControls(true);
+            LoadSetting();
+            this.GetAllEntityMetadatas(AfterEntitiesLoaded);
         }
 
         private void DataUpdater_Load(object sender, EventArgs e)
         {
-            EnableControls(false);
             LoadGlobalSetting();
-            LoadSetting();
             LogUse("Load");
-            LoadEntities(AfterEntitiesLoaded);
         }
 
-        private void AfterEntitiesLoaded()
+        private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas)
         {
-            FixLoadedBAI(job.Update);
+            entities = metadatas?.ToList();
             EnableControls(true);
-            if (!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100)
+            if (entities != null)
             {
-                RetrieveRecords(job.FetchXML);
+                FixLoadedBAI(job.Update);
+                if (!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100)
+                {
+                    RetrieveRecords(job.FetchXML);
+                }
             }
         }
 
