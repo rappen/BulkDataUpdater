@@ -866,6 +866,10 @@
                     {
                         preview = opt.Value;
                     }
+                    else if (preview is OptionSetValueCollection mopt)
+                    {
+                        preview = string.Join(";", mopt.Select(m => m.Value.ToString()));
+                    }
                     else if (preview is Money money)
                     {
                         preview = money.Value;

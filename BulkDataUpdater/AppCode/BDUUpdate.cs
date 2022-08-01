@@ -560,6 +560,25 @@ namespace Cinteros.XTB.BulkDataUpdater
                     }
                     break;
 
+                case AttributeTypeCode.Virtual:
+                    if (attribute is MultiSelectPicklistAttributeMetadata multi)
+                    {
+                        var result = new OptionSetValueCollection();
+                        foreach (var optionvalue in substituted.Split(';'))
+                        {
+                            if (int.TryParse(optionvalue, out int value))
+                            {
+                                result.Add(new OptionSetValue(value));
+                            }
+                        }
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception($"Not supporting {attribute.ToString().Replace("Type", "")}");
+                    }
+                    break;
+
                 case AttributeTypeCode.String:
                 case AttributeTypeCode.Memo:
                     return substituted;
@@ -578,7 +597,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                 case AttributeTypeCode.CalendarRules:
                 case AttributeTypeCode.EntityName:
                 case AttributeTypeCode.ManagedProperty:
-                case AttributeTypeCode.Virtual:
                     throw new Exception($"Not supporting {attribute.AttributeTypeName.Value.Replace("Type", "")}");
             }
             throw new Exception($"Not valid {attribute.AttributeTypeName.Value.Replace("Type", "")}");
