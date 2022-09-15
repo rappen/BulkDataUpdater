@@ -9,14 +9,21 @@ namespace Cinteros.XTB.BulkDataUpdater
     public partial class BulkDataUpdater : IGitHubPlugin, IPayPalPlugin, IMessageBusHost, IAboutPlugin, IStatusBarMessenger, IHelpPlugin
     {
         public event EventHandler<XrmToolBox.Extensibility.MessageBusEventArgs> OnOutgoingMessage;
+
         public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
 
         public void OnIncomingMessage(XrmToolBox.Extensibility.MessageBusEventArgs message)
         {
-            if (message.SourcePlugin == "FetchXML Builder" &&
-                message.TargetArgument is string)
+            if (message.SourcePlugin == "FetchXML Builder")
             {
-                FetchUpdated(message.TargetArgument);
+                if (message.TargetArgument is string fetch)
+                {
+                    FetchUpdated(fetch, null);
+                }
+                else if (message.TargetArgument is Tuple<string, string> fetchlayout)
+                {
+                    FetchUpdated(fetchlayout.Item1, fetchlayout.Item2);
+                }
             }
             else if (message.SourcePlugin == "XRM Tokens Runner" && message.TargetArgument is string tokens)
             {

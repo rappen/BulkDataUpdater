@@ -120,16 +120,17 @@
             }
         }
 
-        private void FetchUpdated(string fetch)
+        private void FetchUpdated(string fetch, string layout)
         {
             if (job == null)
             {
                 job = new BDUJob();
             }
             job.FetchXML = fetch;
+            job.LayoutXML = layout;
             if (!string.IsNullOrWhiteSpace(fetch))
             {
-                RetrieveRecords(job.FetchXML);
+                RetrieveRecords();
             }
         }
 
@@ -176,7 +177,7 @@
             fetchwin.StartPosition = FormStartPosition.CenterParent;
             if (fetchwin.ShowDialog() == DialogResult.OK)
             {
-                FetchUpdated(fetchwin.txtXML.Text);
+                FetchUpdated(fetchwin.txtXML.Text, null);
             }
         }
 
@@ -212,7 +213,7 @@
                     break;
 
                 case "File": // File
-                    FetchUpdated(OpenFile());
+                    FetchUpdated(OpenFile(), null);
                     break;
 
                 case "View": // View
@@ -357,7 +358,8 @@
                 if (view.Contains("fetchxml"))
                 {
                     fetchDoc.LoadXml(view["fetchxml"].ToString());
-                    FetchUpdated(fetchDoc.OuterXml);
+                    view.TryGetAttributeValue("layoutxml", out string layout);
+                    FetchUpdated(fetchDoc.OuterXml, layout);
                 }
             }
             EnableControls(true);
