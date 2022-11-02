@@ -7,6 +7,7 @@ using Rappen.XTB.Helpers.ControlItems;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
@@ -482,6 +483,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return null;
             }
+            var substitutedecimal = substituted.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
             switch (attribute?.AttributeType)
             {
                 case AttributeTypeCode.Boolean:
@@ -525,14 +527,14 @@ namespace Cinteros.XTB.BulkDataUpdater
                     }
                     throw new Exception("Not valid format Date[Time]");
                 case AttributeTypeCode.Decimal:
-                    if (decimal.TryParse(substituted, out decimal decimalvalue))
+                    if (decimal.TryParse(substitutedecimal, out decimal decimalvalue))
                     {
                         return decimalvalue;
                     }
                     break;
 
                 case AttributeTypeCode.Double:
-                    if (double.TryParse(substituted, out double doublevalue))
+                    if (double.TryParse(substitutedecimal, out double doublevalue))
                     {
                         return doublevalue;
                     }
@@ -547,7 +549,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     break;
 
                 case AttributeTypeCode.Money:
-                    if (decimal.TryParse(substituted, out decimal moneyvalue))
+                    if (decimal.TryParse(substitutedecimal, out decimal moneyvalue))
                     {
                         return new Money(moneyvalue);
                     }
