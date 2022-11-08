@@ -25,10 +25,13 @@
 		<copyright>Copyright 2016-2022 Jonas Rapp</copyright>
 		<tags>XrmToolBox Plugins BulkDataUpdater</tags>
 		<dependencies>
-			<dependency id="XrmToolBox" version="1.2022.10.58" />
+			<dependency id="XrmToolBox" version="1.2022.11.59" />
 		</dependencies>
 	</metadata>
 	<files>
 		<file src="BulkDataUpdater\bin\Release\Rappen.XTB.BDU.dll" target="lib\net452\Plugins" />
+		<file src="BulkDataUpdater\bin\Release\Microsoft.PowerFx.*.dll" target="lib\net471\Plugins\Rappen.XTB.BDU" />
+		<file src="BulkDataUpdater\bin\Release\en-US\*.dll" target="lib\net471\Plugins\Rappen.XTB.BDU\en-US" />
+		<file src="BulkDataUpdater\bin\Release\System.Collections.Immutable.dll" target="lib\net471\Plugins\Rappen.XTB.BDU" />
 	</files>
 </package>
