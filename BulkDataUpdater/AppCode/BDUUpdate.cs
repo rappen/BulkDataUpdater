@@ -3,6 +3,7 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Rappen.XRM.Helpers;
+using Rappen.XRM.Tokens;
 using Rappen.XTB.Helpers.ControlItems;
 using System;
 using System.Collections.Generic;
@@ -478,7 +479,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return null;
             }
-            var substituted = record.Substitute(new GenericBag(Service), format, sequence, string.Empty, true);
+            var substituted = record.Tokens(new GenericBag(Service), format, sequence, string.Empty, true);
             if (string.IsNullOrEmpty(substituted))
             {
                 return null;

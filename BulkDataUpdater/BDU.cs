@@ -825,18 +825,6 @@
 
         #endregion Implementation of ILogger
 
-        private void btnCalcPreview_Click(object sender, EventArgs e)
-        {
-            var record = crmGridView1.SelectedCellRecords.FirstOrDefault();
-            if (record == null)
-            {
-                MessageBox.Show("Please select a record to the left to see preview of calculation.", "Calculation Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            var preview = record.Substitute(Service, txtValueCalc.Text);
-            MessageBox.Show($"Preview of calculation:\n{preview}", "Calculation Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
-
         private void txtValueCalc_TextChanged(object sender, EventArgs e)
         {
             AwaitCalc();
