@@ -3,12 +3,12 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Rappen.XRM.Helpers;
+using Rappen.XRM.Helpers.Extensions;
 using Rappen.XRM.Tokens;
 using Rappen.XTB.Helpers.ControlItems;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
@@ -479,130 +479,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return null;
             }
-            var substituted = record.Tokens(new GenericBag(Service), format, sequence, string.Empty, true);
-            if (string.IsNullOrEmpty(substituted))
-            {
-                return null;
-            }
-            var substitutedecimal = substituted.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-            switch (attribute?.AttributeType)
-            {
-                case AttributeTypeCode.Boolean:
-                    if (bool.TryParse(substituted, out bool boolvalue))
-                    {
-                        return boolvalue;
-                    }
-                    if (substituted == "1" || substituted == "0")
-                    {
-                        return substituted == "1";
-                    }
-                    throw new Exception("Not valid format [True|False] or [1|0]");
-                case AttributeTypeCode.Customer:
-                case AttributeTypeCode.Lookup:
-                    var entity = string.Empty;
-                    var id = Guid.Empty;
-                    if (Guid.TryParse(substituted, out id))
-                    {
-                        var lookupmeta = attribute as LookupAttributeMetadata;
-                        if (lookupmeta?.Targets?.Length == 1)
-                        {
-                            entity = lookupmeta.Targets[0];
-                        }
-                    }
-                    else if (substituted.Contains(":"))
-                    {
-                        if (Guid.TryParse(substituted.Split(':')[1], out id))
-                        {
-                            entity = substituted.Split(':')[0];
-                        }
-                    }
-                    if (!string.IsNullOrWhiteSpace(entity) && !id.Equals(Guid.Empty))
-                    {
-                        return new EntityReference(entity, id);
-                    }
-                    throw new Exception("Not valid format [Entity:]Guid");
-                case AttributeTypeCode.DateTime:
-                    if (DateTime.TryParse(substituted, out DateTime datetime))
-                    {
-                        return datetime;
-                    }
-                    throw new Exception("Not valid format Date[Time]");
-                case AttributeTypeCode.Decimal:
-                    if (decimal.TryParse(substitutedecimal, out decimal decimalvalue))
-                    {
-                        return decimalvalue;
-                    }
-                    break;
-
-                case AttributeTypeCode.Double:
-                    if (double.TryParse(substitutedecimal, out double doublevalue))
-                    {
-                        return doublevalue;
-                    }
-                    break;
-
-                case AttributeTypeCode.Integer:
-                case AttributeTypeCode.BigInt:
-                    if (int.TryParse(substituted, out int intvalue))
-                    {
-                        return intvalue;
-                    }
-                    break;
-
-                case AttributeTypeCode.Money:
-                    if (decimal.TryParse(substitutedecimal, out decimal moneyvalue))
-                    {
-                        return new Money(moneyvalue);
-                    }
-                    break;
-
-                case AttributeTypeCode.Picklist:
-                    if (int.TryParse(substituted, out int pickvalue))
-                    {
-                        return new OptionSetValue(pickvalue);
-                    }
-                    break;
-
-                case AttributeTypeCode.Virtual:
-                    if (attribute is MultiSelectPicklistAttributeMetadata multi)
-                    {
-                        var result = new OptionSetValueCollection();
-                        foreach (var optionvalue in substituted.Split(';'))
-                        {
-                            if (int.TryParse(optionvalue, out int value))
-                            {
-                                result.Add(new OptionSetValue(value));
-                            }
-                        }
-                        return result;
-                    }
-                    else
-                    {
-                        throw new Exception($"Not supporting {attribute.ToString().Replace("Type", "")}");
-                    }
-                    break;
-
-                case AttributeTypeCode.String:
-                case AttributeTypeCode.Memo:
-                    return substituted;
-
-                case AttributeTypeCode.Uniqueidentifier:
-                    if (Guid.TryParse(substituted, out Guid guidvalue))
-                    {
-                        return guidvalue;
-                    }
-                    break;
-
-                case AttributeTypeCode.Owner:
-                case AttributeTypeCode.PartyList:
-                case AttributeTypeCode.State:
-                case AttributeTypeCode.Status:
-                case AttributeTypeCode.CalendarRules:
-                case AttributeTypeCode.EntityName:
-                case AttributeTypeCode.ManagedProperty:
-                    throw new Exception($"Not supporting {attribute.AttributeTypeName.Value.Replace("Type", "")}");
-            }
-            throw new Exception($"Not valid {attribute.AttributeTypeName.Value.Replace("Type", "")}");
+            return record.Tokens(new GenericBag(Service), format, sequence, string.Empty, true).ConvertTo(attribute);
         }
 
         private void SetUpdateFromJob(JobUpdate job)
