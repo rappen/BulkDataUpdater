@@ -67,6 +67,7 @@
         public BulkDataUpdater()
         {
             InitializeComponent();
+            tslAbout.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString() + " by Jonas Rapp";
             var prop = Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties.ToList();
             prop.Add("Attributes");
             Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties = prop.ToArray();

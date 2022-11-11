@@ -14,11 +14,15 @@
 			Empower yourself to achieve more.
 			This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
 			It can also delete, assign, and set state of records by the filter specified.
+			Updating values can also be calculated - using "XRM Tokens" (just Bing it!) and even more - using the Microsoft Power Fx!
 
-			Read more: https://jonasr.app/BDU
+			Read more: https://jonasr.app/BDU and https://jonasr.app/xrm-tokens/
 		</description>
 		<summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
 		<releaseNotes>
+			!STOP THE PRESSES!
+			Bulk Data Updater supports Microsoft Power Fx calculations!
+
 			See latest release notes, and all history:
 			https://jonasr.app/bdu/releases/#$versionnumber$
 		</releaseNotes>
@@ -29,9 +33,9 @@
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="BulkDataUpdater\bin\Release\Rappen.XTB.BDU.dll" target="lib\net452\Plugins" />
-		<file src="BulkDataUpdater\bin\Release\Microsoft.PowerFx.*.dll" target="lib\net471\Plugins\Rappen.XTB.BDU" />
-		<file src="BulkDataUpdater\bin\Release\en-US\*.dll" target="lib\net471\Plugins\Rappen.XTB.BDU\en-US" />
-		<file src="BulkDataUpdater\bin\Release\System.Collections.Immutable.dll" target="lib\net471\Plugins\Rappen.XTB.BDU" />
+		<file src="BulkDataUpdater\bin\Release\Rappen.XTB.BDU.dll" target="lib\net472\Plugins" />
+		<file src="BulkDataUpdater\bin\Release\Microsoft.PowerFx.*.dll" target="lib\net472\Plugins\Rappen.XTB.BDU" />
+		<file src="BulkDataUpdater\bin\Release\en-US\*.dll" target="lib\net472\Plugins\Rappen.XTB.BDU\en-US" />
+		<file src="BulkDataUpdater\bin\Release\System.Collections.Immutable.dll" target="lib\net472\Plugins\Rappen.XTB.BDU" />
 	</files>
 </package>
