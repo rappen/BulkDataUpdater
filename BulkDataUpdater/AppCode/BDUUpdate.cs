@@ -413,17 +413,17 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         else if (attribute.Attribute.Metadata is MemoAttributeMetadata)
                         {
-                            txtValueMultiline.Text = attribute.Value.ToString();
+                            txtValueMultiline.Text = attribute.Value?.ToString();
                         }
                         else
                         {
-                            cmbValue.Text = attribute.Value.ToString();
+                            cmbValue.Text = attribute.Value?.ToString();
                         }
                         break;
 
                     case BulkActionAction.Calc:
                         rbCalculate.Checked = true;
-                        txtValueCalc.Text = attribute.Value.ToString();
+                        txtValueCalc.Text = attribute.Value?.ToString();
                         break;
 
                     case BulkActionAction.Touch:

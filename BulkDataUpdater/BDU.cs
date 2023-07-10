@@ -5,7 +5,6 @@
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
-    using Rappen.XRM.Helpers;
     using Rappen.XRM.Helpers.Extensions;
     using Rappen.XTB.Helpers.ControlItems;
     using Rappen.XTB.Helpers.Extensions;
@@ -406,7 +405,10 @@
                 AttributesStandard = tsmiAttributesStandard.Checked,
                 AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
             };
-            settings.Job.Info = null;
+            if (settings.Job != null)
+            {
+                settings.Job.Info = null;
+            }
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
         }
 
