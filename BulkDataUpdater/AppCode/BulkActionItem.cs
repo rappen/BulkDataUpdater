@@ -1,8 +1,12 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Rappen.XTB.Helpers.ControlItems;
+using System.Xml.Serialization;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
+    [XmlInclude(typeof(OptionSetValue))]
+    [XmlInclude(typeof(EntityReference))]
+    [XmlInclude(typeof(Money))]
     public class BulkActionItem
     {
         private string entityname;
