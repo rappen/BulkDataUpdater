@@ -38,6 +38,7 @@
 
         private static List<EntityMetadata> entities;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
+
         private BDUJob job;
 
         private string deleteWarningText;
