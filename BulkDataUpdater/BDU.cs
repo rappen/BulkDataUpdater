@@ -998,5 +998,10 @@
                 XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CreateRecords();
+        }
     }
 }

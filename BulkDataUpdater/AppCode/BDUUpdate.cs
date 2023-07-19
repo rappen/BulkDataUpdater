@@ -23,25 +23,38 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            if (MessageBox.Show("All selected records will unconditionally be updated.\nUI defined rules will NOT be enforced.\n\nConfirm update!",
+            var executeoptions = GetExecuteOptions();
+            var confirmtext = executeoptions.BypassCustom
+                ? "All selected records will unconditionally be updated.\nNO custom plugins will be run.\nUI defined rules will NOT be enforced.\n\nConfirm update!"
+                : "All selected records will unconditionally be updated.\nUI defined rules will NOT be enforced.\n\nConfirm update!";
+            if (MessageBox.Show(confirmtext,
                 "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
+            {
+                return;
+            }
+            var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
+            var includedrecords = GetIncludedRecords();
+            CreUpdateRecords(false, includedrecords, executeoptions, selectedattributes);
+        }
+
+        private void CreUpdateRecords(bool createflag, IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions, List<BulkActionItem> selectedattributes)
+        {
+            if (working)
             {
                 return;
             }
             tsbCancel.Enabled = true;
             splitContainer1.Enabled = false;
-            var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
             var entity = records.EntityName;
-            var includedrecords = GetIncludedRecords();
             working = true;
-            var executeoptions = GetExecuteOptions();
             if (job != null && job.Update != null)
             {
                 job.Update.ExecuteOptions = executeoptions;
             }
+            var actionname = createflag ? "Creating" : "Updating";
             WorkAsync(new WorkAsyncInfo()
             {
-                Message = "Updating records",
+                Message = $"{actionname} records",
                 IsCancelable = true,
                 AsyncArgument = selectedattributes,
                 Work = (bgworker, workargs) =>
@@ -92,7 +105,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             }
                             waitnow = false;
                         }
-                        if (!CheckAllUpdateAttributesExistOnRecord(record, attributes))
+                        if (!createflag && !CheckAllUpdateAttributesExistOnRecord(record, attributes))
                         {
                             //if ((bai.DontTouch || bai.Action == BulkActionAction.Touch) && !attributesexists)
                             bgworker.ReportProgress(pct, "Reloading record " + current.ToString());
@@ -102,11 +115,19 @@ namespace Cinteros.XTB.BulkDataUpdater
                         {
                             if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
                             {
-                                var request = new UpdateRequest { Target = updateentity };
+                                OrganizationRequest request;
+                                if (createflag)
+                                {
+                                    request = new CreateRequest { Target = updateentity };
+                                }
+                                else
+                                {
+                                    request = new UpdateRequest { Target = updateentity };
+                                }
                                 SetBypassPlugins(request, executeoptions.BypassCustom);
                                 if (executeoptions.BatchSize == 1)
                                 {
-                                    bgworker.ReportProgress(pct, $"Updating record {current} of {total}");
+                                    bgworker.ReportProgress(pct, $"{actionname} record {current} of {total}");
                                     Service.Execute(request);
                                     updated++;
                                     waitnow = true;
@@ -116,7 +137,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                                     batch.Requests.Add(request);
                                     if (batch.Requests.Count == executeoptions.BatchSize || current == total)
                                     {
-                                        bgworker.ReportProgress(pct, $"Updating records {current - batch.Requests.Count + 1}-{current} of {total}");
+                                        bgworker.ReportProgress(pct, $"{actionname} records {current - batch.Requests.Count + 1}-{current} of {total}");
                                         Service.Execute(batch);
                                         updated += batch.Requests.Count;
                                         batch.Requests.Clear();
@@ -143,24 +164,27 @@ namespace Cinteros.XTB.BulkDataUpdater
                     tsbCancel.Enabled = false;
                     if (completedargs.Error != null)
                     {
-                        ShowErrorDialog(completedargs.Error, "Update");
+                        ShowErrorDialog(completedargs.Error, actionname);
                     }
                     else if (completedargs.Cancelled)
                     {
-                        if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                        if (createflag)
+                        {
+                        }
+                        else if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                         {
                             RetrieveRecords();
                         }
                     }
                     else if (completedargs.Result is Tuple<int, int, long> result)
                     {
-                        lblUpdateStatus.Text = $"{result.Item1} records updated, {result.Item2} records failed.";
-                        LogUse("Updated", result.Item1, result.Item3);
+                        lblUpdateStatus.Text = $"{result.Item1} records were {actionname.ToLowerInvariant()}, {result.Item2} records failed.";
+                        LogUse(createflag ? "Created" : "Updated", result.Item1, result.Item3);
                         if (result.Item2 > 0)
                         {
                             LogUse("Failed", result.Item2);
                         }
-                        if (MessageBox.Show("Update completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                        if (MessageBox.Show($"{actionname} completed!\nRun query to show {(createflag ? "created" : "updated")} records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                         {
                             RetrieveRecords();
                         }
