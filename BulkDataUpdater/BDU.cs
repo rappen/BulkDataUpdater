@@ -600,7 +600,7 @@
             LogUse("Load");
         }
 
-        private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas)
+        private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas, bool forcereload)
         {
             entities = metadatas?.ToList();
             EnableControls(true);
