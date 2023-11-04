@@ -266,6 +266,67 @@ namespace Cinteros.XTB.BulkDataUpdater
             InitializeTab();
         }
 
+        private void SetIsMultiMessageAvailable()
+        {
+            if (string.IsNullOrEmpty(job?.Entity))
+            {
+                chkMultipleRequest.Enabled = false;
+            }
+            var message = string.Empty;
+            if (tabControl1.SelectedTab == tabUpdate)
+            {
+                message = "Update";
+            }
+            else if (tabControl1.SelectedTab == tabAssign)
+            {
+                message = "Update";
+            }
+            else if (tabControl1.SelectedTab == tabDelete)
+            {
+                message = "Delete";
+            }
+            if (string.IsNullOrEmpty(message))
+            {
+                chkMultipleRequest.Enabled = false;
+                ClearIfDisabled(chkMultipleRequest);
+            }
+            else
+            {
+                WorkAsync(new WorkAsyncInfo
+                {
+                    Work = (w, a) =>
+                    {
+                        a.Result = Service.IsMessageAvailable(job.Entity, message + "Multiple", w);
+                    },
+                    ProgressChanged = (a) =>
+                    {
+                        SetWorkingMessage(a.UserState.ToString());
+                    },
+                    PostWorkCallBack = (a) =>
+                    {
+                        ShowErrorDialog(a.Error);
+                        if (a.Error == null && a.Result is bool result)
+                        {
+                            chkMultipleRequest.Enabled = result;
+                        }
+                        else
+                        {
+                            chkMultipleRequest.Enabled = false;
+                        }
+                        ClearIfDisabled(chkMultipleRequest);
+                    }
+                });
+            }
+        }
+
+        private static void ClearIfDisabled(CheckBox checker)
+        {
+            if (!checker.Enabled && checker.Checked)
+            {
+                checker.Checked = false;
+            }
+        }
+
         private IEnumerable<Entity> GetIncludedRecords()
         {
             // The following line can be restored when xrmtb controls version > 2.2.6 is used
@@ -299,6 +360,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 DelayCallTime = int.TryParse(cmbDelayCall.Text, out var delay) ? delay : 0,
                 BatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
+                MultipleRquest = chkMultipleRequest.Checked,
                 IgnoreErrors = chkIgnoreErrors.Checked,
                 BypassCustom = chkBypassPlugins.Checked
             };
