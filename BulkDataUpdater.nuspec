@@ -20,13 +20,10 @@
 		</description>
 		<summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
 		<releaseNotes>
-			!STOP THE PRESSES!
-			Bulk Data Updater supports Microsoft Power Fx calculations!
-
-			See latest release notes, and all history:
-			https://jonasr.app/bdu/releases/#$versionnumber$
+See latest release notes, and all history:
+https://jonasr.app/bdu/releases/#$versionnumber$
 		</releaseNotes>
-		<copyright>Copyright 2016-2022 Jonas Rapp</copyright>
+		<copyright>Copyright 2016-2023 Jonas Rapp</copyright>
 		<tags>XrmToolBox Plugins BulkDataUpdater</tags>
 		<dependencies>
 			<dependency id="XrmToolBox" version="1.2022.11.59" />
