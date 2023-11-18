@@ -10,9 +10,6 @@
 		<iconUrl>https://raw.githubusercontent.com/rappen/BulkDataUpdater/master/images/BDU-150-tsp.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>
-Now works well with newest version of XrmToolBox!
-See https://jonasr.app/missing-xrmtoolbox-pluginsstore/
-
 Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete.
 Empower yourself to achieve more.
 This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
@@ -23,6 +20,9 @@ Read more: https://jonasr.app/BDU and https://jonasr.app/xrm-tokens/
 		</description>
 		<summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
 		<releaseNotes>
+Now works well with newest version of XrmToolBox!
+See https://jonasr.app/missing-xrmtoolbox-pluginsstore/
+
 See latest release notes, and all history:
 https://jonasr.app/bdu/releases/#$versionnumber$
 		</releaseNotes>
