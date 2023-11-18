@@ -29,7 +29,7 @@ https://jonasr.app/bdu/releases/#$versionnumber$
 		<copyright>Copyright 2016-2023 Jonas Rapp</copyright>
 		<tags>XrmToolBox Plugins BulkDataUpdater</tags>
 		<dependencies>
-			<dependency id="XrmToolBox" version="1.2022.11.59" />
+			<dependency id="XrmToolBox" version="1.2023.10.67" />
 		</dependencies>
 	</metadata>
 	<files>
