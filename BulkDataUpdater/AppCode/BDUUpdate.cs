@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 
@@ -117,7 +118,11 @@ namespace Cinteros.XTB.BulkDataUpdater
                                     if (batch.Requests.Count == executeoptions.BatchSize || current == total)
                                     {
                                         bgworker.ReportProgress(pct, $"Updating records {current - batch.Requests.Count + 1}-{current} of {total}");
-                                        Service.Execute(batch);
+                                        var response = Service.Execute(batch) as ExecuteMultipleResponse;
+                                        if (!executeoptions.IgnoreErrors && response?.IsFaulted == true)
+                                        {
+                                            throw new FaultException<OrganizationServiceFault>(response.Responses.FirstOrDefault(r => r.Fault != null).Fault);
+                                        }
                                         updated += batch.Requests.Count;
                                         batch.Requests.Clear();
                                         waitnow = true;
@@ -128,7 +133,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         catch (Exception ex)
                         {
                             failed++;
-                            if (!chkIgnoreErrors.Checked)
+                            if (!executeoptions.IgnoreErrors)
                             {
                                 throw ex;
                             }
