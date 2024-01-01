@@ -229,8 +229,17 @@ namespace Cinteros.XTB.BulkDataUpdater
                     }
                     else if (!completedargs.Cancelled && completedargs.Result is EntityCollection result)
                     {
-                        records = result;
-                        fetchResulCount = records.Entities.Count;
+                        if (result.Entities.Any(e => e.Id.Equals(Guid.Empty)))
+                        {
+                            MessageBox.Show("There are records without an ID, and those records cannot be updated.\r\n\r\nThis is probably because of two things:\r\nRetrieved with a distinct flag, and the ID attribute is not included.\r\n\r\nPlease fix either issue.", "Missing Id", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            records = null;
+                            crmGridView1.DataSource = null;
+                        }
+                        else
+                        {
+                            records = result;
+                            fetchResulCount = records.Entities.Count;
+                        }
                     }
                     RetrieveRecordsReady();
                 },
