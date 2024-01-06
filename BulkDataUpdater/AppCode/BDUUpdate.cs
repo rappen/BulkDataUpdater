@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 
@@ -150,7 +151,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         catch (Exception ex)
                         {
                             failed++;
-                            if (!chkIgnoreErrors.Checked)
+                            if (!executeoptions.IgnoreErrors)
                             {
                                 throw ex;
                             }
