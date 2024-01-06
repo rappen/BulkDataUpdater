@@ -99,6 +99,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
     {
         public int DelayCallTime { get; set; } = 0;
         public int BatchSize { get; set; } = 1;
+        public bool MultipleRquest { get; set; } = false;
         public bool IgnoreErrors { get; set; } = false;
         public bool BypassCustom { get; set; } = false;
     }

@@ -255,6 +255,7 @@
             panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
             working = tempworker;
             EnableControls(true);
+            SetIsMultiMessageAvailable();
         }
 
         private void LoadMissingAttributesForRecord(Entity record, string entity, IEnumerable<BulkActionItem> attributes)

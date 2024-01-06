@@ -32,7 +32,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             tsbCancel.Enabled = true;
             splitContainer1.Enabled = false;
             var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
-            var entity = records.EntityName;
+            var entityname = records.EntityName;
             var includedrecords = GetIncludedRecords();
             working = true;
             var executeoptions = GetExecuteOptions();
@@ -55,10 +55,9 @@ namespace Cinteros.XTB.BulkDataUpdater
                     var updated = 0;
                     var failed = 0;
                     var attributes = workargs.Argument as List<BulkActionItem>;
-                    var batch = new ExecuteMultipleRequest
+                    var entities = new EntityCollection
                     {
-                        Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
-                        Requests = new OrganizationRequestCollection()
+                        EntityName = entityname
                     };
                     foreach (var record in includedrecords)
                     {
@@ -97,16 +96,16 @@ namespace Cinteros.XTB.BulkDataUpdater
                         {
                             //if ((bai.DontTouch || bai.Action == BulkActionAction.Touch) && !attributesexists)
                             bgworker.ReportProgress(pct, "Reloading record " + current.ToString());
-                            LoadMissingAttributesForRecord(record, entity, attributes);
+                            LoadMissingAttributesForRecord(record, entityname, attributes);
                         }
                         try
                         {
                             if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
                             {
-                                var request = new UpdateRequest { Target = updateentity };
-                                SetBypassPlugins(request, executeoptions.BypassCustom);
                                 if (executeoptions.BatchSize == 1)
                                 {
+                                    var request = new UpdateRequest { Target = updateentity };
+                                    SetBypassPlugins(request, executeoptions.BypassCustom);
                                     bgworker.ReportProgress(pct, $"Updating record {current} of {total}");
                                     Service.Execute(request);
                                     updated++;
@@ -114,17 +113,36 @@ namespace Cinteros.XTB.BulkDataUpdater
                                 }
                                 else
                                 {
-                                    batch.Requests.Add(request);
-                                    if (batch.Requests.Count == executeoptions.BatchSize || current == total)
+                                    entities.Entities.Add(updateentity);
+                                    if (entities.Entities.Count == executeoptions.BatchSize || current == total)
                                     {
-                                        bgworker.ReportProgress(pct, $"Updating records {current - batch.Requests.Count + 1}-{current} of {total}");
-                                        var response = Service.Execute(batch) as ExecuteMultipleResponse;
-                                        if (!executeoptions.IgnoreErrors && response?.IsFaulted == true)
+                                        bgworker.ReportProgress(pct, $"Updating records {current - entities.Entities.Count + 1}-{current} of {total}");
+                                        if (executeoptions.MultipleRquest)
                                         {
-                                            throw new FaultException<OrganizationServiceFault>(response.Responses.FirstOrDefault(r => r.Fault != null).Fault);
+                                            var multireq = new UpdateMultipleRequest
+                                            {
+                                                //               ConcurrencyBehavior = ConcurrencyBehavior.AlwaysOverwrite,
+                                                Targets = entities
+                                            };
+                                            var response = Service.Execute(multireq);
                                         }
-                                        updated += batch.Requests.Count;
-                                        batch.Requests.Clear();
+                                        else
+                                        {
+                                            var batch = new ExecuteMultipleRequest
+                                            {
+                                                Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
+                                                Requests = new OrganizationRequestCollection()
+                                            };
+                                            foreach (var entity in entities.Entities)
+                                            {
+                                                var req = new UpdateRequest { Target = entity };
+                                                SetBypassPlugins(req, executeoptions.BypassCustom);
+                                                batch.Requests.Add(req);
+                                            }
+                                            Service.Execute(batch);
+                                        }
+                                        updated += entities.Entities.Count;
+                                        entities.Entities.Clear();
                                         waitnow = true;
                                     }
                                 }
@@ -491,6 +509,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.DelayCallTime.ToString());
             cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
+            chkMultipleRequest.Checked = job.ExecuteOptions.MultipleRquest;
             chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
             chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
             lvAttributes.Items.Clear();
