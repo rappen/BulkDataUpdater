@@ -713,7 +713,7 @@
                 string url = GetEntityUrl(e.Entity);
                 if (!string.IsNullOrEmpty(url))
                 {
-                    Process.Start(url);
+                    ConnectionDetail.OpenUrlWithBrowserProfile(new Uri(url));
                 }
             }
         }
