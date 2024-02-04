@@ -57,6 +57,7 @@
         private readonly Version bypasspluginminversion = new Version(9, 2);
 
         private bool working = false;
+        private string currentconnection;
 
         #endregion Private Fields
 
@@ -320,6 +321,7 @@
             tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
             tsmiFriendly_Click(null, null);
             tsmiAttributes_Click(null, null);
+            InitializeTab();
         }
 
         private string OpenFile()
@@ -594,8 +596,13 @@
             xrmRecordAttribute.Service = Service;
             crmGridView1.DataSource = null;
             entities = null;
-            job = null;
-            LoadSetting();
+            if (string.IsNullOrEmpty(currentconnection) ||
+                currentconnection == e.ConnectionDetail.ConnectionName ||
+                MessageBox.Show($"Changing connection from '{currentconnection}' to '{e.ConnectionDetail.ConnectionName}'.\n\nWe usually reload settings for the new connection, shall we?", "Connected Connection", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                LoadSetting();
+            }
+            currentconnection = e.ConnectionDetail.ConnectionName;
             EnableControls(false);
             this.GetAllEntityMetadatas(AfterEntitiesLoaded);
         }
