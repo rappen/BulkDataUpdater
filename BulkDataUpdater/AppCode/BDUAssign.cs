@@ -124,10 +124,6 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void SetAssignFromJob(JobAssign job)
         {
-            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
-            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
-            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
-            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
             if (!string.IsNullOrEmpty(job.Entity) && !job.Id.Equals(Guid.Empty))
             {
                 xrmRecordAssign.Service = Service;

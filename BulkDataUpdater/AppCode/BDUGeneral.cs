@@ -2,7 +2,6 @@
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
-using Microsoft.Xrm.Sdk.Query;
 using Rappen.XRM.Helpers;
 using Rappen.XRM.Helpers.Extensions;
 using Rappen.XTB.Helpers.Extensions;
@@ -18,6 +17,8 @@ namespace Cinteros.XTB.BulkDataUpdater
 {
     public partial class BulkDataUpdater
     {
+        private bool updatingExecuteOptions;
+
         internal static string GetAttributeDisplayName(AttributeMetadata attribute)
         {
             string attributeName = attribute.LogicalName;
@@ -346,13 +347,46 @@ namespace Cinteros.XTB.BulkDataUpdater
             };
         }
 
-        private void UpdateJob()
+        private void SetExecuteOptions(JobExecuteOptions options)
         {
-            job.IncludeAll = rbIncludeAll.Checked;
-            UpdateJobUpdate(job.Update);
-            UpdateJobAssign(job.Assign);
-            UpdateJobSetState(job.SetState);
-            UpdateJobDelete(job.Delete);
+            updatingExecuteOptions = true;
+            options = options ?? new JobExecuteOptions();
+            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == options.DelayCallTime.ToString()) ?? cmbDelayCall.Items[0];
+            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == options.BatchSize.ToString()) ?? cmbBatchSize.Items[0];
+            rbBatchMultipleRequests.Checked = options.MultipleRequest;
+            rbBatchExecuteMultiple.Checked = !options.MultipleRequest;
+            chkIgnoreErrors.Checked = options.IgnoreErrors;
+            chkBypassPlugins.Checked = options.BypassCustom;
+            updatingExecuteOptions = false;
+        }
+
+        private void UpdateJobFromUI(TabPage selectedTab)
+        {
+            if (updatingExecuteOptions)
+            {
+                return;
+            }
+            job = job ?? new BDUJob();
+            if (selectedTab == tabUpdate)
+            {
+                job.Update.ExecuteOptions = GetExecuteOptions();
+                UpdateJobUpdate(job.Update);
+            }
+            else if (selectedTab == tabAssign)
+            {
+                job.Assign.ExecuteOptions = GetExecuteOptions();
+                UpdateJobAssign(job.Assign);
+            }
+            else if (selectedTab == tabSetState)
+            {
+                job.SetState.ExecuteOptions = GetExecuteOptions();
+                UpdateJobSetState(job.SetState);
+            }
+            else if (selectedTab == tabDelete)
+            {
+                job.Delete.ExecuteOptions = GetExecuteOptions();
+                UpdateJobDelete(job.Delete);
+            }
         }
 
         private void UseJob(bool retrieve)

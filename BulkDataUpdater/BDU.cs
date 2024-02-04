@@ -245,24 +245,26 @@
             if (tabControl1.SelectedTab == tabUpdate)
             {
                 btnExecute.Text = "Update records";
+                SetExecuteOptions(job.Update.ExecuteOptions);
                 SetUpdateFromJob(job.Update);
             }
             else if (tabControl1.SelectedTab == tabAssign)
             {
                 btnExecute.Text = "Assign records";
+                SetExecuteOptions(job.Assign.ExecuteOptions);
                 SetAssignFromJob(job.Assign);
             }
             else if (tabControl1.SelectedTab == tabSetState)
             {
                 btnExecute.Text = "Update records";
+                SetExecuteOptions(job.SetState.ExecuteOptions);
                 SetSetStateFromJob(job.SetState);
             }
             else if (tabControl1.SelectedTab == tabDelete)
             {
                 btnExecute.Text = "Delete records";
-                SetDeleteFromJob(job.Delete);
+                SetExecuteOptions(job.Delete.ExecuteOptions);
             }
-            panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
             working = tempworker;
             EnableControls(true);
         }
@@ -399,7 +401,7 @@
         {
             var settings = new Settings()
             {
-                Job = job,
+                Job = job ?? new BDUJob(),
                 FetchResultCount = fetchResulCount,
                 Friendly = tsmiFriendly.Checked,
                 AttributesManaged = tsmiAttributesManaged.Checked,
@@ -410,10 +412,7 @@
                 AttributesStandard = tsmiAttributesStandard.Checked,
                 AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
             };
-            if (settings.Job != null)
-            {
-                settings.Job.Info = null;
-            }
+            settings.Job.Info = null;
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
         }
 
@@ -529,6 +528,7 @@
         private void btnExecute_Click(object sender, EventArgs e)
         {
             lblUpdateStatus.Text = "Initializing...";
+            UpdateJobFromUI(tabControl1.SelectedTab);
             if (tabControl1.SelectedTab == tabUpdate)
             {
                 UpdateRecords();
@@ -926,6 +926,11 @@
             Process.Start("https://docs.microsoft.com/power-apps/developer/data-platform/bypass-custom-business-logic?WT.mc_id=DX-MVP-5002475");
         }
 
+        private void linkBulkOperations_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://docs.microsoft.com/power-apps/developer/data-platform/bulk-operations?WT.mc_id=DX-MVP-5002475");
+        }
+
         private void chkBypassPlugins_CheckedChanged(object sender, EventArgs e)
         {
             if (!working && chkBypassPlugins.Checked)
@@ -947,6 +952,7 @@
                     chkBypassPlugins.Checked = false;
                 }
             }
+            executeOption_Changed(sender, e);
         }
 
         private void tsbOpenJob_Click(object sender, EventArgs e)
@@ -980,11 +986,7 @@
 
         private void tsbSaveJob_Click(object sender, EventArgs e)
         {
-            if (job == null)
-            {
-                MessageBox.Show("Nothing to save.");
-                return;
-            }
+            UpdateJobFromUI(tabControl1.SelectedTab);
             var savedlg = new SaveFileDialog
             {
                 Filter = "BDU xml (*.bdu.xml)|*.bdu.xml",
@@ -998,15 +1000,9 @@
             }
             if (savedlg.ShowDialog() == DialogResult.OK)
             {
-                UpdateJob();
                 job.Info = new JobInfo(savedlg.FileName, ConnectionDetail);
                 XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
             }
-        }
-
-        private void linkBulkOperations_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://docs.microsoft.com/power-apps/developer/data-platform/bulk-operations?WT.mc_id=DX-MVP-5002475");
         }
 
         private void xrmRecordAssign_ColumnValueChanged(object sender, Rappen.XTB.Helpers.Controls.XRMRecordEventArgs e)
@@ -1017,6 +1013,12 @@
         private void cmbBatchSize_SelectedIndexChanged(object sender, EventArgs e)
         {
             panBatchOption.Enabled = (int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1) > 1;
+            executeOption_Changed(sender, e);
+        }
+
+        private void executeOption_Changed(object sender, EventArgs e)
+        {
+            UpdateJobFromUI(tabControl1.SelectedTab);
         }
     }
 }

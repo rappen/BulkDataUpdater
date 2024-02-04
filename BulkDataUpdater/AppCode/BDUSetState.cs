@@ -265,10 +265,6 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void SetSetStateFromJob(JobSetState job)
         {
-            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
-            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
-            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
-            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
             LoadStates(entities?.FirstOrDefault(ent => ent.LogicalName == records?.EntityName), job?.State);
         }
 

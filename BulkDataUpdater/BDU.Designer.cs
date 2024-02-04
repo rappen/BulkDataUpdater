@@ -870,6 +870,7 @@
             this.chkIgnoreErrors.TabIndex = 3;
             this.chkIgnoreErrors.Text = "Ignore errors";
             this.chkIgnoreErrors.UseVisualStyleBackColor = true;
+            this.chkIgnoreErrors.CheckedChanged += new System.EventHandler(this.executeOption_Changed);
             // 
             // gbExecute
             // 
@@ -909,6 +910,7 @@
             this.rbBatchExecuteMultiple.TabIndex = 1;
             this.rbBatchExecuteMultiple.Text = "ExecuteMultiple";
             this.rbBatchExecuteMultiple.UseVisualStyleBackColor = true;
+            this.rbBatchExecuteMultiple.CheckedChanged += new System.EventHandler(this.executeOption_Changed);
             // 
             // rbBatchMultipleRequests
             // 
@@ -921,6 +923,7 @@
             this.rbBatchMultipleRequests.TabStop = true;
             this.rbBatchMultipleRequests.Text = "MultipleUpdate";
             this.rbBatchMultipleRequests.UseVisualStyleBackColor = true;
+            this.rbBatchMultipleRequests.CheckedChanged += new System.EventHandler(this.executeOption_Changed);
             // 
             // linkBulkOperations
             // 
@@ -1002,6 +1005,7 @@
             this.cmbDelayCall.Name = "cmbDelayCall";
             this.cmbDelayCall.Size = new System.Drawing.Size(75, 21);
             this.cmbDelayCall.TabIndex = 1;
+            this.cmbDelayCall.SelectedIndexChanged += new System.EventHandler(this.executeOption_Changed);
             // 
             // cmbBatchSize
             // 
@@ -1195,7 +1199,7 @@
             this.tabUpdate.Controls.Add(this.panel2);
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
-            this.tabUpdate.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
             this.tabUpdate.Size = new System.Drawing.Size(342, 422);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
@@ -1311,8 +1315,8 @@
             this.tabAssign.Controls.Add(this.xrmAssignText);
             this.tabAssign.Location = new System.Drawing.Point(4, 22);
             this.tabAssign.Name = "tabAssign";
-            this.tabAssign.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabAssign.Size = new System.Drawing.Size(181, 438);
+            this.tabAssign.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAssign.Size = new System.Drawing.Size(342, 422);
             this.tabAssign.TabIndex = 4;
             this.tabAssign.Text = "Assign";
             this.tabAssign.UseVisualStyleBackColor = true;
@@ -1384,8 +1388,8 @@
             this.tabSetState.Controls.Add(this.panel3);
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
             this.tabSetState.Name = "tabSetState";
-            this.tabSetState.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabSetState.Size = new System.Drawing.Size(181, 438);
+            this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSetState.Size = new System.Drawing.Size(342, 422);
             this.tabSetState.TabIndex = 3;
             this.tabSetState.Text = "Set State";
             this.tabSetState.UseVisualStyleBackColor = true;
@@ -1398,7 +1402,7 @@
             this.panQualifyLead.Dock = System.Windows.Forms.DockStyle.Top;
             this.panQualifyLead.Location = new System.Drawing.Point(3, 164);
             this.panQualifyLead.Name = "panQualifyLead";
-            this.panQualifyLead.Size = new System.Drawing.Size(175, 78);
+            this.panQualifyLead.Size = new System.Drawing.Size(336, 78);
             this.panQualifyLead.TabIndex = 17;
             this.panQualifyLead.Visible = false;
             // 
@@ -1442,7 +1446,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(175, 161);
+            this.panel3.Size = new System.Drawing.Size(336, 161);
             this.panel3.TabIndex = 16;
             // 
             // lblStateHeader
@@ -1463,7 +1467,7 @@
             this.cbSetStatus.FormattingEnabled = true;
             this.cbSetStatus.Location = new System.Drawing.Point(16, 84);
             this.cbSetStatus.Name = "cbSetStatus";
-            this.cbSetStatus.Size = new System.Drawing.Size(142, 21);
+            this.cbSetStatus.Size = new System.Drawing.Size(303, 21);
             this.cbSetStatus.TabIndex = 11;
             this.cbSetStatus.SelectedIndexChanged += new System.EventHandler(this.cbSetStatus_SelectedIndexChanged);
             // 
@@ -1475,7 +1479,7 @@
             this.cbSetStatusReason.FormattingEnabled = true;
             this.cbSetStatusReason.Location = new System.Drawing.Point(16, 130);
             this.cbSetStatusReason.Name = "cbSetStatusReason";
-            this.cbSetStatusReason.Size = new System.Drawing.Size(142, 21);
+            this.cbSetStatusReason.Size = new System.Drawing.Size(303, 21);
             this.cbSetStatusReason.TabIndex = 14;
             this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.cbSetStatusReason_SelectedIndexChanged);
             // 
@@ -1503,8 +1507,8 @@
             this.tabDelete.Controls.Add(this.lblDeleteHeader);
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
-            this.tabDelete.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabDelete.Size = new System.Drawing.Size(181, 438);
+            this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDelete.Size = new System.Drawing.Size(342, 422);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
             this.tabDelete.UseVisualStyleBackColor = true;

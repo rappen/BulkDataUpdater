@@ -33,10 +33,8 @@ namespace Cinteros.XTB.BulkDataUpdater
             EnableControls(false, true);
             var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
             var executeoptions = GetExecuteOptions();
-            if (job != null && job.Update != null)
-            {
-                job.Update.ExecuteOptions = executeoptions;
-            }
+            job.Update.ExecuteOptions = executeoptions;
+
             WorkAsync(new WorkAsyncInfo()
             {
                 Message = "Updating records",
@@ -421,12 +419,6 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void SetUpdateFromJob(JobUpdate job)
         {
-            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.DelayCallTime.ToString());
-            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
-            rbBatchMultipleRequests.Checked = job.ExecuteOptions.MultipleRequest;
-            rbBatchExecuteMultiple.Checked = !rbBatchMultipleRequests.Checked;
-            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
-            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
             lvAttributes.Items.Clear();
             job.Attributes.ForEach(a => AddBAI(a));
             if (lvAttributes.Items.Count > 0)

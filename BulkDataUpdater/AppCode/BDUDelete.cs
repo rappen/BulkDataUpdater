@@ -96,14 +96,6 @@ namespace Cinteros.XTB.BulkDataUpdater
             workargs.Result = new Tuple<int, int, long>(deleted, failed, sw.ElapsedMilliseconds);
         }
 
-        private void SetDeleteFromJob(JobDelete job)
-        {
-            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == "0");
-            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
-            chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
-            chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
-        }
-
         private void UpdateJobDelete(JobDelete job)
         {
         }
