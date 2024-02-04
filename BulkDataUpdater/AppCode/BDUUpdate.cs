@@ -116,7 +116,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 return null;
             }
             var updaterecord = new Entity(record.LogicalName, record.Id);
-            foreach (var bai in attributes.Where(a => !(a.Attribute.Metadata is StateAttributeMetadata)))
+            foreach (var bai in attributes)
             {
                 var attribute = bai.Attribute.Metadata.LogicalName;
                 var currentvalue = record.Contains(attribute) ? record[attribute] : null;
@@ -287,7 +287,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return double.Parse(cmbValue.Text);
             }
-            if (meta is PicklistAttributeMetadata || meta is StateAttributeMetadata)
+            if (meta is EnumAttributeMetadata)
             {
                 var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
                 return new OptionSetValue((int)value);

@@ -450,9 +450,9 @@
             var calc = rbCalculate.Checked;
             if (rbSetValue.Checked && attribute != null)
             {
-                if (attribute.Metadata is PicklistAttributeMetadata pickmeta)
+                if (attribute.Metadata is EnumAttributeMetadata enummeta)
                 {
-                    var options = pickmeta.OptionSet;
+                    var options = enummeta.OptionSet;
                     if (options != null)
                     {
                         foreach (var option in options.Options)
@@ -591,6 +591,7 @@
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
             currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
+            xrmRecordAttribute.Service = Service;
             crmGridView1.DataSource = null;
             entities = null;
             job = null;
@@ -794,7 +795,6 @@
             switch (cdsLookupDialog.ShowDialog(this))
             {
                 case DialogResult.OK:
-                    xrmRecordAttribute.Service = Service;
                     xrmRecordAttribute.Record = cdsLookupDialog.Record;
                     break;
 
