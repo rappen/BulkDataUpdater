@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.ServiceModel;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 
@@ -24,17 +23,15 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            if (MessageBox.Show("All selected records will unconditionally be updated.\nUI defined rules will NOT be enforced.\n\nConfirm update!",
+            var includedrecords = GetIncludedRecords();
+            if (MessageBox.Show($"{includedrecords.Count()} records will unconditionally be updated.\nUI defined rules will NOT be enforced.\n\nConfirm update!",
                 "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
             {
                 return;
             }
-            tsbCancel.Enabled = true;
-            splitContainer1.Enabled = false;
-            var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
-            var entityname = records.EntityName;
-            var includedrecords = GetIncludedRecords();
             working = true;
+            EnableControls(false, true);
+            var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
             var executeoptions = GetExecuteOptions();
             if (job != null && job.Update != null)
             {
@@ -45,156 +42,73 @@ namespace Cinteros.XTB.BulkDataUpdater
                 Message = "Updating records",
                 IsCancelable = true,
                 AsyncArgument = selectedattributes,
-                Work = (bgworker, workargs) =>
+                Work = (bgworker, workargs) => { UpdateRecordsWork(bgworker, workargs, includedrecords, executeoptions); },
+                PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, "Update"); },
+                ProgressChanged = (changeargs) => { SetWorkingMessage(changeargs.UserState.ToString()); }
+            }); ;
+        }
+
+        private void UpdateRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions)
+        {
+            var sw = Stopwatch.StartNew();
+            var progress = "Starting...";
+            var total = includedrecords.Count();
+            var current = 0;
+            var updated = 0;
+            var failed = 0;
+            var attributes = workargs.Argument as List<BulkActionItem>;
+            var entities = new EntityCollection
+            {
+                EntityName = includedrecords.FirstOrDefault().LogicalName
+            };
+            foreach (var record in includedrecords)
+            {
+                if (bgworker.CancellationPending)
                 {
-                    var sw = Stopwatch.StartNew();
-                    var total = includedrecords.Count();
-                    var waitnow = false;
-                    var waitcur = 0;
-                    var current = 0;
-                    var updated = 0;
-                    var failed = 0;
-                    var attributes = workargs.Argument as List<BulkActionItem>;
-                    var entities = new EntityCollection
-                    {
-                        EntityName = entityname
-                    };
-                    foreach (var record in includedrecords)
-                    {
-                        if (bgworker.CancellationPending)
-                        {
-                            workargs.Cancel = true;
-                            break;
-                        }
-                        current++;
-                        var pct = 100 * current / total;
-                        if (waitnow && executeoptions.DelayCallTime > 0)
-                        {
-                            waitcur = executeoptions.DelayCallTime;
-                            while (waitcur > 0)
-                            {
-                                bgworker.ReportProgress(pct, $"Waiting between calls - {waitcur} sec{Environment.NewLine}(Next update {current} of {total})");
-                                if (waitcur > 10)
-                                {
-                                    System.Threading.Thread.Sleep(10000);
-                                    waitcur -= 10;
-                                }
-                                else
-                                {
-                                    System.Threading.Thread.Sleep(waitcur * 1000);
-                                    waitcur = 0;
-                                }
-                                if (bgworker.CancellationPending)
-                                {
-                                    workargs.Cancel = true;
-                                    break;
-                                }
-                            }
-                            waitnow = false;
-                        }
-                        if (!CheckAllUpdateAttributesExistOnRecord(record, attributes))
-                        {
-                            //if ((bai.DontTouch || bai.Action == BulkActionAction.Touch) && !attributesexists)
-                            bgworker.ReportProgress(pct, "Reloading record " + current.ToString());
-                            LoadMissingAttributesForRecord(record, entityname, attributes);
-                        }
-                        try
-                        {
-                            if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
-                            {
-                                if (executeoptions.BatchSize == 1)
-                                {
-                                    var request = new UpdateRequest { Target = updateentity };
-                                    SetBypassPlugins(request, executeoptions.BypassCustom);
-                                    bgworker.ReportProgress(pct, $"Updating record {current} of {total}");
-                                    Service.Execute(request);
-                                    updated++;
-                                    waitnow = true;
-                                }
-                                else
-                                {
-                                    entities.Entities.Add(updateentity);
-                                    if (entities.Entities.Count == executeoptions.BatchSize || current == total)
-                                    {
-                                        bgworker.ReportProgress(pct, $"Updating records {current - entities.Entities.Count + 1}-{current} of {total}");
-                                        if (executeoptions.MultipleRquest)
-                                        {
-                                            var multireq = new UpdateMultipleRequest
-                                            {
-                                                //               ConcurrencyBehavior = ConcurrencyBehavior.AlwaysOverwrite,
-                                                Targets = entities
-                                            };
-                                            var response = Service.Execute(multireq);
-                                        }
-                                        else
-                                        {
-                                            var batch = new ExecuteMultipleRequest
-                                            {
-                                                Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
-                                                Requests = new OrganizationRequestCollection()
-                                            };
-                                            foreach (var entity in entities.Entities)
-                                            {
-                                                var req = new UpdateRequest { Target = entity };
-                                                SetBypassPlugins(req, executeoptions.BypassCustom);
-                                                batch.Requests.Add(req);
-                                            }
-                                            Service.Execute(batch);
-                                        }
-                                        updated += entities.Entities.Count;
-                                        entities.Entities.Clear();
-                                        waitnow = true;
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            failed++;
-                            if (!executeoptions.IgnoreErrors)
-                            {
-                                throw ex;
-                            }
-                        }
-                    }
-                    sw.Stop();
-                    workargs.Result = new Tuple<int, int, long>(updated, failed, sw.ElapsedMilliseconds);
-                },
-                PostWorkCallBack = (completedargs) =>
-                {
-                    working = false;
-                    tsbCancel.Enabled = false;
-                    if (completedargs.Error != null)
-                    {
-                        ShowErrorDialog(completedargs.Error, "Update");
-                    }
-                    else if (completedargs.Cancelled)
-                    {
-                        if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
-                        {
-                            RetrieveRecords();
-                        }
-                    }
-                    else if (completedargs.Result is Tuple<int, int, long> result)
-                    {
-                        lblUpdateStatus.Text = $"{result.Item1} records updated, {result.Item2} records failed.";
-                        LogUse("Updated", result.Item1, result.Item3);
-                        if (result.Item2 > 0)
-                        {
-                            LogUse("Failed", result.Item2);
-                        }
-                        if (MessageBox.Show("Update completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
-                        {
-                            RetrieveRecords();
-                        }
-                    }
-                    splitContainer1.Enabled = true;
-                },
-                ProgressChanged = (changeargs) =>
-                {
-                    SetWorkingMessage(changeargs.UserState.ToString());
+                    workargs.Cancel = true;
+                    break;
                 }
-            });
+                current++;
+                if (!CheckAllUpdateAttributesExistOnRecord(record, attributes))
+                {
+                    //if ((bai.DontTouch || bai.Action == BulkActionAction.Touch) && !attributesexists)
+                    PushProgress(bgworker, $"{progress}{Environment.NewLine}Reloading record {current}");
+                    LoadMissingAttributesForRecord(record, attributes);
+                }
+                if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
+                {
+                    entities.Entities.Add(updateentity);
+                    if (entities.Entities.Count >= executeoptions.BatchSize || current == total)
+                    {
+                        progress = GetProgressDetails(sw, total, current, entities.Entities.Count, failed);
+                        WaitingExecution(bgworker, workargs, executeoptions, progress);
+                        PushProgress(bgworker, progress);
+                        if (entities.Entities.Count == 1)
+                        {
+                            failed += ExecuteRequest(new UpdateRequest { Target = entities.Entities.FirstOrDefault() }, executeoptions);
+                        }
+                        else if (executeoptions.MultipleRequest)
+                        {
+                            failed += ExecuteRequest(new UpdateMultipleRequest { Targets = entities }, executeoptions);
+                        }
+                        else
+                        {
+                            var batch = new ExecuteMultipleRequest
+                            {
+                                Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
+                                Requests = new OrganizationRequestCollection()
+                            };
+                            batch.Requests.AddRange(entities.Entities.Select(e => new UpdateRequest { Target = e }));
+                            batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions.BypassCustom));
+                            failed += ExecuteRequest(batch, executeoptions);
+                        }
+                        updated += entities.Entities.Count;
+                        entities.Entities.Clear();
+                    }
+                }
+            }
+            sw.Stop();
+            workargs.Result = new Tuple<int, int, long>(updated, failed, sw.ElapsedMilliseconds);
         }
 
         private Entity GetUpdateRecord(Entity record, List<BulkActionItem> attributes, int sequence)
@@ -509,7 +423,8 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.DelayCallTime.ToString());
             cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == job.ExecuteOptions.BatchSize.ToString());
-            chkMultipleRequest.Checked = job.ExecuteOptions.MultipleRquest;
+            rbBatchMultipleRequests.Checked = job.ExecuteOptions.MultipleRequest;
+            rbBatchExecuteMultiple.Checked = !rbBatchMultipleRequests.Checked;
             chkIgnoreErrors.Checked = job.ExecuteOptions.IgnoreErrors;
             chkBypassPlugins.Checked = job.ExecuteOptions.BypassCustom;
             lvAttributes.Items.Clear();

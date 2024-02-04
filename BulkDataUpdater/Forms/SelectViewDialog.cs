@@ -2,6 +2,7 @@
 {
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Query;
+    using Rappen.XRM.Helpers.Extensions;
     using Rappen.XTB.Helpers;
     using System;
     using System.Collections.Generic;
@@ -62,7 +63,7 @@
                         {
                             qex.EntityName = entity;
 
-                            singleResult = this.host.Service.RetrieveMultiple(qex).Entities;
+                            singleResult = this.host.Service.RetrieveMultipleAll(qex).Entities;
                             if (singleResult.Count > 0)
                             {
                                 combinedResult.Add(qex.EntityName, singleResult);

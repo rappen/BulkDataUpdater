@@ -87,23 +87,32 @@
 
         #region Private Methods
 
-        private void EnableControls(bool enabled)
+        private void EnableControls(bool enabled, bool cancel = false)
         {
             MethodInvoker mi = delegate
             {
                 try
                 {
-                    Enabled = enabled;
-                    gb1select.Enabled = enabled && Service != null;
-                    gb2attribute.Enabled = gb1select.Enabled && records != null && records.Entities.Count > 0;
-                    panUpdButton.Enabled = gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeMetadataItem;
-                    btnAdd.Enabled = panUpdButton.Enabled && IsValueValid();
-                    gb3attributes.Enabled = gb2attribute.Enabled && lvAttributes.Items.Count > 0;
-                    gbExecute.Enabled =
+                    if (enabled)
+                    {
+                        Enabled = true;
+                    }
+                    splitContainer1.Enabled = enabled;
+                    tsbOpenJob.Enabled = !cancel && enabled;
+                    tsbSaveJob.Enabled = !cancel && enabled;
+                    tsbOptions.Enabled = !cancel && enabled;
+                    tsbCancel.Enabled = cancel;
+                    gb1select.Enabled = !cancel && enabled && Service != null;
+                    btnRefresh.Enabled = !cancel && gb1select.Enabled && !string.IsNullOrWhiteSpace(job?.FetchXML);
+                    gb2attribute.Enabled = !cancel && gb1select.Enabled && records != null && records.Entities.Count > 0;
+                    panUpdButton.Enabled = !cancel && gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeMetadataItem;
+                    btnAdd.Enabled = !cancel && panUpdButton.Enabled && IsValueValid();
+                    gb3attributes.Enabled = !cancel && gb2attribute.Enabled && lvAttributes.Items.Count > 0;
+                    gbExecute.Enabled = !cancel && (
                         (tabControl1.SelectedTab == tabUpdate && panUpdButton.Enabled && lvAttributes.Items.Count > 0) ||
                         (tabControl1.SelectedTab == tabAssign && xrmRecordAssign.Record != null) ||
                         (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
-                        (tabControl1.SelectedTab == tabDelete);
+                        (tabControl1.SelectedTab == tabDelete));
                 }
                 catch
                 {
@@ -145,13 +154,13 @@
                 {
                     foreach (var attribute in attributes)
                     {
-                        if (!attribute.IsValidForUpdate.Value == true)
+                        if (!attribute.IsValidForUpdate.Value == true && attribute.LogicalName != "importsequencenumber")
                         {
                             continue;
                         }
                         if (attribute.LogicalName == "statecode" || attribute.LogicalName == "statuscode" || attribute.LogicalName == "ownerid")
                         {
-                            continue;
+                            //            continue;
                         }
                         if (!showAttributesAll)
                         {
@@ -188,7 +197,6 @@
 
         private void GetRecords(string tag)
         {
-            EnableControls(false);
             switch (tag)
             {
                 case "Edit": // Edit
@@ -220,12 +228,15 @@
                     OpenView();
                     break;
 
+                case "Refresh":
+                    FetchUpdated(job?.FetchXML, job?.LayoutXML);
+                    break;
+
                 default:
                     MessageBox.Show("Select record source.", "Get Records", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     break;
             }
             LogUse(tag, records?.Entities?.Count);
-            EnableControls(true);
         }
 
         private void InitializeTab()
@@ -255,17 +266,16 @@
             panWaitBetween.Visible = tabControl1.SelectedTab == tabUpdate;
             working = tempworker;
             EnableControls(true);
-            SetIsMultiMessageAvailable();
         }
 
-        private void LoadMissingAttributesForRecord(Entity record, string entity, IEnumerable<BulkActionItem> attributes)
+        private void LoadMissingAttributesForRecord(Entity record, IEnumerable<BulkActionItem> attributes)
         {
             var newcols = new ColumnSet(attributes.Select(a => a.Attribute.Metadata.LogicalName).ToArray());
             if (newcols.Columns.Contains("statuscode"))
             {
                 newcols.AddColumn("statecode");
             }
-            var newrecord = Service.Retrieve(entity, record.Id, newcols);
+            var newrecord = Service.Retrieve(record.LogicalName, record.Id, newcols);
             foreach (var attribute in newrecord.Attributes.Keys)
             {
                 if (newrecord.Contains(attribute) && !record.Contains(attribute))
@@ -634,7 +644,8 @@
 
         private void tsbCancel_Click(object sender, EventArgs e)
         {
-            tsbCancel.Enabled = false;
+            EnableControls(false, false);
+            Cursor = Cursors.WaitCursor;
             CancelWorker();
         }
 
@@ -918,7 +929,7 @@
 
         private void linkBypassPlugins_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://docs.microsoft.com/en-us/power-apps/developer/data-platform/bypass-custom-business-logic?WT.mc_id=BA-MVP-5002475");
+            Process.Start("https://docs.microsoft.com/power-apps/developer/data-platform/bypass-custom-business-logic?WT.mc_id=DX-MVP-5002475");
         }
 
         private void chkBypassPlugins_CheckedChanged(object sender, EventArgs e)
@@ -997,6 +1008,21 @@
                 job.Info = new JobInfo(savedlg.FileName, ConnectionDetail);
                 XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
             }
+        }
+
+        private void linkBulkOperations_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://docs.microsoft.com/power-apps/developer/data-platform/bulk-operations?WT.mc_id=DX-MVP-5002475");
+        }
+
+        private void xrmRecordAssign_ColumnValueChanged(object sender, Rappen.XTB.Helpers.Controls.XRMRecordEventArgs e)
+        {
+            txtAssignEntity.Text = xrmRecordAssign.EntityDisplayName;
+        }
+
+        private void cmbBatchSize_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            panBatchOption.Enabled = (int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1) > 1;
         }
     }
 }

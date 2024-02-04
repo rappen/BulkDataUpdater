@@ -1,13 +1,16 @@
 ﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
-using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
 using Rappen.XRM.Helpers;
 using Rappen.XRM.Helpers.Extensions;
+using Rappen.XTB.Helpers.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 
@@ -110,7 +113,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         qex.Criteria.AddCondition("querytype", ConditionOperator.In, 0, 32);
                         qex.AddOrder("name", OrderType.Ascending);
                         bgworker.ReportProgress(33, "Loading system views...");
-                        var sysviews = Service.RetrieveMultiple(qex);
+                        var sysviews = Service.RetrieveMultipleAll(qex, bgworker, "Loading system views... ({0})");
                         foreach (var view in sysviews.Entities)
                         {
                             var entityname = view["returnedtypecode"].ToString();
@@ -129,7 +132,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                         }
                         qex.EntityName = "userquery";
                         bgworker.ReportProgress(66, "Loading user views...");
-                        var userviews = Service.RetrieveMultiple(qex);
+                        var userviews = Service.RetrieveMultipleAll(qex, bgworker, "Loading user views... ({0})");
                         foreach (var view in userviews.Entities)
                         {
                             var entityname = view["returnedtypecode"].ToString();
@@ -198,45 +201,42 @@ namespace Cinteros.XTB.BulkDataUpdater
                 RetrieveRecordsReady();
                 return;
             }
-            EnableControls(false);
+            EnableControls(false, true);
             lblRecords.Text = "Retrieving records...";
             fetchResulCount = -1;
             records = null;
             working = true;
-            QueryBase query;
-            try
-            {
-                query = ((FetchXmlToQueryExpressionResponse)Service.Execute(new FetchXmlToQueryExpressionRequest() { FetchXml = fetch })).Query;
-            }
-            catch
-            {
-                query = new FetchExpression(fetch);
-            }
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Retrieving records...",
                 IsCancelable = true,
                 Work = (worker, eventargs) =>
                 {
-                    eventargs.Result = Service.RetrieveMultipleAll(query, worker);
+                    eventargs.Result = Service.RetrieveMultipleAll(fetch, worker, eventargs, null);
                 },
                 PostWorkCallBack = (completedargs) =>
                 {
                     working = false;
+                    EnableControls(true, false);
                     if (completedargs.Error != null)
                     {
                         ShowErrorDialog(completedargs.Error, "Retrieve Records");
                     }
-                    else if (!completedargs.Cancelled && completedargs.Result is EntityCollection result)
+                    else if (completedargs.Cancelled)
                     {
-                        if (result.Entities.Any(e => e.Id.Equals(Guid.Empty)))
+                        Cursor = Cursors.Default;
+                        MessageBox.Show($"Manual abort.", "Execute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                    else if (completedargs.Result is EntityCollection result)
+                    {
+                        if (result.Entities.WarnIfNoIdReturned())
                         {
-                            MessageBox.Show("There are records without an ID, and those records cannot be updated.\r\n\r\nThis is probably because of two things:\r\nRetrieved with a distinct flag, and the ID attribute is not included.\r\n\r\nPlease fix either issue.", "Missing Id", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             records = null;
                             crmGridView1.DataSource = null;
                         }
                         else
                         {
+                            result.Entities.WarnIf50kReturned(fetch);
                             records = result;
                             fetchResulCount = records.Entities.Count;
                         }
@@ -252,6 +252,8 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void RetrieveRecordsReady()
         {
+            Enabled = false;
+            Cursor = Cursors.WaitCursor;
             if (records != null)
             {
                 if (job == null)
@@ -270,62 +272,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                 }
                 UpdateIncludeCount();
             }
-            EnableControls(true);
             RefreshAttributes();
             InitializeTab();
-        }
-
-        private void SetIsMultiMessageAvailable()
-        {
-            if (string.IsNullOrEmpty(job?.Entity))
-            {
-                chkMultipleRequest.Enabled = false;
-            }
-            var message = string.Empty;
-            if (tabControl1.SelectedTab == tabUpdate)
-            {
-                message = "Update";
-            }
-            else if (tabControl1.SelectedTab == tabAssign)
-            {
-                message = "Update";
-            }
-            else if (tabControl1.SelectedTab == tabDelete)
-            {
-                message = "Delete";
-            }
-            if (string.IsNullOrEmpty(message))
-            {
-                chkMultipleRequest.Enabled = false;
-                ClearIfDisabled(chkMultipleRequest);
-            }
-            else
-            {
-                WorkAsync(new WorkAsyncInfo
-                {
-                    Work = (w, a) =>
-                    {
-                        a.Result = Service.IsMessageAvailable(job.Entity, message + "Multiple", w);
-                    },
-                    ProgressChanged = (a) =>
-                    {
-                        SetWorkingMessage(a.UserState.ToString());
-                    },
-                    PostWorkCallBack = (a) =>
-                    {
-                        ShowErrorDialog(a.Error);
-                        if (a.Error == null && a.Result is bool result)
-                        {
-                            chkMultipleRequest.Enabled = result;
-                        }
-                        else
-                        {
-                            chkMultipleRequest.Enabled = false;
-                        }
-                        ClearIfDisabled(chkMultipleRequest);
-                    }
-                });
-            }
+            Cursor = Cursors.Default;
+            EnableControls(true);
         }
 
         private static void ClearIfDisabled(CheckBox checker)
@@ -351,11 +301,115 @@ namespace Cinteros.XTB.BulkDataUpdater
             return Utils.ValueToString(value1).Equals(Utils.ValueToString(value2));
         }
 
-        private void SetBypassPlugins(OrganizationRequest request, bool value)
+        private static string GetProgressDetails(Stopwatch sw, int total, int currentrecord, int numberrecords, int failures)
         {
-            if (value && currentversion >= bypasspluginminversion)
+            var processing = numberrecords > 1 ? $"{currentrecord - numberrecords + 1}-{currentrecord}" : currentrecord.ToString();
+            var result = $"Processing {processing} of {total} records";
+            result += $"\nCompleted: {currentrecord - numberrecords} ";
+            if (failures > 0)
             {
-                request.Parameters["BypassCustomPluginExecution"] = value;
+                result += $"({failures} failures) ";
+            }
+            //       result += $"({pct}%) in {sw.Elapsed:hh\\:mm\\:ss\\.fff}";
+            if (currentrecord > numberrecords)
+            {
+                var pct = 100 * (currentrecord - numberrecords) / total;
+                result += $"({pct}%) in {TimeSpanToString(sw.Elapsed)}";
+                var remaintime = TimeSpan.FromMilliseconds(sw.Elapsed.TotalMilliseconds * total / currentrecord);
+                result += $"\nRemaining Time: {TimeSpanToString(remaintime, false)} Records: {total - currentrecord}";
+                var timeperrecord = (decimal)sw.ElapsedMilliseconds / (currentrecord - numberrecords) / 1000;
+                result += $"\nTime per record: {timeperrecord:0.000}";
+            }
+            return result;
+        }
+
+        private static string TimeSpanToString(TimeSpan span, bool milli = true)
+        {
+            return
+                (span.TotalDays >= 1 ? $"{span.TotalDays:0}d " : string.Empty) +
+                (span.TotalHours >= 1 ? $"{span.Hours:00}h" : string.Empty) +
+                (span.TotalMinutes >= 1 ? $"{span.Minutes:00}m" : string.Empty) +
+                $"{span.Seconds:00}s" +
+                (milli ? $"{span:fff}ms" : string.Empty);
+        }
+
+        private static void WaitingExecution(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, JobExecuteOptions executeoptions, string progress)
+        {
+            if (executeoptions.DelayNow && executeoptions.DelayCallTime > 0)
+            {
+                executeoptions.DelayCurrent = executeoptions.DelayCallTime;
+                while (executeoptions.DelayCurrent > 0)
+                {
+                    PushProgress(bgworker, $"{progress}{Environment.NewLine}Waiting {executeoptions.DelayCurrent} sec...");
+                    if (executeoptions.DelayCurrent > 10)
+                    {
+                        System.Threading.Thread.Sleep(10000);
+                        executeoptions.DelayCurrent -= 10;
+                    }
+                    else
+                    {
+                        System.Threading.Thread.Sleep(executeoptions.DelayCurrent * 1000);
+                        executeoptions.DelayCurrent = 0;
+                    }
+                    if (bgworker.CancellationPending)
+                    {
+                        workargs.Cancel = true;
+                        break;
+                    }
+                }
+            }
+            executeoptions.DelayNow = true;
+        }
+
+        private static void PushProgress(System.ComponentModel.BackgroundWorker bgworker, string progress)
+        {
+            var progressrows = progress.Split('\n').ToList();
+            while (progressrows.Count > 4)
+            {
+                progressrows.RemoveAt(3);
+            }
+            progress = string.Join(Environment.NewLine, progressrows);
+            bgworker.ReportProgress(0, progress);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="executeoptions"></param>
+        /// <returns>Number of error occured</returns>
+        private int ExecuteRequest(OrganizationRequest request, JobExecuteOptions executeoptions)
+        {
+            var errors = 0;
+            try
+            {
+                SetBypassPlugins(request, executeoptions.BypassCustom);
+                var response = Service.Execute(request);
+                if (!executeoptions.IgnoreErrors && response is ExecuteMultipleResponse respexc && respexc?.IsFaulted == true)
+                {
+                    errors = respexc.Responses.Count(r => r.Fault != null);
+                    throw new FaultException<OrganizationServiceFault>(respexc.Responses.FirstOrDefault(r => r.Fault != null).Fault);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!executeoptions.IgnoreErrors)
+                {
+                    throw ex;
+                }
+                if (errors == 0)
+                {
+                    errors = 1;
+                }
+            }
+            return errors;
+        }
+
+        private void SetBypassPlugins(OrganizationRequest request, bool bypass)
+        {
+            if (bypass && currentversion >= bypasspluginminversion)
+            {
+                request.Parameters["BypassCustomPluginExecution"] = bypass;
             }
             else
             {
@@ -369,7 +423,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 DelayCallTime = int.TryParse(cmbDelayCall.Text, out var delay) ? delay : 0,
                 BatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
-                MultipleRquest = chkMultipleRequest.Checked,
+                MultipleRequest = rbBatchMultipleRequests.Checked,
                 IgnoreErrors = chkIgnoreErrors.Checked,
                 BypassCustom = chkBypassPlugins.Checked
             };
@@ -392,6 +446,41 @@ namespace Cinteros.XTB.BulkDataUpdater
             if (retrieve)
             {
                 RetrieveRecords();
+            }
+        }
+
+        private void BulkRecordsCallback(System.ComponentModel.RunWorkerCompletedEventArgs completedargs, string action)
+        {
+            working = false;
+            EnableControls(true, false);
+            if (completedargs.Error != null)
+            {
+                ShowErrorDialog(completedargs.Error, action);
+                if (MessageBox.Show("Error occured.\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                {
+                    RetrieveRecords();
+                }
+            }
+            else if (completedargs.Cancelled)
+            {
+                Cursor = Cursors.Default;
+                if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                {
+                    RetrieveRecords();
+                }
+            }
+            else if (completedargs.Result is Tuple<int, int, long> result)
+            {
+                lblUpdateStatus.Text = $"{result.Item1} records updated, {result.Item2} records failed.";
+                LogUse(action, result.Item1, result.Item3);
+                if (result.Item2 > 0)
+                {
+                    LogUse("Failed", result.Item2);
+                }
+                if (MessageBox.Show($"{action} completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    RetrieveRecords();
+                }
             }
         }
     }
