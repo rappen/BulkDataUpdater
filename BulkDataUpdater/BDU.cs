@@ -26,7 +26,6 @@
         #region Internal Fields
 
         internal static bool useFriendlyNames = false;
-        internal static Dictionary<string, List<Entity>> views;
 
         #endregion Internal Fields
 
@@ -355,11 +354,6 @@
         private void OpenView()
         {
             EnableControls(false);
-            if (views == null || views.Count == 0)
-            {
-                LoadViews(OpenView);
-                return;
-            }
             var viewselector = new SelectViewDialog(this);
             viewselector.StartPosition = FormStartPosition.CenterParent;
             if (viewselector.ShowDialog() == DialogResult.OK)

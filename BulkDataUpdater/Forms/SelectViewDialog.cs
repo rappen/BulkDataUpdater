@@ -42,6 +42,7 @@
 
         internal void LoadViews(Action action)
         {
+            Cursor = Cursors.WaitCursor;
             Enabled = false;
             host.WorkAsync(new WorkAsyncInfo("Loading views...",
                 (a) =>
@@ -61,9 +62,10 @@
 
                         foreach (var entity in new string[] { "savedquery", "userquery" })
                         {
+                            qex.PageInfo = new PagingInfo();
                             qex.EntityName = entity;
 
-                            singleResult = this.host.Service.RetrieveMultipleAll(qex).Entities;
+                            singleResult = host.Service.RetrieveMultipleAll(qex).Entities;
                             if (singleResult.Count > 0)
                             {
                                 combinedResult.Add(qex.EntityName, singleResult);
@@ -76,16 +78,21 @@
             {
                 PostWorkCallBack = (a) =>
                 {
-                    var allViews = (Dictionary<string, DataCollection<Entity>>)a.Result;
-
-                    foreach (var key in allViews.Keys)
+                    if (a.Error != null)
                     {
-                        ExtractViews(allViews[key]);
+                        host.ShowErrorDialog(a.Error);
                     }
+                    else if (a.Result is Dictionary<string, DataCollection<Entity>> allViews)
+                    {
+                        foreach (var key in allViews.Keys)
+                        {
+                            ExtractViews(allViews[key]);
+                        }
 
-                    entities = views.Keys.Select(x => x.Split('|')[0]).Distinct().ToList();
-
-                    action();
+                        entities = views.Keys.Select(x => x.Split('|')[0]).Distinct().ToList();
+                        action();
+                    }
+                    Cursor = Cursors.Default;
                 }
             });
         }
