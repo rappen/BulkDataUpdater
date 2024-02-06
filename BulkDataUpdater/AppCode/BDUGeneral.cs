@@ -232,23 +232,13 @@ namespace Cinteros.XTB.BulkDataUpdater
             if (currentrecord > numberrecords)
             {
                 var pct = 100 * (currentrecord - numberrecords) / total;
-                result += $"({pct}%) in {TimeSpanToString(sw.Elapsed)}";
+                result += $"({pct}%) in {sw.Elapsed.SmartToString()}";
                 var remaintime = TimeSpan.FromMilliseconds(sw.Elapsed.TotalMilliseconds * total / currentrecord);
-                result += $"\nRemaining Time: {TimeSpanToString(remaintime, false)} Records: {total - currentrecord}";
-                var timeperrecord = (decimal)sw.ElapsedMilliseconds / (currentrecord - numberrecords) / 1000;
-                result += $"\nTime per record: {timeperrecord:0.000}";
+                result += $"\nRemaining Time: {remaintime.SmartToString()} Records: {total - currentrecord}";
+                var timeperrecord = TimeSpan.FromMilliseconds((double)sw.ElapsedMilliseconds / (currentrecord - numberrecords));
+                result += $"\nTime per record: {timeperrecord.SmartToString()}";
             }
             return result;
-        }
-
-        private static string TimeSpanToString(TimeSpan span, bool milli = true)
-        {
-            return
-                (span.TotalDays >= 1 ? $"{span.TotalDays:0}d " : string.Empty) +
-                (span.TotalHours >= 1 ? $"{span.Hours:00}h" : string.Empty) +
-                (span.TotalMinutes >= 1 ? $"{span.Minutes:00}m" : string.Empty) +
-                $"{span.Seconds:00}s" +
-                (milli ? $"{span:fff}ms" : string.Empty);
         }
 
         private static void WaitingExecution(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, JobExecuteOptions executeoptions, string progress)
