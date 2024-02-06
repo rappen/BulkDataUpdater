@@ -221,24 +221,29 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private static string GetProgressDetails(Stopwatch sw, int total, int currentrecord, int numberrecords, int failures)
         {
-            var processing = numberrecords > 1 ? $"{currentrecord - numberrecords + 1}-{currentrecord}" : currentrecord.ToString();
-            var result = $"Processing {processing} of {total} records";
-            result += $"\nCompleted: {currentrecord - numberrecords} ";
-            if (failures > 0)
+            var completed = currentrecord - numberrecords;
+            var remaining = total - completed;
+            var processing = numberrecords > 1 ? $"{completed + 1}-{currentrecord}" : currentrecord.ToString();
+            var result = string.Empty;
+            if (completed > 0)
             {
-                result += $"({failures} failures) ";
-            }
-            //       result += $"({pct}%) in {sw.Elapsed:hh\\:mm\\:ss\\.fff}";
-            if (currentrecord > numberrecords)
-            {
-                var pct = 100 * (currentrecord - numberrecords) / total;
+                result += $"\nCompleted: {completed} ";
+                if (failures > 0)
+                {
+                    result += $"({failures} failures) ";
+                }
+                var pct = 100 * completed / total;
                 result += $"({pct}%) in {sw.Elapsed.SmartToString()}";
-                var remaintime = TimeSpan.FromMilliseconds(sw.Elapsed.TotalMilliseconds * total / currentrecord);
-                result += $"\nRemaining Time: {remaintime.SmartToString()} Records: {total - currentrecord}";
-                var timeperrecord = TimeSpan.FromMilliseconds((double)sw.ElapsedMilliseconds / (currentrecord - numberrecords));
+            }
+            result += $"\nProcessing {processing} of {total} records";
+            if (completed > 0)
+            {
+                var remaintime = TimeSpan.FromMilliseconds(sw.Elapsed.TotalMilliseconds / completed * remaining);
+                result += $"\nRemaining {remaintime.SmartToString()} for {remaining} records";
+                var timeperrecord = TimeSpan.FromMilliseconds((double)sw.ElapsedMilliseconds / completed);
                 result += $"\nTime per record: {timeperrecord.SmartToString()}";
             }
-            return result;
+            return result.Trim();
         }
 
         private static void WaitingExecution(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, JobExecuteOptions executeoptions, string progress)

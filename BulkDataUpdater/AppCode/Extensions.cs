@@ -8,17 +8,17 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         {
             if (span.TotalDays >= 1)
             {
-                return $"{span.TotalDays:0}d {span.Hours:00}:{span.Minutes:00} (d hh:mm)";
+                return $"{span.TotalDays:0} {span.Hours:00}:{span.Minutes:00} days";
             }
             if (span.TotalHours >= 1)
             {
-                return $"{span.Hours:0}:{span.Minutes:00} (hh:mm)";
+                return $"{span.Hours:0}:{span.Minutes:00} hrs";
             }
             if (span.TotalMinutes >= 1)
             {
-                return $"{span.Minutes:0}:{span.Seconds:00} (mm:ss)";
+                return $"{span.Minutes:0}:{span.Seconds:00} mins";
             }
-            return $"{span.Seconds:0}.{span:fff} (ss.fff)";
+            return $"{span.Seconds:0}.{span:fff} secs";
         }
     }
 }
