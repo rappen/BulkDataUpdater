@@ -183,17 +183,6 @@
                                 (updateAttributes.OnForm && IsOnAnyForm(fetch.Entity.Name, attribute.LogicalName)) ||
                                 (updateAttributes.OnView && IsOnAnyView(fetch.Entity.Name, attribute.LogicalName));
                         }
-                        //if (!showAttributesAll)
-                        //{
-                        //    if (!string.IsNullOrEmpty(attribute.AttributeOf)) { continue; }
-                        //    if (!showAttributesManaged && attribute.IsManaged == true) { continue; }
-                        //    if (!showAttributesUnmanaged && attribute.IsManaged == false) { continue; }
-                        //    if (!showAttributesCustomizable && attribute.IsCustomizable.Value) { continue; }
-                        //    if (!showAttributesUncustomizable && !attribute.IsCustomizable.Value) { continue; }
-                        //    if (!showAttributesStandard && attribute.IsCustomAttribute == false) { continue; }
-                        //    if (!showAttributesCustom && attribute.IsCustomAttribute == true) { continue; }
-                        //    if (showAttributesOnlyValidAF && attribute.IsValidForAdvancedFind.Value == false) { continue; }
-                        //}
                         if (yes)
                         {
                             result.Add(attribute);
@@ -470,13 +459,6 @@
             fetchResulCount = settings.FetchResultCount;
             tsbFriendly.Checked = settings.Friendly;
             tsbRaw.Checked = !settings.Friendly;
-            //tsmiAttributesManaged.Checked = settings.AttributesManaged;
-            //tsmiAttributesUnmanaged.Checked = settings.AttributesUnmanaged;
-            //tsmiAttributesCustomizable.Checked = settings.AttributesCustomizable;
-            //tsmiAttributesUncustomizable.Checked = settings.AttributesUncustomizable;
-            //tsmiAttributesCustom.Checked = settings.AttributesCustom;
-            //tsmiAttributesStandard.Checked = settings.AttributesStandard;
-            //tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
             tsbFriendly_Click(null, null);
             InitializeTab();
         }
@@ -564,13 +546,6 @@
                 UpdateAttributes = updateAttributes ?? new UpdateAttributes(),
                 FetchResultCount = fetchResulCount,
                 Friendly = tsbFriendly.Checked,
-                //AttributesManaged = tsmiAttributesManaged.Checked,
-                //AttributesUnmanaged = tsmiAttributesUnmanaged.Checked,
-                //AttributesCustomizable = tsmiAttributesCustomizable.Checked,
-                //AttributesUncustomizable = tsmiAttributesUncustomizable.Checked,
-                //AttributesCustom = tsmiAttributesCustom.Checked,
-                //AttributesStandard = tsmiAttributesStandard.Checked,
-                //AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
             };
             settings.Job.Info = null;
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
