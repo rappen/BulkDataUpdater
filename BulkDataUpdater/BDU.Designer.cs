@@ -30,12 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbOpenJob = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveJob = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tsbFriendly = new System.Windows.Forms.ToolStripButton();
             this.tsbRaw = new System.Windows.Forms.ToolStripButton();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
@@ -135,7 +136,6 @@
             this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.tmCalc = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
             this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
             this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
@@ -231,6 +231,12 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(48, 36);
+            this.toolStripLabel1.Text = "Display:";
+            // 
             // tsbFriendly
             // 
             this.tsbFriendly.BackColor = System.Drawing.SystemColors.Window;
@@ -279,6 +285,7 @@
             this.tsbCancel.Name = "tsbCancel";
             this.tsbCancel.Size = new System.Drawing.Size(79, 36);
             this.tsbCancel.Text = "Cancel";
+            this.tsbCancel.ToolTipText = "Cancel if it takes too long time...";
             this.tsbCancel.Click += new System.EventHandler(this.tsbCancel_Click);
             // 
             // toolStripSeparator17
@@ -496,7 +503,7 @@
             this.gb2attribute.Size = new System.Drawing.Size(336, 212);
             this.gb2attribute.TabIndex = 35;
             this.gb2attribute.TabStop = false;
-            this.gb2attribute.Text = "Select attribute to update";
+            this.gb2attribute.Text = "Select column to update";
             // 
             // panUpdTextMulti
             // 
@@ -645,7 +652,7 @@
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(109, 23);
             this.btnAdd.TabIndex = 35;
-            this.btnAdd.Text = "Add attribute";
+            this.btnAdd.Text = "Add column";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
@@ -1034,6 +1041,7 @@
             // 
             // tabUpdate
             // 
+            this.tabUpdate.BackColor = System.Drawing.SystemColors.Window;
             this.tabUpdate.Controls.Add(this.splitContainer2);
             this.tabUpdate.Controls.Add(this.panel2);
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
@@ -1042,7 +1050,6 @@
             this.tabUpdate.Size = new System.Drawing.Size(342, 422);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
-            this.tabUpdate.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
             // 
@@ -1147,6 +1154,7 @@
             // 
             // tabAssign
             // 
+            this.tabAssign.BackColor = System.Drawing.SystemColors.Window;
             this.tabAssign.Controls.Add(this.textBox1);
             this.tabAssign.Controls.Add(this.btnAssignSelect);
             this.tabAssign.Controls.Add(this.txtAssignEntity);
@@ -1159,7 +1167,6 @@
             this.tabAssign.Size = new System.Drawing.Size(342, 422);
             this.tabAssign.TabIndex = 4;
             this.tabAssign.Text = "Assign";
-            this.tabAssign.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
@@ -1217,6 +1224,7 @@
             // 
             // tabSetState
             // 
+            this.tabSetState.BackColor = System.Drawing.SystemColors.Window;
             this.tabSetState.Controls.Add(this.textBox2);
             this.tabSetState.Controls.Add(this.panQualifyLead);
             this.tabSetState.Controls.Add(this.panel3);
@@ -1226,7 +1234,6 @@
             this.tabSetState.Size = new System.Drawing.Size(342, 422);
             this.tabSetState.TabIndex = 3;
             this.tabSetState.Text = "Set State";
-            this.tabSetState.UseVisualStyleBackColor = true;
             // 
             // textBox2
             // 
@@ -1353,6 +1360,7 @@
             // 
             // tabDelete
             // 
+            this.tabDelete.BackColor = System.Drawing.SystemColors.Window;
             this.tabDelete.Controls.Add(this.txtDeleteWarning);
             this.tabDelete.Controls.Add(this.lblDeleteHeader);
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
@@ -1361,7 +1369,6 @@
             this.tabDelete.Size = new System.Drawing.Size(342, 422);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
-            this.tabDelete.UseVisualStyleBackColor = true;
             // 
             // txtDeleteWarning
             // 
@@ -1395,20 +1402,14 @@
             this.tmCalc.Interval = 1000;
             this.tmCalc.Tick += new System.EventHandler(this.tmCalc_Tick);
             // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(48, 36);
-            this.toolStripLabel1.Text = "Display:";
-            // 
             // crmGridView1
             // 
             this.crmGridView1.AllowUserToAddRows = false;
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
@@ -1453,6 +1454,7 @@
             // 
             this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
             this.xrmAssignText.Column = null;
             this.xrmAssignText.DisplayFormat = "";
             this.xrmAssignText.Location = new System.Drawing.Point(17, 123);
