@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
 {
@@ -18,7 +19,20 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             {
                 return $"{span.Minutes:0}:{span.Seconds:00} mins";
             }
-            return $"{span.Seconds:0}.{span:fff} secs";
+            if (span.TotalSeconds >= 1)
+            {
+                return $"{span.Seconds:0}.{span:fff} secs";
+            }
+            return $"{span.TotalMilliseconds:0} ms";
+        }
+
+        internal static string AttributeValue(this XmlNode node, string key)
+        {
+            if (node != null && node.Attributes != null && node.Attributes[key] is XmlAttribute attr)
+            {
+                return attr.Value;
+            }
+            return string.Empty;
         }
     }
 }

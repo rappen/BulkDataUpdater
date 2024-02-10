@@ -4,15 +4,22 @@ namespace Cinteros.XTB.BulkDataUpdater
 {
     public class Settings
     {
-        public bool AttributesCustom { get; set; } = true;
-        public bool AttributesCustomizable { get; set; } = true;
-        public bool AttributesManaged { get; set; } = true;
-        public bool AttributesOnlyValidAF { get; set; } = false;
-        public bool AttributesStandard { get; set; } = true;
-        public bool AttributesUncustomizable { get; set; } = true;
-        public bool AttributesUnmanaged { get; set; } = true;
         public BDUJob Job { get; set; } = new BDUJob();
         public int FetchResultCount { get; set; }
         public bool Friendly { get; set; } = false;
+        public UpdateAttributes UpdateAttributes { get; set; } = new UpdateAttributes();
+    }
+
+    public class UpdateAttributes
+    {
+        public bool Everything { get; set; } = true;
+        public bool Required { get; set; } = false;
+        public bool Recommended { get; set; } = false;
+        public bool OnForm { get; set; } = false;
+        public bool OnView { get; set; } = false;
+        public bool InQuery { get; set; } = true;
+        public bool CombinationAnd { get; set; } = false;
+        public bool UnallowedUpdate { get; set; } = false;
+        public bool ImportSequenceNumber { get; set; } = true;
     }
 }

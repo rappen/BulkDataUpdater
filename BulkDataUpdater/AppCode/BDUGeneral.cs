@@ -158,6 +158,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             records = result;
                             fetchResulCount = records.Entities.Count;
                         }
+                        entitymeta = entities.FirstOrDefault(e => e.LogicalName == records?.EntityName);
                     }
                     RetrieveRecordsReady();
                 },
@@ -178,6 +179,8 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     job = new BDUJob();
                 }
+                isOnForms = null;
+                isOnViews = null;
                 lblRecords.Text = $"{records.Entities.Count} records of entity {records.EntityName} loaded";
                 crmGridView1.Service = Service;
                 crmGridView1.LayoutXML = job.LayoutXML;

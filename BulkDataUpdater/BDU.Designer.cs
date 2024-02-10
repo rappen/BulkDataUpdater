@@ -30,28 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbOpenJob = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveJob = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbOptions = new System.Windows.Forms.ToolStripDropDownButton();
-            this.tsmiFriendly = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiShowAttributes = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiAttributesAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiAttributesManaged = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiAttributesUnmanaged = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiAttributesCustomizable = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiAttributesUncustomizable = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiAttributesStandard = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiAttributesCustom = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiAttributesOnlyValidAF = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbFriendly = new System.Windows.Forms.ToolStripButton();
+            this.tsbRaw = new System.Windows.Forms.ToolStripButton();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCancel = new System.Windows.Forms.ToolStripButton();
@@ -85,13 +71,12 @@
             this.panUpdButton = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.panUpdLookup = new System.Windows.Forms.Panel();
-            this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
-            this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.btnLookupValue = new System.Windows.Forms.Button();
             this.panUpdValue = new System.Windows.Forms.Panel();
             this.panUpdAction = new System.Windows.Forms.Panel();
             this.rbCalculate = new System.Windows.Forms.RadioButton();
             this.panUpdAttribute = new System.Windows.Forms.Panel();
+            this.btnUpdateAttributeOptions = new System.Windows.Forms.Button();
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.gbExecute = new System.Windows.Forms.GroupBox();
             this.panBatchOption = new System.Windows.Forms.Panel();
@@ -109,7 +94,6 @@
             this.lblUpdateStatus = new System.Windows.Forms.Label();
             this.btnExecute = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbIncludeSelected = new System.Windows.Forms.RadioButton();
             this.rbIncludeAll = new System.Windows.Forms.RadioButton();
@@ -134,8 +118,6 @@
             this.txtAssignEntity = new System.Windows.Forms.TextBox();
             this.lblAssignHeader = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
-            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panQualifyLead = new System.Windows.Forms.Panel();
@@ -152,6 +134,13 @@
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.tmCalc = new System.Windows.Forms.Timer(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
+            this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
+            this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
+            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
+            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.toolStripMain.SuspendLayout();
@@ -169,7 +158,6 @@
             this.panBatchOption.SuspendLayout();
             this.panWaitBetween.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -188,6 +176,7 @@
             this.panQualifyLead.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabDelete.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -204,7 +193,9 @@
             this.tsbOpenJob,
             this.tsbSaveJob,
             this.toolStripSeparator1,
-            this.tsbOptions,
+            this.toolStripLabel1,
+            this.tsbFriendly,
+            this.tsbRaw,
             this.tslAbout,
             this.toolStripSeparator2,
             this.tsbCancel,
@@ -240,154 +231,30 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
             // 
-            // tsbOptions
+            // tsbFriendly
             // 
-            this.tsbOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFriendly,
-            this.toolStripSeparator12,
-            this.tsmiShowAttributes});
-            this.tsbOptions.Image = ((System.Drawing.Image)(resources.GetObject("tsbOptions.Image")));
-            this.tsbOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbOptions.Name = "tsbOptions";
-            this.tsbOptions.Size = new System.Drawing.Size(94, 36);
-            this.tsbOptions.Text = "Options";
+            this.tsbFriendly.BackColor = System.Drawing.SystemColors.Window;
+            this.tsbFriendly.Checked = true;
+            this.tsbFriendly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbFriendly.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tsbFriendly.Image = ((System.Drawing.Image)(resources.GetObject("tsbFriendly.Image")));
+            this.tsbFriendly.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbFriendly.Name = "tsbFriendly";
+            this.tsbFriendly.Size = new System.Drawing.Size(85, 36);
+            this.tsbFriendly.Text = "Friendly";
+            this.tsbFriendly.ToolTipText = "Friendly columns and data will be shown";
+            this.tsbFriendly.Click += new System.EventHandler(this.tsbFriendly_Click);
             // 
-            // tsmiFriendly
+            // tsbRaw
             // 
-            this.tsmiFriendly.CheckOnClick = true;
-            this.tsmiFriendly.Name = "tsmiFriendly";
-            this.tsmiFriendly.Size = new System.Drawing.Size(156, 22);
-            this.tsmiFriendly.Text = "Friendly names";
-            this.tsmiFriendly.Click += new System.EventHandler(this.tsmiFriendly_Click);
-            // 
-            // toolStripSeparator12
-            // 
-            this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(153, 6);
-            // 
-            // tsmiShowAttributes
-            // 
-            this.tsmiShowAttributes.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAttributesAll,
-            this.toolStripSeparator13,
-            this.tsmiAttributesManaged,
-            this.tsmiAttributesUnmanaged,
-            this.toolStripSeparator14,
-            this.tsmiAttributesCustomizable,
-            this.tsmiAttributesUncustomizable,
-            this.toolStripSeparator15,
-            this.tsmiAttributesStandard,
-            this.tsmiAttributesCustom,
-            this.toolStripSeparator16,
-            this.tsmiAttributesOnlyValidAF});
-            this.tsmiShowAttributes.Name = "tsmiShowAttributes";
-            this.tsmiShowAttributes.Size = new System.Drawing.Size(156, 22);
-            this.tsmiShowAttributes.Text = "Show attributes";
-            // 
-            // tsmiAttributesAll
-            // 
-            this.tsmiAttributesAll.Checked = true;
-            this.tsmiAttributesAll.CheckOnClick = true;
-            this.tsmiAttributesAll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsmiAttributesAll.Name = "tsmiAttributesAll";
-            this.tsmiAttributesAll.Size = new System.Drawing.Size(195, 22);
-            this.tsmiAttributesAll.Text = "All";
-            this.tsmiAttributesAll.Click += new System.EventHandler(this.tsmiAttributes_Click);
-            // 
-            // toolStripSeparator13
-            // 
-            this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(192, 6);
-            // 
-            // tsmiAttributesManaged
-            // 
-            this.tsmiAttributesManaged.Checked = true;
-            this.tsmiAttributesManaged.CheckOnClick = true;
-            this.tsmiAttributesManaged.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsmiAttributesManaged.Enabled = false;
-            this.tsmiAttributesManaged.Name = "tsmiAttributesManaged";
-            this.tsmiAttributesManaged.Size = new System.Drawing.Size(195, 22);
-            this.tsmiAttributesManaged.Text = "Managed";
-            this.tsmiAttributesManaged.Click += new System.EventHandler(this.tsmiAttributes_Click);
-            // 
-            // tsmiAttributesUnmanaged
-            // 
-            this.tsmiAttributesUnmanaged.Checked = true;
-            this.tsmiAttributesUnmanaged.CheckOnClick = true;
-            this.tsmiAttributesUnmanaged.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsmiAttributesUnmanaged.Enabled = false;
-            this.tsmiAttributesUnmanaged.Name = "tsmiAttributesUnmanaged";
-            this.tsmiAttributesUnmanaged.Size = new System.Drawing.Size(195, 22);
-            this.tsmiAttributesUnmanaged.Text = "Unmanaged";
-            this.tsmiAttributesUnmanaged.Click += new System.EventHandler(this.tsmiAttributes_Click);
-            // 
-            // toolStripSeparator14
-            // 
-            this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(192, 6);
-            // 
-            // tsmiAttributesCustomizable
-            // 
-            this.tsmiAttributesCustomizable.Checked = true;
-            this.tsmiAttributesCustomizable.CheckOnClick = true;
-            this.tsmiAttributesCustomizable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsmiAttributesCustomizable.Enabled = false;
-            this.tsmiAttributesCustomizable.Name = "tsmiAttributesCustomizable";
-            this.tsmiAttributesCustomizable.Size = new System.Drawing.Size(195, 22);
-            this.tsmiAttributesCustomizable.Text = "Customizable";
-            this.tsmiAttributesCustomizable.Click += new System.EventHandler(this.tsmiAttributes_Click);
-            // 
-            // tsmiAttributesUncustomizable
-            // 
-            this.tsmiAttributesUncustomizable.Checked = true;
-            this.tsmiAttributesUncustomizable.CheckOnClick = true;
-            this.tsmiAttributesUncustomizable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsmiAttributesUncustomizable.Enabled = false;
-            this.tsmiAttributesUncustomizable.Name = "tsmiAttributesUncustomizable";
-            this.tsmiAttributesUncustomizable.Size = new System.Drawing.Size(195, 22);
-            this.tsmiAttributesUncustomizable.Text = "Uncustomizable";
-            this.tsmiAttributesUncustomizable.Click += new System.EventHandler(this.tsmiAttributes_Click);
-            // 
-            // toolStripSeparator15
-            // 
-            this.toolStripSeparator15.Name = "toolStripSeparator15";
-            this.toolStripSeparator15.Size = new System.Drawing.Size(192, 6);
-            // 
-            // tsmiAttributesStandard
-            // 
-            this.tsmiAttributesStandard.Checked = true;
-            this.tsmiAttributesStandard.CheckOnClick = true;
-            this.tsmiAttributesStandard.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsmiAttributesStandard.Enabled = false;
-            this.tsmiAttributesStandard.Name = "tsmiAttributesStandard";
-            this.tsmiAttributesStandard.Size = new System.Drawing.Size(195, 22);
-            this.tsmiAttributesStandard.Text = "Standard";
-            this.tsmiAttributesStandard.Click += new System.EventHandler(this.tsmiAttributes_Click);
-            // 
-            // tsmiAttributesCustom
-            // 
-            this.tsmiAttributesCustom.Checked = true;
-            this.tsmiAttributesCustom.CheckOnClick = true;
-            this.tsmiAttributesCustom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsmiAttributesCustom.Enabled = false;
-            this.tsmiAttributesCustom.Name = "tsmiAttributesCustom";
-            this.tsmiAttributesCustom.Size = new System.Drawing.Size(195, 22);
-            this.tsmiAttributesCustom.Text = "Custom";
-            this.tsmiAttributesCustom.Click += new System.EventHandler(this.tsmiAttributes_Click);
-            // 
-            // toolStripSeparator16
-            // 
-            this.toolStripSeparator16.Name = "toolStripSeparator16";
-            this.toolStripSeparator16.Size = new System.Drawing.Size(192, 6);
-            // 
-            // tsmiAttributesOnlyValidAF
-            // 
-            this.tsmiAttributesOnlyValidAF.CheckOnClick = true;
-            this.tsmiAttributesOnlyValidAF.Enabled = false;
-            this.tsmiAttributesOnlyValidAF.Name = "tsmiAttributesOnlyValidAF";
-            this.tsmiAttributesOnlyValidAF.Size = new System.Drawing.Size(195, 22);
-            this.tsmiAttributesOnlyValidAF.Text = "Only valid for Adv.Find";
-            this.tsmiAttributesOnlyValidAF.Click += new System.EventHandler(this.tsmiAttributes_Click);
+            this.tsbRaw.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tsbRaw.Image = ((System.Drawing.Image)(resources.GetObject("tsbRaw.Image")));
+            this.tsbRaw.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRaw.Name = "tsbRaw";
+            this.tsbRaw.Size = new System.Drawing.Size(65, 36);
+            this.tsbRaw.Text = "Raw";
+            this.tsbRaw.ToolTipText = "LogicalName columns and guids, numbers etc data will be shown";
+            this.tsbRaw.Click += new System.EventHandler(this.tsbFriendly_Click);
             // 
             // tslAbout
             // 
@@ -426,6 +293,7 @@
             this.tslDoc.Name = "tslDoc";
             this.tslDoc.Size = new System.Drawing.Size(122, 36);
             this.tslDoc.Text = "Documentation";
+            this.tslDoc.ToolTipText = "https://jonasr.app/BDU/";
             this.tslDoc.Click += new System.EventHandler(this.tslDoc_Click);
             // 
             // btnGetEdit
@@ -463,7 +331,7 @@
             this.cmbAttribute.FormattingEnabled = true;
             this.cmbAttribute.Location = new System.Drawing.Point(12, 3);
             this.cmbAttribute.Name = "cmbAttribute";
-            this.cmbAttribute.Size = new System.Drawing.Size(303, 21);
+            this.cmbAttribute.Size = new System.Drawing.Size(269, 21);
             this.cmbAttribute.Sorted = true;
             this.cmbAttribute.TabIndex = 1;
             this.cmbAttribute.Tag = "attribute";
@@ -557,6 +425,7 @@
             this.btnRefresh.Tag = "Refresh";
             this.btnRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.toolTip1.SetToolTip(this.btnRefresh, "Reload the results");
             this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnGetRecords_Click);
             // 
@@ -648,7 +517,7 @@
             this.txtValueMultiline.Multiline = true;
             this.txtValueMultiline.Name = "txtValueMultiline";
             this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueMultiline.Size = new System.Drawing.Size(303, 53);
+            this.txtValueMultiline.Size = new System.Drawing.Size(303, 62);
             this.txtValueMultiline.TabIndex = 36;
             this.txtValueMultiline.TextChanged += new System.EventHandler(this.genericInputChanged);
             // 
@@ -689,6 +558,7 @@
             this.linkXRMTRlogo.Name = "linkXRMTRlogo";
             this.linkXRMTRlogo.Size = new System.Drawing.Size(21, 21);
             this.linkXRMTRlogo.TabIndex = 40;
+            this.toolTip1.SetToolTip(this.linkXRMTRlogo, "Open XRM Token Runner to get help to build calculation");
             this.linkXRMTRlogo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_XRMTRname_LinkClicked);
             // 
             // txtCalcPreview
@@ -696,7 +566,7 @@
             this.txtCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCalcPreview.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCalcPreview.Location = new System.Drawing.Point(12, 31);
+            this.txtCalcPreview.Location = new System.Drawing.Point(12, 40);
             this.txtCalcPreview.Name = "txtCalcPreview";
             this.txtCalcPreview.ReadOnly = true;
             this.txtCalcPreview.Size = new System.Drawing.Size(269, 20);
@@ -707,10 +577,11 @@
             // 
             this.btnCalcHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCalcHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnCalcHelp.Image")));
-            this.btnCalcHelp.Location = new System.Drawing.Point(287, 30);
+            this.btnCalcHelp.Location = new System.Drawing.Point(287, 39);
             this.btnCalcHelp.Name = "btnCalcHelp";
             this.btnCalcHelp.Size = new System.Drawing.Size(28, 22);
             this.btnCalcHelp.TabIndex = 38;
+            this.toolTip1.SetToolTip(this.btnCalcHelp, "Show docs on XRM Tokens");
             this.btnCalcHelp.UseVisualStyleBackColor = true;
             this.btnCalcHelp.Click += new System.EventHandler(this.btnCalcHelp_Click);
             // 
@@ -731,7 +602,7 @@
             this.txtValueCalc.Multiline = true;
             this.txtValueCalc.Name = "txtValueCalc";
             this.txtValueCalc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueCalc.Size = new System.Drawing.Size(303, 9);
+            this.txtValueCalc.Size = new System.Drawing.Size(303, 18);
             this.txtValueCalc.TabIndex = 36;
             this.txtValueCalc.TextChanged += new System.EventHandler(this.txtValueCalc_TextChanged);
             // 
@@ -790,26 +661,6 @@
             this.panUpdLookup.TabIndex = 4;
             this.panUpdLookup.Visible = false;
             // 
-            // cdsLookupValue
-            // 
-            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
-            this.cdsLookupValue.Column = null;
-            this.cdsLookupValue.DisplayFormat = "";
-            this.cdsLookupValue.Location = new System.Drawing.Point(12, 3);
-            this.cdsLookupValue.Name = "cdsLookupValue";
-            this.cdsLookupValue.RecordHost = this.xrmRecordAttribute;
-            this.cdsLookupValue.Size = new System.Drawing.Size(269, 20);
-            this.cdsLookupValue.TabIndex = 0;
-            // 
-            // xrmRecordAttribute
-            // 
-            this.xrmRecordAttribute.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.xrmRecordAttribute.LogicalName = null;
-            this.xrmRecordAttribute.Record = null;
-            this.xrmRecordAttribute.Service = null;
-            // 
             // btnLookupValue
             // 
             this.btnLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -818,6 +669,7 @@
             this.btnLookupValue.Name = "btnLookupValue";
             this.btnLookupValue.Size = new System.Drawing.Size(28, 22);
             this.btnLookupValue.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.btnLookupValue, "Lookup a record");
             this.btnLookupValue.UseVisualStyleBackColor = true;
             this.btnLookupValue.Click += new System.EventHandler(this.btnLookupValue_Click);
             // 
@@ -856,12 +708,25 @@
             // 
             // panUpdAttribute
             // 
+            this.panUpdAttribute.Controls.Add(this.btnUpdateAttributeOptions);
             this.panUpdAttribute.Controls.Add(this.cmbAttribute);
             this.panUpdAttribute.Dock = System.Windows.Forms.DockStyle.Top;
             this.panUpdAttribute.Location = new System.Drawing.Point(3, 16);
             this.panUpdAttribute.Name = "panUpdAttribute";
             this.panUpdAttribute.Size = new System.Drawing.Size(330, 27);
             this.panUpdAttribute.TabIndex = 1;
+            // 
+            // btnUpdateAttributeOptions
+            // 
+            this.btnUpdateAttributeOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUpdateAttributeOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdateAttributeOptions.Image")));
+            this.btnUpdateAttributeOptions.Location = new System.Drawing.Point(287, 2);
+            this.btnUpdateAttributeOptions.Name = "btnUpdateAttributeOptions";
+            this.btnUpdateAttributeOptions.Size = new System.Drawing.Size(28, 23);
+            this.btnUpdateAttributeOptions.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.btnUpdateAttributeOptions, "Options of which attributes to show");
+            this.btnUpdateAttributeOptions.UseVisualStyleBackColor = true;
+            this.btnUpdateAttributeOptions.Click += new System.EventHandler(this.btnUpdateAttributeOptions_Click);
             // 
             // chkIgnoreErrors
             // 
@@ -1071,34 +936,6 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
             // 
-            // crmGridView1
-            // 
-            this.crmGridView1.AllowUserToAddRows = false;
-            this.crmGridView1.AllowUserToDeleteRows = false;
-            this.crmGridView1.AllowUserToOrderColumns = true;
-            this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.crmGridView1.ColumnOrder = "";
-            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crmGridView1.FilterColumns = "";
-            this.crmGridView1.LayoutXML = null;
-            this.crmGridView1.Location = new System.Drawing.Point(3, 54);
-            this.crmGridView1.Name = "crmGridView1";
-            this.crmGridView1.ReadOnly = true;
-            this.crmGridView1.RowHeadersVisible = false;
-            this.crmGridView1.RowHeadersWidth = 72;
-            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.crmGridView1.Service = null;
-            this.crmGridView1.ShowFriendlyNames = true;
-            this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(619, 485);
-            this.crmGridView1.TabIndex = 2;
-            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
-            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.rbIncludeSelected);
@@ -1174,7 +1011,7 @@
             // 
             this.chkSetState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkSetState.AutoSize = true;
-            this.chkSetState.Location = new System.Drawing.Point(-264, 169);
+            this.chkSetState.Location = new System.Drawing.Point(-264, 802);
             this.chkSetState.Name = "chkSetState";
             this.chkSetState.Size = new System.Drawing.Size(102, 17);
             this.chkSetState.TabIndex = 18;
@@ -1378,27 +1215,6 @@
             this.label6.TabIndex = 7;
             this.label6.Text = "Select User or Team";
             // 
-            // xrmAssignText
-            // 
-            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.xrmAssignText.Column = null;
-            this.xrmAssignText.DisplayFormat = "";
-            this.xrmAssignText.Location = new System.Drawing.Point(17, 123);
-            this.xrmAssignText.Name = "xrmAssignText";
-            this.xrmAssignText.ReadOnly = true;
-            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
-            this.xrmAssignText.Size = new System.Drawing.Size(274, 20);
-            this.xrmAssignText.TabIndex = 12;
-            // 
-            // xrmRecordAssign
-            // 
-            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.xrmRecordAssign.LogicalName = null;
-            this.xrmRecordAssign.Record = null;
-            this.xrmRecordAssign.Service = null;
-            this.xrmRecordAssign.ColumnValueChanged += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.xrmRecordAssign_ColumnValueChanged);
-            // 
             // tabSetState
             // 
             this.tabSetState.Controls.Add(this.textBox2);
@@ -1579,6 +1395,81 @@
             this.tmCalc.Interval = 1000;
             this.tmCalc.Tick += new System.EventHandler(this.tmCalc_Tick);
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(48, 36);
+            this.toolStripLabel1.Text = "Display:";
+            // 
+            // crmGridView1
+            // 
+            this.crmGridView1.AllowUserToAddRows = false;
+            this.crmGridView1.AllowUserToDeleteRows = false;
+            this.crmGridView1.AllowUserToOrderColumns = true;
+            this.crmGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.crmGridView1.ColumnOrder = "";
+            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crmGridView1.FilterColumns = "";
+            this.crmGridView1.LayoutXML = null;
+            this.crmGridView1.Location = new System.Drawing.Point(3, 54);
+            this.crmGridView1.Name = "crmGridView1";
+            this.crmGridView1.ReadOnly = true;
+            this.crmGridView1.RowHeadersVisible = false;
+            this.crmGridView1.RowHeadersWidth = 72;
+            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.crmGridView1.Service = null;
+            this.crmGridView1.ShowFriendlyNames = true;
+            this.crmGridView1.ShowIdColumn = false;
+            this.crmGridView1.Size = new System.Drawing.Size(619, 485);
+            this.crmGridView1.TabIndex = 2;
+            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
+            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
+            // 
+            // cdsLookupValue
+            // 
+            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
+            this.cdsLookupValue.Column = null;
+            this.cdsLookupValue.DisplayFormat = "";
+            this.cdsLookupValue.Location = new System.Drawing.Point(12, 3);
+            this.cdsLookupValue.Name = "cdsLookupValue";
+            this.cdsLookupValue.RecordHost = this.xrmRecordAttribute;
+            this.cdsLookupValue.Size = new System.Drawing.Size(269, 20);
+            this.cdsLookupValue.TabIndex = 0;
+            // 
+            // xrmRecordAttribute
+            // 
+            this.xrmRecordAttribute.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.xrmRecordAttribute.LogicalName = null;
+            this.xrmRecordAttribute.Record = null;
+            this.xrmRecordAttribute.Service = null;
+            // 
+            // xrmAssignText
+            // 
+            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.xrmAssignText.Column = null;
+            this.xrmAssignText.DisplayFormat = "";
+            this.xrmAssignText.Location = new System.Drawing.Point(17, 123);
+            this.xrmAssignText.Name = "xrmAssignText";
+            this.xrmAssignText.ReadOnly = true;
+            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
+            this.xrmAssignText.Size = new System.Drawing.Size(274, 20);
+            this.xrmAssignText.TabIndex = 12;
+            // 
+            // xrmRecordAssign
+            // 
+            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.xrmRecordAssign.LogicalName = null;
+            this.xrmRecordAssign.Record = null;
+            this.xrmRecordAssign.Service = null;
+            this.xrmRecordAssign.ColumnValueChanged += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.xrmRecordAssign_ColumnValueChanged);
+            // 
             // cdsLookupDialog
             // 
             this.cdsLookupDialog.AdditionalViews = ((System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<Microsoft.Xrm.Sdk.Entity>>)(resources.GetObject("cdsLookupDialog.AdditionalViews")));
@@ -1637,7 +1528,6 @@
             this.panWaitBetween.ResumeLayout(false);
             this.panWaitBetween.PerformLayout();
             this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1664,6 +1554,7 @@
             this.panel3.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1673,22 +1564,6 @@
 
         private System.Windows.Forms.ImageList imageList1;
         internal System.Windows.Forms.ToolStrip toolStripMain;
-        private System.Windows.Forms.ToolStripDropDownButton tsbOptions;
-        private System.Windows.Forms.ToolStripMenuItem tsmiFriendly;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
-        private System.Windows.Forms.ToolStripMenuItem tsmiShowAttributes;
-        internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesAll;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
-        internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesManaged;
-        internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesUnmanaged;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
-        internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesCustomizable;
-        private System.Windows.Forms.ToolStripMenuItem tsmiAttributesUncustomizable;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
-        private System.Windows.Forms.ToolStripMenuItem tsmiAttributesStandard;
-        internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesCustom;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
-        internal System.Windows.Forms.ToolStripMenuItem tsmiAttributesOnlyValidAF;
         private System.Windows.Forms.Button btnGetEdit;
         private System.Windows.Forms.Label lblRecords;
         private System.Windows.Forms.ComboBox cmbAttribute;
@@ -1794,5 +1669,10 @@
         private System.Windows.Forms.RadioButton rbBatchMultipleRequests;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button btnUpdateAttributeOptions;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolStripButton tsbFriendly;
+        private System.Windows.Forms.ToolStripButton tsbRaw;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }

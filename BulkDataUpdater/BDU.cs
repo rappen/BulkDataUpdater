@@ -1,6 +1,7 @@
 ﻿namespace Cinteros.XTB.BulkDataUpdater
 {
     using AppCode;
+    using Cinteros.XTB.BulkDataUpdater.Forms;
     using McTools.Xrm.Connection;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Metadata;
@@ -21,6 +22,8 @@
     using XrmToolBox;
     using XrmToolBox.Extensibility;
 
+    using HelpFetch = Rappen.XRM.Helpers.FetchXML;
+
     public partial class BulkDataUpdater : PluginControlBase
     {
         #region Internal Fields
@@ -36,28 +39,25 @@
         private AppInsights ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
 
         private static List<EntityMetadata> entities;
+        private static EntityMetadata entitymeta;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
         private BDUJob job;
+        private UpdateAttributes updateAttributes;
 
         private string deleteWarningText;
 
         private int fetchResulCount = -1;
 
         private EntityCollection records;
-        private bool showAttributesAll = true;
-        private bool showAttributesCustom = true;
-        private bool showAttributesCustomizable = true;
-        private bool showAttributesManaged = true;
-        private bool showAttributesOnlyValidAF = true;
-        private bool showAttributesStandard = true;
-        private bool showAttributesUncustomizable = true;
-        private bool showAttributesUnmanaged = true;
         private Entity view;
         private Version currentversion;
         private readonly Version bypasspluginminversion = new Version(9, 2);
 
         private bool working = false;
         private string currentconnection;
+
+        private List<string> isOnForms;
+        private List<string> isOnViews;
 
         #endregion Private Fields
 
@@ -66,7 +66,7 @@
         public BulkDataUpdater()
         {
             InitializeComponent();
-            tslAbout.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString() + " by Jonas Rapp";
+            tslAbout.ToolTipText = $"Version: {Assembly.GetExecutingAssembly().GetName().Version}";
             var prop = Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties.ToList();
             prop.Add("Attributes");
             Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties = prop.ToArray();
@@ -100,7 +100,8 @@
                     splitContainer1.Enabled = enabled;
                     tsbOpenJob.Enabled = !cancel && enabled;
                     tsbSaveJob.Enabled = !cancel && enabled;
-                    tsbOptions.Enabled = !cancel && enabled;
+                    tsbFriendly.Enabled = !cancel && enabled;
+                    tsbRaw.Enabled = !cancel && enabled;
                     tsbCancel.Enabled = cancel;
                     gb1select.Enabled = !cancel && enabled && Service != null;
                     btnRefresh.Enabled = !cancel && gb1select.Enabled && !string.IsNullOrWhiteSpace(job?.FetchXML);
@@ -145,7 +146,14 @@
 
         private List<AttributeMetadata> GetDisplayAttributes(string entityName)
         {
+            bool IsRequired(AttributeMetadata meta)
+            {
+                return (meta.RequiredLevel?.Value == AttributeRequiredLevel.ApplicationRequired ||
+                        meta.RequiredLevel?.Value == AttributeRequiredLevel.SystemRequired) &&
+                       string.IsNullOrEmpty(meta.AttributeOf);
+            }
             var result = new List<AttributeMetadata>();
+            var fetch = HelpFetch.Fetch.FromString(job.FetchXML);
             AttributeMetadata[] attributes = null;
             if (entities?.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
             {
@@ -154,30 +162,178 @@
                 {
                     foreach (var attribute in attributes)
                     {
-                        if (!attribute.IsValidForUpdate.Value == true && attribute.LogicalName != "importsequencenumber")
+                        var yes = updateAttributes.Everything ||
+                            (updateAttributes.ImportSequenceNumber && attribute.LogicalName == "importsequencenumber") ||
+                            (updateAttributes.UnallowedUpdate && !attribute.IsValidForUpdate.Value == true && attribute.LogicalName != "importsequencenumber");
+                        if (updateAttributes.CombinationAnd)
                         {
-                            continue;
+                            yes = yes ||
+                                ((!updateAttributes.Required || IsRequired(attribute)) &&
+                                 (!updateAttributes.Recommended || attribute.RequiredLevel?.Value == AttributeRequiredLevel.Recommended) &&
+                                 (!updateAttributes.InQuery || fetch.Entity.Attributes.Any(a => a.Name == attribute.LogicalName)) &&
+                                 (!updateAttributes.OnForm || IsOnAnyForm(fetch.Entity.Name, attribute.LogicalName)) &&
+                                 (!updateAttributes.OnView || IsOnAnyView(fetch.Entity.Name, attribute.LogicalName)));
                         }
-                        if (attribute.LogicalName == "statecode" || attribute.LogicalName == "statuscode" || attribute.LogicalName == "ownerid")
+                        else
                         {
-                            //            continue;
+                            yes = yes ||
+                                (updateAttributes.Required && IsRequired(attribute)) ||
+                                (updateAttributes.Recommended && attribute.RequiredLevel?.Value == AttributeRequiredLevel.Recommended) ||
+                                (updateAttributes.InQuery && fetch.Entity.Attributes.Any(a => a.Name == attribute.LogicalName)) ||
+                                (updateAttributes.OnForm && IsOnAnyForm(fetch.Entity.Name, attribute.LogicalName)) ||
+                                (updateAttributes.OnView && IsOnAnyView(fetch.Entity.Name, attribute.LogicalName));
                         }
-                        if (!showAttributesAll)
+                        //if (!showAttributesAll)
+                        //{
+                        //    if (!string.IsNullOrEmpty(attribute.AttributeOf)) { continue; }
+                        //    if (!showAttributesManaged && attribute.IsManaged == true) { continue; }
+                        //    if (!showAttributesUnmanaged && attribute.IsManaged == false) { continue; }
+                        //    if (!showAttributesCustomizable && attribute.IsCustomizable.Value) { continue; }
+                        //    if (!showAttributesUncustomizable && !attribute.IsCustomizable.Value) { continue; }
+                        //    if (!showAttributesStandard && attribute.IsCustomAttribute == false) { continue; }
+                        //    if (!showAttributesCustom && attribute.IsCustomAttribute == true) { continue; }
+                        //    if (showAttributesOnlyValidAF && attribute.IsValidForAdvancedFind.Value == false) { continue; }
+                        //}
+                        if (yes)
                         {
-                            if (!string.IsNullOrEmpty(attribute.AttributeOf)) { continue; }
-                            if (!showAttributesManaged && attribute.IsManaged == true) { continue; }
-                            if (!showAttributesUnmanaged && attribute.IsManaged == false) { continue; }
-                            if (!showAttributesCustomizable && attribute.IsCustomizable.Value) { continue; }
-                            if (!showAttributesUncustomizable && !attribute.IsCustomizable.Value) { continue; }
-                            if (!showAttributesStandard && attribute.IsCustomAttribute == false) { continue; }
-                            if (!showAttributesCustom && attribute.IsCustomAttribute == true) { continue; }
-                            if (showAttributesOnlyValidAF && attribute.IsValidForAdvancedFind.Value == false) { continue; }
+                            result.Add(attribute);
                         }
-                        result.Add(attribute);
                     }
                 }
             }
             return result;
+        }
+
+        private bool IsOnAnyForm(string entity, string attribute)
+        {
+            IEnumerable<string> FindCellControlFields(XmlNode node)
+            {
+                var result = new List<string>();
+                if (node.Name == "cell" &&
+                    node.SelectSingleNode("control") is XmlNode control &&
+                    control.AttributeValue("datafieldname") is string field &&
+                    !string.IsNullOrEmpty(field))
+                {
+                    result.Add(field);
+                }
+                node.ChildNodes.Cast<XmlNode>().ToList().ForEach(n => result.AddRange(FindCellControlFields(n)));
+                return result;
+            }
+            if (isOnForms == null)
+            {
+                if (working)
+                {
+                    return false;
+                }
+                working = true;
+                Enabled = false;
+                Cursor = Cursors.WaitCursor;
+                WorkAsync(new WorkAsyncInfo
+                {
+                    Message = "Loading forms...",
+                    Work = (w, a) =>
+                    {
+                        if (Service == null)
+                        {
+                            throw new Exception("Need a connection to load forms.");
+                        }
+                        var query = new QueryExpression("systemform");
+                        query.ColumnSet.AddColumns("name", "type", "formxml");
+                        query.Criteria.AddCondition("objecttypecode", ConditionOperator.Equal, entity);
+                        query.Criteria.AddCondition("formactivationstate", ConditionOperator.Equal, 1);
+                        query.Criteria.AddCondition("formxml", ConditionOperator.NotNull);
+                        a.Result = Service.RetrieveMultipleAll(query);
+                    },
+                    PostWorkCallBack = (a) =>
+                    {
+                        Cursor = Cursors.Default;
+                        if (a.Error != null)
+                        {
+                            ShowErrorDialog(a.Error);
+                        }
+                        else if (a.Result is EntityCollection forms)
+                        {
+                            isOnForms = new List<string>();
+                            foreach (var form in forms.Entities)
+                            {
+                                var formxml = form.GetAttributeValue<string>("formxml");
+                                var nodes = formxml.ToXml().ChildNodes;
+                                foreach (XmlNode node in nodes)
+                                {
+                                    isOnForms.AddRange(FindCellControlFields(node));
+                                }
+                            }
+                            isOnForms = isOnForms.Distinct().ToList();
+                            RefreshAttributes();
+                        }
+                        Enabled = true;
+                        working = false;
+                    }
+                });
+                return false;
+            }
+            return isOnForms.Contains(attribute);
+        }
+
+        private bool IsOnAnyView(string entity, string attribute)
+        {
+            if (isOnViews == null)
+            {
+                if (working)
+                {
+                    return false;
+                }
+                working = true;
+                Enabled = false;
+                Cursor = Cursors.WaitCursor;
+                WorkAsync(new WorkAsyncInfo
+                {
+                    Message = "Loading views...",
+                    Work = (w, a) =>
+                    {
+                        if (Service == null)
+                        {
+                            throw new Exception("Need a connection to load views.");
+                        }
+                        var qexs = new QueryExpression("savedquery");
+                        qexs.ColumnSet = new ColumnSet("name", "returnedtypecode", "layoutxml", "iscustomizable");
+                        qexs.Criteria.AddCondition("returnedtypecode", ConditionOperator.Equal, entity);
+                        qexs.Criteria.AddCondition("statecode", ConditionOperator.Equal, 0);
+                        qexs.Criteria.AddCondition("layoutxml", ConditionOperator.NotNull);
+                        a.Result = Service.RetrieveMultipleAll(qexs);
+                    },
+                    PostWorkCallBack = (a) =>
+                    {
+                        Cursor = Cursors.Default;
+                        if (a.Error != null)
+                        {
+                            ShowErrorDialog(a.Error);
+                        }
+                        else if (a.Result is EntityCollection views)
+                        {
+                            isOnViews = new List<string>();
+                            foreach (var view in views.Entities)
+                            {
+                                var layout = view.GetAttributeValue<string>("layoutxml");
+                                if (layout.ToXml().SelectSingleNode("grid") is XmlElement grid &&
+                                    grid.SelectSingleNode("row") is XmlElement row)
+                                {
+                                    isOnViews.AddRange(row.ChildNodes
+                                        .Cast<XmlNode>()
+                                        .Where(n => n.Name == "cell")
+                                        .Select(c => c.AttributeValue("name")));
+                                }
+                            }
+                            isOnViews = isOnViews.Distinct().ToList();
+                            RefreshAttributes();
+                        }
+                        Enabled = true;
+                        working = false;
+                    }
+                });
+                return false;
+            }
+            return isOnViews.Contains(attribute);
         }
 
         private void GetFromEditor()
@@ -310,17 +466,18 @@
                 settings = new Settings();
             }
             job = settings.Job;
+            updateAttributes = settings.UpdateAttributes;
             fetchResulCount = settings.FetchResultCount;
-            tsmiFriendly.Checked = settings.Friendly;
-            tsmiAttributesManaged.Checked = settings.AttributesManaged;
-            tsmiAttributesUnmanaged.Checked = settings.AttributesUnmanaged;
-            tsmiAttributesCustomizable.Checked = settings.AttributesCustomizable;
-            tsmiAttributesUncustomizable.Checked = settings.AttributesUncustomizable;
-            tsmiAttributesCustom.Checked = settings.AttributesCustom;
-            tsmiAttributesStandard.Checked = settings.AttributesStandard;
-            tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
-            tsmiFriendly_Click(null, null);
-            tsmiAttributes_Click(null, null);
+            tsbFriendly.Checked = settings.Friendly;
+            tsbRaw.Checked = !settings.Friendly;
+            //tsmiAttributesManaged.Checked = settings.AttributesManaged;
+            //tsmiAttributesUnmanaged.Checked = settings.AttributesUnmanaged;
+            //tsmiAttributesCustomizable.Checked = settings.AttributesCustomizable;
+            //tsmiAttributesUncustomizable.Checked = settings.AttributesUncustomizable;
+            //tsmiAttributesCustom.Checked = settings.AttributesCustom;
+            //tsmiAttributesStandard.Checked = settings.AttributesStandard;
+            //tsmiAttributesOnlyValidAF.Checked = settings.AttributesOnlyValidAF;
+            tsbFriendly_Click(null, null);
             InitializeTab();
         }
 
@@ -404,15 +561,16 @@
             var settings = new Settings()
             {
                 Job = job ?? new BDUJob(),
+                UpdateAttributes = updateAttributes ?? new UpdateAttributes(),
                 FetchResultCount = fetchResulCount,
-                Friendly = tsmiFriendly.Checked,
-                AttributesManaged = tsmiAttributesManaged.Checked,
-                AttributesUnmanaged = tsmiAttributesUnmanaged.Checked,
-                AttributesCustomizable = tsmiAttributesCustomizable.Checked,
-                AttributesUncustomizable = tsmiAttributesUncustomizable.Checked,
-                AttributesCustom = tsmiAttributesCustom.Checked,
-                AttributesStandard = tsmiAttributesStandard.Checked,
-                AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
+                Friendly = tsbFriendly.Checked,
+                //AttributesManaged = tsmiAttributesManaged.Checked,
+                //AttributesUnmanaged = tsmiAttributesUnmanaged.Checked,
+                //AttributesCustomizable = tsmiAttributesCustomizable.Checked,
+                //AttributesUncustomizable = tsmiAttributesUncustomizable.Checked,
+                //AttributesCustom = tsmiAttributesCustom.Checked,
+                //AttributesStandard = tsmiAttributesStandard.Checked,
+                //AttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked,
             };
             settings.Job.Info = null;
             SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
@@ -661,52 +819,11 @@
             Process.Start("https://jonasr.app/BDU/");
         }
 
-        private void tsmiAttributes_Click(object sender, EventArgs e)
+        private void tsbFriendly_Click(object sender, EventArgs e)
         {
-            if (sender != tsmiAttributesAll)
-            {
-                tsmiAttributesAll.Checked =
-                    tsmiAttributesManaged.Checked &&
-                    tsmiAttributesUnmanaged.Checked &&
-                    tsmiAttributesCustomizable.Checked &&
-                    tsmiAttributesUncustomizable.Checked &&
-                    tsmiAttributesCustom.Checked &&
-                    tsmiAttributesStandard.Checked &&
-                    !tsmiAttributesOnlyValidAF.Checked;
-            }
-            if (!tsmiAttributesManaged.Checked && !tsmiAttributesUnmanaged.Checked)
-            {   // Neither managed nor unmanaged is not such a good idea...
-                tsmiAttributesUnmanaged.Checked = true;
-            }
-            if (!tsmiAttributesCustomizable.Checked && !tsmiAttributesUncustomizable.Checked)
-            {   // Neither customizable nor uncustomizable is not such a good idea...
-                tsmiAttributesCustomizable.Checked = true;
-            }
-            if (!tsmiAttributesCustom.Checked && !tsmiAttributesStandard.Checked)
-            {   // Neither custom nor standard is not such a good idea...
-                tsmiAttributesStandard.Checked = true;
-            }
-            tsmiAttributesManaged.Enabled = !tsmiAttributesAll.Checked;
-            tsmiAttributesUnmanaged.Enabled = !tsmiAttributesAll.Checked;
-            tsmiAttributesCustomizable.Enabled = !tsmiAttributesAll.Checked;
-            tsmiAttributesUncustomizable.Enabled = !tsmiAttributesAll.Checked;
-            tsmiAttributesCustom.Enabled = !tsmiAttributesAll.Checked;
-            tsmiAttributesStandard.Enabled = !tsmiAttributesAll.Checked;
-            tsmiAttributesOnlyValidAF.Enabled = !tsmiAttributesAll.Checked;
-            showAttributesAll = tsmiAttributesAll.Checked;
-            showAttributesManaged = tsmiAttributesManaged.Checked;
-            showAttributesUnmanaged = tsmiAttributesUnmanaged.Checked;
-            showAttributesCustomizable = tsmiAttributesCustomizable.Checked;
-            showAttributesUncustomizable = tsmiAttributesUncustomizable.Checked;
-            showAttributesCustom = tsmiAttributesCustom.Checked;
-            showAttributesStandard = tsmiAttributesStandard.Checked;
-            showAttributesOnlyValidAF = tsmiAttributesOnlyValidAF.Checked;
-            RefreshAttributes();
-        }
-
-        private void tsmiFriendly_Click(object sender, EventArgs e)
-        {
-            useFriendlyNames = tsmiFriendly.Checked;
+            tsbFriendly.Checked = sender == tsbFriendly;
+            tsbRaw.Checked = !tsbFriendly.Checked;
+            useFriendlyNames = tsbFriendly.Checked;
             RefreshAttributes();
             RefreshGridRecords();
         }
@@ -1026,6 +1143,12 @@
         private void executeOption_Changed(object sender, EventArgs e)
         {
             UpdateJobFromUI(tabControl1.SelectedTab);
+        }
+
+        private void btnUpdateAttributeOptions_Click(object sender, EventArgs e)
+        {
+            AttributeOptions.Show(updateAttributes, entitymeta);
+            RefreshAttributes();
         }
     }
 }
