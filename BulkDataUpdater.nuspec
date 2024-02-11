@@ -10,23 +10,23 @@
 		<iconUrl>https://raw.githubusercontent.com/rappen/BulkDataUpdater/master/images/BDU-150-tsp.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>
-Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete.
+BDU can update one or multiple columns, for one or a gazillion records in Microsoft Dataverse!
 Empower yourself to achieve more.
-This tool is useful to trigger workflows or plugins, as well as bulk updating any number of records with fixed values.
+This tool is useful to trigger Microsoft Automate, workflows or plugins, as well as bulk updating any number of records with fixed och calculated values.
 It can also delete, assign, and set state of records by the filter specified.
-Updating values can also be calculated - using "XRM Tokens" (just Bing it!) and even more - using the Microsoft Power Fx!
+Updating values can also be Calculated by "XRM Tokens" and using the Microsoft Power Fx!
 
 Read more: https://jonasr.app/BDU and https://jonasr.app/xrm-tokens/
 		</description>
-		<summary>Work with any number of rows in Microsoft Dataverse! Update Column values / Assign / Set State / Delete. Empower yourself to achieve more.</summary>
+		<summary>BDU can update one or multiple columns, for one or a gazillion records in Microsoft Dataverse! Empower yourself to achieve more.</summary>
 		<releaseNotes>
-Now works well with newest version of XrmToolBox!
-See https://jonasr.app/missing-xrmtoolbox-pluginsstore/
+Read my thoughts about this release: When I work more, I need to release more featues:
+https://jonasr.app/more-work-more-features/
 
 See latest release notes, and all history:
 https://jonasr.app/bdu/releases/#$versionnumber$
 		</releaseNotes>
-		<copyright>Copyright 2016-2023 Jonas Rapp</copyright>
+		<copyright>Copyright 2016-2024 Jonas Rapp</copyright>
 		<tags>XrmToolBox Plugins BulkDataUpdater</tags>
 		<dependencies>
 			<dependency id="XrmToolBox" version="1.2023.10.67" />
