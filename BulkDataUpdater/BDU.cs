@@ -35,8 +35,10 @@
         #region Private Fields
 
         private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
-        private const string aiKey = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
-        private AppInsights ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
+        private const string aiKey1 = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
+        private const string aiKey2 = "d46e9c12-ee8b-4b28-9643-dae62ae7d3d4";    // jonas@jonasr.app, XrmToolBoxTools
+        private AppInsights ai1 = new AppInsights(aiEndpoint, aiKey1, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
+        private AppInsights ai2 = new AppInsights(aiEndpoint, aiKey2, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
 
         private static List<EntityMetadata> entities;
         private static EntityMetadata entitymeta;
@@ -80,7 +82,7 @@
         public override void ClosingPlugin(PluginCloseInfo info)
         {
             SaveSetting();
-            LogUse("Close");
+            LogUse("Close", ai2: true);
         }
 
         #endregion Public Methods
@@ -743,7 +745,7 @@
         private void DataUpdater_Load(object sender, EventArgs e)
         {
             LoadGlobalSetting();
-            LogUse("Load");
+            LogUse("Load", ai2: true);
         }
 
         private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas, bool forcereload)
