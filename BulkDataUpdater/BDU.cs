@@ -112,7 +112,7 @@
                     btnAdd.Enabled = !cancel && panUpdButton.Enabled && IsValueValid();
                     gb3attributes.Enabled = !cancel && gb2attribute.Enabled && lvAttributes.Items.Count > 0;
                     gbExecute.Enabled = !cancel && (
-                        (tabControl1.SelectedTab == tabUpdate && panUpdButton.Enabled && lvAttributes.Items.Count > 0) ||
+                        (tabControl1.SelectedTab == tabUpdate && lvAttributes.Items.Count > 0) ||
                         (tabControl1.SelectedTab == tabAssign && xrmRecordAssign.Record != null) ||
                         (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
                         (tabControl1.SelectedTab == tabDelete));
