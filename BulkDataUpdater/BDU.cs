@@ -1127,5 +1127,10 @@
             AttributeOptions.Show(updateAttributes, entitymeta);
             RefreshAttributes();
         }
+
+        private void tsbBymyacoffee_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.buymeacoffee.com/rappen");
+        }
     }
 }

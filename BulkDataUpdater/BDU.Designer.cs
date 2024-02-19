@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbOpenJob = new System.Windows.Forms.ToolStripButton();
@@ -143,6 +143,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
+            this.tsbBymyacoffee = new System.Windows.Forms.ToolStripButton();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gb2attribute.SuspendLayout();
@@ -200,7 +201,8 @@
             this.toolStripSeparator2,
             this.tsbCancel,
             this.toolStripSeparator17,
-            this.tslDoc});
+            this.tslDoc,
+            this.tsbBymyacoffee});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Padding = new System.Windows.Forms.Padding(0, 4, 1, 6);
@@ -972,8 +974,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
@@ -1495,6 +1497,18 @@
             this.xrmLookupAssign.Service = null;
             this.xrmLookupAssign.Title = "Select User or Team to assign to";
             // 
+            // tsbBymyacoffee
+            // 
+            this.tsbBymyacoffee.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbBymyacoffee.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbBymyacoffee.Image = ((System.Drawing.Image)(resources.GetObject("tsbBymyacoffee.Image")));
+            this.tsbBymyacoffee.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbBymyacoffee.Name = "tsbBymyacoffee";
+            this.tsbBymyacoffee.Size = new System.Drawing.Size(36, 36);
+            this.tsbBymyacoffee.Text = "toolStripButton1";
+            this.tsbBymyacoffee.ToolTipText = "By Me a Coffee!";
+            this.tsbBymyacoffee.Click += new System.EventHandler(this.tsbBymyacoffee_Click);
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1679,5 +1693,6 @@
         private System.Windows.Forms.ToolStripButton tsbFriendly;
         private System.Windows.Forms.ToolStripButton tsbRaw;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripButton tsbBymyacoffee;
     }
 }
