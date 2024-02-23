@@ -550,7 +550,14 @@
                 Friendly = tsbFriendly.Checked,
             };
             settings.Job.Info = null;
-            SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
+            try
+            {
+                SettingsManager.Instance.Save(typeof(BulkDataUpdater), settings, ConnectionDetail?.ConnectionName);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorDialog(ex, "Saving settings");
+            }
         }
 
         private void UpdateIncludeCount()
@@ -1102,7 +1109,14 @@
             if (savedlg.ShowDialog() == DialogResult.OK)
             {
                 job.Info = new JobInfo(savedlg.FileName, ConnectionDetail);
-                XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
+                try
+                {
+                    XmlSerializerHelper.SerializeToFile(job, savedlg.FileName);
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorDialog(ex, "Saving Job");
+                }
             }
         }
 
