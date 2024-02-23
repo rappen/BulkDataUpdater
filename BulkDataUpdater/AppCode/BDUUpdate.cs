@@ -287,16 +287,16 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return double.Parse(cmbValue.Text);
             }
-            if (meta is EnumAttributeMetadata)
-            {
-                var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
-                return new OptionSetValue((int)value);
-            }
             if (meta is MultiSelectPicklistAttributeMetadata)
             {
                 var values = chkMultiSelects.CheckedItems.OfType<OptionMetadataItem>().Select(o => o.Metadata.Value);
                 return new OptionSetValueCollection(values.Select(v => new OptionSetValue((int)v)).ToList());
             };
+            if (meta is EnumAttributeMetadata)
+            {
+                var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
+                return new OptionSetValue((int)value);
+            }
             if (meta is DateTimeAttributeMetadata)
             {
                 return DateTime.Parse(cmbValue.Text);

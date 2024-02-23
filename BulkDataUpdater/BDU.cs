@@ -587,19 +587,7 @@
             var calc = rbCalculate.Checked;
             if (rbSetValue.Checked && attribute != null)
             {
-                if (attribute.Metadata is EnumAttributeMetadata enummeta)
-                {
-                    var options = enummeta.OptionSet;
-                    if (options != null)
-                    {
-                        foreach (var option in options.Options)
-                        {
-                            cmbValue.Items.Add(new OptionMetadataItem(option, true));
-                        }
-                    }
-                    cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
-                }
-                else if (attribute.Metadata is MultiSelectPicklistAttributeMetadata multimeta)
+                if (attribute.Metadata is MultiSelectPicklistAttributeMetadata multimeta)
                 {
                     chkMultiSelects.Items.Clear();
                     var options = multimeta.OptionSet;
@@ -612,6 +600,18 @@
                     }
                     value = false;
                     multisel = true;
+                }
+                else if (attribute.Metadata is EnumAttributeMetadata enummeta)
+                {
+                    var options = enummeta.OptionSet;
+                    if (options != null)
+                    {
+                        foreach (var option in options.Options)
+                        {
+                            cmbValue.Items.Add(new OptionMetadataItem(option, true));
+                        }
+                    }
+                    cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
                 }
                 else if (attribute.Metadata is BooleanAttributeMetadata boolmeta)
                 {
