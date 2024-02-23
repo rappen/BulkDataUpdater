@@ -291,7 +291,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 var values = chkMultiSelects.CheckedItems.OfType<OptionMetadataItem>().Select(o => o.Metadata.Value);
                 return new OptionSetValueCollection(values.Select(v => new OptionSetValue((int)v)).ToList());
-            };
+            }
             if (meta is EnumAttributeMetadata)
             {
                 var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
