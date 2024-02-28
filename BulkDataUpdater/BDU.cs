@@ -805,7 +805,10 @@
 
         private void tsbFriendly_Click(object sender, EventArgs e)
         {
-            tsbFriendly.Checked = sender == tsbFriendly;
+            if (sender != null)
+            {
+                tsbFriendly.Checked = sender == tsbFriendly;
+            }
             tsbRaw.Checked = !tsbFriendly.Checked;
             useFriendlyNames = tsbFriendly.Checked;
             RefreshAttributes();
