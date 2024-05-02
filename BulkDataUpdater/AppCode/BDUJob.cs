@@ -69,6 +69,9 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
     public class JobUpdate
     {
+        public bool SetImpSeqNo { get; set; } = true;
+        public bool DefaultImpSeqNo { get; set; } = true;
+        public int ImpSeqNo { get; set; }
         public List<BulkActionItem> Attributes { get; set; } = new List<BulkActionItem>();
         public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }

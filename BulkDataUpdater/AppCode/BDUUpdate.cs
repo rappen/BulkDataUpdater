@@ -32,21 +32,34 @@ namespace Cinteros.XTB.BulkDataUpdater
             working = true;
             EnableControls(false, true);
             var selectedattributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
+            if (job.Update.SetImpSeqNo &&
+                !selectedattributes.Any(a => a.Attribute.Metadata.LogicalName == "importsequencenumber") &&
+                entitymeta?.Attributes?.FirstOrDefault(a => a.LogicalName == "importsequencenumber") is AttributeMetadata isnmeta)
+            {
+                selectedattributes.Add(new BulkActionItem
+                {
+                    Attribute = new AttributeMetadataItem(isnmeta, useFriendlyNames, false),
+                    DontTouch = false,
+                    Action = BulkActionAction.SetValue,
+                    Value = job.Update.ImpSeqNo
+                });
+            }
             var executeoptions = GetExecuteOptions();
             job.Update.ExecuteOptions = executeoptions;
+            var isn = selectedattributes.Any(a => a.Attribute.Metadata.LogicalName == "importsequencenumber");
 
             WorkAsync(new WorkAsyncInfo()
             {
                 Message = "Updating records",
                 IsCancelable = true,
                 AsyncArgument = selectedattributes,
-                Work = (bgworker, workargs) => { UpdateRecordsWork(bgworker, workargs, includedrecords, executeoptions); },
+                Work = (bgworker, workargs) => { UpdateRecordsWork(bgworker, workargs, includedrecords, executeoptions, isn); },
                 PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, "Update"); },
                 ProgressChanged = (changeargs) => { SetWorkingMessage(changeargs.UserState.ToString()); }
             }); ;
         }
 
-        private void UpdateRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions)
+        private void UpdateRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions, bool isn)
         {
             var sw = Stopwatch.StartNew();
             var progress = "Starting...";
@@ -81,13 +94,17 @@ namespace Cinteros.XTB.BulkDataUpdater
                         progress = GetProgressDetails(sw, total, current, entities.Entities.Count, failed);
                         WaitingExecution(bgworker, workargs, executeoptions, progress);
                         PushProgress(bgworker, progress);
-                        if (entities.Entities.Count == 1)
+                        if (entities.Entities.Count == 1 && !isn)
                         {
                             failed += ExecuteRequest(new UpdateRequest { Target = entities.Entities.FirstOrDefault() }, executeoptions);
                         }
-                        else if (executeoptions.MultipleRequest)
+                        else if (executeoptions.MultipleRequest || executeoptions.BatchSize == 1)
                         {
                             failed += ExecuteRequest(new UpdateMultipleRequest { Targets = entities }, executeoptions);
+                        }
+                        else if (isn)
+                        {
+                            throw new Exception("Import Sequence Number can only be set by UpdateMultiple.");
                         }
                         else
                         {
@@ -419,6 +436,9 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void SetUpdateFromJob(JobUpdate job)
         {
+            chkSetImpSeqNo.Checked = job.SetImpSeqNo;
+            chkDefImpSeqNo.Checked = job.DefaultImpSeqNo;
+            numImpSeqNo.Value = job.ImpSeqNo;
             lvAttributes.Items.Clear();
             job.Attributes.ForEach(a => AddBAI(a));
             if (lvAttributes.Items.Count > 0)
@@ -429,6 +449,9 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void UpdateJobUpdate(JobUpdate job)
         {
+            job.SetImpSeqNo = chkSetImpSeqNo.Checked;
+            job.DefaultImpSeqNo = chkDefImpSeqNo.Checked;
+            job.ImpSeqNo = (int)numImpSeqNo.Value;
             job.Attributes = lvAttributes.Items.Cast<ListViewItem>().Select(i => i.Tag as BulkActionItem).ToList();
         }
 
@@ -437,6 +460,47 @@ namespace Cinteros.XTB.BulkDataUpdater
             job.Attributes
                 .Where(bai => bai.Attribute == null).ToList()
                 .ForEach(bai => bai.SetAttribute(Service, useFriendlyNames, true));
+        }
+
+        private void SetImpSeqNo(object sender = null, bool forcenewnum = false, bool forcekeepnum = false)
+        {
+            if (working)
+            {
+                return;
+            }
+            working = true;
+            chkDefImpSeqNo.Enabled = chkSetImpSeqNo.Checked;
+            numImpSeqNo.Enabled = chkSetImpSeqNo.Checked && !chkDefImpSeqNo.Checked;
+            btnDefImpSeqNo.Enabled = chkSetImpSeqNo.Checked && chkDefImpSeqNo.Checked;
+            if ((!forcekeepnum || numImpSeqNo.Value == 0) && chkSetImpSeqNo.Checked && chkDefImpSeqNo.Checked)
+            {
+                var impseqno = numImpSeqNo.Value;
+                var today = DateTime.Today.ToString("yyMMdd");
+                if (forcenewnum || !impseqno.ToString().StartsWith(today))
+                {
+                    impseqno = int.Parse(today) * 1000;
+                    impseqno = impseqno + new Random().Next(999) + 1;
+                    numImpSeqNo.Value = impseqno;
+                    linkShowImpSeqNoRecords.Enabled = false;
+                }
+            }
+            if (sender != null)
+            {
+                UpdateJobUpdate(job.Update);
+            }
+            working = false;
+        }
+
+        private string GetFetchFromISN()
+        {
+            var attrs = string.Join("", lvAttributes.Items
+                .Cast<ListViewItem>()
+                .Select(i => i.Tag as BulkActionItem)
+                .Select(a => a.Attribute.Metadata.LogicalName)
+                .Where(a => a != "importsequencenumber")
+                .Where(a => a != entitymeta.PrimaryNameAttribute)
+                .Select(a => $"<attribute name='{a}'/>"));
+            return $"<fetch><entity name='{entitymeta.LogicalName}'><attribute name='{entitymeta.PrimaryNameAttribute}'/><attribute name='importsequencenumber'/>{attrs}<filter><condition attribute='importsequencenumber' operator='eq' value='{numImpSeqNo.Value}'/></filter></entity></fetch>";
         }
     }
 }

@@ -116,6 +116,7 @@
                         (tabControl1.SelectedTab == tabAssign && xrmRecordAssign.Record != null) ||
                         (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
                         (tabControl1.SelectedTab == tabDelete));
+                    SetImpSeqNo(forcekeepnum: true);
                 }
                 catch
                 {
@@ -523,7 +524,7 @@
             {
                 var entityName = records.EntityName;
                 var attributes = GetDisplayAttributes(entityName);
-                attributes.ForEach(a => AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, a, true, useFriendlyNames));
+                attributes.ForEach(a => AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, a, true, useFriendlyNames, true));
                 if (selected != null)
                 {
                     cmbAttribute.SelectedItem = cmbAttribute.Items.Cast<AttributeMetadataItem>().FirstOrDefault(a => a.Metadata?.LogicalName == selected.Metadata?.LogicalName);
@@ -1148,6 +1149,22 @@
         private void tsbBymyacoffee_Click(object sender, EventArgs e)
         {
             Process.Start("https://www.buymeacoffee.com/rappen");
+        }
+
+        private void impSeqNo_Changed(object sender, EventArgs e)
+        {
+            SetImpSeqNo(sender, forcenewnum: sender == btnDefImpSeqNo);
+        }
+
+        private void linkImpSeqNoHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://jonasr.app/bdu/isn");
+        }
+
+        private void linkShowImpSeqNoRecords_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string fetch = GetFetchFromISN();
+            OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder", true) { TargetArgument = fetch });
         }
     }
 }

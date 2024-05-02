@@ -398,6 +398,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             rbIncludeAll.Checked = job.IncludeAll;
             rbIncludeSelected.Checked = !job.IncludeAll;
+            SetImpSeqNo(forcekeepnum: true);
             FixLoadedBAI(job.Update);
             if (retrieve)
             {
@@ -437,6 +438,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     RetrieveRecords();
                 }
+            }
+            if (action == "Update" && chkSetImpSeqNo.Checked)
+            {
+                linkShowImpSeqNoRecords.Enabled = true;
             }
         }
     }
