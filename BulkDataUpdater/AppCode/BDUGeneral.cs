@@ -200,7 +200,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                 }
                 UpdateIncludeCount();
             }
-            RefreshAttributes();
             InitializeTab();
             Cursor = Cursors.Default;
             EnableControls(true);
@@ -243,15 +242,15 @@ namespace Cinteros.XTB.BulkDataUpdater
                     result += $"({failures} failures) ";
                 }
                 var pct = 100 * completed / total;
-                result += $"({pct}%) in {sw.Elapsed.SmartToString()}";
+                result += $"({pct}%) in {sw.Elapsed.ToSmartString()}";
             }
             result += $"\nProcessing {processing} of {total} records";
             if (completed > 0)
             {
                 var remaintime = TimeSpan.FromMilliseconds(sw.Elapsed.TotalMilliseconds / completed * remaining);
-                result += $"\nRemaining {remaintime.SmartToString()} for {remaining} records";
+                result += $"\nRemaining {remaintime.ToSmartString()} for {remaining} records";
                 var timeperrecord = TimeSpan.FromMilliseconds((double)sw.ElapsedMilliseconds / completed);
-                result += $"\nTime per record: {timeperrecord.SmartToString()}";
+                result += $"\nTime per record: {timeperrecord.ToSmartString()}";
             }
             return result.Trim();
         }

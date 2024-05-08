@@ -40,7 +40,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     Attribute = new AttributeMetadataItem(isnmeta, useFriendlyNames, false),
                     DontTouch = false,
-                    Action = BulkActionAction.SetValue,
+                    Action = BulkActionAction.Set,
                     Value = job.Update.ImpSeqNo
                 });
             }
@@ -161,7 +161,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             var allattributesexist = true;
             foreach (var attribute in attributes
-                .Where(a => a.Action == BulkActionAction.Touch || (a.Action == BulkActionAction.SetValue && a.DontTouch))
+                .Where(a => a.Action == BulkActionAction.Touch || (a.Action == BulkActionAction.Set && a.DontTouch))
                 .Select(a => a.Attribute.Metadata.LogicalName))
             {
                 if (!record.Contains(attribute))
@@ -173,9 +173,9 @@ namespace Cinteros.XTB.BulkDataUpdater
             return allattributesexist;
         }
 
-        private void AddAttribute()
+        private void AddAttribute(BulkActionItem bai, bool editing)
         {
-            if (!(GetAttributeItemFromUI() is BulkActionItem bai))
+            if (bai == null)
             {
                 return;
             }
@@ -184,7 +184,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 .Select(i => i.Tag as BulkActionItem)
                 .Any(i => i.Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName))
             {
-                if (MessageBox.Show($"Replace already added attribute {bai.Attribute} ?", "Attribute added", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
+                if (!editing && MessageBox.Show($"Replace already added attribute {bai.Attribute} ?", "Attribute added", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
                 {
                     return;
                 }
@@ -220,209 +220,6 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             EnableControls(true);
             UpdateJobUpdate(job.Update);
-        }
-
-        private BulkActionItem GetAttributeItemFromUI()
-        {
-            if (!(cmbAttribute.SelectedItem is AttributeMetadataItem attribute))
-            {
-                MessageBox.Show("Select an attribute to update from the list.");
-                return null;
-            }
-            var bai = new BulkActionItem
-            {
-                Attribute = attribute,
-                DontTouch = chkOnlyChange.Checked,
-                Action =
-                    rbSetValue.Checked ? BulkActionAction.SetValue :
-                    rbCalculate.Checked ? BulkActionAction.Calc :
-                    rbSetNull.Checked ? BulkActionAction.Null :
-                    BulkActionAction.Touch
-            };
-            try
-            {
-                switch (bai.Action)
-                {
-                    case BulkActionAction.SetValue:
-                        bai.Value = GetValueFromUI(bai.Attribute.Metadata);
-                        if (attribute.Metadata is MemoAttributeMetadata)
-                        {
-                            bai.StringValue = txtValueMultiline.Text;
-                        }
-                        else if (attribute.Metadata is LookupAttributeMetadata)
-                        {
-                            bai.StringValue = cdsLookupValue.Text;
-                        }
-                        else if (bai.Value is OptionSetValueCollection osvc)
-                        {
-                            bai.StringValue = $"({osvc.Count} choices)";
-                        }
-                        else
-                        {
-                            bai.StringValue = cmbValue.Text;
-                        }
-                        break;
-
-                    case BulkActionAction.Calc:
-                        bai.Value = txtValueCalc.Text;
-                        bai.StringValue = txtValueCalc.Text;
-                        break;
-
-                    default:
-                        bai.Value = null;
-                        bai.StringValue = string.Empty;
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Value error:\n" + e.Message, "Set value", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
-            return bai;
-        }
-
-        private object GetValueFromUI(AttributeMetadata meta)
-        {
-            if (meta is StringAttributeMetadata)
-            {
-                return cmbValue.Text;
-            }
-            if (meta is MemoAttributeMetadata)
-            {
-                return txtValueMultiline.Text;
-            }
-            if (meta is IntegerAttributeMetadata || meta is BigIntAttributeMetadata)
-            {
-                return int.Parse(cmbValue.Text);
-            }
-            if (meta is DecimalAttributeMetadata)
-            {
-                return decimal.Parse(cmbValue.Text);
-            }
-            if (meta is DoubleAttributeMetadata)
-            {
-                return double.Parse(cmbValue.Text);
-            }
-            if (meta is MultiSelectPicklistAttributeMetadata)
-            {
-                var values = chkMultiSelects.CheckedItems.OfType<OptionMetadataItem>().Select(o => o.Metadata.Value);
-                return new OptionSetValueCollection(values.Select(v => new OptionSetValue((int)v)).ToList());
-            }
-            if (meta is EnumAttributeMetadata)
-            {
-                var value = ((OptionMetadataItem)cmbValue.SelectedItem).Metadata.Value;
-                return new OptionSetValue((int)value);
-            }
-            if (meta is DateTimeAttributeMetadata)
-            {
-                return DateTime.Parse(cmbValue.Text);
-            }
-            if (meta is BooleanAttributeMetadata boo)
-            {
-                // Is checking the cmbAttribute ok? I hope so...
-                return ((OptionMetadataItem)cmbValue.SelectedItem).Metadata == boo.OptionSet.TrueOption;
-            }
-            if (meta is MoneyAttributeMetadata)
-            {
-                return new Money(decimal.Parse(cmbValue.Text));
-            }
-            if (meta is LookupAttributeMetadata)
-            {
-                return xrmRecordAttribute.Record.ToEntityReference();
-            }
-            throw new Exception($"Attribute of type {meta.AttributeTypeName.Value} is currently not supported.");
-        }
-
-        private void PopulateFromAddedAttribute()
-        {
-            if (lvAttributes.SelectedItems.Count == 0)
-            {
-                return;
-            }
-            if (lvAttributes.SelectedItems[0].Tag is BulkActionItem attribute)
-            {
-                cmbAttribute.SelectedItem = cmbAttribute.Items.Cast<AttributeMetadataItem>().FirstOrDefault(a => a.Metadata?.LogicalName == attribute?.Attribute?.Metadata?.LogicalName);
-                switch (attribute.Action)
-                {
-                    case BulkActionAction.SetValue:
-                        rbSetValue.Checked = true;
-                        if (attribute.Value is OptionSetValue osv)
-                        {
-                            foreach (var option in cmbValue.Items.Cast<object>().Where(i => i is OptionMetadataItem).Select(i => i as OptionMetadataItem))
-                            {
-                                if (option.Metadata.Value == osv.Value)
-                                {
-                                    cmbValue.SelectedItem = option;
-                                    break;
-                                }
-                            }
-                        }
-                        else if (attribute.Value is EntityReference er)
-                        {
-                            xrmRecordAttribute.LogicalName = er.LogicalName;
-                            xrmRecordAttribute.Id = er.Id;
-                        }
-                        else if (attribute.Attribute.Metadata is MemoAttributeMetadata)
-                        {
-                            txtValueMultiline.Text = attribute.Value?.ToString();
-                        }
-                        else
-                        {
-                            cmbValue.Text = attribute.Value?.ToString();
-                        }
-                        break;
-
-                    case BulkActionAction.Calc:
-                        rbCalculate.Checked = true;
-                        txtValueCalc.Text = attribute.Value?.ToString();
-                        break;
-
-                    case BulkActionAction.Touch:
-                        rbSetTouch.Checked = true;
-                        cmbValue.Text = string.Empty;
-                        break;
-
-                    case BulkActionAction.Null:
-                        rbSetNull.Checked = true;
-                        cmbValue.Text = string.Empty;
-                        break;
-                }
-                chkOnlyChange.Checked = attribute.DontTouch;
-            }
-        }
-
-        private bool IsValueValid()
-        {
-            if (rbSetValue.Checked)
-            {
-                if (panUpdValue.Visible && (cmbValue.DropDownStyle == ComboBoxStyle.Simple || cmbValue.SelectedItem != null))
-                {
-                    return !string.IsNullOrWhiteSpace(cmbValue.Text);
-                }
-                if (panUpdLookup.Visible && xrmRecordAttribute.Record != null)
-                {
-                    return true;
-                }
-                if (panUpdTextMulti.Visible && !string.IsNullOrWhiteSpace(txtValueMultiline.Text))
-                {
-                    return true;
-                }
-                if (panMultiChoices.Visible && chkMultiSelects.CheckedItems.Count > 0)
-                {
-                    return true;
-                }
-            }
-            if (rbCalculate.Checked && IsCalcValid(txtValueCalc.Text))
-            {
-                return true;
-            }
-            return rbSetTouch.Checked || rbSetNull.Checked;
-        }
-
-        private bool IsCalcValid(string text)
-        {
-            return !string.IsNullOrWhiteSpace(text);
         }
 
         private object CalculateValue(Entity record, AttributeMetadata attribute, string format, int sequence)

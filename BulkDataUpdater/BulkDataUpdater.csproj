@@ -217,7 +217,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="AppCode\BDUJob.cs" />
-    <Compile Include="AppCode\Extensions.cs" />
     <Compile Include="AppCode\FindTextHandler.cs" />
     <Compile Include="AppCode\Prompt.cs" />
     <Compile Include="AppCode\ScintillaInitialize.cs" />
@@ -244,6 +243,12 @@
     </Compile>
     <Compile Include="Forms\About.designer.cs">
       <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UpdateAttribute.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateAttribute.Designer.cs">
+      <DependentUpon>UpdateAttribute.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AttributeOptions.cs">
       <SubType>Form</SubType>
@@ -295,6 +300,9 @@
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateAttribute.resx">
+      <DependentUpon>UpdateAttribute.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AttributeOptions.resx">
       <DependentUpon>AttributeOptions.cs</DependentUpon>

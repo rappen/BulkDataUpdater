@@ -7,22 +7,17 @@
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XRM.Helpers.Extensions;
-    using Rappen.XTB.Helpers.ControlItems;
     using Rappen.XTB.Helpers.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
     using System.Xml;
     using Xrm.Common.Forms;
-    using XrmToolBox;
     using XrmToolBox.Extensibility;
-
-    using HelpFetch = Rappen.XRM.Helpers.FetchXML;
 
     public partial class BulkDataUpdater : PluginControlBase
     {
@@ -41,10 +36,10 @@
         private AppInsights ai2 = new AppInsights(aiEndpoint, aiKey2, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
 
         private static List<EntityMetadata> entities;
-        private static EntityMetadata entitymeta;
+        internal static EntityMetadata entitymeta;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
-        private BDUJob job;
-        private UpdateAttributes updateAttributes;
+        internal BDUJob job;
+        internal UpdateAttributes updateAttributes;
 
         private string deleteWarningText;
 
@@ -55,11 +50,11 @@
         private Version currentversion;
         private readonly Version bypasspluginminversion = new Version(9, 2);
 
-        private bool working = false;
+        internal bool working = false;
         private string currentconnection;
 
-        private List<string> isOnForms;
-        private List<string> isOnViews;
+        internal List<string> isOnForms;
+        internal List<string> isOnViews;
 
         #endregion Private Fields
 
@@ -77,6 +72,30 @@
 
         #endregion Public Constructors
 
+        #region Implementation of ILogger
+
+        public void EndSection()
+        {
+            LogInfo("<----");
+        }
+
+        public void Log(string message)
+        {
+            LogInfo(message);
+        }
+
+        public void Log(Exception ex)
+        {
+            LogError(ex.ToString());
+        }
+
+        public void StartSection(string name = null)
+        {
+            LogInfo($"----> {name}");
+        }
+
+        #endregion Implementation of ILogger
+
         #region Public Methods
 
         public override void ClosingPlugin(PluginCloseInfo info)
@@ -85,118 +104,33 @@
             LogUse("Close", ai2: true);
         }
 
+        public string GetFullWebApplicationUrl()
+        {
+            var url = ConnectionDetail.WebApplicationUrl;
+            if (string.IsNullOrEmpty(url))
+            {
+                url = ConnectionDetail.ServerName;
+            }
+            if (!url.ToLower().StartsWith("http"))
+            {
+                url = string.Concat("http://", url);
+            }
+            var uri = new Uri(url);
+            if (!uri.Host.EndsWith(".dynamics.com"))
+            {
+                if (string.IsNullOrEmpty(uri.AbsolutePath.Trim('/')))
+                {
+                    uri = new Uri(uri, ConnectionDetail.Organization);
+                }
+            }
+            return uri.ToString();
+        }
+
         #endregion Public Methods
 
-        #region Private Methods
+        #region Internal Methods
 
-        private void EnableControls(bool enabled, bool cancel = false)
-        {
-            MethodInvoker mi = delegate
-            {
-                try
-                {
-                    if (enabled)
-                    {
-                        Enabled = true;
-                    }
-                    splitContainer1.Enabled = enabled;
-                    tsbOpenJob.Enabled = !cancel && enabled;
-                    tsbSaveJob.Enabled = !cancel && enabled;
-                    tsbFriendly.Enabled = !cancel && enabled;
-                    tsbRaw.Enabled = !cancel && enabled;
-                    tsbCancel.Enabled = cancel;
-                    gb1select.Enabled = !cancel && enabled && Service != null;
-                    btnRefresh.Enabled = !cancel && gb1select.Enabled && !string.IsNullOrWhiteSpace(job?.FetchXML);
-                    gb2attribute.Enabled = !cancel && gb1select.Enabled && records != null && records.Entities.Count > 0;
-                    panUpdButton.Enabled = !cancel && gb2attribute.Enabled && cmbAttribute.SelectedItem is AttributeMetadataItem;
-                    btnAdd.Enabled = !cancel && panUpdButton.Enabled && IsValueValid();
-                    gb3attributes.Enabled = !cancel && gb2attribute.Enabled && lvAttributes.Items.Count > 0;
-                    gbExecute.Enabled = !cancel && (
-                        (tabControl1.SelectedTab == tabUpdate && lvAttributes.Items.Count > 0) ||
-                        (tabControl1.SelectedTab == tabAssign && xrmRecordAssign.Record != null) ||
-                        (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
-                        (tabControl1.SelectedTab == tabDelete));
-                    SetImpSeqNo(forcekeepnum: true);
-                }
-                catch
-                {
-                    // Now what?
-                }
-            };
-            if (InvokeRequired)
-            {
-                Invoke(mi);
-            }
-            else
-            {
-                mi();
-            }
-        }
-
-        private void FetchUpdated(string fetch, string layout)
-        {
-            if (job == null)
-            {
-                job = new BDUJob();
-            }
-            job.FetchXML = fetch;
-            job.LayoutXML = layout;
-            if (!string.IsNullOrWhiteSpace(fetch))
-            {
-                RetrieveRecords();
-            }
-        }
-
-        private List<AttributeMetadata> GetDisplayAttributes(string entityName)
-        {
-            bool IsRequired(AttributeMetadata meta)
-            {
-                return (meta.RequiredLevel?.Value == AttributeRequiredLevel.ApplicationRequired ||
-                        meta.RequiredLevel?.Value == AttributeRequiredLevel.SystemRequired) &&
-                       string.IsNullOrEmpty(meta.AttributeOf);
-            }
-            var result = new List<AttributeMetadata>();
-            var fetch = HelpFetch.Fetch.FromString(job.FetchXML);
-            AttributeMetadata[] attributes = null;
-            if (entities?.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
-            {
-                attributes = entity.Attributes;
-                if (attributes != null)
-                {
-                    foreach (var attribute in attributes)
-                    {
-                        var yes = updateAttributes.Everything ||
-                            (updateAttributes.ImportSequenceNumber && attribute.LogicalName == "importsequencenumber") ||
-                            (updateAttributes.UnallowedUpdate && !attribute.IsValidForUpdate.Value == true && attribute.LogicalName != "importsequencenumber");
-                        if (updateAttributes.CombinationAnd)
-                        {
-                            yes = yes ||
-                                ((!updateAttributes.Required || IsRequired(attribute)) &&
-                                 (!updateAttributes.Recommended || attribute.RequiredLevel?.Value == AttributeRequiredLevel.Recommended) &&
-                                 (!updateAttributes.InQuery || fetch.Entity.Attributes.Any(a => a.Name == attribute.LogicalName)) &&
-                                 (!updateAttributes.OnForm || IsOnAnyForm(fetch.Entity.Name, attribute.LogicalName)) &&
-                                 (!updateAttributes.OnView || IsOnAnyView(fetch.Entity.Name, attribute.LogicalName)));
-                        }
-                        else
-                        {
-                            yes = yes ||
-                                (updateAttributes.Required && IsRequired(attribute)) ||
-                                (updateAttributes.Recommended && attribute.RequiredLevel?.Value == AttributeRequiredLevel.Recommended) ||
-                                (updateAttributes.InQuery && fetch.Entity.Attributes.Any(a => a.Name == attribute.LogicalName)) ||
-                                (updateAttributes.OnForm && IsOnAnyForm(fetch.Entity.Name, attribute.LogicalName)) ||
-                                (updateAttributes.OnView && IsOnAnyView(fetch.Entity.Name, attribute.LogicalName));
-                        }
-                        if (yes)
-                        {
-                            result.Add(attribute);
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        private bool IsOnAnyForm(string entity, string attribute)
+        internal bool IsOnAnyForm(string entity, string attribute, Action action)
         {
             IEnumerable<string> FindCellControlFields(XmlNode node)
             {
@@ -256,7 +190,7 @@
                                 }
                             }
                             isOnForms = isOnForms.Distinct().ToList();
-                            RefreshAttributes();
+                            action?.Invoke();
                         }
                         Enabled = true;
                         working = false;
@@ -267,7 +201,7 @@
             return isOnForms.Contains(attribute);
         }
 
-        private bool IsOnAnyView(string entity, string attribute)
+        internal bool IsOnAnyView(string entity, string attribute, Action action)
         {
             if (isOnViews == null)
             {
@@ -317,7 +251,7 @@
                                 }
                             }
                             isOnViews = isOnViews.Distinct().ToList();
-                            RefreshAttributes();
+                            action?.Invoke();
                         }
                         Enabled = true;
                         working = false;
@@ -326,6 +260,67 @@
                 return false;
             }
             return isOnViews.Contains(attribute);
+        }
+
+        #endregion Internal Methods
+
+        #region Private Methods
+
+        private void EnableControls(bool enabled, bool cancel = false)
+        {
+            MethodInvoker mi = delegate
+            {
+                try
+                {
+                    if (enabled)
+                    {
+                        Enabled = true;
+                    }
+                    splitContainer1.Enabled = enabled;
+                    tsbOpenJob.Enabled = !cancel && enabled;
+                    tsbSaveJob.Enabled = !cancel && enabled;
+                    tsbFriendly.Enabled = !cancel && enabled;
+                    tsbRaw.Enabled = !cancel && enabled;
+                    tsbCancel.Enabled = cancel;
+                    gb1select.Enabled = !cancel && enabled && Service != null;
+                    btnRefresh.Enabled = !cancel && gb1select.Enabled && !string.IsNullOrWhiteSpace(job?.FetchXML);
+                    gb3attributes.Enabled = !cancel && crmGridView1.RowCount > 0;
+                    btnAttrEdit.Enabled = !cancel && lvAttributes.SelectedItems.Count == 1;
+                    btnAttrRemove.Enabled = !cancel && lvAttributes.SelectedItems.Count > 0;
+                    gbExecute.Enabled = !cancel && (
+                        (tabControl1.SelectedTab == tabUpdate && lvAttributes.Items.Count > 0) ||
+                        (tabControl1.SelectedTab == tabAssign && xrmRecordAssign.Record != null) ||
+                        (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
+                        (tabControl1.SelectedTab == tabDelete));
+                    SetImpSeqNo(forcekeepnum: true);
+                }
+                catch
+                {
+                    // Now what?
+                }
+            };
+            if (InvokeRequired)
+            {
+                Invoke(mi);
+            }
+            else
+            {
+                mi();
+            }
+        }
+
+        private void FetchUpdated(string fetch, string layout)
+        {
+            if (job == null)
+            {
+                job = new BDUJob();
+            }
+            job.FetchXML = fetch;
+            job.LayoutXML = layout;
+            if (!string.IsNullOrWhiteSpace(fetch))
+            {
+                RetrieveRecords();
+            }
         }
 
         private void GetFromEditor()
@@ -516,22 +511,6 @@
             EnableControls(true);
         }
 
-        private void RefreshAttributes()
-        {
-            var selected = cmbAttribute.SelectedItem as AttributeMetadataItem;
-            cmbAttribute.Items.Clear();
-            if (records != null)
-            {
-                var entityName = records.EntityName;
-                var attributes = GetDisplayAttributes(entityName);
-                attributes.ForEach(a => AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, a, true, useFriendlyNames, true));
-                if (selected != null)
-                {
-                    cmbAttribute.SelectedItem = cmbAttribute.Items.Cast<AttributeMetadataItem>().FirstOrDefault(a => a.Metadata?.LogicalName == selected.Metadata?.LogicalName);
-                }
-            }
-        }
-
         private void RefreshGridRecords()
         {
             EnableControls(false);
@@ -571,263 +550,6 @@
             lblStateHeader.Text = $"Update {count} {entity}";
             lblDeleteHeader.Text = $"Delete {count} {entity}";
             txtDeleteWarning.Text = deleteWarningText.Replace("[nn]", rbIncludeSelected.Checked ? count.ToString() : "ALL");
-        }
-
-        private void UpdateValueField()
-        {
-            cmbValue.Enabled = rbSetValue.Checked;
-            txtValueMultiline.Enabled = rbSetValue.Checked;
-            btnLookupValue.Enabled = rbSetValue.Checked;
-            if (!rbSetValue.Checked && xrmRecordAttribute.Record != null)
-            {
-                xrmRecordAttribute.Record = null;
-            }
-            chkOnlyChange.Enabled = !rbSetTouch.Checked;
-            chkOnlyChange.Checked = chkOnlyChange.Checked && !rbSetTouch.Checked;
-
-            var attribute = (AttributeMetadataItem)cmbAttribute.SelectedItem;
-            rbSetNull.Enabled = attribute != null;
-            cmbValue.Items.Clear();
-            var value = rbSetValue.Checked;
-            var lookup = false;
-            var multitext = false;
-            var multisel = false;
-            var calc = rbCalculate.Checked;
-            if (rbSetValue.Checked && attribute != null)
-            {
-                if (attribute.Metadata is MultiSelectPicklistAttributeMetadata multimeta)
-                {
-                    chkMultiSelects.Items.Clear();
-                    var options = multimeta.OptionSet;
-                    if (options != null)
-                    {
-                        foreach (var option in options.Options)
-                        {
-                            chkMultiSelects.Items.Add(new OptionMetadataItem(option, true));
-                        }
-                    }
-                    value = false;
-                    multisel = true;
-                }
-                else if (attribute.Metadata is EnumAttributeMetadata enummeta)
-                {
-                    var options = enummeta.OptionSet;
-                    if (options != null)
-                    {
-                        foreach (var option in options.Options)
-                        {
-                            cmbValue.Items.Add(new OptionMetadataItem(option, true));
-                        }
-                    }
-                    cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
-                }
-                else if (attribute.Metadata is BooleanAttributeMetadata boolmeta)
-                {
-                    var options = boolmeta.OptionSet;
-                    if (options != null)
-                    {
-                        cmbValue.Items.Add(new OptionMetadataItem(options.TrueOption, true));
-                        cmbValue.Items.Add(new OptionMetadataItem(options.FalseOption, true));
-                    }
-                    cmbValue.DropDownStyle = ComboBoxStyle.DropDownList;
-                }
-                else if (attribute.Metadata is MemoAttributeMetadata)
-                {
-                    value = false;
-                    multitext = true;
-                }
-                else if (attribute.Metadata is LookupAttributeMetadata lkpmeta)
-                {
-                    value = false;
-                    lookup = true;
-                    cdsLookupDialog.Service = Service;
-                    cdsLookupDialog.LogicalNames = lkpmeta.Targets;
-                    if (!cdsLookupDialog.LogicalNames.Contains(xrmRecordAttribute.LogicalName))
-                    {
-                        xrmRecordAttribute.Record = null;
-                    }
-                }
-                else
-                {
-                    cmbValue.DropDownStyle = ComboBoxStyle.Simple;
-                }
-            }
-            panUpdValue.Visible = value;
-            panUpdLookup.Visible = lookup;
-            panUpdCalc.Visible = calc;
-            panUpdTextMulti.Visible = multitext;
-            panMultiChoices.Visible = multisel;
-            PreviewCalc();
-            EnableControls(true);
-        }
-
-        #endregion Private Methods
-
-        #region Form Event Handlers
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            AddAttribute();
-        }
-
-        private void btnExecute_Click(object sender, EventArgs e)
-        {
-            lblUpdateStatus.Text = "Initializing...";
-            UpdateJobFromUI(tabControl1.SelectedTab);
-            if (tabControl1.SelectedTab == tabUpdate)
-            {
-                UpdateRecords();
-            }
-            else if (tabControl1.SelectedTab == tabAssign)
-            {
-                AssignRecords();
-            }
-            else if (tabControl1.SelectedTab == tabSetState)
-            {
-                SetStateRecords();
-            }
-            else if (tabControl1.SelectedTab == tabDelete)
-            {
-                DeleteRecords();
-            }
-        }
-
-        private void btnGetRecords_Click(object sender, EventArgs e)
-        {
-            if (sender is Button btn)
-            {
-                GetRecords(btn.Tag?.ToString());
-            }
-        }
-
-        private void btnRemove_Click(object sender, EventArgs e)
-        {
-            RemoveAttribute();
-        }
-
-        private void cbSetStatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadStatuses(job?.SetState?.Status);
-            EnableControls(true);
-        }
-
-        private void cbSetStatusReason_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateJobSetState(job?.SetState);
-            EnableControls(true);
-        }
-
-        private void genericInputChanged(object sender, EventArgs e)
-        {
-            EnableControls(true);
-        }
-
-        private void cmbAttribute_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateValueField();
-        }
-
-        private void crmGridView1_SelectionChanged(object sender, EventArgs e)
-        {
-            UpdateIncludeCount();
-            PreviewCalc();
-        }
-
-        private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
-        {
-            currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
-            xrmRecordAttribute.Service = Service;
-            crmGridView1.DataSource = null;
-            entities = null;
-            if (string.IsNullOrEmpty(currentconnection) ||
-                currentconnection == e.ConnectionDetail.ConnectionName ||
-                MessageBox.Show($"Changing connection from '{currentconnection}' to '{e.ConnectionDetail.ConnectionName}'.\n\nWe usually reload settings for the new connection, shall we?", "Connected Connection", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                LoadSetting();
-            }
-            currentconnection = e.ConnectionDetail.ConnectionName;
-            EnableControls(false);
-            this.GetAllEntityMetadatas(AfterEntitiesLoaded);
-        }
-
-        private void DataUpdater_Load(object sender, EventArgs e)
-        {
-            LoadGlobalSetting();
-            LogUse("Load", ai2: true);
-        }
-
-        private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas, bool forcereload)
-        {
-            entities = metadatas?.ToList();
-            EnableControls(true);
-            if (entities != null)
-            {
-                UseJob(!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100);
-            }
-        }
-
-        private void lvAttributes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            PopulateFromAddedAttribute();
-        }
-
-        private void rbInclude_CheckedChanged(object sender, EventArgs e)
-        {
-            job.IncludeAll = rbIncludeAll.Checked;
-            UpdateIncludeCount();
-        }
-
-        private void rbSet_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateValueField();
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            InitializeTab();
-        }
-
-        private void tsbCancel_Click(object sender, EventArgs e)
-        {
-            EnableControls(false, false);
-            Cursor = Cursors.WaitCursor;
-            CancelWorker();
-        }
-
-        private void tslAbout_Click(object sender, EventArgs e)
-        {
-            ShowAboutDialog();
-        }
-
-        private void tslDoc_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://jonasr.app/BDU/");
-        }
-
-        private void tsbFriendly_Click(object sender, EventArgs e)
-        {
-            if (sender != null)
-            {
-                tsbFriendly.Checked = sender == tsbFriendly;
-            }
-            tsbRaw.Checked = !tsbFriendly.Checked;
-            useFriendlyNames = tsbFriendly.Checked;
-            RefreshAttributes();
-            RefreshGridRecords();
-        }
-
-        #endregion Form Event Handlers
-
-        private void crmGridView1_RecordDoubleClick(object sender, Rappen.XTB.Helpers.Controls.XRMRecordEventArgs e)
-        {
-            if (e.Entity != null)
-            {
-                string url = GetEntityUrl(e.Entity);
-                if (!string.IsNullOrEmpty(url))
-                {
-                    ConnectionDetail.OpenUrlWithBrowserProfile(new Uri(url));
-                }
-            }
         }
 
         private string GetEntityUrl(Entity entity)
@@ -880,151 +602,170 @@
             return string.Empty;
         }
 
-        public string GetFullWebApplicationUrl()
+        private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas, bool forcereload)
         {
-            var url = ConnectionDetail.WebApplicationUrl;
-            if (string.IsNullOrEmpty(url))
-            {
-                url = ConnectionDetail.ServerName;
-            }
-            if (!url.ToLower().StartsWith("http"))
-            {
-                url = string.Concat("http://", url);
-            }
-            var uri = new Uri(url);
-            if (!uri.Host.EndsWith(".dynamics.com"))
-            {
-                if (string.IsNullOrEmpty(uri.AbsolutePath.Trim('/')))
-                {
-                    uri = new Uri(uri, ConnectionDetail.Organization);
-                }
-            }
-            return uri.ToString();
-        }
-
-        private void btnLookupValue_Click(object sender, EventArgs e)
-        {
-            switch (cdsLookupDialog.ShowDialog(this))
-            {
-                case DialogResult.OK:
-                    xrmRecordAttribute.Record = cdsLookupDialog.Record;
-                    break;
-
-                case DialogResult.Abort:
-                    xrmRecordAttribute.Record = null;
-                    break;
-            }
+            entities = metadatas?.ToList();
             EnableControls(true);
-        }
-
-        private void btnCalcHelp_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://jonasr.app/bdu/#calc");
-        }
-
-        #region Implementation of ILogger
-
-        public void EndSection()
-        {
-            LogInfo("<----");
-        }
-
-        public void Log(string message)
-        {
-            LogInfo(message);
-        }
-
-        public void Log(Exception ex)
-        {
-            LogError(ex.ToString());
-        }
-
-        public void StartSection(string name = null)
-        {
-            LogInfo($"----> {name}");
-        }
-
-        #endregion Implementation of ILogger
-
-        private void txtValueCalc_TextChanged(object sender, EventArgs e)
-        {
-            AwaitCalc();
-            EnableControls(true);
-        }
-
-        private void AwaitCalc()
-        {
-            txtCalcPreview.ForeColor = SystemColors.GrayText;
-            tmCalc.Stop();
-            tmCalc.Start();
-        }
-
-        private void PreviewCalc()
-        {
-            tmCalc.Enabled = false;
-            if (tabControl1.SelectedTab == tabUpdate &&
-                rbCalculate.Checked &&
-                Service != null &&
-                crmGridView1.SelectedCellRecords?.FirstOrDefault() is Entity record)
+            if (entities != null)
             {
-                try
-                {
-                    var attmeta = cmbAttribute.SelectedItem as AttributeMetadataItem;
-                    var preview = CalculateValue(record, attmeta?.Metadata, txtValueCalc.Text, 1);
-                    if (preview is EntityReference refent)
-                    {
-                        preview = $"{refent.LogicalName}:{refent.Id}";
-                    }
-                    else if (preview is OptionSetValue opt)
-                    {
-                        preview = opt.Value;
-                    }
-                    else if (preview is OptionSetValueCollection mopt)
-                    {
-                        preview = string.Join(";", mopt.Select(m => m.Value.ToString()));
-                    }
-                    else if (preview is Money money)
-                    {
-                        preview = money.Value;
-                    }
-                    txtCalcPreview.Text = preview?.ToString();
-                }
-                catch (Exception ex)
-                {
-                    txtCalcPreview.Text = $"Error: {ex.Message}";
-                }
-                txtCalcPreview.ForeColor = SystemColors.WindowText;
-            }
-            else if (!string.IsNullOrEmpty(txtCalcPreview.Text))
-            {
-                txtCalcPreview.Text = string.Empty;
+                UseJob(!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100);
             }
         }
 
-        private void tmCalc_Tick(object sender, EventArgs e)
-        {
-            PreviewCalc();
-        }
+        #endregion Private Methods
 
-        private void chkMultiSelects_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            EnableControls(true);
-        }
+        #region Form Event Handlers
 
-        private void link_XRMTRname_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void btnExecute_Click(object sender, EventArgs e)
         {
-            if (!PluginManagerExtended.Instance.Plugins.Any(p => p.Metadata.Name == "XRM Tokens Runner"))
+            lblUpdateStatus.Text = "Initializing...";
+            UpdateJobFromUI(tabControl1.SelectedTab);
+            if (tabControl1.SelectedTab == tabUpdate)
             {
-                MessageBox.Show("Please install the tool 'XRM Tokens Runner'!", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                UpdateRecords();
             }
-            if (!(crmGridView1.SelectedCellRecords.FirstOrDefault() is Entity record))
+            else if (tabControl1.SelectedTab == tabAssign)
             {
-                MessageBox.Show("A record must be available to work with XRM Tokens Runner.", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                AssignRecords();
+            }
+            else if (tabControl1.SelectedTab == tabSetState)
+            {
+                SetStateRecords();
+            }
+            else if (tabControl1.SelectedTab == tabDelete)
+            {
+                DeleteRecords();
+            }
+        }
+
+        private void btnGetRecords_Click(object sender, EventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                GetRecords(btn.Tag?.ToString());
+            }
+        }
+
+        private void btnAttrAdd_Click(object sender, EventArgs e)
+        {
+            AddAttribute(UpdateAttribute.Show(this, useFriendlyNames, updateAttributes, crmGridView1.SelectedRowRecords?.FirstOrDefault(), null), false);
+        }
+
+        private void btnAttrEdit_Click(object sender, EventArgs e)
+        {
+            if (lvAttributes.SelectedItems.Count == 1)
+            {
+                var attr = (BulkActionItem)lvAttributes.SelectedItems[0].Tag;
+                AddAttribute(UpdateAttribute.Show(this, useFriendlyNames, updateAttributes, crmGridView1.SelectedRowRecords?.FirstOrDefault(), attr), true);
+            }
+            else if (lvAttributes.SelectedItems.Count > 1)
+            {
+                MessageBox.Show("Only one attribute can be edited at a time.", "Edit Attribute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
-                OnOutgoingMessage(this, new MessageBusEventArgs("XRM Tokens Runner") { TargetArgument = record });
+                MessageBox.Show("Select an attribute to edit.", "Edit Attribute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void btnAttrRemove_Click(object sender, EventArgs e)
+        {
+            RemoveAttribute();
+        }
+
+        private void cbSetStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadStatuses(job?.SetState?.Status);
+            EnableControls(true);
+        }
+
+        private void cbSetStatusReason_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateJobSetState(job?.SetState);
+            EnableControls(true);
+        }
+
+        private void genericInputChanged(object sender, EventArgs e)
+        {
+            EnableControls(true);
+        }
+
+        private void crmGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateIncludeCount();
+        }
+
+        private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
+        {
+            currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
+            xrmRecordAttribute.Service = Service;
+            crmGridView1.DataSource = null;
+            entities = null;
+            if (string.IsNullOrEmpty(currentconnection) ||
+                currentconnection == e.ConnectionDetail.ConnectionName ||
+                MessageBox.Show($"Changing connection from '{currentconnection}' to '{e.ConnectionDetail.ConnectionName}'.\n\nWe usually reload settings for the new connection, shall we?", "Connected Connection", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                LoadSetting();
+            }
+            currentconnection = e.ConnectionDetail.ConnectionName;
+            EnableControls(false);
+            this.GetAllEntityMetadatas(AfterEntitiesLoaded);
+        }
+
+        private void DataUpdater_Load(object sender, EventArgs e)
+        {
+            LoadGlobalSetting();
+            LogUse("Load", ai2: true);
+        }
+
+        private void rbInclude_CheckedChanged(object sender, EventArgs e)
+        {
+            job.IncludeAll = rbIncludeAll.Checked;
+            UpdateIncludeCount();
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InitializeTab();
+        }
+
+        private void tsbCancel_Click(object sender, EventArgs e)
+        {
+            EnableControls(false, false);
+            Cursor = Cursors.WaitCursor;
+            CancelWorker();
+        }
+
+        private void tslAbout_Click(object sender, EventArgs e)
+        {
+            ShowAboutDialog();
+        }
+
+        private void tslDoc_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://jonasr.app/BDU/");
+        }
+
+        private void tsbFriendly_Click(object sender, EventArgs e)
+        {
+            if (sender != null)
+            {
+                tsbFriendly.Checked = sender == tsbFriendly;
+            }
+            tsbRaw.Checked = !tsbFriendly.Checked;
+            useFriendlyNames = tsbFriendly.Checked;
+            RefreshGridRecords();
+        }
+
+        private void crmGridView1_RecordDoubleClick(object sender, Rappen.XTB.Helpers.Controls.XRMRecordEventArgs e)
+        {
+            if (e.Entity != null)
+            {
+                string url = GetEntityUrl(e.Entity);
+                if (!string.IsNullOrEmpty(url))
+                {
+                    ConnectionDetail.OpenUrlWithBrowserProfile(new Uri(url));
+                }
             }
         }
 
@@ -1142,8 +883,8 @@
 
         private void btnUpdateAttributeOptions_Click(object sender, EventArgs e)
         {
-            AttributeOptions.Show(updateAttributes, entitymeta);
-            RefreshAttributes();
+            //AttributeOptions.Show(updateAttributes, entitymeta);
+            //RefreshAttributes();
         }
 
         private void tsbBymyacoffee_Click(object sender, EventArgs e)
@@ -1166,5 +907,7 @@
             string fetch = GetFetchFromISN();
             OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder", true) { TargetArgument = fetch });
         }
+
+        #endregion Form Event Handlers
     }
 }

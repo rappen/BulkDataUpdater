@@ -48,7 +48,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             var text = Attribute.GetValue();
             switch (Action)
             {
-                case BulkActionAction.SetValue:
+                case BulkActionAction.Set:
                     text += " = " + StringValue;
                     break;
 
@@ -78,7 +78,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
     public enum BulkActionAction
     {
-        SetValue = 0,
+        Set = 0,
         Calc = 3,
         Touch = 1,
         Null = 2

@@ -1,6 +1,11 @@
-﻿using System;
-using System.Reflection;
+﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
+using Cinteros.XTB.BulkDataUpdater.Forms;
+using Microsoft.Xrm.Sdk;
+using System;
+using System.Linq;
 using System.Windows.Forms;
+using XrmToolBox;
+using XrmToolBox.Extensibility;
 using XrmToolBox.Extensibility.Args;
 using XrmToolBox.Extensibility.Interfaces;
 
@@ -8,11 +13,13 @@ namespace Cinteros.XTB.BulkDataUpdater
 {
     public partial class BulkDataUpdater : IGitHubPlugin, IPayPalPlugin, IMessageBusHost, IAboutPlugin, IStatusBarMessenger, IHelpPlugin
     {
-        public event EventHandler<XrmToolBox.Extensibility.MessageBusEventArgs> OnOutgoingMessage;
+        private BulkActionItem baixrmtr;
+
+        public event EventHandler<MessageBusEventArgs> OnOutgoingMessage;
 
         public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
 
-        public void OnIncomingMessage(XrmToolBox.Extensibility.MessageBusEventArgs message)
+        public void OnIncomingMessage(MessageBusEventArgs message)
         {
             if (message.SourcePlugin == "FetchXML Builder")
             {
@@ -25,9 +32,29 @@ namespace Cinteros.XTB.BulkDataUpdater
                     FetchUpdated(fetchlayout.Item1, fetchlayout.Item2);
                 }
             }
-            else if (message.SourcePlugin == "XRM Tokens Runner" && message.TargetArgument is string tokens)
+            else if (message.SourcePlugin == "XRM Tokens Runner" && message.TargetArgument is string tokens && baixrmtr != null)
             {
-                txtValueCalc.Text = tokens;
+                baixrmtr.Value = tokens;
+                baixrmtr.StringValue = tokens;
+                AddAttribute(UpdateAttribute.Show(this, useFriendlyNames, updateAttributes, crmGridView1.SelectedRowRecords?.FirstOrDefault(), baixrmtr), true);
+            }
+        }
+
+        public void CallingXRMTR(Entity record, BulkActionItem bai)
+        {
+            if (!PluginManagerExtended.Instance.ValidatedPlugins.Any(p => p.Metadata.Name == "XRM Tokens Runner"))
+            {
+                MessageBox.Show("Please install the tool 'XRM Tokens Runner'!", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (record == null)
+            {
+                MessageBox.Show("A record must be available to work with XRM Tokens Runner.", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                baixrmtr = bai;
+                OnOutgoingMessage(this, new MessageBusEventArgs("XRM Tokens Runner") { TargetArgument = record });
             }
         }
 

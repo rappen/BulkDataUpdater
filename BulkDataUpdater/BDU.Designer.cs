@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbOpenJob = new System.Windows.Forms.ToolStripButton();
@@ -47,40 +47,11 @@
             this.tsbBymyacoffee = new System.Windows.Forms.ToolStripButton();
             this.btnGetEdit = new System.Windows.Forms.Button();
             this.lblRecords = new System.Windows.Forms.Label();
-            this.cmbAttribute = new System.Windows.Forms.ComboBox();
-            this.rbSetNull = new System.Windows.Forms.RadioButton();
-            this.rbSetTouch = new System.Windows.Forms.RadioButton();
-            this.rbSetValue = new System.Windows.Forms.RadioButton();
-            this.cmbValue = new System.Windows.Forms.ComboBox();
-            this.chkOnlyChange = new System.Windows.Forms.CheckBox();
             this.gb1select = new System.Windows.Forms.GroupBox();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnGetFile = new System.Windows.Forms.Button();
             this.btnGetView = new System.Windows.Forms.Button();
             this.btnGetFXB = new System.Windows.Forms.Button();
-            this.gb2attribute = new System.Windows.Forms.GroupBox();
-            this.panUpdTextMulti = new System.Windows.Forms.Panel();
-            this.txtValueMultiline = new System.Windows.Forms.TextBox();
-            this.panUpdCalc = new System.Windows.Forms.Panel();
-            this.link_XRMTRname = new System.Windows.Forms.LinkLabel();
-            this.linkXRMTRlogo = new System.Windows.Forms.LinkLabel();
-            this.txtCalcPreview = new System.Windows.Forms.TextBox();
-            this.btnCalcHelp = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtValueCalc = new System.Windows.Forms.TextBox();
-            this.panMultiChoices = new System.Windows.Forms.Panel();
-            this.chkMultiSelects = new System.Windows.Forms.CheckedListBox();
-            this.panUpdButton = new System.Windows.Forms.Panel();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.panUpdLookup = new System.Windows.Forms.Panel();
-            this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
-            this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
-            this.btnLookupValue = new System.Windows.Forms.Button();
-            this.panUpdValue = new System.Windows.Forms.Panel();
-            this.panUpdAction = new System.Windows.Forms.Panel();
-            this.rbCalculate = new System.Windows.Forms.RadioButton();
-            this.panUpdAttribute = new System.Windows.Forms.Panel();
-            this.btnUpdateAttributeOptions = new System.Windows.Forms.Button();
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.gbExecute = new System.Windows.Forms.GroupBox();
             this.panBatchOption = new System.Windows.Forms.Panel();
@@ -98,7 +69,6 @@
             this.lblUpdateStatus = new System.Windows.Forms.Label();
             this.btnExecute = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbIncludeSelected = new System.Windows.Forms.RadioButton();
             this.rbIncludeAll = new System.Windows.Forms.RadioButton();
@@ -107,14 +77,15 @@
             this.chkSetState = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabUpdate = new System.Windows.Forms.TabPage();
-            this.splitContUpdateDetails = new System.Windows.Forms.SplitContainer();
             this.gb3attributes = new System.Windows.Forms.GroupBox();
+            this.btnAttrEdit = new System.Windows.Forms.Button();
+            this.btnAttrAdd = new System.Windows.Forms.Button();
             this.lvAttributes = new System.Windows.Forms.ListView();
             this.logicalname = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.action = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.onlychange = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnRemove = new System.Windows.Forms.Button();
+            this.btnAttrRemove = new System.Windows.Forms.Button();
             this.gbImpSeqNo = new System.Windows.Forms.GroupBox();
             this.linkShowImpSeqNoRecords = new System.Windows.Forms.LinkLabel();
             this.btnDefImpSeqNo = new System.Windows.Forms.Button();
@@ -131,8 +102,6 @@
             this.txtAssignEntity = new System.Windows.Forms.TextBox();
             this.lblAssignHeader = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
-            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panQualifyLead = new System.Windows.Forms.Panel();
@@ -148,26 +117,19 @@
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.lblDeleteHeader = new System.Windows.Forms.Label();
-            this.tmCalc = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
+            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
+            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
+            this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
-            this.gb2attribute.SuspendLayout();
-            this.panUpdTextMulti.SuspendLayout();
-            this.panUpdCalc.SuspendLayout();
-            this.panMultiChoices.SuspendLayout();
-            this.panUpdButton.SuspendLayout();
-            this.panUpdLookup.SuspendLayout();
-            this.panUpdValue.SuspendLayout();
-            this.panUpdAction.SuspendLayout();
-            this.panUpdAttribute.SuspendLayout();
             this.gbExecute.SuspendLayout();
             this.panBatchOption.SuspendLayout();
             this.panWaitBetween.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -175,10 +137,6 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabUpdate.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContUpdateDetails)).BeginInit();
-            this.splitContUpdateDetails.Panel1.SuspendLayout();
-            this.splitContUpdateDetails.Panel2.SuspendLayout();
-            this.splitContUpdateDetails.SuspendLayout();
             this.gb3attributes.SuspendLayout();
             this.gbImpSeqNo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numImpSeqNo)).BeginInit();
@@ -188,6 +146,7 @@
             this.panQualifyLead.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabDelete.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -353,79 +312,6 @@
             this.lblRecords.TabIndex = 25;
             this.lblRecords.Text = "Records not loaded";
             // 
-            // cmbAttribute
-            // 
-            this.cmbAttribute.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbAttribute.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmbAttribute.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbAttribute.FormattingEnabled = true;
-            this.cmbAttribute.Location = new System.Drawing.Point(12, 3);
-            this.cmbAttribute.Name = "cmbAttribute";
-            this.cmbAttribute.Size = new System.Drawing.Size(269, 21);
-            this.cmbAttribute.Sorted = true;
-            this.cmbAttribute.TabIndex = 1;
-            this.cmbAttribute.Tag = "attribute";
-            this.cmbAttribute.SelectedIndexChanged += new System.EventHandler(this.cmbAttribute_SelectedIndexChanged);
-            this.cmbAttribute.TextChanged += new System.EventHandler(this.genericInputChanged);
-            // 
-            // rbSetNull
-            // 
-            this.rbSetNull.AutoSize = true;
-            this.rbSetNull.Location = new System.Drawing.Point(228, 3);
-            this.rbSetNull.Name = "rbSetNull";
-            this.rbSetNull.Size = new System.Drawing.Size(60, 17);
-            this.rbSetNull.TabIndex = 4;
-            this.rbSetNull.Text = "Set null";
-            this.rbSetNull.UseVisualStyleBackColor = true;
-            this.rbSetNull.CheckedChanged += new System.EventHandler(this.rbSet_CheckedChanged);
-            // 
-            // rbSetTouch
-            // 
-            this.rbSetTouch.AutoSize = true;
-            this.rbSetTouch.Location = new System.Drawing.Point(156, 3);
-            this.rbSetTouch.Name = "rbSetTouch";
-            this.rbSetTouch.Size = new System.Drawing.Size(56, 17);
-            this.rbSetTouch.TabIndex = 3;
-            this.rbSetTouch.Text = "Touch";
-            this.rbSetTouch.UseVisualStyleBackColor = true;
-            this.rbSetTouch.CheckedChanged += new System.EventHandler(this.rbSet_CheckedChanged);
-            // 
-            // rbSetValue
-            // 
-            this.rbSetValue.AutoSize = true;
-            this.rbSetValue.Checked = true;
-            this.rbSetValue.Location = new System.Drawing.Point(12, 3);
-            this.rbSetValue.Name = "rbSetValue";
-            this.rbSetValue.Size = new System.Drawing.Size(66, 17);
-            this.rbSetValue.TabIndex = 1;
-            this.rbSetValue.TabStop = true;
-            this.rbSetValue.Text = "Set fixed";
-            this.rbSetValue.UseVisualStyleBackColor = true;
-            this.rbSetValue.CheckedChanged += new System.EventHandler(this.rbSet_CheckedChanged);
-            // 
-            // cmbValue
-            // 
-            this.cmbValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbValue.FormattingEnabled = true;
-            this.cmbValue.Location = new System.Drawing.Point(12, 3);
-            this.cmbValue.Name = "cmbValue";
-            this.cmbValue.Size = new System.Drawing.Size(303, 21);
-            this.cmbValue.TabIndex = 32;
-            this.cmbValue.Tag = "value";
-            this.cmbValue.TextChanged += new System.EventHandler(this.genericInputChanged);
-            // 
-            // chkOnlyChange
-            // 
-            this.chkOnlyChange.AutoSize = true;
-            this.chkOnlyChange.Location = new System.Drawing.Point(12, 7);
-            this.chkOnlyChange.Name = "chkOnlyChange";
-            this.chkOnlyChange.Size = new System.Drawing.Size(164, 17);
-            this.chkOnlyChange.TabIndex = 33;
-            this.chkOnlyChange.Text = "Only when change is needed";
-            this.chkOnlyChange.UseVisualStyleBackColor = true;
-            // 
             // gb1select
             // 
             this.gb1select.Controls.Add(this.btnRefresh);
@@ -510,274 +396,6 @@
             this.btnGetFXB.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnGetFXB.UseVisualStyleBackColor = false;
             this.btnGetFXB.Click += new System.EventHandler(this.btnGetRecords_Click);
-            // 
-            // gb2attribute
-            // 
-            this.gb2attribute.Controls.Add(this.panUpdTextMulti);
-            this.gb2attribute.Controls.Add(this.panUpdCalc);
-            this.gb2attribute.Controls.Add(this.panMultiChoices);
-            this.gb2attribute.Controls.Add(this.panUpdButton);
-            this.gb2attribute.Controls.Add(this.panUpdLookup);
-            this.gb2attribute.Controls.Add(this.panUpdValue);
-            this.gb2attribute.Controls.Add(this.panUpdAction);
-            this.gb2attribute.Controls.Add(this.panUpdAttribute);
-            this.gb2attribute.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb2attribute.Location = new System.Drawing.Point(0, 0);
-            this.gb2attribute.Name = "gb2attribute";
-            this.gb2attribute.Size = new System.Drawing.Size(336, 374);
-            this.gb2attribute.TabIndex = 35;
-            this.gb2attribute.TabStop = false;
-            this.gb2attribute.Text = "Select column to update";
-            // 
-            // panUpdTextMulti
-            // 
-            this.panUpdTextMulti.Controls.Add(this.txtValueMultiline);
-            this.panUpdTextMulti.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panUpdTextMulti.Location = new System.Drawing.Point(3, 118);
-            this.panUpdTextMulti.Name = "panUpdTextMulti";
-            this.panUpdTextMulti.Size = new System.Drawing.Size(330, 221);
-            this.panUpdTextMulti.TabIndex = 5;
-            this.panUpdTextMulti.Visible = false;
-            // 
-            // txtValueMultiline
-            // 
-            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtValueMultiline.Location = new System.Drawing.Point(12, 3);
-            this.txtValueMultiline.Multiline = true;
-            this.txtValueMultiline.Name = "txtValueMultiline";
-            this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueMultiline.Size = new System.Drawing.Size(303, 224);
-            this.txtValueMultiline.TabIndex = 36;
-            this.txtValueMultiline.TextChanged += new System.EventHandler(this.genericInputChanged);
-            // 
-            // panUpdCalc
-            // 
-            this.panUpdCalc.BackColor = System.Drawing.Color.Transparent;
-            this.panUpdCalc.Controls.Add(this.link_XRMTRname);
-            this.panUpdCalc.Controls.Add(this.linkXRMTRlogo);
-            this.panUpdCalc.Controls.Add(this.txtCalcPreview);
-            this.panUpdCalc.Controls.Add(this.btnCalcHelp);
-            this.panUpdCalc.Controls.Add(this.label1);
-            this.panUpdCalc.Controls.Add(this.txtValueCalc);
-            this.panUpdCalc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panUpdCalc.Location = new System.Drawing.Point(3, 118);
-            this.panUpdCalc.Name = "panUpdCalc";
-            this.panUpdCalc.Size = new System.Drawing.Size(330, 221);
-            this.panUpdCalc.TabIndex = 11;
-            this.panUpdCalc.Visible = false;
-            // 
-            // link_XRMTRname
-            // 
-            this.link_XRMTRname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.link_XRMTRname.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.link_XRMTRname.Location = new System.Drawing.Point(30, 6);
-            this.link_XRMTRname.Name = "link_XRMTRname";
-            this.link_XRMTRname.Size = new System.Drawing.Size(286, 16);
-            this.link_XRMTRname.TabIndex = 41;
-            this.link_XRMTRname.TabStop = true;
-            this.link_XRMTRname.Text = "Build with XRM Tokens Runner";
-            this.link_XRMTRname.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_XRMTRname_LinkClicked);
-            // 
-            // linkXRMTRlogo
-            // 
-            this.linkXRMTRlogo.Image = ((System.Drawing.Image)(resources.GetObject("linkXRMTRlogo.Image")));
-            this.linkXRMTRlogo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkXRMTRlogo.Location = new System.Drawing.Point(11, 3);
-            this.linkXRMTRlogo.Name = "linkXRMTRlogo";
-            this.linkXRMTRlogo.Size = new System.Drawing.Size(21, 21);
-            this.linkXRMTRlogo.TabIndex = 40;
-            this.toolTip1.SetToolTip(this.linkXRMTRlogo, "Open XRM Token Runner to get help to build calculation");
-            this.linkXRMTRlogo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_XRMTRname_LinkClicked);
-            // 
-            // txtCalcPreview
-            // 
-            this.txtCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCalcPreview.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCalcPreview.Location = new System.Drawing.Point(12, 202);
-            this.txtCalcPreview.Name = "txtCalcPreview";
-            this.txtCalcPreview.ReadOnly = true;
-            this.txtCalcPreview.Size = new System.Drawing.Size(269, 20);
-            this.txtCalcPreview.TabIndex = 39;
-            this.txtCalcPreview.TabStop = false;
-            // 
-            // btnCalcHelp
-            // 
-            this.btnCalcHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCalcHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnCalcHelp.Image")));
-            this.btnCalcHelp.Location = new System.Drawing.Point(287, 201);
-            this.btnCalcHelp.Name = "btnCalcHelp";
-            this.btnCalcHelp.Size = new System.Drawing.Size(28, 22);
-            this.btnCalcHelp.TabIndex = 38;
-            this.toolTip1.SetToolTip(this.btnCalcHelp, "Show docs on XRM Tokens");
-            this.btnCalcHelp.UseVisualStyleBackColor = true;
-            this.btnCalcHelp.Click += new System.EventHandler(this.btnCalcHelp_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 90);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 13);
-            this.label1.TabIndex = 37;
-            // 
-            // txtValueCalc
-            // 
-            this.txtValueCalc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtValueCalc.Location = new System.Drawing.Point(12, 25);
-            this.txtValueCalc.Multiline = true;
-            this.txtValueCalc.Name = "txtValueCalc";
-            this.txtValueCalc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueCalc.Size = new System.Drawing.Size(303, 221);
-            this.txtValueCalc.TabIndex = 36;
-            this.txtValueCalc.TextChanged += new System.EventHandler(this.txtValueCalc_TextChanged);
-            // 
-            // panMultiChoices
-            // 
-            this.panMultiChoices.Controls.Add(this.chkMultiSelects);
-            this.panMultiChoices.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panMultiChoices.Location = new System.Drawing.Point(3, 118);
-            this.panMultiChoices.Name = "panMultiChoices";
-            this.panMultiChoices.Size = new System.Drawing.Size(330, 221);
-            this.panMultiChoices.TabIndex = 11;
-            this.panMultiChoices.Visible = false;
-            // 
-            // chkMultiSelects
-            // 
-            this.chkMultiSelects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkMultiSelects.FormattingEnabled = true;
-            this.chkMultiSelects.Location = new System.Drawing.Point(9, 6);
-            this.chkMultiSelects.Name = "chkMultiSelects";
-            this.chkMultiSelects.Size = new System.Drawing.Size(307, 199);
-            this.chkMultiSelects.TabIndex = 3;
-            this.chkMultiSelects.SelectedIndexChanged += new System.EventHandler(this.chkMultiSelects_SelectedIndexChanged);
-            // 
-            // panUpdButton
-            // 
-            this.panUpdButton.Controls.Add(this.btnAdd);
-            this.panUpdButton.Controls.Add(this.chkOnlyChange);
-            this.panUpdButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panUpdButton.Location = new System.Drawing.Point(3, 339);
-            this.panUpdButton.Name = "panUpdButton";
-            this.panUpdButton.Size = new System.Drawing.Size(330, 32);
-            this.panUpdButton.TabIndex = 10;
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(207, 3);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(109, 23);
-            this.btnAdd.TabIndex = 35;
-            this.btnAdd.Text = "Add column";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // panUpdLookup
-            // 
-            this.panUpdLookup.BackColor = System.Drawing.Color.Transparent;
-            this.panUpdLookup.Controls.Add(this.cdsLookupValue);
-            this.panUpdLookup.Controls.Add(this.btnLookupValue);
-            this.panUpdLookup.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panUpdLookup.Location = new System.Drawing.Point(3, 93);
-            this.panUpdLookup.Name = "panUpdLookup";
-            this.panUpdLookup.Size = new System.Drawing.Size(330, 25);
-            this.panUpdLookup.TabIndex = 4;
-            this.panUpdLookup.Visible = false;
-            // 
-            // cdsLookupValue
-            // 
-            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
-            this.cdsLookupValue.Column = null;
-            this.cdsLookupValue.DisplayFormat = "";
-            this.cdsLookupValue.Location = new System.Drawing.Point(12, 3);
-            this.cdsLookupValue.Name = "cdsLookupValue";
-            this.cdsLookupValue.RecordHost = this.xrmRecordAttribute;
-            this.cdsLookupValue.Size = new System.Drawing.Size(269, 20);
-            this.cdsLookupValue.TabIndex = 0;
-            // 
-            // xrmRecordAttribute
-            // 
-            this.xrmRecordAttribute.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.xrmRecordAttribute.LogicalName = null;
-            this.xrmRecordAttribute.Record = null;
-            this.xrmRecordAttribute.Service = null;
-            // 
-            // btnLookupValue
-            // 
-            this.btnLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLookupValue.Image = ((System.Drawing.Image)(resources.GetObject("btnLookupValue.Image")));
-            this.btnLookupValue.Location = new System.Drawing.Point(287, 2);
-            this.btnLookupValue.Name = "btnLookupValue";
-            this.btnLookupValue.Size = new System.Drawing.Size(28, 22);
-            this.btnLookupValue.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.btnLookupValue, "Lookup a record");
-            this.btnLookupValue.UseVisualStyleBackColor = true;
-            this.btnLookupValue.Click += new System.EventHandler(this.btnLookupValue_Click);
-            // 
-            // panUpdValue
-            // 
-            this.panUpdValue.BackColor = System.Drawing.Color.Transparent;
-            this.panUpdValue.Controls.Add(this.cmbValue);
-            this.panUpdValue.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panUpdValue.Location = new System.Drawing.Point(3, 68);
-            this.panUpdValue.Name = "panUpdValue";
-            this.panUpdValue.Size = new System.Drawing.Size(330, 25);
-            this.panUpdValue.TabIndex = 3;
-            // 
-            // panUpdAction
-            // 
-            this.panUpdAction.Controls.Add(this.rbCalculate);
-            this.panUpdAction.Controls.Add(this.rbSetValue);
-            this.panUpdAction.Controls.Add(this.rbSetNull);
-            this.panUpdAction.Controls.Add(this.rbSetTouch);
-            this.panUpdAction.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panUpdAction.Location = new System.Drawing.Point(3, 43);
-            this.panUpdAction.Name = "panUpdAction";
-            this.panUpdAction.Size = new System.Drawing.Size(330, 25);
-            this.panUpdAction.TabIndex = 2;
-            // 
-            // rbCalculate
-            // 
-            this.rbCalculate.AutoSize = true;
-            this.rbCalculate.Location = new System.Drawing.Point(84, 3);
-            this.rbCalculate.Name = "rbCalculate";
-            this.rbCalculate.Size = new System.Drawing.Size(69, 17);
-            this.rbCalculate.TabIndex = 2;
-            this.rbCalculate.Text = "Calculate";
-            this.rbCalculate.UseVisualStyleBackColor = true;
-            this.rbCalculate.CheckedChanged += new System.EventHandler(this.rbSet_CheckedChanged);
-            // 
-            // panUpdAttribute
-            // 
-            this.panUpdAttribute.Controls.Add(this.btnUpdateAttributeOptions);
-            this.panUpdAttribute.Controls.Add(this.cmbAttribute);
-            this.panUpdAttribute.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panUpdAttribute.Location = new System.Drawing.Point(3, 16);
-            this.panUpdAttribute.Name = "panUpdAttribute";
-            this.panUpdAttribute.Size = new System.Drawing.Size(330, 27);
-            this.panUpdAttribute.TabIndex = 1;
-            // 
-            // btnUpdateAttributeOptions
-            // 
-            this.btnUpdateAttributeOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdateAttributeOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdateAttributeOptions.Image")));
-            this.btnUpdateAttributeOptions.Location = new System.Drawing.Point(287, 2);
-            this.btnUpdateAttributeOptions.Name = "btnUpdateAttributeOptions";
-            this.btnUpdateAttributeOptions.Size = new System.Drawing.Size(28, 23);
-            this.btnUpdateAttributeOptions.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.btnUpdateAttributeOptions, "Options of which attributes to show");
-            this.btnUpdateAttributeOptions.UseVisualStyleBackColor = true;
-            this.btnUpdateAttributeOptions.Click += new System.EventHandler(this.btnUpdateAttributeOptions_Click);
             // 
             // chkIgnoreErrors
             // 
@@ -990,34 +608,6 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
             // 
-            // crmGridView1
-            // 
-            this.crmGridView1.AllowUserToAddRows = false;
-            this.crmGridView1.AllowUserToDeleteRows = false;
-            this.crmGridView1.AllowUserToOrderColumns = true;
-            this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.crmGridView1.ColumnOrder = "";
-            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crmGridView1.FilterColumns = "";
-            this.crmGridView1.LayoutXML = "";
-            this.crmGridView1.Location = new System.Drawing.Point(3, 54);
-            this.crmGridView1.Name = "crmGridView1";
-            this.crmGridView1.ReadOnly = true;
-            this.crmGridView1.RowHeadersVisible = false;
-            this.crmGridView1.RowHeadersWidth = 72;
-            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.crmGridView1.Service = null;
-            this.crmGridView1.ShowFriendlyNames = true;
-            this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(619, 761);
-            this.crmGridView1.TabIndex = 2;
-            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
-            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.rbIncludeSelected);
@@ -1117,7 +707,8 @@
             // tabUpdate
             // 
             this.tabUpdate.BackColor = System.Drawing.SystemColors.Window;
-            this.tabUpdate.Controls.Add(this.splitContUpdateDetails);
+            this.tabUpdate.Controls.Add(this.gb3attributes);
+            this.tabUpdate.Controls.Add(this.gbImpSeqNo);
             this.tabUpdate.Controls.Add(this.panel2);
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
@@ -1126,37 +717,41 @@
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             // 
-            // splitContUpdateDetails
-            // 
-            this.splitContUpdateDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContUpdateDetails.Location = new System.Drawing.Point(3, 60);
-            this.splitContUpdateDetails.Name = "splitContUpdateDetails";
-            this.splitContUpdateDetails.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContUpdateDetails.Panel1
-            // 
-            this.splitContUpdateDetails.Panel1.Controls.Add(this.gb2attribute);
-            // 
-            // splitContUpdateDetails.Panel2
-            // 
-            this.splitContUpdateDetails.Panel2.Controls.Add(this.gb3attributes);
-            this.splitContUpdateDetails.Panel2.Controls.Add(this.gbImpSeqNo);
-            this.splitContUpdateDetails.Size = new System.Drawing.Size(336, 635);
-            this.splitContUpdateDetails.SplitterDistance = 374;
-            this.splitContUpdateDetails.SplitterWidth = 8;
-            this.splitContUpdateDetails.TabIndex = 3;
-            // 
             // gb3attributes
             // 
+            this.gb3attributes.Controls.Add(this.btnAttrEdit);
+            this.gb3attributes.Controls.Add(this.btnAttrAdd);
             this.gb3attributes.Controls.Add(this.lvAttributes);
-            this.gb3attributes.Controls.Add(this.btnRemove);
+            this.gb3attributes.Controls.Add(this.btnAttrRemove);
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb3attributes.Location = new System.Drawing.Point(0, 0);
+            this.gb3attributes.Location = new System.Drawing.Point(3, 60);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(336, 190);
+            this.gb3attributes.Size = new System.Drawing.Size(336, 549);
             this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
-            this.gb3attributes.Text = "Verify attributes to update";
+            this.gb3attributes.Text = "Attributes to update";
+            // 
+            // btnAttrEdit
+            // 
+            this.btnAttrEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAttrEdit.Location = new System.Drawing.Point(96, 516);
+            this.btnAttrEdit.Name = "btnAttrEdit";
+            this.btnAttrEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnAttrEdit.TabIndex = 4;
+            this.btnAttrEdit.Text = "Edit";
+            this.btnAttrEdit.UseVisualStyleBackColor = true;
+            this.btnAttrEdit.Click += new System.EventHandler(this.btnAttrEdit_Click);
+            // 
+            // btnAttrAdd
+            // 
+            this.btnAttrAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAttrAdd.Location = new System.Drawing.Point(15, 516);
+            this.btnAttrAdd.Name = "btnAttrAdd";
+            this.btnAttrAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAttrAdd.TabIndex = 3;
+            this.btnAttrAdd.Text = "Add";
+            this.btnAttrAdd.UseVisualStyleBackColor = true;
+            this.btnAttrAdd.Click += new System.EventHandler(this.btnAttrAdd_Click);
             // 
             // lvAttributes
             // 
@@ -1172,11 +767,12 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(304, 136);
+            this.lvAttributes.Size = new System.Drawing.Size(304, 491);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
-            this.lvAttributes.SelectedIndexChanged += new System.EventHandler(this.lvAttributes_SelectedIndexChanged);
+            this.lvAttributes.SelectedIndexChanged += new System.EventHandler(this.genericInputChanged);
+            this.lvAttributes.DoubleClick += new System.EventHandler(this.btnAttrEdit_Click);
             // 
             // logicalname
             // 
@@ -1198,16 +794,16 @@
             this.onlychange.Text = "OC";
             this.onlychange.Width = 37;
             // 
-            // btnRemove
+            // btnAttrRemove
             // 
-            this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(211, 161);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(109, 23);
-            this.btnRemove.TabIndex = 2;
-            this.btnRemove.Text = "Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            this.btnAttrRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAttrRemove.Location = new System.Drawing.Point(244, 516);
+            this.btnAttrRemove.Name = "btnAttrRemove";
+            this.btnAttrRemove.Size = new System.Drawing.Size(75, 23);
+            this.btnAttrRemove.TabIndex = 2;
+            this.btnAttrRemove.Text = "Remove";
+            this.btnAttrRemove.UseVisualStyleBackColor = true;
+            this.btnAttrRemove.Click += new System.EventHandler(this.btnAttrRemove_Click);
             // 
             // gbImpSeqNo
             // 
@@ -1219,9 +815,9 @@
             this.gbImpSeqNo.Controls.Add(this.numImpSeqNo);
             this.gbImpSeqNo.Controls.Add(this.label7);
             this.gbImpSeqNo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbImpSeqNo.Location = new System.Drawing.Point(0, 190);
+            this.gbImpSeqNo.Location = new System.Drawing.Point(3, 609);
             this.gbImpSeqNo.Name = "gbImpSeqNo";
-            this.gbImpSeqNo.Size = new System.Drawing.Size(336, 63);
+            this.gbImpSeqNo.Size = new System.Drawing.Size(336, 86);
             this.gbImpSeqNo.TabIndex = 37;
             this.gbImpSeqNo.TabStop = false;
             this.gbImpSeqNo.Text = "Import Sequence Number";
@@ -1231,7 +827,7 @@
             this.linkShowImpSeqNoRecords.Enabled = false;
             this.linkShowImpSeqNoRecords.Image = ((System.Drawing.Image)(resources.GetObject("linkShowImpSeqNoRecords.Image")));
             this.linkShowImpSeqNoRecords.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkShowImpSeqNoRecords.Location = new System.Drawing.Point(12, 39);
+            this.linkShowImpSeqNoRecords.Location = new System.Drawing.Point(12, 50);
             this.linkShowImpSeqNoRecords.Name = "linkShowImpSeqNoRecords";
             this.linkShowImpSeqNoRecords.Size = new System.Drawing.Size(167, 16);
             this.linkShowImpSeqNoRecords.TabIndex = 7;
@@ -1245,7 +841,7 @@
             // btnDefImpSeqNo
             // 
             this.btnDefImpSeqNo.Image = ((System.Drawing.Image)(resources.GetObject("btnDefImpSeqNo.Image")));
-            this.btnDefImpSeqNo.Location = new System.Drawing.Point(141, 15);
+            this.btnDefImpSeqNo.Location = new System.Drawing.Point(141, 21);
             this.btnDefImpSeqNo.Name = "btnDefImpSeqNo";
             this.btnDefImpSeqNo.Size = new System.Drawing.Size(23, 23);
             this.btnDefImpSeqNo.TabIndex = 6;
@@ -1257,7 +853,7 @@
             this.chkSetImpSeqNo.AutoSize = true;
             this.chkSetImpSeqNo.Checked = true;
             this.chkSetImpSeqNo.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSetImpSeqNo.Location = new System.Drawing.Point(14, 19);
+            this.chkSetImpSeqNo.Location = new System.Drawing.Point(14, 25);
             this.chkSetImpSeqNo.Name = "chkSetImpSeqNo";
             this.chkSetImpSeqNo.Size = new System.Drawing.Size(63, 17);
             this.chkSetImpSeqNo.TabIndex = 1;
@@ -1284,7 +880,7 @@
             this.chkDefImpSeqNo.Checked = true;
             this.chkDefImpSeqNo.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDefImpSeqNo.Enabled = false;
-            this.chkDefImpSeqNo.Location = new System.Drawing.Point(83, 19);
+            this.chkDefImpSeqNo.Location = new System.Drawing.Point(83, 25);
             this.chkDefImpSeqNo.Name = "chkDefImpSeqNo";
             this.chkDefImpSeqNo.Size = new System.Drawing.Size(60, 17);
             this.chkDefImpSeqNo.TabIndex = 2;
@@ -1298,7 +894,7 @@
             // 
             this.numImpSeqNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numImpSeqNo.Enabled = false;
-            this.numImpSeqNo.Location = new System.Drawing.Point(228, 18);
+            this.numImpSeqNo.Location = new System.Drawing.Point(228, 24);
             this.numImpSeqNo.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1318,7 +914,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(178, 20);
+            this.label7.Location = new System.Drawing.Point(178, 26);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(44, 13);
             this.label7.TabIndex = 3;
@@ -1355,7 +951,7 @@
             this.tabAssign.Location = new System.Drawing.Point(4, 22);
             this.tabAssign.Name = "tabAssign";
             this.tabAssign.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAssign.Size = new System.Drawing.Size(342, 422);
+            this.tabAssign.Size = new System.Drawing.Size(342, 698);
             this.tabAssign.TabIndex = 4;
             this.tabAssign.Text = "Assign";
             // 
@@ -1413,28 +1009,6 @@
             this.label6.TabIndex = 7;
             this.label6.Text = "Select User or Team";
             // 
-            // xrmAssignText
-            // 
-            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
-            this.xrmAssignText.Column = null;
-            this.xrmAssignText.DisplayFormat = "";
-            this.xrmAssignText.Location = new System.Drawing.Point(17, 123);
-            this.xrmAssignText.Name = "xrmAssignText";
-            this.xrmAssignText.ReadOnly = true;
-            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
-            this.xrmAssignText.Size = new System.Drawing.Size(274, 20);
-            this.xrmAssignText.TabIndex = 12;
-            // 
-            // xrmRecordAssign
-            // 
-            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.xrmRecordAssign.LogicalName = null;
-            this.xrmRecordAssign.Record = null;
-            this.xrmRecordAssign.Service = null;
-            this.xrmRecordAssign.ColumnValueChanged += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.xrmRecordAssign_ColumnValueChanged);
-            // 
             // tabSetState
             // 
             this.tabSetState.BackColor = System.Drawing.SystemColors.Window;
@@ -1444,7 +1018,7 @@
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
             this.tabSetState.Name = "tabSetState";
             this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSetState.Size = new System.Drawing.Size(342, 422);
+            this.tabSetState.Size = new System.Drawing.Size(342, 698);
             this.tabSetState.TabIndex = 3;
             this.tabSetState.Text = "Set State";
             // 
@@ -1579,7 +1153,7 @@
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
             this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDelete.Size = new System.Drawing.Size(342, 422);
+            this.tabDelete.Size = new System.Drawing.Size(342, 698);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
             // 
@@ -1610,10 +1184,62 @@
             this.lblDeleteHeader.TabIndex = 0;
             this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
-            // tmCalc
+            // crmGridView1
             // 
-            this.tmCalc.Interval = 1000;
-            this.tmCalc.Tick += new System.EventHandler(this.tmCalc_Tick);
+            this.crmGridView1.AllowUserToAddRows = false;
+            this.crmGridView1.AllowUserToDeleteRows = false;
+            this.crmGridView1.AllowUserToOrderColumns = true;
+            this.crmGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.crmGridView1.ColumnOrder = "";
+            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crmGridView1.FilterColumns = "";
+            this.crmGridView1.LayoutXML = "";
+            this.crmGridView1.Location = new System.Drawing.Point(3, 54);
+            this.crmGridView1.Name = "crmGridView1";
+            this.crmGridView1.ReadOnly = true;
+            this.crmGridView1.RowHeadersVisible = false;
+            this.crmGridView1.RowHeadersWidth = 72;
+            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.crmGridView1.Service = null;
+            this.crmGridView1.ShowFriendlyNames = true;
+            this.crmGridView1.ShowIdColumn = false;
+            this.crmGridView1.Size = new System.Drawing.Size(619, 761);
+            this.crmGridView1.TabIndex = 2;
+            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
+            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
+            // 
+            // xrmAssignText
+            // 
+            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
+            this.xrmAssignText.Column = null;
+            this.xrmAssignText.DisplayFormat = "";
+            this.xrmAssignText.Location = new System.Drawing.Point(17, 123);
+            this.xrmAssignText.Name = "xrmAssignText";
+            this.xrmAssignText.ReadOnly = true;
+            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
+            this.xrmAssignText.Size = new System.Drawing.Size(274, 20);
+            this.xrmAssignText.TabIndex = 12;
+            // 
+            // xrmRecordAssign
+            // 
+            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.xrmRecordAssign.LogicalName = null;
+            this.xrmRecordAssign.Record = null;
+            this.xrmRecordAssign.Service = null;
+            this.xrmRecordAssign.ColumnValueChanged += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.xrmRecordAssign_ColumnValueChanged);
+            // 
+            // xrmRecordAttribute
+            // 
+            this.xrmRecordAttribute.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.xrmRecordAttribute.LogicalName = null;
+            this.xrmRecordAttribute.Record = null;
+            this.xrmRecordAttribute.Service = null;
             // 
             // cdsLookupDialog
             // 
@@ -1652,20 +1278,6 @@
             this.toolStripMain.PerformLayout();
             this.gb1select.ResumeLayout(false);
             this.gb1select.PerformLayout();
-            this.gb2attribute.ResumeLayout(false);
-            this.panUpdTextMulti.ResumeLayout(false);
-            this.panUpdTextMulti.PerformLayout();
-            this.panUpdCalc.ResumeLayout(false);
-            this.panUpdCalc.PerformLayout();
-            this.panMultiChoices.ResumeLayout(false);
-            this.panUpdButton.ResumeLayout(false);
-            this.panUpdButton.PerformLayout();
-            this.panUpdLookup.ResumeLayout(false);
-            this.panUpdLookup.PerformLayout();
-            this.panUpdValue.ResumeLayout(false);
-            this.panUpdAction.ResumeLayout(false);
-            this.panUpdAction.PerformLayout();
-            this.panUpdAttribute.ResumeLayout(false);
             this.gbExecute.ResumeLayout(false);
             this.gbExecute.PerformLayout();
             this.panBatchOption.ResumeLayout(false);
@@ -1673,7 +1285,6 @@
             this.panWaitBetween.ResumeLayout(false);
             this.panWaitBetween.PerformLayout();
             this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1683,10 +1294,6 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabUpdate.ResumeLayout(false);
-            this.splitContUpdateDetails.Panel1.ResumeLayout(false);
-            this.splitContUpdateDetails.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContUpdateDetails)).EndInit();
-            this.splitContUpdateDetails.ResumeLayout(false);
             this.gb3attributes.ResumeLayout(false);
             this.gbImpSeqNo.ResumeLayout(false);
             this.gbImpSeqNo.PerformLayout();
@@ -1703,6 +1310,7 @@
             this.panel3.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1714,14 +1322,7 @@
         internal System.Windows.Forms.ToolStrip toolStripMain;
         private System.Windows.Forms.Button btnGetEdit;
         private System.Windows.Forms.Label lblRecords;
-        private System.Windows.Forms.ComboBox cmbAttribute;
-        private System.Windows.Forms.RadioButton rbSetNull;
-        private System.Windows.Forms.RadioButton rbSetTouch;
-        private System.Windows.Forms.RadioButton rbSetValue;
-        private System.Windows.Forms.ComboBox cmbValue;
-        private System.Windows.Forms.CheckBox chkOnlyChange;
         private System.Windows.Forms.GroupBox gb1select;
-        private System.Windows.Forms.GroupBox gb2attribute;
         private System.Windows.Forms.GroupBox gbExecute;
         private System.Windows.Forms.Label lblUpdateStatus;
         private System.Windows.Forms.Button btnExecute;
@@ -1730,9 +1331,7 @@
         private Rappen.XTB.Helpers.Controls.XRMDataGridView crmGridView1;
         private System.Windows.Forms.CheckBox chkIgnoreErrors;
         private System.Windows.Forms.GroupBox gb3attributes;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.Panel panUpdButton;
+        private System.Windows.Forms.Button btnAttrRemove;
         private System.Windows.Forms.ListView lvAttributes;
         private System.Windows.Forms.ColumnHeader logicalname;
         private System.Windows.Forms.ColumnHeader action;
@@ -1771,34 +1370,14 @@
         private System.Windows.Forms.ComboBox cbSetStatus;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label lblUpdateHeader;
-        private System.Windows.Forms.TextBox txtValueMultiline;
         private System.Windows.Forms.Panel panQualifyLead;
         private System.Windows.Forms.CheckBox chkQualifyLeadCreateOpportunity;
         private System.Windows.Forms.CheckBox chkQualifyLeadCreateContact;
         private System.Windows.Forms.CheckBox chkQualifyLeadCreateAccount;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panUpdAttribute;
-        private System.Windows.Forms.Panel panUpdLookup;
-        private System.Windows.Forms.Button btnLookupValue;
-        private System.Windows.Forms.Panel panUpdTextMulti;
-        private System.Windows.Forms.Panel panUpdValue;
-        private System.Windows.Forms.Panel panUpdAction;
-        private System.Windows.Forms.SplitContainer splitContUpdateDetails;
-        private Rappen.XTB.Helpers.Controls.XRMColumnText cdsLookupValue;
         private Rappen.XTB.Helpers.Controls.XRMLookupDialog cdsLookupDialog;
-        private System.Windows.Forms.Panel panUpdCalc;
-        private System.Windows.Forms.Button btnCalcHelp;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtValueCalc;
-        private System.Windows.Forms.RadioButton rbCalculate;
-        private System.Windows.Forms.TextBox txtCalcPreview;
-        private System.Windows.Forms.Timer tmCalc;
         private Rappen.XTB.Helpers.Controls.XRMRecordHost xrmRecordAttribute;
-        private System.Windows.Forms.CheckedListBox chkMultiSelects;
-        private System.Windows.Forms.Panel panMultiChoices;
         private System.Windows.Forms.CheckBox chkSetState;
-        private System.Windows.Forms.LinkLabel link_XRMTRname;
-        private System.Windows.Forms.LinkLabel linkXRMTRlogo;
         private System.Windows.Forms.Button btnAssignSelect;
         private Rappen.XTB.Helpers.Controls.XRMColumnText xrmAssignText;
         private System.Windows.Forms.TextBox txtAssignEntity;
@@ -1817,7 +1396,6 @@
         private System.Windows.Forms.RadioButton rbBatchMultipleRequests;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button btnUpdateAttributeOptions;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripButton tsbFriendly;
         private System.Windows.Forms.ToolStripButton tsbRaw;
@@ -1831,5 +1409,7 @@
         private System.Windows.Forms.Button btnDefImpSeqNo;
         private System.Windows.Forms.GroupBox gbImpSeqNo;
         private System.Windows.Forms.LinkLabel linkShowImpSeqNoRecords;
+        private System.Windows.Forms.Button btnAttrAdd;
+        private System.Windows.Forms.Button btnAttrEdit;
     }
 }
