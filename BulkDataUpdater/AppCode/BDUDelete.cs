@@ -11,7 +11,7 @@ namespace Cinteros.XTB.BulkDataUpdater
 {
     public partial class BulkDataUpdater
     {
-        private void DeleteRecords()
+        private void DeleteRecords(JobExecuteOptions executeoptions)
         {
             if (working)
             {
@@ -27,7 +27,6 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            var executeoptions = GetExecuteOptions();
             if (executeoptions.BatchSize > 1 && executeoptions.MultipleRequest && includedrecords.Count() > 1)
             {
                 if (MessageBox.Show("Note that the new feature DeleteMultiple from Microsoft is not yet available.\nWe will use ExecuteMultiple instead.", "Batch & Multi", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
@@ -73,7 +72,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 }
                 current++;
                 var request = new DeleteRequest { Target = record.ToEntityReference() };
-                SetBypassPlugins(request, executeoptions.BypassCustom);
+                SetBypassPlugins(request, executeoptions);
                 batch.Requests.Add(request);
                 if (batch.Requests.Count >= executeoptions.BatchSize || current == total)
                 {

@@ -29,7 +29,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             UpdateJobAssign(job.Assign);
         }
 
-        private void AssignRecords()
+        private void AssignRecords(JobExecuteOptions executeoptions)
         {
             if (working)
             {
@@ -52,7 +52,6 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             working = true;
             EnableControls(false, true);
-            var executeoptions = GetExecuteOptions();
             if (job != null && job.Assign != null)
             {
                 job.Assign.ExecuteOptions = executeoptions;
@@ -111,7 +110,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             Requests = new OrganizationRequestCollection()
                         };
                         batch.Requests.AddRange(entities.Entities.Select(e => new UpdateRequest { Target = e }));
-                        batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions.BypassCustom));
+                        batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions));
                         failed += ExecuteRequest(batch, executeoptions);
                     }
                     assigned += entities.Entities.Count;

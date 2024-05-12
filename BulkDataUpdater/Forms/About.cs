@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
+using Rappen.XTB.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -61,24 +63,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                 assemblyName;
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            bdu.LogUse("About-OpenHomepage");
-            Process.Start("https://jonasr.app/bdu/");
-        }
-
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            bdu.LogUse("About-OpenBlog");
-            Process.Start("https://jonasr.app");
-        }
-
-        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            bdu.LogUse("About-OpenTwitter");
-            Process.Start("https://twitter.com/rappen");
-        }
-
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             MessageBox.Show(@"The evolution of Bulk Data Updater is based on feedback issues and anonymous statistics collected about usage.
@@ -88,9 +72,9 @@ Thank You,
 Jonas", "Anonymous statistics", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void link_Click(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start($"https://jonasr.app/bdu/releases#{version}");
+            UrlUtils.OpenUrl(sender);
         }
     }
 }

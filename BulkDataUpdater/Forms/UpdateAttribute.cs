@@ -28,7 +28,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
         private Entity record;
         private UpdateAttributes updateAttributes;
         private bool friendly;
-        private bool lockedattribute;
+        private string lockedattribute;
 
         public static BulkActionItem Show(BulkDataUpdater bdu, bool friendly, UpdateAttributes updattrs, Entity selected, BulkActionItem bai)
         {
@@ -38,7 +38,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                 friendly = friendly,
                 updateAttributes = updattrs,
                 record = selected,
-                lockedattribute = bai != null
+                lockedattribute = bai?.Attribute?.Metadata?.LogicalName
             };
             form.RefreshAttributes();
             form.SetBAI(bai);
@@ -120,7 +120,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                 try
                 {
                     var attribute = cmbAttribute.SelectedItem as AttributeMetadataItem;
-                    panAttribute.Enabled = !lockedattribute;
+                    panAttribute.Enabled = string.IsNullOrEmpty(lockedattribute);
                     panAction.Enabled = attribute != null;
                     panValue.Enabled = panAction.Enabled && panAction.Tag is BulkActionAction;
                     btnSave.Enabled = panButtons.Enabled && IsValueValid();
@@ -478,7 +478,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                         (updateAttributes.OnForm && bdu.IsOnAnyForm(fetch.Entity.Name, attribute.LogicalName, RefreshAttributes)) ||
                         (updateAttributes.OnView && bdu.IsOnAnyView(fetch.Entity.Name, attribute.LogicalName, RefreshAttributes));
                 }
-                if (yes)
+                if (yes || attribute.LogicalName == lockedattribute)
                 {
                     result.Add(attribute);
                 }

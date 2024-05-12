@@ -67,44 +67,51 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         }
     }
 
-    public class JobUpdate
+    public abstract class JobExecute
+    {
+        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
+    }
+
+    public class JobUpdate : JobExecute
     {
         public bool SetImpSeqNo { get; set; } = true;
         public bool DefaultImpSeqNo { get; set; } = true;
         public int ImpSeqNo { get; set; }
         public List<BulkActionItem> Attributes { get; set; } = new List<BulkActionItem>();
-        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }
 
-    public class JobAssign
+    public class JobAssign : JobExecute
     {
         public string Entity { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }
 
-    public class JobSetState
+    public class JobSetState : JobExecute
     {
         public int? State { get; set; }
         public int? Status { get; set; }
         public string StateName { get; set; }
         public string StatusName { get; set; }
-        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }
 
-    public class JobDelete
+    public class JobDelete : JobExecute
     {
-        public JobExecuteOptions ExecuteOptions { get; set; } = new JobExecuteOptions();
     }
 
     public class JobExecuteOptions
     {
+        public int FormWidth { get; set; }
+        public int FormHeight { get; set; }
         public int DelayCallTime { get; set; } = 0;
         public int BatchSize { get; set; } = 1;
         public bool MultipleRequest { get; set; } = true;
         public bool IgnoreErrors { get; set; } = false;
         public bool BypassCustom { get; set; } = false;
+        public bool BypassSync { get; set; } = true;
+        public bool BypassAsync { get; set; } = false;
+        public List<Guid> BypassSteps { get; set; } = new List<Guid>();
+
         internal int DelayCurrent = 0;
         internal bool DelayNow = false;
     }

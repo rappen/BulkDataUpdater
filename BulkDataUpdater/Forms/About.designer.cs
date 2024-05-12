@@ -59,9 +59,10 @@
             this.linkLabel1.Size = new System.Drawing.Size(180, 44);
             this.linkLabel1.TabIndex = 2;
             this.linkLabel1.TabStop = true;
+            this.linkLabel1.Tag = "https://jonasr.app/bdu/";
             this.linkLabel1.Text = "Bulk Data Updater\r\ndocumentation";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // label2
             // 
@@ -81,8 +82,9 @@
             this.linkLabel2.Size = new System.Drawing.Size(64, 13);
             this.linkLabel2.TabIndex = 4;
             this.linkLabel2.TabStop = true;
+            this.linkLabel2.Tag = "https://jonasr.app";
             this.linkLabel2.Text = "Jonas Rapp";
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // button1
             // 
@@ -186,8 +188,9 @@
             this.linkLabel4.Size = new System.Drawing.Size(51, 13);
             this.linkLabel4.TabIndex = 18;
             this.linkLabel4.TabStop = true;
+            this.linkLabel4.Tag = "https://x.com/rappen";
             this.linkLabel4.Text = "@rappen";
-            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // label1
             // 
@@ -195,9 +198,9 @@
             this.label1.Location = new System.Drawing.Point(558, 98);
             this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 13);
+            this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 17;
-            this.label1.Text = "Twitter:";
+            this.label1.Text = "X / Twitter:";
             // 
             // linkLabel3
             // 
@@ -209,9 +212,10 @@
             this.linkLabel3.Size = new System.Drawing.Size(140, 22);
             this.linkLabel3.TabIndex = 19;
             this.linkLabel3.TabStop = true;
+            this.linkLabel3.Tag = "https://jonasr.app/bdu/releases";
             this.linkLabel3.Text = "Release Notes";
             this.linkLabel3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // About
             // 

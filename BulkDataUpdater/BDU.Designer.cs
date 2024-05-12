@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbOpenJob = new System.Windows.Forms.ToolStripButton();
@@ -52,20 +52,7 @@
             this.btnGetFile = new System.Windows.Forms.Button();
             this.btnGetView = new System.Windows.Forms.Button();
             this.btnGetFXB = new System.Windows.Forms.Button();
-            this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.gbExecute = new System.Windows.Forms.GroupBox();
-            this.panBatchOption = new System.Windows.Forms.Panel();
-            this.rbBatchExecuteMultiple = new System.Windows.Forms.RadioButton();
-            this.rbBatchMultipleRequests = new System.Windows.Forms.RadioButton();
-            this.linkBulkOperations = new System.Windows.Forms.LinkLabel();
-            this.linkBypassPlugins = new System.Windows.Forms.LinkLabel();
-            this.chkBypassPlugins = new System.Windows.Forms.CheckBox();
-            this.panWaitBetween = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cmbDelayCall = new System.Windows.Forms.ComboBox();
-            this.cmbBatchSize = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
             this.btnExecute = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -127,8 +114,6 @@
             this.toolStripMain.SuspendLayout();
             this.gb1select.SuspendLayout();
             this.gbExecute.SuspendLayout();
-            this.panBatchOption.SuspendLayout();
-            this.panWaitBetween.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -270,9 +255,10 @@
             this.tslDoc.IsLink = true;
             this.tslDoc.Name = "tslDoc";
             this.tslDoc.Size = new System.Drawing.Size(122, 36);
+            this.tslDoc.Tag = "https://jonasr.app/BDU/";
             this.tslDoc.Text = "Documentation";
             this.tslDoc.ToolTipText = "https://jonasr.app/BDU/";
-            this.tslDoc.Click += new System.EventHandler(this.tslDoc_Click);
+            this.tslDoc.Click += new System.EventHandler(this.link_Click);
             // 
             // tsbBymyacoffee
             // 
@@ -282,9 +268,10 @@
             this.tsbBymyacoffee.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbBymyacoffee.Name = "tsbBymyacoffee";
             this.tsbBymyacoffee.Size = new System.Drawing.Size(36, 36);
+            this.tsbBymyacoffee.Tag = "https://www.buymeacoffee.com/rappen";
             this.tsbBymyacoffee.Text = "toolStripButton1";
             this.tsbBymyacoffee.ToolTipText = "By Me a Coffee!";
-            this.tsbBymyacoffee.Click += new System.EventHandler(this.tsbBymyacoffee_Click);
+            this.tsbBymyacoffee.Click += new System.EventHandler(this.link_Click);
             // 
             // btnGetEdit
             // 
@@ -397,188 +384,23 @@
             this.btnGetFXB.UseVisualStyleBackColor = false;
             this.btnGetFXB.Click += new System.EventHandler(this.btnGetRecords_Click);
             // 
-            // chkIgnoreErrors
-            // 
-            this.chkIgnoreErrors.AutoSize = true;
-            this.chkIgnoreErrors.Location = new System.Drawing.Point(21, 122);
-            this.chkIgnoreErrors.Name = "chkIgnoreErrors";
-            this.chkIgnoreErrors.Size = new System.Drawing.Size(85, 17);
-            this.chkIgnoreErrors.TabIndex = 3;
-            this.chkIgnoreErrors.Text = "Ignore errors";
-            this.chkIgnoreErrors.UseVisualStyleBackColor = true;
-            this.chkIgnoreErrors.CheckedChanged += new System.EventHandler(this.executeOption_Changed);
-            // 
             // gbExecute
             // 
-            this.gbExecute.Controls.Add(this.panBatchOption);
-            this.gbExecute.Controls.Add(this.linkBulkOperations);
-            this.gbExecute.Controls.Add(this.linkBypassPlugins);
-            this.gbExecute.Controls.Add(this.chkBypassPlugins);
-            this.gbExecute.Controls.Add(this.panWaitBetween);
-            this.gbExecute.Controls.Add(this.cmbBatchSize);
-            this.gbExecute.Controls.Add(this.label3);
             this.gbExecute.Controls.Add(this.lblUpdateStatus);
             this.gbExecute.Controls.Add(this.btnExecute);
-            this.gbExecute.Controls.Add(this.chkIgnoreErrors);
             this.gbExecute.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbExecute.Location = new System.Drawing.Point(0, 724);
+            this.gbExecute.Location = new System.Drawing.Point(0, 502);
             this.gbExecute.Name = "gbExecute";
-            this.gbExecute.Size = new System.Drawing.Size(350, 185);
+            this.gbExecute.Size = new System.Drawing.Size(350, 63);
             this.gbExecute.TabIndex = 37;
             this.gbExecute.TabStop = false;
             this.gbExecute.Text = "Execution";
-            // 
-            // panBatchOption
-            // 
-            this.panBatchOption.Controls.Add(this.rbBatchExecuteMultiple);
-            this.panBatchOption.Controls.Add(this.rbBatchMultipleRequests);
-            this.panBatchOption.Location = new System.Drawing.Point(2, 70);
-            this.panBatchOption.Name = "panBatchOption";
-            this.panBatchOption.Size = new System.Drawing.Size(333, 25);
-            this.panBatchOption.TabIndex = 106;
-            // 
-            // rbBatchExecuteMultiple
-            // 
-            this.rbBatchExecuteMultiple.AutoSize = true;
-            this.rbBatchExecuteMultiple.Location = new System.Drawing.Point(150, 1);
-            this.rbBatchExecuteMultiple.Name = "rbBatchExecuteMultiple";
-            this.rbBatchExecuteMultiple.Size = new System.Drawing.Size(100, 17);
-            this.rbBatchExecuteMultiple.TabIndex = 1;
-            this.rbBatchExecuteMultiple.Text = "ExecuteMultiple";
-            this.rbBatchExecuteMultiple.UseVisualStyleBackColor = true;
-            this.rbBatchExecuteMultiple.CheckedChanged += new System.EventHandler(this.executeOption_Changed);
-            // 
-            // rbBatchMultipleRequests
-            // 
-            this.rbBatchMultipleRequests.AutoSize = true;
-            this.rbBatchMultipleRequests.Checked = true;
-            this.rbBatchMultipleRequests.Location = new System.Drawing.Point(19, 1);
-            this.rbBatchMultipleRequests.Name = "rbBatchMultipleRequests";
-            this.rbBatchMultipleRequests.Size = new System.Drawing.Size(96, 17);
-            this.rbBatchMultipleRequests.TabIndex = 0;
-            this.rbBatchMultipleRequests.TabStop = true;
-            this.rbBatchMultipleRequests.Text = "UpdateMultiple";
-            this.rbBatchMultipleRequests.UseVisualStyleBackColor = true;
-            this.rbBatchMultipleRequests.CheckedChanged += new System.EventHandler(this.executeOption_Changed);
-            // 
-            // linkBulkOperations
-            // 
-            this.linkBulkOperations.AutoSize = true;
-            this.linkBulkOperations.Location = new System.Drawing.Point(201, 51);
-            this.linkBulkOperations.Name = "linkBulkOperations";
-            this.linkBulkOperations.Size = new System.Drawing.Size(134, 13);
-            this.linkBulkOperations.TabIndex = 105;
-            this.linkBulkOperations.TabStop = true;
-            this.linkBulkOperations.Text = "MS Learn: Bulk Operations";
-            this.toolTip1.SetToolTip(this.linkBulkOperations, "https://docs.microsoft.com/power-apps/developer/data-platform/bulk-operations");
-            this.linkBulkOperations.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkBulkOperations_LinkClicked);
-            // 
-            // linkBypassPlugins
-            // 
-            this.linkBypassPlugins.AutoSize = true;
-            this.linkBypassPlugins.Location = new System.Drawing.Point(201, 100);
-            this.linkBypassPlugins.Name = "linkBypassPlugins";
-            this.linkBypassPlugins.Size = new System.Drawing.Size(131, 13);
-            this.linkBypassPlugins.TabIndex = 104;
-            this.linkBypassPlugins.TabStop = true;
-            this.linkBypassPlugins.Text = "MS Learn: Bypass Custom";
-            this.toolTip1.SetToolTip(this.linkBypassPlugins, "https://docs.microsoft.com/power-apps/developer/data-platform/bypass-custom-busin" +
-        "ess-logic");
-            this.linkBypassPlugins.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkBypassPlugins_LinkClicked);
-            // 
-            // chkBypassPlugins
-            // 
-            this.chkBypassPlugins.AutoSize = true;
-            this.chkBypassPlugins.Location = new System.Drawing.Point(21, 99);
-            this.chkBypassPlugins.Name = "chkBypassPlugins";
-            this.chkBypassPlugins.Size = new System.Drawing.Size(172, 17);
-            this.chkBypassPlugins.TabIndex = 103;
-            this.chkBypassPlugins.Text = "Bypass Custom Business Logic";
-            this.chkBypassPlugins.UseVisualStyleBackColor = true;
-            this.chkBypassPlugins.CheckedChanged += new System.EventHandler(this.chkBypassPlugins_CheckedChanged);
-            // 
-            // panWaitBetween
-            // 
-            this.panWaitBetween.Controls.Add(this.label4);
-            this.panWaitBetween.Controls.Add(this.label5);
-            this.panWaitBetween.Controls.Add(this.cmbDelayCall);
-            this.panWaitBetween.Location = new System.Drawing.Point(13, 14);
-            this.panWaitBetween.Name = "panWaitBetween";
-            this.panWaitBetween.Size = new System.Drawing.Size(259, 29);
-            this.panWaitBetween.TabIndex = 102;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 9);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 13);
-            this.label4.TabIndex = 37;
-            this.label4.Text = "Wait betw. calls";
-            // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(188, 9);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(47, 13);
-            this.label5.TabIndex = 101;
-            this.label5.Text = "seconds";
-            // 
-            // cmbDelayCall
-            // 
-            this.cmbDelayCall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cmbDelayCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDelayCall.FormattingEnabled = true;
-            this.cmbDelayCall.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "10",
-            "30",
-            "60",
-            "120",
-            "300"});
-            this.cmbDelayCall.Location = new System.Drawing.Point(100, 6);
-            this.cmbDelayCall.Name = "cmbDelayCall";
-            this.cmbDelayCall.Size = new System.Drawing.Size(75, 21);
-            this.cmbDelayCall.TabIndex = 1;
-            this.cmbDelayCall.SelectedIndexChanged += new System.EventHandler(this.executeOption_Changed);
-            // 
-            // cmbBatchSize
-            // 
-            this.cmbBatchSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBatchSize.FormattingEnabled = true;
-            this.cmbBatchSize.Items.AddRange(new object[] {
-            "1",
-            "5",
-            "10",
-            "50",
-            "100",
-            "200",
-            "500",
-            "1000"});
-            this.cmbBatchSize.Location = new System.Drawing.Point(113, 48);
-            this.cmbBatchSize.Name = "cmbBatchSize";
-            this.cmbBatchSize.Size = new System.Drawing.Size(75, 21);
-            this.cmbBatchSize.TabIndex = 2;
-            this.cmbBatchSize.SelectedIndexChanged += new System.EventHandler(this.cmbBatchSize_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 51);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 13);
-            this.label3.TabIndex = 35;
-            this.label3.Text = "Batch size";
             // 
             // lblUpdateStatus
             // 
             this.lblUpdateStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblUpdateStatus.Location = new System.Drawing.Point(18, 142);
+            this.lblUpdateStatus.Location = new System.Drawing.Point(18, 20);
             this.lblUpdateStatus.Name = "lblUpdateStatus";
             this.lblUpdateStatus.Size = new System.Drawing.Size(193, 33);
             this.lblUpdateStatus.TabIndex = 100;
@@ -588,11 +410,11 @@
             // btnExecute
             // 
             this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExecute.Location = new System.Drawing.Point(217, 137);
+            this.btnExecute.Location = new System.Drawing.Point(217, 15);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(116, 38);
             this.btnExecute.TabIndex = 4;
-            this.btnExecute.Text = "Update records";
+            this.btnExecute.Text = "Execute";
             this.btnExecute.UseVisualStyleBackColor = true;
             this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
             // 
@@ -603,7 +425,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 91);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(625, 818);
+            this.groupBox5.Size = new System.Drawing.Size(625, 474);
             this.groupBox5.TabIndex = 38;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Records";
@@ -675,7 +497,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.gbExecute);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(979, 909);
+            this.splitContainer1.Size = new System.Drawing.Size(979, 565);
             this.splitContainer1.SplitterDistance = 625;
             this.splitContainer1.TabIndex = 39;
             // 
@@ -683,7 +505,7 @@
             // 
             this.chkSetState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkSetState.AutoSize = true;
-            this.chkSetState.Location = new System.Drawing.Point(-264, 1078);
+            this.chkSetState.Location = new System.Drawing.Point(-264, 734);
             this.chkSetState.Name = "chkSetState";
             this.chkSetState.Size = new System.Drawing.Size(102, 17);
             this.chkSetState.TabIndex = 18;
@@ -700,7 +522,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(350, 724);
+            this.tabControl1.Size = new System.Drawing.Size(350, 502);
             this.tabControl1.TabIndex = 39;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -713,7 +535,7 @@
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
             this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUpdate.Size = new System.Drawing.Size(342, 698);
+            this.tabUpdate.Size = new System.Drawing.Size(342, 476);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             // 
@@ -726,7 +548,7 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(3, 60);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(336, 549);
+            this.gb3attributes.Size = new System.Drawing.Size(336, 327);
             this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Attributes to update";
@@ -734,7 +556,7 @@
             // btnAttrEdit
             // 
             this.btnAttrEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAttrEdit.Location = new System.Drawing.Point(96, 516);
+            this.btnAttrEdit.Location = new System.Drawing.Point(96, 294);
             this.btnAttrEdit.Name = "btnAttrEdit";
             this.btnAttrEdit.Size = new System.Drawing.Size(75, 23);
             this.btnAttrEdit.TabIndex = 4;
@@ -745,7 +567,7 @@
             // btnAttrAdd
             // 
             this.btnAttrAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAttrAdd.Location = new System.Drawing.Point(15, 516);
+            this.btnAttrAdd.Location = new System.Drawing.Point(15, 294);
             this.btnAttrAdd.Name = "btnAttrAdd";
             this.btnAttrAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAttrAdd.TabIndex = 3;
@@ -767,7 +589,7 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(304, 491);
+            this.lvAttributes.Size = new System.Drawing.Size(304, 269);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -797,7 +619,7 @@
             // btnAttrRemove
             // 
             this.btnAttrRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAttrRemove.Location = new System.Drawing.Point(244, 516);
+            this.btnAttrRemove.Location = new System.Drawing.Point(244, 294);
             this.btnAttrRemove.Name = "btnAttrRemove";
             this.btnAttrRemove.Size = new System.Drawing.Size(75, 23);
             this.btnAttrRemove.TabIndex = 2;
@@ -815,7 +637,7 @@
             this.gbImpSeqNo.Controls.Add(this.numImpSeqNo);
             this.gbImpSeqNo.Controls.Add(this.label7);
             this.gbImpSeqNo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbImpSeqNo.Location = new System.Drawing.Point(3, 609);
+            this.gbImpSeqNo.Location = new System.Drawing.Point(3, 387);
             this.gbImpSeqNo.Name = "gbImpSeqNo";
             this.gbImpSeqNo.Size = new System.Drawing.Size(336, 86);
             this.gbImpSeqNo.TabIndex = 37;
@@ -870,9 +692,10 @@
             this.linkImpSeqNoHelp.Size = new System.Drawing.Size(35, 13);
             this.linkImpSeqNoHelp.TabIndex = 5;
             this.linkImpSeqNoHelp.TabStop = true;
+            this.linkImpSeqNoHelp.Tag = "https://jonasr.app/bdu/isn";
             this.linkImpSeqNoHelp.Text = "Why?";
             this.toolTip1.SetToolTip(this.linkImpSeqNoHelp, "https://jonasr.app/bdu/isn");
-            this.linkImpSeqNoHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImpSeqNoHelp_LinkClicked);
+            this.linkImpSeqNoHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // chkDefImpSeqNo
             // 
@@ -951,7 +774,7 @@
             this.tabAssign.Location = new System.Drawing.Point(4, 22);
             this.tabAssign.Name = "tabAssign";
             this.tabAssign.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAssign.Size = new System.Drawing.Size(342, 698);
+            this.tabAssign.Size = new System.Drawing.Size(342, 476);
             this.tabAssign.TabIndex = 4;
             this.tabAssign.Text = "Assign";
             // 
@@ -962,7 +785,7 @@
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBox1.Location = new System.Drawing.Point(30, 281);
+            this.textBox1.Location = new System.Drawing.Point(30, 403);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(282, 124);
@@ -1018,7 +841,7 @@
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
             this.tabSetState.Name = "tabSetState";
             this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSetState.Size = new System.Drawing.Size(342, 698);
+            this.tabSetState.Size = new System.Drawing.Size(342, 476);
             this.tabSetState.TabIndex = 3;
             this.tabSetState.Text = "Set State";
             // 
@@ -1029,7 +852,7 @@
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBox2.Location = new System.Drawing.Point(30, 277);
+            this.textBox2.Location = new System.Drawing.Point(30, 399);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(282, 129);
@@ -1153,7 +976,7 @@
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
             this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDelete.Size = new System.Drawing.Size(342, 698);
+            this.tabDelete.Size = new System.Drawing.Size(342, 476);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
             // 
@@ -1168,7 +991,7 @@
             this.txtDeleteWarning.Location = new System.Drawing.Point(35, 97);
             this.txtDeleteWarning.Multiline = true;
             this.txtDeleteWarning.Name = "txtDeleteWarning";
-            this.txtDeleteWarning.Size = new System.Drawing.Size(282, 303);
+            this.txtDeleteWarning.Size = new System.Drawing.Size(282, 425);
             this.txtDeleteWarning.TabIndex = 1;
             this.txtDeleteWarning.Text = "This action will delete [nn] records in the list to the left.\r\n\r\nThis action can " +
     "NOT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation q" +
@@ -1190,8 +1013,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
@@ -1207,7 +1030,7 @@
             this.crmGridView1.Service = null;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(619, 761);
+            this.crmGridView1.Size = new System.Drawing.Size(619, 417);
             this.crmGridView1.TabIndex = 2;
             this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
             this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
@@ -1270,7 +1093,7 @@
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(979, 958);
+            this.Size = new System.Drawing.Size(979, 614);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
@@ -1279,11 +1102,6 @@
             this.gb1select.ResumeLayout(false);
             this.gb1select.PerformLayout();
             this.gbExecute.ResumeLayout(false);
-            this.gbExecute.PerformLayout();
-            this.panBatchOption.ResumeLayout(false);
-            this.panBatchOption.PerformLayout();
-            this.panWaitBetween.ResumeLayout(false);
-            this.panWaitBetween.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1329,7 +1147,6 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Rappen.XTB.Helpers.Controls.XRMDataGridView crmGridView1;
-        private System.Windows.Forms.CheckBox chkIgnoreErrors;
         private System.Windows.Forms.GroupBox gb3attributes;
         private System.Windows.Forms.Button btnAttrRemove;
         private System.Windows.Forms.ListView lvAttributes;
@@ -1350,19 +1167,13 @@
         private System.Windows.Forms.Button btnGetFXB;
         private System.Windows.Forms.TextBox txtDeleteWarning;
         private System.Windows.Forms.ToolStripButton tsbCancel;
-        private System.Windows.Forms.ComboBox cmbBatchSize;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton rbIncludeAll;
         private System.Windows.Forms.RadioButton rbIncludeSelected;
         private System.Windows.Forms.Label lblIncludedRecords;
-        private System.Windows.Forms.ComboBox cmbDelayCall;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tabAssign;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblAssignHeader;
-        private System.Windows.Forms.Panel panWaitBetween;
         private System.Windows.Forms.Label lblStateHeader;
         private System.Windows.Forms.ComboBox cbSetStatusReason;
         private System.Windows.Forms.Label label2;
@@ -1383,17 +1194,11 @@
         private System.Windows.Forms.TextBox txtAssignEntity;
         private Rappen.XTB.Helpers.Controls.XRMLookupDialog xrmLookupAssign;
         private Rappen.XTB.Helpers.Controls.XRMRecordHost xrmRecordAssign;
-        private System.Windows.Forms.LinkLabel linkBypassPlugins;
-        private System.Windows.Forms.CheckBox chkBypassPlugins;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tsbOpenJob;
         private System.Windows.Forms.ToolStripButton tsbSaveJob;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.LinkLabel linkBulkOperations;
         private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Panel panBatchOption;
-        private System.Windows.Forms.RadioButton rbBatchExecuteMultiple;
-        private System.Windows.Forms.RadioButton rbBatchMultipleRequests;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.ToolTip toolTip1;

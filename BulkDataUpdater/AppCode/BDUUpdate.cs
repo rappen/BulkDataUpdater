@@ -17,7 +17,7 @@ namespace Cinteros.XTB.BulkDataUpdater
 {
     public partial class BulkDataUpdater
     {
-        private void UpdateRecords()
+        private void UpdateRecords(JobExecuteOptions executeoptions)
         {
             if (working)
             {
@@ -44,7 +44,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                     Value = job.Update.ImpSeqNo
                 });
             }
-            var executeoptions = GetExecuteOptions();
             job.Update.ExecuteOptions = executeoptions;
             var isn = selectedattributes.Any(a => a.Attribute.Metadata.LogicalName == "importsequencenumber");
 
@@ -114,7 +113,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                                 Requests = new OrganizationRequestCollection()
                             };
                             batch.Requests.AddRange(entities.Entities.Select(e => new UpdateRequest { Target = e }));
-                            batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions.BypassCustom));
+                            batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions));
                             failed += ExecuteRequest(batch, executeoptions);
                         }
                         updated += entities.Entities.Count;

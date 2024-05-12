@@ -34,14 +34,14 @@
             this.panValue = new System.Windows.Forms.GroupBox();
             this.panValueToken = new System.Windows.Forms.Panel();
             this.btnXRMTR = new System.Windows.Forms.Button();
-            this.txtCalcPreview = new System.Windows.Forms.TextBox();
             this.btnCalcHelp = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.txtValueCalc = new System.Windows.Forms.TextBox();
-            this.panValueChoices = new System.Windows.Forms.Panel();
-            this.chkMultiSelects = new System.Windows.Forms.CheckedListBox();
+            this.txtCalcPreview = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.panValueTextMulti = new System.Windows.Forms.Panel();
             this.txtValueMultiline = new System.Windows.Forms.TextBox();
+            this.panValueChoices = new System.Windows.Forms.Panel();
+            this.chkMultiSelects = new System.Windows.Forms.CheckedListBox();
             this.panValueLookup = new System.Windows.Forms.Panel();
             this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
             this.btnLookupValue = new System.Windows.Forms.Button();
@@ -63,12 +63,11 @@
             this.tmCalc = new System.Windows.Forms.Timer(this.components);
             this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.xrmLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
-            this.label2 = new System.Windows.Forms.Label();
             this.panRoot.SuspendLayout();
             this.panValue.SuspendLayout();
             this.panValueToken.SuspendLayout();
-            this.panValueChoices.SuspendLayout();
             this.panValueTextMulti.SuspendLayout();
+            this.panValueChoices.SuspendLayout();
             this.panValueLookup.SuspendLayout();
             this.panValueText.SuspendLayout();
             this.panAction.SuspendLayout();
@@ -85,23 +84,23 @@
             this.panRoot.Controls.Add(this.panOptions);
             this.panRoot.Controls.Add(this.panButtons);
             this.panRoot.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panRoot.Location = new System.Drawing.Point(0, 6);
+            this.panRoot.Location = new System.Drawing.Point(6, 6);
             this.panRoot.Name = "panRoot";
-            this.panRoot.Size = new System.Drawing.Size(395, 403);
+            this.panRoot.Size = new System.Drawing.Size(383, 378);
             this.panRoot.TabIndex = 36;
             // 
             // panValue
             // 
             this.panValue.Controls.Add(this.panValueToken);
-            this.panValue.Controls.Add(this.panValueChoices);
             this.panValue.Controls.Add(this.panValueTextMulti);
+            this.panValue.Controls.Add(this.panValueChoices);
             this.panValue.Controls.Add(this.panValueLookup);
             this.panValue.Controls.Add(this.panValueText);
             this.panValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panValue.Location = new System.Drawing.Point(0, 96);
             this.panValue.Name = "panValue";
-            this.panValue.Size = new System.Drawing.Size(395, 219);
-            this.panValue.TabIndex = 13;
+            this.panValue.Size = new System.Drawing.Size(383, 194);
+            this.panValue.TabIndex = 3;
             this.panValue.TabStop = false;
             this.panValue.Text = "Value";
             // 
@@ -110,14 +109,14 @@
             this.panValueToken.BackColor = System.Drawing.Color.Transparent;
             this.panValueToken.Controls.Add(this.btnXRMTR);
             this.panValueToken.Controls.Add(this.btnCalcHelp);
-            this.panValueToken.Controls.Add(this.label1);
             this.panValueToken.Controls.Add(this.txtValueCalc);
             this.panValueToken.Controls.Add(this.txtCalcPreview);
             this.panValueToken.Controls.Add(this.label2);
             this.panValueToken.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panValueToken.Location = new System.Drawing.Point(3, 96);
+            this.panValueToken.MinimumSize = new System.Drawing.Size(0, 90);
             this.panValueToken.Name = "panValueToken";
-            this.panValueToken.Size = new System.Drawing.Size(389, 120);
+            this.panValueToken.Size = new System.Drawing.Size(377, 95);
             this.panValueToken.TabIndex = 11;
             this.panValueToken.Visible = false;
             // 
@@ -127,60 +126,85 @@
             this.btnXRMTR.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnXRMTR.Location = new System.Drawing.Point(12, 6);
             this.btnXRMTR.Name = "btnXRMTR";
-            this.btnXRMTR.Padding = new System.Windows.Forms.Padding(0, 0, 6, 0);
-            this.btnXRMTR.Size = new System.Drawing.Size(214, 45);
-            this.btnXRMTR.TabIndex = 42;
+            this.btnXRMTR.Padding = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.btnXRMTR.Size = new System.Drawing.Size(200, 26);
+            this.btnXRMTR.TabIndex = 1;
             this.btnXRMTR.Text = "Build with XRM Tokens Runner";
             this.btnXRMTR.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnXRMTR.UseVisualStyleBackColor = true;
             this.btnXRMTR.Click += new System.EventHandler(this.btnXRMTR_Click);
-            // 
-            // txtCalcPreview
-            // 
-            this.txtCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCalcPreview.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCalcPreview.Location = new System.Drawing.Point(62, 93);
-            this.txtCalcPreview.Name = "txtCalcPreview";
-            this.txtCalcPreview.ReadOnly = true;
-            this.txtCalcPreview.Size = new System.Drawing.Size(312, 20);
-            this.txtCalcPreview.TabIndex = 39;
-            this.txtCalcPreview.TabStop = false;
             // 
             // btnCalcHelp
             // 
             this.btnCalcHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCalcHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnCalcHelp.Image")));
             this.btnCalcHelp.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCalcHelp.Location = new System.Drawing.Point(278, 17);
+            this.btnCalcHelp.Location = new System.Drawing.Point(266, 6);
             this.btnCalcHelp.Name = "btnCalcHelp";
             this.btnCalcHelp.Size = new System.Drawing.Size(96, 26);
-            this.btnCalcHelp.TabIndex = 38;
+            this.btnCalcHelp.TabIndex = 3;
             this.btnCalcHelp.Text = "What is this?";
             this.btnCalcHelp.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnCalcHelp.UseVisualStyleBackColor = true;
             this.btnCalcHelp.Click += new System.EventHandler(this.btnCalcHelp_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 90);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 13);
-            this.label1.TabIndex = 37;
             // 
             // txtValueCalc
             // 
             this.txtValueCalc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtValueCalc.Location = new System.Drawing.Point(12, 57);
+            this.txtValueCalc.Location = new System.Drawing.Point(12, 38);
             this.txtValueCalc.Multiline = true;
             this.txtValueCalc.Name = "txtValueCalc";
             this.txtValueCalc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueCalc.Size = new System.Drawing.Size(362, 29);
-            this.txtValueCalc.TabIndex = 36;
+            this.txtValueCalc.Size = new System.Drawing.Size(350, 23);
+            this.txtValueCalc.TabIndex = 2;
             this.txtValueCalc.TextChanged += new System.EventHandler(this.txtValueCalc_TextChanged);
+            // 
+            // txtCalcPreview
+            // 
+            this.txtCalcPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCalcPreview.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCalcPreview.Location = new System.Drawing.Point(62, 68);
+            this.txtCalcPreview.Name = "txtCalcPreview";
+            this.txtCalcPreview.ReadOnly = true;
+            this.txtCalcPreview.Size = new System.Drawing.Size(300, 20);
+            this.txtCalcPreview.TabIndex = 4;
+            this.txtCalcPreview.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(11, 71);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.TabIndex = 43;
+            this.label2.Text = "Preview";
+            // 
+            // panValueTextMulti
+            // 
+            this.panValueTextMulti.Controls.Add(this.txtValueMultiline);
+            this.panValueTextMulti.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panValueTextMulti.Location = new System.Drawing.Point(3, 96);
+            this.panValueTextMulti.Name = "panValueTextMulti";
+            this.panValueTextMulti.Size = new System.Drawing.Size(377, 95);
+            this.panValueTextMulti.TabIndex = 5;
+            this.panValueTextMulti.Visible = false;
+            // 
+            // txtValueMultiline
+            // 
+            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtValueMultiline.Location = new System.Drawing.Point(12, 8);
+            this.txtValueMultiline.Multiline = true;
+            this.txtValueMultiline.Name = "txtValueMultiline";
+            this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtValueMultiline.Size = new System.Drawing.Size(350, 81);
+            this.txtValueMultiline.TabIndex = 36;
+            this.txtValueMultiline.TextChanged += new System.EventHandler(this.genericInputChanged);
             // 
             // panValueChoices
             // 
@@ -188,7 +212,7 @@
             this.panValueChoices.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panValueChoices.Location = new System.Drawing.Point(3, 96);
             this.panValueChoices.Name = "panValueChoices";
-            this.panValueChoices.Size = new System.Drawing.Size(389, 120);
+            this.panValueChoices.Size = new System.Drawing.Size(377, 95);
             this.panValueChoices.TabIndex = 11;
             this.panValueChoices.Visible = false;
             // 
@@ -205,32 +229,9 @@
             "tre"});
             this.chkMultiSelects.Location = new System.Drawing.Point(12, 8);
             this.chkMultiSelects.Name = "chkMultiSelects";
-            this.chkMultiSelects.Size = new System.Drawing.Size(362, 4);
+            this.chkMultiSelects.Size = new System.Drawing.Size(350, 64);
             this.chkMultiSelects.TabIndex = 3;
             this.chkMultiSelects.SelectedIndexChanged += new System.EventHandler(this.genericInputChanged);
-            // 
-            // panValueTextMulti
-            // 
-            this.panValueTextMulti.Controls.Add(this.txtValueMultiline);
-            this.panValueTextMulti.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panValueTextMulti.Location = new System.Drawing.Point(3, 96);
-            this.panValueTextMulti.Name = "panValueTextMulti";
-            this.panValueTextMulti.Size = new System.Drawing.Size(389, 120);
-            this.panValueTextMulti.TabIndex = 5;
-            this.panValueTextMulti.Visible = false;
-            // 
-            // txtValueMultiline
-            // 
-            this.txtValueMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtValueMultiline.Location = new System.Drawing.Point(12, 8);
-            this.txtValueMultiline.Multiline = true;
-            this.txtValueMultiline.Name = "txtValueMultiline";
-            this.txtValueMultiline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValueMultiline.Size = new System.Drawing.Size(362, 106);
-            this.txtValueMultiline.TabIndex = 36;
-            this.txtValueMultiline.TextChanged += new System.EventHandler(this.genericInputChanged);
             // 
             // panValueLookup
             // 
@@ -240,7 +241,7 @@
             this.panValueLookup.Dock = System.Windows.Forms.DockStyle.Top;
             this.panValueLookup.Location = new System.Drawing.Point(3, 56);
             this.panValueLookup.Name = "panValueLookup";
-            this.panValueLookup.Size = new System.Drawing.Size(389, 40);
+            this.panValueLookup.Size = new System.Drawing.Size(377, 40);
             this.panValueLookup.TabIndex = 4;
             this.panValueLookup.Visible = false;
             // 
@@ -254,14 +255,14 @@
             this.cdsLookupValue.Location = new System.Drawing.Point(12, 8);
             this.cdsLookupValue.Name = "cdsLookupValue";
             this.cdsLookupValue.RecordHost = null;
-            this.cdsLookupValue.Size = new System.Drawing.Size(328, 20);
+            this.cdsLookupValue.Size = new System.Drawing.Size(316, 20);
             this.cdsLookupValue.TabIndex = 0;
             // 
             // btnLookupValue
             // 
             this.btnLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLookupValue.Image = ((System.Drawing.Image)(resources.GetObject("btnLookupValue.Image")));
-            this.btnLookupValue.Location = new System.Drawing.Point(346, 7);
+            this.btnLookupValue.Location = new System.Drawing.Point(334, 7);
             this.btnLookupValue.Name = "btnLookupValue";
             this.btnLookupValue.Size = new System.Drawing.Size(28, 22);
             this.btnLookupValue.TabIndex = 1;
@@ -275,7 +276,7 @@
             this.panValueText.Dock = System.Windows.Forms.DockStyle.Top;
             this.panValueText.Location = new System.Drawing.Point(3, 16);
             this.panValueText.Name = "panValueText";
-            this.panValueText.Size = new System.Drawing.Size(389, 40);
+            this.panValueText.Size = new System.Drawing.Size(377, 40);
             this.panValueText.TabIndex = 3;
             // 
             // cmbValue
@@ -285,7 +286,7 @@
             this.cmbValue.FormattingEnabled = true;
             this.cmbValue.Location = new System.Drawing.Point(12, 8);
             this.cmbValue.Name = "cmbValue";
-            this.cmbValue.Size = new System.Drawing.Size(362, 21);
+            this.cmbValue.Size = new System.Drawing.Size(350, 21);
             this.cmbValue.TabIndex = 32;
             this.cmbValue.Tag = "value";
             this.cmbValue.TextChanged += new System.EventHandler(this.genericInputChanged);
@@ -299,7 +300,7 @@
             this.panAction.Dock = System.Windows.Forms.DockStyle.Top;
             this.panAction.Location = new System.Drawing.Point(0, 48);
             this.panAction.Name = "panAction";
-            this.panAction.Size = new System.Drawing.Size(395, 48);
+            this.panAction.Size = new System.Drawing.Size(383, 48);
             this.panAction.TabIndex = 2;
             this.panAction.TabStop = false;
             this.panAction.Text = "How to set the Value";
@@ -355,7 +356,7 @@
             this.panAttribute.Dock = System.Windows.Forms.DockStyle.Top;
             this.panAttribute.Location = new System.Drawing.Point(0, 0);
             this.panAttribute.Name = "panAttribute";
-            this.panAttribute.Size = new System.Drawing.Size(395, 48);
+            this.panAttribute.Size = new System.Drawing.Size(383, 48);
             this.panAttribute.TabIndex = 1;
             this.panAttribute.TabStop = false;
             this.panAttribute.Text = "Select Attribute";
@@ -364,7 +365,7 @@
             // 
             this.btnUpdateAttributeOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUpdateAttributeOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdateAttributeOptions.Image")));
-            this.btnUpdateAttributeOptions.Location = new System.Drawing.Point(352, 17);
+            this.btnUpdateAttributeOptions.Location = new System.Drawing.Point(340, 17);
             this.btnUpdateAttributeOptions.Name = "btnUpdateAttributeOptions";
             this.btnUpdateAttributeOptions.Size = new System.Drawing.Size(28, 23);
             this.btnUpdateAttributeOptions.TabIndex = 2;
@@ -381,7 +382,7 @@
             this.cmbAttribute.FormattingEnabled = true;
             this.cmbAttribute.Location = new System.Drawing.Point(12, 18);
             this.cmbAttribute.Name = "cmbAttribute";
-            this.cmbAttribute.Size = new System.Drawing.Size(334, 21);
+            this.cmbAttribute.Size = new System.Drawing.Size(322, 21);
             this.cmbAttribute.Sorted = true;
             this.cmbAttribute.TabIndex = 1;
             this.cmbAttribute.Tag = "attribute";
@@ -392,10 +393,10 @@
             // 
             this.panOptions.Controls.Add(this.chkOnlyChange);
             this.panOptions.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panOptions.Location = new System.Drawing.Point(0, 315);
+            this.panOptions.Location = new System.Drawing.Point(0, 290);
             this.panOptions.Name = "panOptions";
-            this.panOptions.Size = new System.Drawing.Size(395, 48);
-            this.panOptions.TabIndex = 12;
+            this.panOptions.Size = new System.Drawing.Size(383, 48);
+            this.panOptions.TabIndex = 4;
             this.panOptions.TabStop = false;
             this.panOptions.Text = "Options";
             // 
@@ -414,16 +415,16 @@
             this.panButtons.Controls.Add(this.btnCancel);
             this.panButtons.Controls.Add(this.btnSave);
             this.panButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panButtons.Location = new System.Drawing.Point(0, 363);
+            this.panButtons.Location = new System.Drawing.Point(0, 338);
             this.panButtons.Name = "panButtons";
-            this.panButtons.Size = new System.Drawing.Size(395, 40);
-            this.panButtons.TabIndex = 10;
+            this.panButtons.Size = new System.Drawing.Size(383, 40);
+            this.panButtons.TabIndex = 5;
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(149, 11);
+            this.btnCancel.Location = new System.Drawing.Point(137, 11);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(109, 23);
             this.btnCancel.TabIndex = 36;
@@ -434,7 +435,7 @@
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSave.Location = new System.Drawing.Point(271, 11);
+            this.btnSave.Location = new System.Drawing.Point(259, 11);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(109, 23);
             this.btnSave.TabIndex = 35;
@@ -462,16 +463,6 @@
             this.xrmLookupDialog.Service = null;
             this.xrmLookupDialog.Title = null;
             // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 96);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
-            this.label2.TabIndex = 43;
-            this.label2.Text = "Preview";
-            // 
             // UpdateAttribute
             // 
             this.AcceptButton = this.btnSave;
@@ -479,23 +470,23 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(395, 409);
+            this.ClientSize = new System.Drawing.Size(395, 390);
             this.Controls.Add(this.panRoot);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(330, 290);
             this.Name = "UpdateAttribute";
-            this.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.Padding = new System.Windows.Forms.Padding(6);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Attribute";
             this.panRoot.ResumeLayout(false);
             this.panValue.ResumeLayout(false);
             this.panValueToken.ResumeLayout(false);
             this.panValueToken.PerformLayout();
-            this.panValueChoices.ResumeLayout(false);
             this.panValueTextMulti.ResumeLayout(false);
             this.panValueTextMulti.PerformLayout();
+            this.panValueChoices.ResumeLayout(false);
             this.panValueLookup.ResumeLayout(false);
             this.panValueLookup.PerformLayout();
             this.panValueText.ResumeLayout(false);
@@ -517,7 +508,6 @@
         private System.Windows.Forms.Panel panValueToken;
         private System.Windows.Forms.TextBox txtCalcPreview;
         private System.Windows.Forms.Button btnCalcHelp;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panButtons;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.CheckBox chkOnlyChange;

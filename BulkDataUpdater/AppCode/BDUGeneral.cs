@@ -19,78 +19,6 @@ namespace Cinteros.XTB.BulkDataUpdater
     {
         private bool updatingExecuteOptions;
 
-        internal static string GetAttributeDisplayName(AttributeMetadata attribute)
-        {
-            string attributeName = attribute.LogicalName;
-            if (useFriendlyNames)
-            {
-                if (attribute.DisplayName.UserLocalizedLabel != null)
-                {
-                    attributeName = attribute.DisplayName.UserLocalizedLabel.Label;
-                }
-                if (attributeName == attribute.LogicalName && attribute.DisplayName.LocalizedLabels.Count > 0)
-                {
-                    attributeName = attribute.DisplayName.LocalizedLabels[0].Label;
-                }
-                attributeName += " (" + attribute.LogicalName + ")";
-            }
-            return attributeName;
-        }
-
-        internal static List<EntityMetadata> GetDisplayEntities()
-        {
-            var result = new List<EntityMetadata>();
-            if (entities != null)
-            {
-                foreach (var entity in entities)
-                {
-                    //if (!showEntitiesAll)
-                    //{
-                    //    if (!showEntitiesManaged && entity.Value.IsManaged == true) { continue; }
-                    //    if (!showEntitiesUnmanaged && entity.Value.IsManaged == false) { continue; }
-                    //    if (!showEntitiesCustomizable && entity.Value.IsCustomizable.Value) { continue; }
-                    //    if (!showEntitiesUncustomizable && !entity.Value.IsCustomizable.Value) { continue; }
-                    //    if (!showEntitiesStandard && entity.Value.IsCustomEntity == false) { continue; }
-                    //    if (!showEntitiesCustom && entity.Value.IsCustomEntity == true) { continue; }
-                    //    if (!showEntitiesIntersect && entity.Value.IsIntersect == true) { continue; }
-                    //    if (showEntitiesOnlyValidAF && entity.Value.IsValidForAdvancedFind == false) { continue; }
-                    //}
-                    result.Add(entity);
-                }
-            }
-            return result;
-        }
-
-        internal static string GetEntityDisplayName(string entityName)
-        {
-            if (!useFriendlyNames)
-            {
-                return entityName;
-            }
-            if (entities?.FirstOrDefault(e => e.LogicalName == entityName) is EntityMetadata entity)
-            {
-                entityName = GetEntityDisplayName(entity);
-            }
-            return entityName;
-        }
-
-        internal static string GetEntityDisplayName(EntityMetadata entity)
-        {
-            var result = entity.LogicalName;
-            if (useFriendlyNames)
-            {
-                if (entity.DisplayName.UserLocalizedLabel != null)
-                {
-                    result = entity.DisplayName.UserLocalizedLabel.Label;
-                }
-                if (result == entity.LogicalName && entity.DisplayName.LocalizedLabels.Count > 0)
-                {
-                    result = entity.DisplayName.LocalizedLabels[0].Label;
-                }
-            }
-            return result;
-        }
-
         internal void LogUse(string action, double? count = null, double? duration = null, bool ai1 = true, bool ai2 = false)
         {
             if (ai1)
@@ -202,7 +130,6 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             InitializeTab();
             Cursor = Cursors.Default;
-            EnableControls(true);
         }
 
         private static void ClearIfDisabled(CheckBox checker)
@@ -305,7 +232,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             var errors = 0;
             try
             {
-                SetBypassPlugins(request, executeoptions.BypassCustom);
+                SetBypassPlugins(request, executeoptions);
                 var response = Service.Execute(request);
                 if (!executeoptions.IgnoreErrors && response is ExecuteMultipleResponse respexc && respexc?.IsFaulted == true)
                 {
@@ -327,41 +254,42 @@ namespace Cinteros.XTB.BulkDataUpdater
             return errors;
         }
 
-        private void SetBypassPlugins(OrganizationRequest request, bool bypass)
+        private void SetBypassPlugins(OrganizationRequest request, JobExecuteOptions options)
         {
-            if (bypass && currentversion >= bypasspluginminversion)
+            if (currentversion >= bypasspluginminversion)
             {
-                request.Parameters["BypassCustomPluginExecution"] = bypass;
+                if (options.BypassCustom)
+                {
+                    request.Parameters["BypassCustomPluginExecution"] = true;
+                }
+                else
+                {
+                    request.Parameters.Remove("BypassCustomPluginExecution");
+                }
+                if (options.BypassSync || options.BypassAsync)
+                {
+                    var syasy = new[] { options.BypassSync ? "CustomSync" : "", options.BypassAsync ? "CustomAsync" : "" }.Where(s => !string.IsNullOrEmpty(s));
+                    request.Parameters.Add("BypassBusinessLogicExecution", string.Join(",", syasy));
+                }
+                else
+                {
+                    request.Parameters.Remove("BypassBusinessLogicExecution");
+                }
+                if (options.BypassSteps != null && options.BypassSteps.Any())
+                {
+                    request.Parameters.Add("BypassBusinessLogicExecutionStepIds", string.Join(",", options.BypassSteps.Select(i => i.ToString())));
+                }
+                else
+                {
+                    request.Parameters.Remove("BypassBusinessLogicExecutionStepIds");
+                }
             }
             else
             {
                 request.Parameters.Remove("BypassCustomPluginExecution");
+                request.Parameters.Remove("BypassBusinessLogicExecution");
+                request.Parameters.Remove("BypassBusinessLogicExecutionStepIds");
             }
-        }
-
-        private JobExecuteOptions GetExecuteOptions()
-        {
-            return new JobExecuteOptions
-            {
-                DelayCallTime = int.TryParse(cmbDelayCall.Text, out var delay) ? delay : 0,
-                BatchSize = int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1,
-                MultipleRequest = rbBatchMultipleRequests.Checked,
-                IgnoreErrors = chkIgnoreErrors.Checked,
-                BypassCustom = chkBypassPlugins.Checked
-            };
-        }
-
-        private void SetExecuteOptions(JobExecuteOptions options)
-        {
-            updatingExecuteOptions = true;
-            options = options ?? new JobExecuteOptions();
-            cmbDelayCall.SelectedItem = cmbDelayCall.Items.Cast<string>().FirstOrDefault(i => i == options.DelayCallTime.ToString()) ?? cmbDelayCall.Items[0];
-            cmbBatchSize.SelectedItem = cmbBatchSize.Items.Cast<string>().FirstOrDefault(i => i == options.BatchSize.ToString()) ?? cmbBatchSize.Items[0];
-            rbBatchMultipleRequests.Checked = options.MultipleRequest;
-            rbBatchExecuteMultiple.Checked = !options.MultipleRequest;
-            chkIgnoreErrors.Checked = options.IgnoreErrors;
-            chkBypassPlugins.Checked = options.BypassCustom;
-            updatingExecuteOptions = false;
         }
 
         private void UpdateJobFromUI(TabPage selectedTab)
@@ -373,22 +301,18 @@ namespace Cinteros.XTB.BulkDataUpdater
             job = job ?? new BDUJob();
             if (selectedTab == tabUpdate)
             {
-                job.Update.ExecuteOptions = GetExecuteOptions();
                 UpdateJobUpdate(job.Update);
             }
             else if (selectedTab == tabAssign)
             {
-                job.Assign.ExecuteOptions = GetExecuteOptions();
                 UpdateJobAssign(job.Assign);
             }
             else if (selectedTab == tabSetState)
             {
-                job.SetState.ExecuteOptions = GetExecuteOptions();
                 UpdateJobSetState(job.SetState);
             }
             else if (selectedTab == tabDelete)
             {
-                job.Delete.ExecuteOptions = GetExecuteOptions();
                 UpdateJobDelete(job.Delete);
             }
         }

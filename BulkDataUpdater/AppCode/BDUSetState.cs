@@ -15,7 +15,7 @@ namespace Cinteros.XTB.BulkDataUpdater
 {
     public partial class BulkDataUpdater
     {
-        private void SetStateRecords()
+        private void SetStateRecords(JobExecuteOptions executeoptions)
         {
             if (working)
             {
@@ -37,7 +37,6 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 return;
             }
-            var executeoptions = GetExecuteOptions();
             if (executeoptions.BatchSize > 1 && executeoptions.MultipleRequest && includedrecords.Count() > 1)
             {
                 if (MessageBox.Show("Note that the new feature SetStateMultiple from Microsoft is not (yet) available.\nWe will use ExecuteMultiple instead.", "Batch & Multi", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
@@ -83,7 +82,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 }
                 current++;
                 var req = GetSetStateRequest(record, state, status);
-                SetBypassPlugins(req, executeoptions.BypassCustom);
+                SetBypassPlugins(req, executeoptions);
                 batch.Requests.Add(req);
                 if (batch.Requests.Count >= executeoptions.BatchSize || current == total)
                 {

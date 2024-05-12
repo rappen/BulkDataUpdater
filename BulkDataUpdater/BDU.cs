@@ -7,6 +7,7 @@
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XRM.Helpers.Extensions;
+    using Rappen.XTB.Helpers;
     using Rappen.XTB.Helpers.Extensions;
     using System;
     using System.Collections.Generic;
@@ -47,8 +48,8 @@
 
         private EntityCollection records;
         private Entity view;
-        private Version currentversion;
-        private readonly Version bypasspluginminversion = new Version(9, 2);
+        internal Version currentversion;
+        internal readonly Version bypasspluginminversion = new Version(9, 2);
 
         internal bool working = false;
         private string currentconnection;
@@ -62,6 +63,8 @@
 
         public BulkDataUpdater()
         {
+            UrlUtils.TOOL_NAME = "BulkDataUpdater";
+            UrlUtils.MVP_ID = "DX-MVP-5002475";
             InitializeComponent();
             tslAbout.ToolTipText = $"Version: {Assembly.GetExecutingAssembly().GetName().Version}";
             var prop = Rappen.XRM.Helpers.Extensions.MetadataExtensions.entityProperties.ToList();
@@ -309,6 +312,29 @@
             }
         }
 
+        private void InitializeTab()
+        {
+            var tempworker = working;
+            working = true;
+            if (tabControl1.SelectedTab == tabUpdate)
+            {
+                SetUpdateFromJob(job.Update);
+            }
+            else if (tabControl1.SelectedTab == tabAssign)
+            {
+                SetAssignFromJob(job.Assign);
+            }
+            else if (tabControl1.SelectedTab == tabSetState)
+            {
+                SetSetStateFromJob(job.SetState);
+            }
+            else if (tabControl1.SelectedTab == tabDelete)
+            {
+            }
+            working = tempworker;
+            EnableControls(true);
+        }
+
         private void FetchUpdated(string fetch, string layout)
         {
             if (job == null)
@@ -382,37 +408,6 @@
             LogUse(tag, records?.Entities?.Count);
         }
 
-        private void InitializeTab()
-        {
-            var tempworker = working;
-            working = true;
-            if (tabControl1.SelectedTab == tabUpdate)
-            {
-                btnExecute.Text = "Update records";
-                SetExecuteOptions(job.Update.ExecuteOptions);
-                SetUpdateFromJob(job.Update);
-            }
-            else if (tabControl1.SelectedTab == tabAssign)
-            {
-                btnExecute.Text = "Assign records";
-                SetExecuteOptions(job.Assign.ExecuteOptions);
-                SetAssignFromJob(job.Assign);
-            }
-            else if (tabControl1.SelectedTab == tabSetState)
-            {
-                btnExecute.Text = "Update records";
-                SetExecuteOptions(job.SetState.ExecuteOptions);
-                SetSetStateFromJob(job.SetState);
-            }
-            else if (tabControl1.SelectedTab == tabDelete)
-            {
-                btnExecute.Text = "Delete records";
-                SetExecuteOptions(job.Delete.ExecuteOptions);
-            }
-            working = tempworker;
-            EnableControls(true);
-        }
-
         private void LoadMissingAttributesForRecord(Entity record, IEnumerable<BulkActionItem> attributes)
         {
             var newcols = new ColumnSet(attributes.Select(a => a.Attribute.Metadata.LogicalName).ToArray());
@@ -442,7 +437,7 @@
                 // Reset some settings when new version is deployed
                 globalsettings.CurrentVersion = version;
                 SettingsManager.Instance.Save(typeof(BulkDataUpdater), globalsettings, "[Global]");
-                Process.Start($"https://jonasr.app/BDU/releases/#{version}");
+                UrlUtils.OpenUrl($"https://jonasr.app/BDU/releases/#{version}");
             }
         }
 
@@ -612,29 +607,34 @@
             }
         }
 
+        private JobExecute GetJobAction()
+        {
+            JobExecute jobaction = null;
+            if (tabControl1.SelectedTab == tabUpdate) jobaction = job.Update;
+            else if (tabControl1.SelectedTab == tabAssign) jobaction = job.Assign;
+            else if (tabControl1.SelectedTab == tabSetState) jobaction = job.SetState;
+            else if (tabControl1.SelectedTab == tabDelete) jobaction = job.Delete;
+            return jobaction;
+        }
+
+        private void ExecuteAction(JobExecute jobaction)
+        {
+            if (jobaction is JobUpdate) UpdateRecords(jobaction.ExecuteOptions);
+            else if (jobaction is JobAssign) AssignRecords(jobaction.ExecuteOptions);
+            else if (jobaction is JobSetState) SetStateRecords(jobaction.ExecuteOptions);
+            else if (jobaction is JobDelete) DeleteRecords(jobaction.ExecuteOptions);
+        }
+
         #endregion Private Methods
 
         #region Form Event Handlers
 
         private void btnExecute_Click(object sender, EventArgs e)
         {
-            lblUpdateStatus.Text = "Initializing...";
-            UpdateJobFromUI(tabControl1.SelectedTab);
-            if (tabControl1.SelectedTab == tabUpdate)
+            var jobaction = GetJobAction();
+            if (Execute.Show(this, jobaction) == DialogResult.OK)
             {
-                UpdateRecords();
-            }
-            else if (tabControl1.SelectedTab == tabAssign)
-            {
-                AssignRecords();
-            }
-            else if (tabControl1.SelectedTab == tabSetState)
-            {
-                SetStateRecords();
-            }
-            else if (tabControl1.SelectedTab == tabDelete)
-            {
-                DeleteRecords();
+                ExecuteAction(jobaction);
             }
         }
 
@@ -741,11 +741,6 @@
             ShowAboutDialog();
         }
 
-        private void tslDoc_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://jonasr.app/BDU/");
-        }
-
         private void tsbFriendly_Click(object sender, EventArgs e)
         {
             if (sender != null)
@@ -772,40 +767,6 @@
         private void btnAssignSelect_Click(object sender, EventArgs e)
         {
             SelectingAssigner();
-        }
-
-        private void linkBypassPlugins_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://docs.microsoft.com/power-apps/developer/data-platform/bypass-custom-business-logic?WT.mc_id=DX-MVP-5002475");
-        }
-
-        private void linkBulkOperations_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://docs.microsoft.com/power-apps/developer/data-platform/bulk-operations?WT.mc_id=DX-MVP-5002475");
-        }
-
-        private void chkBypassPlugins_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!working && chkBypassPlugins.Checked)
-            {
-                if (currentversion < bypasspluginminversion)
-                {
-                    MessageBox.Show(
-                        $"This feature is not available in version {ConnectionDetail?.OrganizationVersion}\n" +
-                        $"Need version {bypasspluginminversion} or later.", "Bypass Custom Business Logic",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    chkBypassPlugins.Checked = false;
-                }
-                else if (MessageBox.Show(
-                    "Make sure you know exactly what this checkbox means.\n" +
-                    "Please read the docs - click the link first!\n\n" +
-                    "Are you OK to continue?", "Bypass Custom Business Logic",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
-                {
-                    chkBypassPlugins.Checked = false;
-                }
-            }
-            executeOption_Changed(sender, e);
         }
 
         private void tsbOpenJob_Click(object sender, EventArgs e)
@@ -870,42 +831,25 @@
             txtAssignEntity.Text = xrmRecordAssign.EntityDisplayName;
         }
 
-        private void cmbBatchSize_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            panBatchOption.Enabled = (int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1) > 1;
-            executeOption_Changed(sender, e);
-        }
-
-        private void executeOption_Changed(object sender, EventArgs e)
-        {
-            UpdateJobFromUI(tabControl1.SelectedTab);
-        }
-
-        private void btnUpdateAttributeOptions_Click(object sender, EventArgs e)
-        {
-            //AttributeOptions.Show(updateAttributes, entitymeta);
-            //RefreshAttributes();
-        }
-
-        private void tsbBymyacoffee_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://www.buymeacoffee.com/rappen");
-        }
-
         private void impSeqNo_Changed(object sender, EventArgs e)
         {
             SetImpSeqNo(sender, forcenewnum: sender == btnDefImpSeqNo);
-        }
-
-        private void linkImpSeqNoHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://jonasr.app/bdu/isn");
         }
 
         private void linkShowImpSeqNoRecords_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string fetch = GetFetchFromISN();
             OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder", true) { TargetArgument = fetch });
+        }
+
+        private void link_Click(object sender, EventArgs e)
+        {
+            UrlUtils.OpenUrl(sender);
+        }
+
+        private void link_Click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            UrlUtils.OpenUrl(sender);
         }
 
         #endregion Form Event Handlers
