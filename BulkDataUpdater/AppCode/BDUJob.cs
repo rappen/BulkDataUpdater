@@ -106,7 +106,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         public bool MultipleRequest { get; set; } = true;
         public bool IgnoreErrors { get; set; } = false;
         public bool BypassCustom { get; set; } = false;
-        public bool BypassSync { get; set; } = true;
+        public bool BypassSync { get; set; } = false;
         public bool BypassAsync { get; set; } = false;
         public List<Guid> BypassSteps { get; set; } = new List<Guid>();
 
