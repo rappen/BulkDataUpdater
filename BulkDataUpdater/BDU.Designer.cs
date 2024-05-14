@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbFetch = new System.Windows.Forms.ToolStripDropDownButton();
@@ -157,7 +157,7 @@
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Padding = new System.Windows.Forms.Padding(0, 4, 1, 6);
-            this.toolStripMain.Size = new System.Drawing.Size(979, 49);
+            this.toolStripMain.Size = new System.Drawing.Size(983, 49);
             this.toolStripMain.TabIndex = 23;
             this.toolStripMain.Text = "toolStrip1";
             // 
@@ -322,7 +322,7 @@
             // lblRecords
             // 
             this.lblRecords.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRecords.Location = new System.Drawing.Point(171, 16);
+            this.lblRecords.Location = new System.Drawing.Point(194, 16);
             this.lblRecords.Name = "lblRecords";
             this.lblRecords.Size = new System.Drawing.Size(342, 16);
             this.lblRecords.TabIndex = 25;
@@ -335,7 +335,7 @@
             this.btnRefresh.BackColor = System.Drawing.SystemColors.Window;
             this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
             this.btnRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefresh.Location = new System.Drawing.Point(519, 4);
+            this.btnRefresh.Location = new System.Drawing.Point(542, 4);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnRefresh.Size = new System.Drawing.Size(51, 39);
@@ -354,7 +354,7 @@
             this.gbExecute.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.gbExecute.Location = new System.Drawing.Point(0, 502);
             this.gbExecute.Name = "gbExecute";
-            this.gbExecute.Size = new System.Drawing.Size(396, 63);
+            this.gbExecute.Size = new System.Drawing.Size(377, 63);
             this.gbExecute.TabIndex = 37;
             this.gbExecute.TabStop = false;
             this.gbExecute.Text = "Execution";
@@ -365,7 +365,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblUpdateStatus.Location = new System.Drawing.Point(18, 20);
             this.lblUpdateStatus.Name = "lblUpdateStatus";
-            this.lblUpdateStatus.Size = new System.Drawing.Size(239, 33);
+            this.lblUpdateStatus.Size = new System.Drawing.Size(220, 33);
             this.lblUpdateStatus.TabIndex = 100;
             this.lblUpdateStatus.Text = "Status";
             this.lblUpdateStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -373,7 +373,7 @@
             // btnExecute
             // 
             this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExecute.Location = new System.Drawing.Point(263, 15);
+            this.btnExecute.Location = new System.Drawing.Point(244, 15);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(116, 38);
             this.btnExecute.TabIndex = 4;
@@ -390,7 +390,7 @@
             this.panRecordSummary.Dock = System.Windows.Forms.DockStyle.Top;
             this.panRecordSummary.Location = new System.Drawing.Point(0, 0);
             this.panRecordSummary.Name = "panRecordSummary";
-            this.panRecordSummary.Size = new System.Drawing.Size(579, 47);
+            this.panRecordSummary.Size = new System.Drawing.Size(602, 47);
             this.panRecordSummary.TabIndex = 1;
             // 
             // lblSelectedRecords
@@ -433,8 +433,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.gbExecute);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(979, 565);
-            this.splitContainer1.SplitterDistance = 579;
+            this.splitContainer1.Size = new System.Drawing.Size(983, 565);
+            this.splitContainer1.SplitterDistance = 602;
             this.splitContainer1.TabIndex = 39;
             // 
             // crmGridView1
@@ -443,8 +443,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
@@ -460,7 +460,7 @@
             this.crmGridView1.Service = null;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(579, 518);
+            this.crmGridView1.Size = new System.Drawing.Size(602, 518);
             this.crmGridView1.TabIndex = 2;
             this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
             this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
@@ -486,7 +486,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(396, 502);
+            this.tabControl1.Size = new System.Drawing.Size(377, 502);
             this.tabControl1.TabIndex = 39;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -499,7 +499,7 @@
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
             this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUpdate.Size = new System.Drawing.Size(388, 476);
+            this.tabUpdate.Size = new System.Drawing.Size(369, 476);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             // 
@@ -512,7 +512,7 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(3, 60);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(382, 327);
+            this.gb3attributes.Size = new System.Drawing.Size(363, 327);
             this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Attributes to update";
@@ -553,7 +553,7 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(350, 269);
+            this.lvAttributes.Size = new System.Drawing.Size(331, 269);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -583,7 +583,7 @@
             // btnAttrRemove
             // 
             this.btnAttrRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAttrRemove.Location = new System.Drawing.Point(290, 294);
+            this.btnAttrRemove.Location = new System.Drawing.Point(271, 294);
             this.btnAttrRemove.Name = "btnAttrRemove";
             this.btnAttrRemove.Size = new System.Drawing.Size(75, 23);
             this.btnAttrRemove.TabIndex = 2;
@@ -603,7 +603,7 @@
             this.gbImpSeqNo.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.gbImpSeqNo.Location = new System.Drawing.Point(3, 387);
             this.gbImpSeqNo.Name = "gbImpSeqNo";
-            this.gbImpSeqNo.Size = new System.Drawing.Size(382, 86);
+            this.gbImpSeqNo.Size = new System.Drawing.Size(363, 86);
             this.gbImpSeqNo.TabIndex = 37;
             this.gbImpSeqNo.TabStop = false;
             this.gbImpSeqNo.Text = "Import Sequence Number";
@@ -651,13 +651,13 @@
             // 
             this.linkImpSeqNoHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkImpSeqNoHelp.AutoSize = true;
-            this.linkImpSeqNoHelp.Location = new System.Drawing.Point(329, 0);
+            this.linkImpSeqNoHelp.Location = new System.Drawing.Point(294, 0);
             this.linkImpSeqNoHelp.Name = "linkImpSeqNoHelp";
-            this.linkImpSeqNoHelp.Size = new System.Drawing.Size(35, 13);
+            this.linkImpSeqNoHelp.Size = new System.Drawing.Size(54, 13);
             this.linkImpSeqNoHelp.TabIndex = 5;
             this.linkImpSeqNoHelp.TabStop = true;
             this.linkImpSeqNoHelp.Tag = "https://jonasr.app/bdu/isn";
-            this.linkImpSeqNoHelp.Text = "Why?";
+            this.linkImpSeqNoHelp.Text = "Why this?";
             this.toolTip1.SetToolTip(this.linkImpSeqNoHelp, "https://jonasr.app/bdu/isn");
             this.linkImpSeqNoHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
@@ -681,7 +681,7 @@
             // 
             this.numImpSeqNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numImpSeqNo.Enabled = false;
-            this.numImpSeqNo.Location = new System.Drawing.Point(274, 24);
+            this.numImpSeqNo.Location = new System.Drawing.Point(255, 24);
             this.numImpSeqNo.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -713,7 +713,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(382, 57);
+            this.panel2.Size = new System.Drawing.Size(363, 57);
             this.panel2.TabIndex = 37;
             // 
             // lblUpdateHeader
@@ -1029,7 +1029,7 @@
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(979, 614);
+            this.Size = new System.Drawing.Size(983, 614);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
