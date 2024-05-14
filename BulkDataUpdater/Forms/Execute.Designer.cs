@@ -48,7 +48,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.gbBypassPreview = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
@@ -58,7 +57,7 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.gbErrors = new System.Windows.Forms.GroupBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panButtons = new System.Windows.Forms.Panel();
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.panBatchOption.SuspendLayout();
@@ -67,7 +66,7 @@
             this.gbBypass.SuspendLayout();
             this.gbBypassPreview.SuspendLayout();
             this.gbErrors.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.panButtons.SuspendLayout();
             this.SuspendLayout();
             // 
             // panBatchOption
@@ -107,7 +106,7 @@
             // 
             this.linkBulkOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkBulkOperations.AutoSize = true;
-            this.linkBulkOperations.Location = new System.Drawing.Point(242, 22);
+            this.linkBulkOperations.Location = new System.Drawing.Point(212, 22);
             this.linkBulkOperations.Name = "linkBulkOperations";
             this.linkBulkOperations.Size = new System.Drawing.Size(134, 13);
             this.linkBulkOperations.TabIndex = 113;
@@ -122,7 +121,7 @@
             // 
             this.linkBypassPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkBypassPlugins.AutoSize = true;
-            this.linkBypassPlugins.Location = new System.Drawing.Point(245, 22);
+            this.linkBypassPlugins.Location = new System.Drawing.Point(215, 22);
             this.linkBypassPlugins.Name = "linkBypassPlugins";
             this.linkBypassPlugins.Size = new System.Drawing.Size(131, 13);
             this.linkBypassPlugins.TabIndex = 112;
@@ -152,7 +151,7 @@
             this.gbWaitBetween.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbWaitBetween.Location = new System.Drawing.Point(6, 6);
             this.gbWaitBetween.Name = "gbWaitBetween";
-            this.gbWaitBetween.Size = new System.Drawing.Size(382, 48);
+            this.gbWaitBetween.Size = new System.Drawing.Size(352, 48);
             this.gbWaitBetween.TabIndex = 1;
             this.gbWaitBetween.TabStop = false;
             this.gbWaitBetween.Text = "Pause between calls";
@@ -229,7 +228,7 @@
             this.btnExecute.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExecute.Image = ((System.Drawing.Image)(resources.GetObject("btnExecute.Image")));
             this.btnExecute.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExecute.Location = new System.Drawing.Point(248, 6);
+            this.btnExecute.Location = new System.Drawing.Point(218, 6);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.btnExecute.Size = new System.Drawing.Size(128, 38);
@@ -248,7 +247,7 @@
             this.gbBatch.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbBatch.Location = new System.Drawing.Point(6, 54);
             this.gbBatch.Name = "gbBatch";
-            this.gbBatch.Size = new System.Drawing.Size(382, 70);
+            this.gbBatch.Size = new System.Drawing.Size(352, 70);
             this.gbBatch.TabIndex = 2;
             this.gbBatch.TabStop = false;
             this.gbBatch.Text = "Batch records";
@@ -261,7 +260,7 @@
             this.gbBypass.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbBypass.Location = new System.Drawing.Point(6, 172);
             this.gbBypass.Name = "gbBypass";
-            this.gbBypass.Size = new System.Drawing.Size(382, 48);
+            this.gbBypass.Size = new System.Drawing.Size(352, 48);
             this.gbBypass.TabIndex = 4;
             this.gbBypass.TabStop = false;
             this.gbBypass.Text = "Bypass Logic";
@@ -279,20 +278,19 @@
             // 
             this.linkLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(203, 20);
+            this.linkLabel3.Location = new System.Drawing.Point(210, 10);
             this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(173, 13);
+            this.linkLabel3.Size = new System.Drawing.Size(136, 13);
             this.linkLabel3.TabIndex = 1;
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Tag = "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
     "ness-logic";
-            this.linkLabel3.Text = "MS Learn: Bypass Preview Options";
+            this.linkLabel3.Text = "MS Learn: Preview Options";
             this.toolTip1.SetToolTip(this.linkLabel3, "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
         "ness-logic");
             // 
             // gbBypassPreview
             // 
-            this.gbBypassPreview.Controls.Add(this.label6);
             this.gbBypassPreview.Controls.Add(this.label1);
             this.gbBypassPreview.Controls.Add(this.label2);
             this.gbBypassPreview.Controls.Add(this.linkLabel3);
@@ -304,24 +302,15 @@
             this.gbBypassPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbBypassPreview.Location = new System.Drawing.Point(6, 220);
             this.gbBypassPreview.Name = "gbBypassPreview";
-            this.gbBypassPreview.Size = new System.Drawing.Size(382, 120);
+            this.gbBypassPreview.Size = new System.Drawing.Size(352, 97);
             this.gbBypassPreview.TabIndex = 5;
             this.gbBypassPreview.TabStop = false;
             this.gbBypassPreview.Text = "Preview: Bypass Logic";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 20);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(125, 13);
-            this.label6.TabIndex = 120;
-            this.label6.Text = "Read about this preview:";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 42);
+            this.label1.Location = new System.Drawing.Point(12, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 117;
@@ -330,7 +319,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 64);
+            this.label2.Location = new System.Drawing.Point(12, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(78, 13);
             this.label2.TabIndex = 118;
@@ -340,7 +329,7 @@
             // 
             this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(249, 64);
+            this.linkLabel2.Location = new System.Drawing.Point(219, 55);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(127, 13);
             this.linkLabel2.TabIndex = 5;
@@ -355,7 +344,7 @@
             // chkBypassSync
             // 
             this.chkBypassSync.AutoSize = true;
-            this.chkBypassSync.Location = new System.Drawing.Point(81, 41);
+            this.chkBypassSync.Location = new System.Drawing.Point(81, 32);
             this.chkBypassSync.Name = "chkBypassSync";
             this.chkBypassSync.Size = new System.Drawing.Size(50, 17);
             this.chkBypassSync.TabIndex = 2;
@@ -369,10 +358,10 @@
             this.txtBypassSteps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBypassSteps.Location = new System.Drawing.Point(15, 87);
+            this.txtBypassSteps.Location = new System.Drawing.Point(15, 71);
             this.txtBypassSteps.Multiline = true;
             this.txtBypassSteps.Name = "txtBypassSteps";
-            this.txtBypassSteps.Size = new System.Drawing.Size(361, 27);
+            this.txtBypassSteps.Size = new System.Drawing.Size(331, 20);
             this.txtBypassSteps.TabIndex = 6;
             this.toolTip1.SetToolTip(this.txtBypassSteps, "Add Guids separated by comma.\r\nGuids are found on Plugin Steps in Plugin Registra" +
         "ting Tool.");
@@ -381,7 +370,7 @@
             // chkBypassAsync
             // 
             this.chkBypassAsync.AutoSize = true;
-            this.chkBypassAsync.Location = new System.Drawing.Point(137, 41);
+            this.chkBypassAsync.Location = new System.Drawing.Point(137, 32);
             this.chkBypassAsync.Name = "chkBypassAsync";
             this.chkBypassAsync.Size = new System.Drawing.Size(55, 17);
             this.chkBypassAsync.TabIndex = 3;
@@ -393,7 +382,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(244, 42);
+            this.linkLabel1.Location = new System.Drawing.Point(214, 33);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(132, 13);
             this.linkLabel1.TabIndex = 4;
@@ -411,21 +400,21 @@
             this.gbErrors.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbErrors.Location = new System.Drawing.Point(6, 124);
             this.gbErrors.Name = "gbErrors";
-            this.gbErrors.Size = new System.Drawing.Size(382, 48);
+            this.gbErrors.Size = new System.Drawing.Size(352, 48);
             this.gbErrors.TabIndex = 3;
             this.gbErrors.TabStop = false;
             this.gbErrors.Text = "Errors";
             // 
-            // panel1
+            // panButtons
             // 
-            this.panel1.Controls.Add(this.lblInfo);
-            this.panel1.Controls.Add(this.btnCancel);
-            this.panel1.Controls.Add(this.btnExecute);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(6, 340);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(382, 65);
-            this.panel1.TabIndex = 9;
+            this.panButtons.Controls.Add(this.lblInfo);
+            this.panButtons.Controls.Add(this.btnCancel);
+            this.panButtons.Controls.Add(this.btnExecute);
+            this.panButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panButtons.Location = new System.Drawing.Point(6, 317);
+            this.panButtons.Name = "panButtons";
+            this.panButtons.Size = new System.Drawing.Size(352, 58);
+            this.panButtons.TabIndex = 9;
             // 
             // lblInfo
             // 
@@ -453,15 +442,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(394, 411);
+            this.ClientSize = new System.Drawing.Size(364, 381);
             this.Controls.Add(this.gbBypassPreview);
+            this.Controls.Add(this.panButtons);
             this.Controls.Add(this.gbBypass);
             this.Controls.Add(this.gbErrors);
             this.Controls.Add(this.gbBatch);
             this.Controls.Add(this.gbWaitBetween);
-            this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.MinimumSize = new System.Drawing.Size(410, 450);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(380, 420);
             this.Name = "Execute";
             this.Padding = new System.Windows.Forms.Padding(6);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -478,8 +469,8 @@
             this.gbBypassPreview.PerformLayout();
             this.gbErrors.ResumeLayout(false);
             this.gbErrors.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.panButtons.ResumeLayout(false);
+            this.panButtons.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -506,7 +497,7 @@
         private System.Windows.Forms.CheckBox chkBypassAsync;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panButtons;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
@@ -516,6 +507,5 @@
         private System.Windows.Forms.GroupBox gbBypassPreview;
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label6;
     }
 }

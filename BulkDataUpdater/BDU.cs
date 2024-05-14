@@ -107,28 +107,6 @@
             LogUse("Close", ai2: true);
         }
 
-        public string GetFullWebApplicationUrl()
-        {
-            var url = ConnectionDetail.WebApplicationUrl;
-            if (string.IsNullOrEmpty(url))
-            {
-                url = ConnectionDetail.ServerName;
-            }
-            if (!url.ToLower().StartsWith("http"))
-            {
-                url = string.Concat("http://", url);
-            }
-            var uri = new Uri(url);
-            if (!uri.Host.EndsWith(".dynamics.com"))
-            {
-                if (string.IsNullOrEmpty(uri.AbsolutePath.Trim('/')))
-                {
-                    uri = new Uri(uri, ConnectionDetail.Organization);
-                }
-            }
-            return uri.ToString();
-        }
-
         #endregion Public Methods
 
         #region Internal Methods
@@ -437,7 +415,7 @@
                 // Reset some settings when new version is deployed
                 globalsettings.CurrentVersion = version;
                 SettingsManager.Instance.Save(typeof(BulkDataUpdater), globalsettings, "[Global]");
-                UrlUtils.OpenUrl($"https://jonasr.app/BDU/releases/#{version}");
+                Process.Start($"https://jonasr.app/BDU/releases/#{version}");
             }
         }
 
@@ -545,56 +523,6 @@
             lblStateHeader.Text = $"Update {count} {entity}";
             lblDeleteHeader.Text = $"Delete {count} {entity}";
             txtDeleteWarning.Text = deleteWarningText.Replace("[nn]", rbIncludeSelected.Checked ? count.ToString() : "ALL");
-        }
-
-        private string GetEntityUrl(Entity entity)
-        {
-            var entref = entity.ToEntityReference();
-            switch (entref.LogicalName)
-            {
-                case "activitypointer":
-                    if (!entity.Contains("activitytypecode"))
-                    {
-                        MessageBox.Show("To open records of type activitypointer, attribute 'activitytypecode' must be included in the query.", "Open Record", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        entref.LogicalName = string.Empty;
-                    }
-                    else
-                    {
-                        entref.LogicalName = entity["activitytypecode"].ToString();
-                    }
-                    break;
-
-                case "activityparty":
-                    if (!entity.Contains("partyid"))
-                    {
-                        MessageBox.Show("To open records of type activityparty, attribute 'partyid' must be included in the query.", "Open Record", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        entref.LogicalName = string.Empty;
-                    }
-                    else
-                    {
-                        var party = (EntityReference)entity["partyid"];
-                        entref.LogicalName = party.LogicalName;
-                        entref.Id = party.Id;
-                    }
-                    break;
-            }
-            return GetEntityReferenceUrl(entref);
-        }
-
-        private string GetEntityReferenceUrl(EntityReference entref)
-        {
-            if (!string.IsNullOrEmpty(entref.LogicalName) && !entref.Id.Equals(Guid.Empty))
-            {
-                var url = GetFullWebApplicationUrl();
-                url = string.Concat(url,
-                    url.EndsWith("/") ? "" : "/",
-                    "main.aspx?etn=",
-                    entref.LogicalName,
-                    "&pagetype=entityrecord&id=",
-                    entref.Id.ToString());
-                return url;
-            }
-            return string.Empty;
         }
 
         private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas, bool forcereload)
@@ -754,14 +682,7 @@
 
         private void crmGridView1_RecordDoubleClick(object sender, Rappen.XTB.Helpers.Controls.XRMRecordEventArgs e)
         {
-            if (e.Entity != null)
-            {
-                string url = GetEntityUrl(e.Entity);
-                if (!string.IsNullOrEmpty(url))
-                {
-                    ConnectionDetail.OpenUrlWithBrowserProfile(new Uri(url));
-                }
-            }
+            UrlUtils.OpenUrl(e, ConnectionDetail);
         }
 
         private void btnAssignSelect_Click(object sender, EventArgs e)

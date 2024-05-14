@@ -1,6 +1,7 @@
 ﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
 using Rappen.XTB.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
         private JobExecute jobexe;
         private string action;
         private bool confirmedbypass;
+        private bool confirmedbypasspreview;
         private bool init;
 
         public static DialogResult Show(BulkDataUpdater bdu, JobExecute jobexe)
@@ -60,8 +62,20 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                 BypassCustom = chkBypassPlugins.Checked,
                 BypassSync = chkBypassSync.Checked,
                 BypassAsync = chkBypassAsync.Checked,
-                BypassSteps = txtBypassSteps.Text.Split(new[] { ',', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(Guid.Parse).Distinct().ToList()
+                BypassSteps = GetStepGuids()
             };
+
+        private List<Guid> GetStepGuids()
+        {
+            try
+            {
+                return txtBypassSteps.Text.Split(new[] { ',', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(Guid.Parse).Distinct().ToList();
+            }
+            catch
+            {
+                return new List<Guid>();
+            }
+        }
 
         private void SetExecuteOptions(JobExecute jobexe)
         {
@@ -81,26 +95,6 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
         {
             var error = string.Empty;
             panBatchOption.Enabled = (int.TryParse(cmbBatchSize.Text, out int updsize) ? updsize : 1) > 1;
-            if (chkBypassPlugins.Checked)
-            {
-                if (bdu.currentversion < bdu.bypasspluginminversion)
-                {
-                    MessageBox.Show(
-                        $"This feature is not available in version {bdu.ConnectionDetail?.OrganizationVersion}\n" +
-                        $"Need version {bdu.bypasspluginminversion} or later.", "Bypass Custom Business Logic",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    chkBypassPlugins.Checked = false;
-                }
-                else if (!init && !confirmedbypass && MessageBox.Show(
-                    "Make sure you know exactly what this checkbox means.\n" +
-                    "Please read the docs - click the link first!\n\n" +
-                    "Are you OK to continue?", "Bypass Custom Business Logic",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
-                {
-                    chkBypassPlugins.Checked = false;
-                }
-                confirmedbypass = true;
-            }
             if (!string.IsNullOrWhiteSpace(cmbDelayCall.Text) && !int.TryParse(cmbDelayCall.Text, out _))
             {
                 error = "Pause seconds must be a number or empty.";
@@ -122,19 +116,47 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
             }
             if (chkBypassPlugins.Checked)
             {
-                if (false && !chkBypassSync.Checked && !chkBypassAsync.Checked)
+                if (bdu.currentversion < bdu.bypasspluginminversion)
                 {
-                    error = "Bypassing plugins must have Sync or/and Async.";
+                    MessageBox.Show(
+                        $"This feature is not available in version {bdu.ConnectionDetail?.OrganizationVersion}\n" +
+                        $"Need version {bdu.bypasspluginminversion} or later.", "Bypass Custom Business Logic",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    chkBypassPlugins.Checked = false;
                 }
-                if (!string.IsNullOrWhiteSpace(txtBypassSteps.Text))
+                else if (!init && !confirmedbypass && MessageBox.Show(
+                    "Make sure you know exactly what this checkbox means.\n" +
+                    "Please read the docs - click the link first!\n\n" +
+                    "Are you OK to continue?", "Bypass Custom Business Logic",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
                 {
-                    var steps = txtBypassSteps.Text.Split(new[] { ',', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var step in steps)
+                    chkBypassPlugins.Checked = false;
+                }
+                confirmedbypass = true;
+            }
+            if (chkBypassSync.Checked || chkBypassAsync.Checked || !string.IsNullOrWhiteSpace(txtBypassSteps.Text))
+            {
+                if (!init && !confirmedbypasspreview && MessageBox.Show(
+                    "This is a PREVIEW Microsoft feature!\n" +
+                    "Make sure you know exactly what this checkbox means.\n" +
+                    "Please read the docs - click the link first!\n\n" +
+                    "Are you OK to continue?", "PREVIEW Bypass",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
+                {
+                    chkBypassSync.Checked = false;
+                    chkBypassAsync.Checked = false;
+                    txtBypassSteps.Text = string.Empty;
+                }
+                confirmedbypasspreview = true;
+            }
+            if (!string.IsNullOrWhiteSpace(txtBypassSteps.Text))
+            {
+                var steps = txtBypassSteps.Text.Split(new[] { ',', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var step in steps)
+                {
+                    if (!Guid.TryParse(step, out _))
                     {
-                        if (!Guid.TryParse(step, out _))
-                        {
-                            error = "Bypassing steps must be a Guid.";
-                        }
+                        error = "Bypassing steps must be a Guid.";
                     }
                 }
             }
