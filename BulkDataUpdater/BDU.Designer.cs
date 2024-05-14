@@ -33,6 +33,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
+            this.tsbFetch = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tsmFetchFXB = new System.Windows.Forms.ToolStripMenuItem();
+            this.rsmFetchXml = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmFetchView = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmFetchFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbOpenJob = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveJob = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -45,21 +50,12 @@
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.tslDoc = new System.Windows.Forms.ToolStripLabel();
             this.tsbBymyacoffee = new System.Windows.Forms.ToolStripButton();
-            this.btnGetEdit = new System.Windows.Forms.Button();
             this.lblRecords = new System.Windows.Forms.Label();
-            this.gb1select = new System.Windows.Forms.GroupBox();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnGetFile = new System.Windows.Forms.Button();
-            this.btnGetView = new System.Windows.Forms.Button();
-            this.btnGetFXB = new System.Windows.Forms.Button();
             this.gbExecute = new System.Windows.Forms.GroupBox();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
             this.btnExecute = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.rbIncludeSelected = new System.Windows.Forms.RadioButton();
-            this.rbIncludeAll = new System.Windows.Forms.RadioButton();
-            this.lblIncludedRecords = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.chkSetState = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -111,10 +107,10 @@
             this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
+            this.btnSelectAll = new System.Windows.Forms.Button();
+            this.lblSelectedRecords = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
-            this.gb1select.SuspendLayout();
             this.gbExecute.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -145,6 +141,7 @@
             this.toolStripMain.BackColor = System.Drawing.SystemColors.Window;
             this.toolStripMain.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbFetch,
             this.tsbOpenJob,
             this.tsbSaveJob,
             this.toolStripSeparator1,
@@ -163,6 +160,55 @@
             this.toolStripMain.Size = new System.Drawing.Size(979, 49);
             this.toolStripMain.TabIndex = 23;
             this.toolStripMain.Text = "toolStrip1";
+            // 
+            // tsbFetch
+            // 
+            this.tsbFetch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmFetchFXB,
+            this.rsmFetchXml,
+            this.tsmFetchView,
+            this.tsmFetchFile});
+            this.tsbFetch.Image = ((System.Drawing.Image)(resources.GetObject("tsbFetch.Image")));
+            this.tsbFetch.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbFetch.Name = "tsbFetch";
+            this.tsbFetch.Size = new System.Drawing.Size(108, 36);
+            this.tsbFetch.Text = "Fetch Data";
+            // 
+            // tsmFetchFXB
+            // 
+            this.tsmFetchFXB.Image = ((System.Drawing.Image)(resources.GetObject("tsmFetchFXB.Image")));
+            this.tsmFetchFXB.Name = "tsmFetchFXB";
+            this.tsmFetchFXB.Size = new System.Drawing.Size(176, 22);
+            this.tsmFetchFXB.Tag = "FXB";
+            this.tsmFetchFXB.Text = "FetchXML Builder...";
+            this.tsmFetchFXB.Click += new System.EventHandler(this.btnGetRecords_Click);
+            // 
+            // rsmFetchXml
+            // 
+            this.rsmFetchXml.Image = ((System.Drawing.Image)(resources.GetObject("rsmFetchXml.Image")));
+            this.rsmFetchXml.Name = "rsmFetchXml";
+            this.rsmFetchXml.Size = new System.Drawing.Size(176, 22);
+            this.rsmFetchXml.Tag = "Edit";
+            this.rsmFetchXml.Text = "Raw Fetch XML...";
+            this.rsmFetchXml.Click += new System.EventHandler(this.btnGetRecords_Click);
+            // 
+            // tsmFetchView
+            // 
+            this.tsmFetchView.Image = ((System.Drawing.Image)(resources.GetObject("tsmFetchView.Image")));
+            this.tsmFetchView.Name = "tsmFetchView";
+            this.tsmFetchView.Size = new System.Drawing.Size(176, 22);
+            this.tsmFetchView.Tag = "View";
+            this.tsmFetchView.Text = "Open View...";
+            this.tsmFetchView.Click += new System.EventHandler(this.btnGetRecords_Click);
+            // 
+            // tsmFetchFile
+            // 
+            this.tsmFetchFile.Image = ((System.Drawing.Image)(resources.GetObject("tsmFetchFile.Image")));
+            this.tsmFetchFile.Name = "tsmFetchFile";
+            this.tsmFetchFile.Size = new System.Drawing.Size(176, 22);
+            this.tsmFetchFile.Tag = "File";
+            this.tsmFetchFile.Text = "Open File...";
+            this.tsmFetchFile.Click += new System.EventHandler(this.btnGetRecords_Click);
             // 
             // tsbOpenJob
             // 
@@ -273,47 +319,15 @@
             this.tsbBymyacoffee.ToolTipText = "By Me a Coffee!";
             this.tsbBymyacoffee.Click += new System.EventHandler(this.link_Click);
             // 
-            // btnGetEdit
-            // 
-            this.btnGetEdit.BackColor = System.Drawing.SystemColors.Window;
-            this.btnGetEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnGetEdit.Image")));
-            this.btnGetEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGetEdit.Location = new System.Drawing.Point(150, 19);
-            this.btnGetEdit.Name = "btnGetEdit";
-            this.btnGetEdit.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.btnGetEdit.Size = new System.Drawing.Size(114, 39);
-            this.btnGetEdit.TabIndex = 2;
-            this.btnGetEdit.Tag = "Edit";
-            this.btnGetEdit.Text = "Edit FetchXML";
-            this.btnGetEdit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGetEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnGetEdit.UseVisualStyleBackColor = false;
-            this.btnGetEdit.Click += new System.EventHandler(this.btnGetRecords_Click);
-            // 
             // lblRecords
             // 
-            this.lblRecords.AutoSize = true;
-            this.lblRecords.Location = new System.Drawing.Point(12, 69);
+            this.lblRecords.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblRecords.Location = new System.Drawing.Point(171, 16);
             this.lblRecords.Name = "lblRecords";
-            this.lblRecords.Size = new System.Drawing.Size(100, 13);
+            this.lblRecords.Size = new System.Drawing.Size(342, 16);
             this.lblRecords.TabIndex = 25;
             this.lblRecords.Text = "Records not loaded";
-            // 
-            // gb1select
-            // 
-            this.gb1select.Controls.Add(this.btnRefresh);
-            this.gb1select.Controls.Add(this.btnGetFile);
-            this.gb1select.Controls.Add(this.btnGetView);
-            this.gb1select.Controls.Add(this.btnGetFXB);
-            this.gb1select.Controls.Add(this.btnGetEdit);
-            this.gb1select.Controls.Add(this.lblRecords);
-            this.gb1select.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gb1select.Location = new System.Drawing.Point(0, 0);
-            this.gb1select.Name = "gb1select";
-            this.gb1select.Size = new System.Drawing.Size(625, 91);
-            this.gb1select.TabIndex = 1;
-            this.gb1select.TabStop = false;
-            this.gb1select.Text = "Select query for records to affect";
+            this.lblRecords.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // btnRefresh
             // 
@@ -321,7 +335,7 @@
             this.btnRefresh.BackColor = System.Drawing.SystemColors.Window;
             this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
             this.btnRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefresh.Location = new System.Drawing.Point(568, 19);
+            this.btnRefresh.Location = new System.Drawing.Point(519, 4);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnRefresh.Size = new System.Drawing.Size(51, 39);
@@ -333,57 +347,6 @@
             this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnGetRecords_Click);
             // 
-            // btnGetFile
-            // 
-            this.btnGetFile.BackColor = System.Drawing.SystemColors.Window;
-            this.btnGetFile.Image = ((System.Drawing.Image)(resources.GetObject("btnGetFile.Image")));
-            this.btnGetFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGetFile.Location = new System.Drawing.Point(390, 19);
-            this.btnGetFile.Name = "btnGetFile";
-            this.btnGetFile.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.btnGetFile.Size = new System.Drawing.Size(114, 39);
-            this.btnGetFile.TabIndex = 4;
-            this.btnGetFile.Tag = "File";
-            this.btnGetFile.Text = "Open File";
-            this.btnGetFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGetFile.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnGetFile.UseVisualStyleBackColor = false;
-            this.btnGetFile.Click += new System.EventHandler(this.btnGetRecords_Click);
-            // 
-            // btnGetView
-            // 
-            this.btnGetView.BackColor = System.Drawing.SystemColors.Window;
-            this.btnGetView.Image = ((System.Drawing.Image)(resources.GetObject("btnGetView.Image")));
-            this.btnGetView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGetView.Location = new System.Drawing.Point(270, 19);
-            this.btnGetView.Name = "btnGetView";
-            this.btnGetView.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.btnGetView.Size = new System.Drawing.Size(114, 39);
-            this.btnGetView.TabIndex = 3;
-            this.btnGetView.Tag = "View";
-            this.btnGetView.Text = "Open View";
-            this.btnGetView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGetView.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnGetView.UseVisualStyleBackColor = false;
-            this.btnGetView.Click += new System.EventHandler(this.btnGetRecords_Click);
-            // 
-            // btnGetFXB
-            // 
-            this.btnGetFXB.BackColor = System.Drawing.SystemColors.Window;
-            this.btnGetFXB.Image = ((System.Drawing.Image)(resources.GetObject("btnGetFXB.Image")));
-            this.btnGetFXB.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGetFXB.Location = new System.Drawing.Point(15, 19);
-            this.btnGetFXB.Name = "btnGetFXB";
-            this.btnGetFXB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.btnGetFXB.Size = new System.Drawing.Size(129, 39);
-            this.btnGetFXB.TabIndex = 1;
-            this.btnGetFXB.Tag = "FXB";
-            this.btnGetFXB.Text = "FetchXML Builder";
-            this.btnGetFXB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGetFXB.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnGetFXB.UseVisualStyleBackColor = false;
-            this.btnGetFXB.Click += new System.EventHandler(this.btnGetRecords_Click);
-            // 
             // gbExecute
             // 
             this.gbExecute.Controls.Add(this.lblUpdateStatus);
@@ -391,7 +354,7 @@
             this.gbExecute.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.gbExecute.Location = new System.Drawing.Point(0, 502);
             this.gbExecute.Name = "gbExecute";
-            this.gbExecute.Size = new System.Drawing.Size(350, 63);
+            this.gbExecute.Size = new System.Drawing.Size(396, 63);
             this.gbExecute.TabIndex = 37;
             this.gbExecute.TabStop = false;
             this.gbExecute.Text = "Execution";
@@ -402,7 +365,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblUpdateStatus.Location = new System.Drawing.Point(18, 20);
             this.lblUpdateStatus.Name = "lblUpdateStatus";
-            this.lblUpdateStatus.Size = new System.Drawing.Size(193, 33);
+            this.lblUpdateStatus.Size = new System.Drawing.Size(239, 33);
             this.lblUpdateStatus.TabIndex = 100;
             this.lblUpdateStatus.Text = "Status";
             this.lblUpdateStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -410,7 +373,7 @@
             // btnExecute
             // 
             this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExecute.Location = new System.Drawing.Point(217, 15);
+            this.btnExecute.Location = new System.Drawing.Point(263, 15);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(116, 38);
             this.btnExecute.TabIndex = 4;
@@ -418,63 +381,17 @@
             this.btnExecute.UseVisualStyleBackColor = true;
             this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.crmGridView1);
-            this.groupBox5.Controls.Add(this.panel1);
-            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(0, 91);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(625, 474);
-            this.groupBox5.TabIndex = 38;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Records";
-            // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.rbIncludeSelected);
-            this.panel1.Controls.Add(this.rbIncludeAll);
-            this.panel1.Controls.Add(this.lblIncludedRecords);
+            this.panel1.Controls.Add(this.lblSelectedRecords);
+            this.panel1.Controls.Add(this.btnSelectAll);
+            this.panel1.Controls.Add(this.btnRefresh);
+            this.panel1.Controls.Add(this.lblRecords);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 16);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(619, 38);
+            this.panel1.Size = new System.Drawing.Size(579, 47);
             this.panel1.TabIndex = 1;
-            // 
-            // rbIncludeSelected
-            // 
-            this.rbIncludeSelected.AutoSize = true;
-            this.rbIncludeSelected.Location = new System.Drawing.Point(180, 9);
-            this.rbIncludeSelected.Name = "rbIncludeSelected";
-            this.rbIncludeSelected.Size = new System.Drawing.Size(163, 17);
-            this.rbIncludeSelected.TabIndex = 4;
-            this.rbIncludeSelected.Tag = "";
-            this.rbIncludeSelected.Text = "Include selected records only";
-            this.rbIncludeSelected.UseVisualStyleBackColor = true;
-            this.rbIncludeSelected.CheckedChanged += new System.EventHandler(this.rbInclude_CheckedChanged);
-            // 
-            // rbIncludeAll
-            // 
-            this.rbIncludeAll.AutoSize = true;
-            this.rbIncludeAll.Checked = true;
-            this.rbIncludeAll.Location = new System.Drawing.Point(12, 9);
-            this.rbIncludeAll.Name = "rbIncludeAll";
-            this.rbIncludeAll.Size = new System.Drawing.Size(153, 17);
-            this.rbIncludeAll.TabIndex = 3;
-            this.rbIncludeAll.TabStop = true;
-            this.rbIncludeAll.Text = "Include all records returned";
-            this.rbIncludeAll.UseVisualStyleBackColor = true;
-            this.rbIncludeAll.CheckedChanged += new System.EventHandler(this.rbInclude_CheckedChanged);
-            // 
-            // lblIncludedRecords
-            // 
-            this.lblIncludedRecords.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblIncludedRecords.Location = new System.Drawing.Point(475, 11);
-            this.lblIncludedRecords.Name = "lblIncludedRecords";
-            this.lblIncludedRecords.Size = new System.Drawing.Size(141, 16);
-            this.lblIncludedRecords.TabIndex = 5;
-            this.lblIncludedRecords.Text = "0 records";
-            this.lblIncludedRecords.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // splitContainer1
             // 
@@ -485,8 +402,8 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.groupBox5);
-            this.splitContainer1.Panel1.Controls.Add(this.gb1select);
+            this.splitContainer1.Panel1.Controls.Add(this.crmGridView1);
+            this.splitContainer1.Panel1.Controls.Add(this.panel1);
             this.splitContainer1.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.Panel1MinSize = 100;
             // 
@@ -498,7 +415,7 @@
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.Size = new System.Drawing.Size(979, 565);
-            this.splitContainer1.SplitterDistance = 625;
+            this.splitContainer1.SplitterDistance = 579;
             this.splitContainer1.TabIndex = 39;
             // 
             // chkSetState
@@ -522,7 +439,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(350, 502);
+            this.tabControl1.Size = new System.Drawing.Size(396, 502);
             this.tabControl1.TabIndex = 39;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -535,7 +452,7 @@
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
             this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUpdate.Size = new System.Drawing.Size(342, 476);
+            this.tabUpdate.Size = new System.Drawing.Size(388, 476);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             // 
@@ -548,7 +465,7 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(3, 60);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(336, 327);
+            this.gb3attributes.Size = new System.Drawing.Size(382, 327);
             this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Attributes to update";
@@ -589,7 +506,7 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(304, 269);
+            this.lvAttributes.Size = new System.Drawing.Size(350, 269);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -619,7 +536,7 @@
             // btnAttrRemove
             // 
             this.btnAttrRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAttrRemove.Location = new System.Drawing.Point(244, 294);
+            this.btnAttrRemove.Location = new System.Drawing.Point(290, 294);
             this.btnAttrRemove.Name = "btnAttrRemove";
             this.btnAttrRemove.Size = new System.Drawing.Size(75, 23);
             this.btnAttrRemove.TabIndex = 2;
@@ -639,7 +556,7 @@
             this.gbImpSeqNo.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.gbImpSeqNo.Location = new System.Drawing.Point(3, 387);
             this.gbImpSeqNo.Name = "gbImpSeqNo";
-            this.gbImpSeqNo.Size = new System.Drawing.Size(336, 86);
+            this.gbImpSeqNo.Size = new System.Drawing.Size(382, 86);
             this.gbImpSeqNo.TabIndex = 37;
             this.gbImpSeqNo.TabStop = false;
             this.gbImpSeqNo.Text = "Import Sequence Number";
@@ -687,7 +604,7 @@
             // 
             this.linkImpSeqNoHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkImpSeqNoHelp.AutoSize = true;
-            this.linkImpSeqNoHelp.Location = new System.Drawing.Point(283, 0);
+            this.linkImpSeqNoHelp.Location = new System.Drawing.Point(329, 0);
             this.linkImpSeqNoHelp.Name = "linkImpSeqNoHelp";
             this.linkImpSeqNoHelp.Size = new System.Drawing.Size(35, 13);
             this.linkImpSeqNoHelp.TabIndex = 5;
@@ -717,7 +634,7 @@
             // 
             this.numImpSeqNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numImpSeqNo.Enabled = false;
-            this.numImpSeqNo.Location = new System.Drawing.Point(228, 24);
+            this.numImpSeqNo.Location = new System.Drawing.Point(274, 24);
             this.numImpSeqNo.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -749,7 +666,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(336, 57);
+            this.panel2.Size = new System.Drawing.Size(382, 57);
             this.panel2.TabIndex = 37;
             // 
             // lblUpdateHeader
@@ -774,7 +691,7 @@
             this.tabAssign.Location = new System.Drawing.Point(4, 22);
             this.tabAssign.Name = "tabAssign";
             this.tabAssign.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAssign.Size = new System.Drawing.Size(342, 476);
+            this.tabAssign.Size = new System.Drawing.Size(388, 476);
             this.tabAssign.TabIndex = 4;
             this.tabAssign.Text = "Assign";
             // 
@@ -788,14 +705,14 @@
             this.textBox1.Location = new System.Drawing.Point(30, 403);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(282, 124);
+            this.textBox1.Size = new System.Drawing.Size(328, 124);
             this.textBox1.TabIndex = 14;
             this.textBox1.Text = "Note: It is now possible to change Owner with normal Update.";
             // 
             // btnAssignSelect
             // 
             this.btnAssignSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAssignSelect.Location = new System.Drawing.Point(297, 123);
+            this.btnAssignSelect.Location = new System.Drawing.Point(343, 123);
             this.btnAssignSelect.Name = "btnAssignSelect";
             this.btnAssignSelect.Size = new System.Drawing.Size(29, 22);
             this.btnAssignSelect.TabIndex = 13;
@@ -841,7 +758,7 @@
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
             this.tabSetState.Name = "tabSetState";
             this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSetState.Size = new System.Drawing.Size(342, 476);
+            this.tabSetState.Size = new System.Drawing.Size(388, 476);
             this.tabSetState.TabIndex = 3;
             this.tabSetState.Text = "Set State";
             // 
@@ -855,7 +772,7 @@
             this.textBox2.Location = new System.Drawing.Point(30, 399);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(282, 129);
+            this.textBox2.Size = new System.Drawing.Size(328, 129);
             this.textBox2.TabIndex = 18;
             this.textBox2.Text = "Note: It is now possible to change Status and Status Reason with normal Update.\r\n" +
     "But be careful, as the combo has to work together, otherwise Dataverse will retu" +
@@ -869,7 +786,7 @@
             this.panQualifyLead.Dock = System.Windows.Forms.DockStyle.Top;
             this.panQualifyLead.Location = new System.Drawing.Point(3, 164);
             this.panQualifyLead.Name = "panQualifyLead";
-            this.panQualifyLead.Size = new System.Drawing.Size(336, 78);
+            this.panQualifyLead.Size = new System.Drawing.Size(382, 78);
             this.panQualifyLead.TabIndex = 17;
             this.panQualifyLead.Visible = false;
             // 
@@ -913,7 +830,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(336, 161);
+            this.panel3.Size = new System.Drawing.Size(382, 161);
             this.panel3.TabIndex = 16;
             // 
             // lblStateHeader
@@ -934,7 +851,7 @@
             this.cbSetStatus.FormattingEnabled = true;
             this.cbSetStatus.Location = new System.Drawing.Point(16, 84);
             this.cbSetStatus.Name = "cbSetStatus";
-            this.cbSetStatus.Size = new System.Drawing.Size(303, 21);
+            this.cbSetStatus.Size = new System.Drawing.Size(349, 21);
             this.cbSetStatus.TabIndex = 11;
             this.cbSetStatus.SelectedIndexChanged += new System.EventHandler(this.cbSetStatus_SelectedIndexChanged);
             // 
@@ -946,7 +863,7 @@
             this.cbSetStatusReason.FormattingEnabled = true;
             this.cbSetStatusReason.Location = new System.Drawing.Point(16, 130);
             this.cbSetStatusReason.Name = "cbSetStatusReason";
-            this.cbSetStatusReason.Size = new System.Drawing.Size(303, 21);
+            this.cbSetStatusReason.Size = new System.Drawing.Size(349, 21);
             this.cbSetStatusReason.TabIndex = 14;
             this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.cbSetStatusReason_SelectedIndexChanged);
             // 
@@ -976,7 +893,7 @@
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
             this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDelete.Size = new System.Drawing.Size(342, 476);
+            this.tabDelete.Size = new System.Drawing.Size(388, 476);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Text = "Delete";
             // 
@@ -991,7 +908,7 @@
             this.txtDeleteWarning.Location = new System.Drawing.Point(35, 97);
             this.txtDeleteWarning.Multiline = true;
             this.txtDeleteWarning.Name = "txtDeleteWarning";
-            this.txtDeleteWarning.Size = new System.Drawing.Size(282, 425);
+            this.txtDeleteWarning.Size = new System.Drawing.Size(328, 425);
             this.txtDeleteWarning.TabIndex = 1;
             this.txtDeleteWarning.Text = "This action will delete [nn] records in the list to the left.\r\n\r\nThis action can " +
     "NOT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation q" +
@@ -1021,7 +938,7 @@
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
             this.crmGridView1.LayoutXML = "";
-            this.crmGridView1.Location = new System.Drawing.Point(3, 54);
+            this.crmGridView1.Location = new System.Drawing.Point(0, 47);
             this.crmGridView1.Name = "crmGridView1";
             this.crmGridView1.ReadOnly = true;
             this.crmGridView1.RowHeadersVisible = false;
@@ -1030,7 +947,7 @@
             this.crmGridView1.Service = null;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(619, 417);
+            this.crmGridView1.Size = new System.Drawing.Size(579, 518);
             this.crmGridView1.TabIndex = 2;
             this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
             this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
@@ -1046,7 +963,7 @@
             this.xrmAssignText.Name = "xrmAssignText";
             this.xrmAssignText.ReadOnly = true;
             this.xrmAssignText.RecordHost = this.xrmRecordAssign;
-            this.xrmAssignText.Size = new System.Drawing.Size(274, 20);
+            this.xrmAssignText.Size = new System.Drawing.Size(320, 20);
             this.xrmAssignText.TabIndex = 12;
             // 
             // xrmRecordAssign
@@ -1084,6 +1001,25 @@
             this.xrmLookupAssign.Service = null;
             this.xrmLookupAssign.Title = "Select User or Team to assign to";
             // 
+            // btnSelectAll
+            // 
+            this.btnSelectAll.Location = new System.Drawing.Point(14, 11);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectAll.TabIndex = 27;
+            this.btnSelectAll.Text = "Select All";
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
+            // lblSelectedRecords
+            // 
+            this.lblSelectedRecords.AutoSize = true;
+            this.lblSelectedRecords.Location = new System.Drawing.Point(95, 16);
+            this.lblSelectedRecords.Name = "lblSelectedRecords";
+            this.lblSelectedRecords.Size = new System.Drawing.Size(56, 13);
+            this.lblSelectedRecords.TabIndex = 28;
+            this.lblSelectedRecords.Text = "0 selected";
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1099,10 +1035,7 @@
             this.Load += new System.EventHandler(this.DataUpdater_Load);
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
-            this.gb1select.ResumeLayout(false);
-            this.gb1select.PerformLayout();
             this.gbExecute.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1138,13 +1071,10 @@
 
         private System.Windows.Forms.ImageList imageList1;
         internal System.Windows.Forms.ToolStrip toolStripMain;
-        private System.Windows.Forms.Button btnGetEdit;
         private System.Windows.Forms.Label lblRecords;
-        private System.Windows.Forms.GroupBox gb1select;
         private System.Windows.Forms.GroupBox gbExecute;
         private System.Windows.Forms.Label lblUpdateStatus;
         private System.Windows.Forms.Button btnExecute;
-        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Rappen.XTB.Helpers.Controls.XRMDataGridView crmGridView1;
         private System.Windows.Forms.GroupBox gb3attributes;
@@ -1162,15 +1092,9 @@
         private System.Windows.Forms.TabPage tabDelete;
         private System.Windows.Forms.Label lblDeleteHeader;
         private System.Windows.Forms.TabPage tabSetState;
-        private System.Windows.Forms.Button btnGetFile;
-        private System.Windows.Forms.Button btnGetView;
-        private System.Windows.Forms.Button btnGetFXB;
         private System.Windows.Forms.TextBox txtDeleteWarning;
         private System.Windows.Forms.ToolStripButton tsbCancel;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RadioButton rbIncludeAll;
-        private System.Windows.Forms.RadioButton rbIncludeSelected;
-        private System.Windows.Forms.Label lblIncludedRecords;
         private System.Windows.Forms.TabPage tabAssign;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblAssignHeader;
@@ -1216,5 +1140,12 @@
         private System.Windows.Forms.LinkLabel linkShowImpSeqNoRecords;
         private System.Windows.Forms.Button btnAttrAdd;
         private System.Windows.Forms.Button btnAttrEdit;
+        private System.Windows.Forms.ToolStripDropDownButton tsbFetch;
+        private System.Windows.Forms.ToolStripMenuItem tsmFetchFXB;
+        private System.Windows.Forms.ToolStripMenuItem rsmFetchXml;
+        private System.Windows.Forms.ToolStripMenuItem tsmFetchView;
+        private System.Windows.Forms.ToolStripMenuItem tsmFetchFile;
+        private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.Label lblSelectedRecords;
     }
 }

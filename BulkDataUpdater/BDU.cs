@@ -258,13 +258,13 @@
                         Enabled = true;
                     }
                     splitContainer1.Enabled = enabled;
+                    tsbFetch.Enabled = !cancel && enabled;
                     tsbOpenJob.Enabled = !cancel && enabled;
                     tsbSaveJob.Enabled = !cancel && enabled;
                     tsbFriendly.Enabled = !cancel && enabled;
                     tsbRaw.Enabled = !cancel && enabled;
                     tsbCancel.Enabled = cancel;
-                    gb1select.Enabled = !cancel && enabled && Service != null;
-                    btnRefresh.Enabled = !cancel && gb1select.Enabled && !string.IsNullOrWhiteSpace(job?.FetchXML);
+                    btnRefresh.Enabled = !cancel && tsbFetch.Enabled && !string.IsNullOrWhiteSpace(job?.FetchXML);
                     gb3attributes.Enabled = !cancel && crmGridView1.RowCount > 0;
                     btnAttrEdit.Enabled = !cancel && lvAttributes.SelectedItems.Count == 1;
                     btnAttrRemove.Enabled = !cancel && lvAttributes.SelectedItems.Count > 0;
@@ -517,12 +517,12 @@
         {
             var count = GetIncludedRecords()?.Count();
             var entity = entities?.FirstOrDefault(e => e.LogicalName == records?.EntityName)?.DisplayCollectionName?.UserLocalizedLabel?.Label;
-            lblIncludedRecords.Text = $"{count} records";
+            lblSelectedRecords.Text = $"Selected {count} records";
             lblUpdateHeader.Text = $"Update {count} {entity}";
             lblAssignHeader.Text = $"Assign {count} {entity}";
             lblStateHeader.Text = $"Update {count} {entity}";
             lblDeleteHeader.Text = $"Delete {count} {entity}";
-            txtDeleteWarning.Text = deleteWarningText.Replace("[nn]", rbIncludeSelected.Checked ? count.ToString() : "ALL");
+            txtDeleteWarning.Text = deleteWarningText.Replace("[nn]", crmGridView1.Rows.Count > count ? count.ToString() : "ALL");
         }
 
         private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas, bool forcereload)
@@ -568,9 +568,13 @@
 
         private void btnGetRecords_Click(object sender, EventArgs e)
         {
-            if (sender is Button btn)
+            if (sender is Control ctrl)
             {
-                GetRecords(btn.Tag?.ToString());
+                GetRecords(ctrl.Tag?.ToString());
+            }
+            else if (sender is ToolStripItem tsi)
+            {
+                GetRecords(tsi.Tag?.ToString());
             }
         }
 
@@ -644,12 +648,6 @@
         {
             LoadGlobalSetting();
             LogUse("Load", ai2: true);
-        }
-
-        private void rbInclude_CheckedChanged(object sender, EventArgs e)
-        {
-            job.IncludeAll = rbIncludeAll.Checked;
-            UpdateIncludeCount();
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -771,6 +769,11 @@
         private void link_Click(object sender, LinkLabelLinkClickedEventArgs e)
         {
             UrlUtils.OpenUrl(sender);
+        }
+
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            crmGridView1.SelectAll();
         }
 
         #endregion Form Event Handlers

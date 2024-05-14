@@ -116,7 +116,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 }
                 isOnForms = null;
                 isOnViews = null;
-                lblRecords.Text = $"{records.Entities.Count} records of entity {records.EntityName} loaded";
+                lblRecords.Text = $"{records.Entities.Count} {records.EntityName} records";
                 crmGridView1.Service = Service;
                 crmGridView1.LayoutXML = job.LayoutXML;
                 crmGridView1.DataSource = records;
@@ -143,8 +143,7 @@ namespace Cinteros.XTB.BulkDataUpdater
         private IEnumerable<Entity> GetIncludedRecords()
         {
             // The following line can be restored when xrmtb controls version > 2.2.6 is used
-            //return rbIncludeSelected.Checked ? crmGridView1.SelectedRowRecords : records.Entities;
-            var rows = rbIncludeSelected.Checked ? crmGridView1.SelectedRows.OfType<DataGridViewRow>() : crmGridView1.Rows.OfType<DataGridViewRow>();
+            var rows = crmGridView1.SelectedRows.OfType<DataGridViewRow>();
             rows = rows.OrderBy(r => r.Index);
             var result = rows.Where(r => r.Cells["#entity"]?.Value is Entity).Select(r => r.Cells["#entity"].Value as Entity);
             return result;
@@ -319,8 +318,6 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void UseJob(bool retrieve)
         {
-            rbIncludeAll.Checked = job.IncludeAll;
-            rbIncludeSelected.Checked = !job.IncludeAll;
             SetImpSeqNo(forcekeepnum: true);
             FixLoadedBAI(job.Update);
             if (retrieve)

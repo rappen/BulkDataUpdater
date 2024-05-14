@@ -36,8 +36,6 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         }
 
         public string LayoutXML { get; set; }
-
-        public bool IncludeAll { get; set; }
         public JobUpdate Update { get; set; } = new JobUpdate();
         public JobAssign Assign { get; set; } = new JobAssign();
         public JobSetState SetState { get; set; } = new JobSetState();
