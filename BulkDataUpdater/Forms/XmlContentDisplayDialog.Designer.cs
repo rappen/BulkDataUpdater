@@ -45,7 +45,7 @@
             // 
             // panBottom
             // 
-            this.panBottom.BackColor = System.Drawing.SystemColors.Control;
+            this.panBottom.BackColor = System.Drawing.SystemColors.Window;
             this.panBottom.Controls.Add(this.panOk);
             this.panBottom.Controls.Add(this.panCancel);
             this.panBottom.Controls.Add(this.btnFormat);
@@ -130,12 +130,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(536, 337);
             this.Controls.Add(this.gbXml);
             this.Controls.Add(this.panBottom);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "XmlContentDisplayDialog";
             this.ShowIcon = false;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.XmlContentDisplayDialog_FormClosing);

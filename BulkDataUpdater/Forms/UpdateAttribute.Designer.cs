@@ -43,7 +43,6 @@
             this.panValueChoices = new System.Windows.Forms.Panel();
             this.chkMultiSelects = new System.Windows.Forms.CheckedListBox();
             this.panValueLookup = new System.Windows.Forms.Panel();
-            this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
             this.btnLookupValue = new System.Windows.Forms.Button();
             this.panValueText = new System.Windows.Forms.Panel();
             this.cmbValue = new System.Windows.Forms.ComboBox();
@@ -61,6 +60,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.tmCalc = new System.Windows.Forms.Timer(this.components);
+            this.cdsLookupValue = new Rappen.XTB.Helpers.Controls.XRMColumnText();
             this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.xrmLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.panRoot.SuspendLayout();
@@ -244,19 +244,6 @@
             this.panValueLookup.Size = new System.Drawing.Size(377, 40);
             this.panValueLookup.TabIndex = 4;
             this.panValueLookup.Visible = false;
-            // 
-            // cdsLookupValue
-            // 
-            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
-            this.cdsLookupValue.Column = null;
-            this.cdsLookupValue.DisplayFormat = "";
-            this.cdsLookupValue.Location = new System.Drawing.Point(12, 8);
-            this.cdsLookupValue.Name = "cdsLookupValue";
-            this.cdsLookupValue.RecordHost = null;
-            this.cdsLookupValue.Size = new System.Drawing.Size(316, 20);
-            this.cdsLookupValue.TabIndex = 0;
             // 
             // btnLookupValue
             // 
@@ -446,6 +433,19 @@
             // 
             this.tmCalc.Interval = 1000;
             this.tmCalc.Tick += new System.EventHandler(this.tmCalc_Tick);
+            // 
+            // cdsLookupValue
+            // 
+            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
+            this.cdsLookupValue.Column = null;
+            this.cdsLookupValue.DisplayFormat = "";
+            this.cdsLookupValue.Location = new System.Drawing.Point(12, 8);
+            this.cdsLookupValue.Name = "cdsLookupValue";
+            this.cdsLookupValue.RecordHost = null;
+            this.cdsLookupValue.Size = new System.Drawing.Size(316, 20);
+            this.cdsLookupValue.TabIndex = 0;
             // 
             // xrmRecordAttribute
             // 

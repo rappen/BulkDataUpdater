@@ -434,7 +434,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
             if (record != null)
             {
                 var entityName = record.LogicalName;
-                var attributes = GetDisplayAttributes(entityName);
+                var attributes = GetDisplayAttributes();
                 attributes.ForEach(a => AttributeMetadataItem.AddAttributeToComboBox(cmbAttribute, a, true, friendly, true));
                 if (selected != null)
                 {
@@ -444,7 +444,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
             EnableControls();
         }
 
-        private List<AttributeMetadata> GetDisplayAttributes(string entityName)
+        private List<AttributeMetadata> GetDisplayAttributes()
         {
             bool IsRequired(AttributeMetadata meta)
             {
@@ -457,6 +457,10 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
             var attributes = BulkDataUpdater.entitymeta?.Attributes?.ToList() ?? new List<AttributeMetadata>();
             foreach (var attribute in attributes)
             {
+                if (attribute.IsPrimaryId == true)
+                {
+                    continue;
+                }
                 var yes = updateAttributes.Everything ||
                     (updateAttributes.ImportSequenceNumber && attribute.LogicalName == "importsequencenumber") ||
                     (updateAttributes.UnallowedUpdate && !attribute.IsValidForUpdate.Value == true && attribute.LogicalName != "importsequencenumber");
