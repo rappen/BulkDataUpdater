@@ -14,13 +14,15 @@
 
         public override string ToString()
         {
-            return view["name"].ToString();
+            return view.Contains("name") ? view["name"].ToString() : view.Contains("listname") ? view["listname"].ToString() : "?";
         }
 
         public Entity GetView()
         {
             return view;
         }
+
+        public bool IsCustomizable => view.IsCustomizable();
 
         public string GetValue()
         {
@@ -33,16 +35,23 @@
             {
                 return view["fetchxml"].ToString();
             }
-            return "";
-        }
-
-        public string GetLayout()
-        {
-            if (view.Contains("layoutxml"))
+            else if (view.Contains("query"))
             {
-                return view["layoutxml"].ToString();
+                return view["query"].ToString();
             }
             return "";
+        }
+    }
+
+    public static class EntityExtensions
+    {
+        public static bool IsCustomizable(this Entity entity)
+        {
+            return entity != null
+                && (entity.LogicalName == "userquery"
+                || entity.Contains("iscustomizable")
+                    && entity["iscustomizable"] is BooleanManagedProperty iscust
+                    && iscust.Value);
         }
     }
 }

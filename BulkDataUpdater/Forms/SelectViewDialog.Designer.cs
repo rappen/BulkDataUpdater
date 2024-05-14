@@ -104,12 +104,13 @@
             this.cmbEntity.Sorted = true;
             this.cmbEntity.TabIndex = 1;
             this.cmbEntity.SelectedIndexChanged += new System.EventHandler(this.cmbEntity_SelectedIndexChanged);
+            this.cmbEntity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmbEntity_KeyDown);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.btnRefresh);
-            this.panel2.Controls.Add(this.panOk);
             this.panel2.Controls.Add(this.panCancel);
+            this.panel2.Controls.Add(this.panOk);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 323);
             this.panel2.Name = "panel2";
@@ -130,7 +131,7 @@
             // 
             this.panOk.Controls.Add(this.btnOk);
             this.panOk.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panOk.Location = new System.Drawing.Point(402, 0);
+            this.panOk.Location = new System.Drawing.Point(493, 0);
             this.panOk.Name = "panOk";
             this.panOk.Size = new System.Drawing.Size(91, 38);
             this.panOk.TabIndex = 6;
@@ -151,7 +152,7 @@
             // 
             this.panCancel.Controls.Add(this.btnCancel);
             this.panCancel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panCancel.Location = new System.Drawing.Point(493, 0);
+            this.panCancel.Location = new System.Drawing.Point(402, 0);
             this.panCancel.Name = "panCancel";
             this.panCancel.Size = new System.Drawing.Size(91, 38);
             this.panCancel.TabIndex = 5;
@@ -181,6 +182,7 @@
             this.txtFetch.Lexer = ScintillaNET.Lexer.Xml;
             this.txtFetch.Location = new System.Drawing.Point(0, 0);
             this.txtFetch.Name = "txtFetch";
+            this.txtFetch.ReadOnly = true;
             this.txtFetch.Size = new System.Drawing.Size(584, 252);
             this.txtFetch.TabIndex = 4;
             this.txtFetch.WrapMode = ScintillaNET.WrapMode.Whitespace;
@@ -201,7 +203,6 @@
             this.MinimumSize = new System.Drawing.Size(400, 300);
             this.Name = "SelectViewDialog";
             this.Text = "Select View";
-            this.Load += new System.EventHandler(this.SelectViewDialog_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

@@ -454,7 +454,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
             }
             var result = new List<AttributeMetadata>();
             var fetch = HelpFetch.Fetch.FromString(bdu.job.FetchXML);
-            var attributes = BulkDataUpdater.entitymeta?.Attributes?.ToList() ?? new List<AttributeMetadata>();
+            var attributes = bdu.entitymeta?.Attributes?.ToList() ?? new List<AttributeMetadata>();
             foreach (var attribute in attributes)
             {
                 if (attribute.IsPrimaryId == true)
@@ -574,7 +574,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
 
         private void btnUpdateAttributeOptions_Click(object sender, EventArgs e)
         {
-            AttributeOptions.Show(bdu.updateAttributes, BulkDataUpdater.entitymeta);
+            AttributeOptions.Show(bdu.updateAttributes, bdu.entitymeta);
             RefreshAttributes();
         }
 

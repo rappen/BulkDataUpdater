@@ -3,6 +3,7 @@
     using AppCode;
     using Cinteros.XTB.BulkDataUpdater.Forms;
     using McTools.Xrm.Connection;
+    using McTools.Xrm.Connection.WinForms.AppCode;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
@@ -24,9 +25,9 @@
     {
         #region Internal Fields
 
-        internal static bool useFriendlyNames = false;
-        internal static List<EntityMetadata> entities;
-        internal static EntityMetadata entitymeta;
+        internal bool useFriendlyNames = false;
+        internal List<EntityMetadata> entities;
+        internal EntityMetadata entitymeta;
         internal Version currentversion;
         internal readonly Version bypasspluginminversion = new Version(9, 2);
         internal BDUJob job;
@@ -34,6 +35,8 @@
         internal List<string> isOnForms;
         internal List<string> isOnViews;
         internal bool working = false;
+
+        internal Dictionary<string, List<Entity>> views;
 
         #endregion Internal Fields
 
@@ -462,6 +465,11 @@
         private void OpenView()
         {
             EnableControls(false);
+            if (views == null || views.Count == 0)
+            {
+                LoadViews(OpenView);
+                return;
+            }
             var viewselector = new SelectViewDialog(this);
             viewselector.StartPosition = FormStartPosition.CenterParent;
             if (viewselector.ShowDialog() == DialogResult.OK)
@@ -545,6 +553,85 @@
             else if (jobaction is JobAssign) AssignRecords(jobaction.ExecuteOptions);
             else if (jobaction is JobSetState) SetStateRecords(jobaction.ExecuteOptions);
             else if (jobaction is JobDelete) DeleteRecords(jobaction.ExecuteOptions);
+        }
+
+        internal void LoadViews(Action viewsLoaded)
+        {
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = "Loading views...",
+                Work = (worker, eventargs) =>
+                {
+                    EnableControls(false);
+                    if (views == null || views.Count == 0)
+                    {
+                        if (Service == null)
+                        {
+                            throw new Exception("Need a connection to load views.");
+                        }
+                        var qexs = new QueryExpression("savedquery");
+                        qexs.ColumnSet = new ColumnSet("name", "returnedtypecode", "fetchxml", "layoutxml", "iscustomizable");
+                        qexs.Criteria.AddCondition("statecode", ConditionOperator.Equal, 0);
+                        qexs.Criteria.AddCondition("fetchxml", ConditionOperator.NotNull);
+                        qexs.AddOrder("name", OrderType.Ascending);
+                        var sysviews = Service.RetrieveMultipleAll(qexs, worker, eventargs, null, false);
+                        foreach (var view in sysviews.Entities)
+                        {
+                            var entityname = view["returnedtypecode"].ToString();
+                            if (!string.IsNullOrWhiteSpace(entityname) && GetEntity(entityname) != null)
+                            {
+                                if (views == null)
+                                {
+                                    views = new Dictionary<string, List<Entity>>();
+                                }
+                                if (!views.ContainsKey(entityname + "|S"))
+                                {
+                                    views.Add(entityname + "|S", new List<Entity>());
+                                }
+                                views[entityname + "|S"].Add(view);
+                            }
+                        }
+                        var qexu = new QueryExpression("userquery");
+                        qexu.ColumnSet = new ColumnSet("name", "returnedtypecode", "fetchxml", "layoutxml");
+                        qexu.Criteria.AddCondition("statecode", ConditionOperator.Equal, 0);
+                        qexu.AddOrder("name", OrderType.Ascending);
+                        var userviews = Service.RetrieveMultipleAll(qexu, worker, eventargs, null, false);
+                        foreach (var view in userviews.Entities)
+                        {
+                            var entityname = view["returnedtypecode"].ToString();
+                            if (!string.IsNullOrWhiteSpace(entityname) && GetEntity(entityname) != null)
+                            {
+                                if (views == null)
+                                {
+                                    views = new Dictionary<string, List<Entity>>();
+                                }
+                                if (!views.ContainsKey(entityname + "|U"))
+                                {
+                                    views.Add(entityname + "|U", new List<Entity>());
+                                }
+                                views[entityname + "|U"].Add(view);
+                            }
+                        }
+                    }
+                },
+                PostWorkCallBack = (completedargs) =>
+                {
+                    EnableControls(true);
+                    if (completedargs.Error != null)
+                    {
+                        ShowErrorDialog(completedargs.Error, "Loading Views");
+                    }
+                    else
+                    {
+                        viewsLoaded();
+                    }
+                }
+            });
+        }
+
+        internal EntityMetadata GetEntity(string entityname)
+        {
+            return entities?.FirstOrDefault(e => e.LogicalName.Equals(entityname));
         }
 
         #endregion Private Methods
