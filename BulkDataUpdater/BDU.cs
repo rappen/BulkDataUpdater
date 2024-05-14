@@ -25,6 +25,15 @@
         #region Internal Fields
 
         internal static bool useFriendlyNames = false;
+        internal static List<EntityMetadata> entities;
+        internal static EntityMetadata entitymeta;
+        internal Version currentversion;
+        internal readonly Version bypasspluginminversion = new Version(9, 2);
+        internal BDUJob job;
+        internal UpdateAttributes updateAttributes;
+        internal List<string> isOnForms;
+        internal List<string> isOnViews;
+        internal bool working = false;
 
         #endregion Internal Fields
 
@@ -35,27 +44,12 @@
         private const string aiKey2 = "d46e9c12-ee8b-4b28-9643-dae62ae7d3d4";    // jonas@jonasr.app, XrmToolBoxTools
         private AppInsights ai1 = new AppInsights(aiEndpoint, aiKey1, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
         private AppInsights ai2 = new AppInsights(aiEndpoint, aiKey2, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
-
-        private static List<EntityMetadata> entities;
-        internal static EntityMetadata entitymeta;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
-        internal BDUJob job;
-        internal UpdateAttributes updateAttributes;
-
         private string deleteWarningText;
-
         private int fetchResulCount = -1;
-
         private EntityCollection records;
         private Entity view;
-        internal Version currentversion;
-        internal readonly Version bypasspluginminversion = new Version(9, 2);
-
-        internal bool working = false;
         private string currentconnection;
-
-        internal List<string> isOnForms;
-        internal List<string> isOnViews;
 
         #endregion Private Fields
 
@@ -264,7 +258,7 @@
                     tsbFriendly.Enabled = !cancel && enabled;
                     tsbRaw.Enabled = !cancel && enabled;
                     tsbCancel.Enabled = cancel;
-                    btnRefresh.Enabled = !cancel && tsbFetch.Enabled && !string.IsNullOrWhiteSpace(job?.FetchXML);
+                    panRecordSummary.Enabled = !cancel && tsbFetch.Enabled && !string.IsNullOrWhiteSpace(job?.FetchXML);
                     gb3attributes.Enabled = !cancel && crmGridView1.RowCount > 0;
                     btnAttrEdit.Enabled = !cancel && lvAttributes.SelectedItems.Count == 1;
                     btnAttrRemove.Enabled = !cancel && lvAttributes.SelectedItems.Count > 0;
