@@ -81,11 +81,11 @@
             // rbBatchExecuteMultiple
             // 
             this.rbBatchExecuteMultiple.AutoSize = true;
-            this.rbBatchExecuteMultiple.Location = new System.Drawing.Point(150, 1);
+            this.rbBatchExecuteMultiple.Location = new System.Drawing.Point(127, 1);
             this.rbBatchExecuteMultiple.Name = "rbBatchExecuteMultiple";
-            this.rbBatchExecuteMultiple.Size = new System.Drawing.Size(100, 17);
+            this.rbBatchExecuteMultiple.Size = new System.Drawing.Size(163, 17);
             this.rbBatchExecuteMultiple.TabIndex = 1;
-            this.rbBatchExecuteMultiple.Text = "ExecuteMultiple";
+            this.rbBatchExecuteMultiple.Text = "ExecuteMultiple (deprecated)";
             this.rbBatchExecuteMultiple.UseVisualStyleBackColor = true;
             this.rbBatchExecuteMultiple.CheckedChanged += new System.EventHandler(this.validate_Click);
             // 
