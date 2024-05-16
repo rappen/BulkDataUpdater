@@ -306,6 +306,7 @@
             else if (tabControl1.SelectedTab == tabDelete)
             {
             }
+            btnExecute.Text = tabControl1.SelectedTab.Name.Replace("tab", "");
             working = tempworker;
             EnableControls(true);
         }
@@ -493,6 +494,7 @@
             crmGridView1.ShowLocalTimes = useFriendlyNames;
             crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
             EnableControls(true);
+            UpdateIncludeCount();
         }
 
         private void SaveSetting()
@@ -517,13 +519,13 @@
 
         private void UpdateIncludeCount()
         {
+            if (crmGridView1.Refreshing)
+            {
+                return;
+            }
             var count = GetIncludedRecords()?.Count();
-            var entity = entities?.FirstOrDefault(e => e.LogicalName == records?.EntityName)?.DisplayCollectionName?.UserLocalizedLabel?.Label;
-            lblSelectedRecords.Text = $"Selected {count} records";
-            lblUpdateHeader.Text = $"Update {count} {entity}";
-            lblAssignHeader.Text = $"Assign {count} {entity}";
-            lblStateHeader.Text = $"Update {count} {entity}";
-            lblDeleteHeader.Text = $"Delete {count} {entity}";
+            var entity = useFriendlyNames ? entitymeta?.DisplayCollectionName?.UserLocalizedLabel?.Label : entitymeta?.LogicalName;
+            lblSelectedRecords.Text = $"Selected {count} / {crmGridView1.Rows.Count} {entity}";
             txtDeleteWarning.Text = deleteWarningText.Replace("[nn]", crmGridView1.Rows.Count > count ? count.ToString() : "ALL");
         }
 

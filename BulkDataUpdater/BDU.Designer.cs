@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbFetch = new System.Windows.Forms.ToolStripDropDownButton();
@@ -50,7 +50,6 @@
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.tslDoc = new System.Windows.Forms.ToolStripLabel();
             this.tsbBymyacoffee = new System.Windows.Forms.ToolStripButton();
-            this.lblRecords = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.gbExecute = new System.Windows.Forms.GroupBox();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
@@ -80,13 +79,10 @@
             this.chkDefImpSeqNo = new System.Windows.Forms.CheckBox();
             this.numImpSeqNo = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.lblUpdateHeader = new System.Windows.Forms.Label();
             this.tabAssign = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.btnAssignSelect = new System.Windows.Forms.Button();
             this.txtAssignEntity = new System.Windows.Forms.TextBox();
-            this.lblAssignHeader = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
             this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
@@ -97,14 +93,12 @@
             this.chkQualifyLeadCreateContact = new System.Windows.Forms.CheckBox();
             this.chkQualifyLeadCreateAccount = new System.Windows.Forms.CheckBox();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.lblStateHeader = new System.Windows.Forms.Label();
             this.cbSetStatus = new System.Windows.Forms.ComboBox();
             this.cbSetStatusReason = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
-            this.lblDeleteHeader = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
@@ -122,7 +116,6 @@
             this.gb3attributes.SuspendLayout();
             this.gbImpSeqNo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numImpSeqNo)).BeginInit();
-            this.panel2.SuspendLayout();
             this.tabAssign.SuspendLayout();
             this.tabSetState.SuspendLayout();
             this.panQualifyLead.SuspendLayout();
@@ -319,16 +312,6 @@
             this.tsbBymyacoffee.ToolTipText = "By Me a Coffee!";
             this.tsbBymyacoffee.Click += new System.EventHandler(this.link_Click);
             // 
-            // lblRecords
-            // 
-            this.lblRecords.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRecords.Location = new System.Drawing.Point(194, 16);
-            this.lblRecords.Name = "lblRecords";
-            this.lblRecords.Size = new System.Drawing.Size(342, 16);
-            this.lblRecords.TabIndex = 25;
-            this.lblRecords.Text = "Records not loaded";
-            this.lblRecords.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // btnRefresh
             // 
             this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -338,7 +321,7 @@
             this.btnRefresh.Location = new System.Drawing.Point(542, 4);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.btnRefresh.Size = new System.Drawing.Size(51, 39);
+            this.btnRefresh.Size = new System.Drawing.Size(51, 35);
             this.btnRefresh.TabIndex = 26;
             this.btnRefresh.Tag = "Refresh";
             this.btnRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -352,7 +335,7 @@
             this.gbExecute.Controls.Add(this.lblUpdateStatus);
             this.gbExecute.Controls.Add(this.btnExecute);
             this.gbExecute.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbExecute.Location = new System.Drawing.Point(0, 502);
+            this.gbExecute.Location = new System.Drawing.Point(0, 471);
             this.gbExecute.Name = "gbExecute";
             this.gbExecute.Size = new System.Drawing.Size(377, 63);
             this.gbExecute.TabIndex = 37;
@@ -373,6 +356,7 @@
             // btnExecute
             // 
             this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExecute.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExecute.Location = new System.Drawing.Point(244, 15);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(116, 38);
@@ -386,17 +370,16 @@
             this.panRecordSummary.Controls.Add(this.lblSelectedRecords);
             this.panRecordSummary.Controls.Add(this.btnSelectAll);
             this.panRecordSummary.Controls.Add(this.btnRefresh);
-            this.panRecordSummary.Controls.Add(this.lblRecords);
             this.panRecordSummary.Dock = System.Windows.Forms.DockStyle.Top;
             this.panRecordSummary.Location = new System.Drawing.Point(0, 0);
             this.panRecordSummary.Name = "panRecordSummary";
-            this.panRecordSummary.Size = new System.Drawing.Size(602, 47);
+            this.panRecordSummary.Size = new System.Drawing.Size(602, 43);
             this.panRecordSummary.TabIndex = 1;
             // 
             // lblSelectedRecords
             // 
             this.lblSelectedRecords.AutoSize = true;
-            this.lblSelectedRecords.Location = new System.Drawing.Point(95, 16);
+            this.lblSelectedRecords.Location = new System.Drawing.Point(95, 15);
             this.lblSelectedRecords.Name = "lblSelectedRecords";
             this.lblSelectedRecords.Size = new System.Drawing.Size(56, 13);
             this.lblSelectedRecords.TabIndex = 28;
@@ -404,7 +387,7 @@
             // 
             // btnSelectAll
             // 
-            this.btnSelectAll.Location = new System.Drawing.Point(14, 11);
+            this.btnSelectAll.Location = new System.Drawing.Point(14, 10);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(75, 23);
             this.btnSelectAll.TabIndex = 27;
@@ -433,7 +416,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.gbExecute);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(983, 565);
+            this.splitContainer1.Size = new System.Drawing.Size(983, 534);
             this.splitContainer1.SplitterDistance = 602;
             this.splitContainer1.TabIndex = 39;
             // 
@@ -443,15 +426,15 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.crmGridView1.ColumnOrder = "";
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
             this.crmGridView1.LayoutXML = "";
-            this.crmGridView1.Location = new System.Drawing.Point(0, 47);
+            this.crmGridView1.Location = new System.Drawing.Point(0, 43);
             this.crmGridView1.Name = "crmGridView1";
             this.crmGridView1.ReadOnly = true;
             this.crmGridView1.RowHeadersVisible = false;
@@ -460,7 +443,7 @@
             this.crmGridView1.Service = null;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(602, 518);
+            this.crmGridView1.Size = new System.Drawing.Size(602, 491);
             this.crmGridView1.TabIndex = 2;
             this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
             this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
@@ -469,7 +452,7 @@
             // 
             this.chkSetState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkSetState.AutoSize = true;
-            this.chkSetState.Location = new System.Drawing.Point(-264, 734);
+            this.chkSetState.Location = new System.Drawing.Point(-264, 703);
             this.chkSetState.Name = "chkSetState";
             this.chkSetState.Size = new System.Drawing.Size(102, 17);
             this.chkSetState.TabIndex = 18;
@@ -486,7 +469,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(377, 502);
+            this.tabControl1.Size = new System.Drawing.Size(377, 471);
             this.tabControl1.TabIndex = 39;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -495,10 +478,9 @@
             this.tabUpdate.BackColor = System.Drawing.SystemColors.Window;
             this.tabUpdate.Controls.Add(this.gb3attributes);
             this.tabUpdate.Controls.Add(this.gbImpSeqNo);
-            this.tabUpdate.Controls.Add(this.panel2);
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
-            this.tabUpdate.Padding = new System.Windows.Forms.Padding(3);
+            this.tabUpdate.Padding = new System.Windows.Forms.Padding(3, 8, 3, 3);
             this.tabUpdate.Size = new System.Drawing.Size(369, 476);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
@@ -510,9 +492,9 @@
             this.gb3attributes.Controls.Add(this.lvAttributes);
             this.gb3attributes.Controls.Add(this.btnAttrRemove);
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb3attributes.Location = new System.Drawing.Point(3, 60);
+            this.gb3attributes.Location = new System.Drawing.Point(3, 8);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(363, 327);
+            this.gb3attributes.Size = new System.Drawing.Size(363, 379);
             this.gb3attributes.TabIndex = 36;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Attributes to update";
@@ -520,7 +502,7 @@
             // btnAttrEdit
             // 
             this.btnAttrEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAttrEdit.Location = new System.Drawing.Point(96, 294);
+            this.btnAttrEdit.Location = new System.Drawing.Point(96, 346);
             this.btnAttrEdit.Name = "btnAttrEdit";
             this.btnAttrEdit.Size = new System.Drawing.Size(75, 23);
             this.btnAttrEdit.TabIndex = 4;
@@ -531,7 +513,7 @@
             // btnAttrAdd
             // 
             this.btnAttrAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAttrAdd.Location = new System.Drawing.Point(15, 294);
+            this.btnAttrAdd.Location = new System.Drawing.Point(15, 346);
             this.btnAttrAdd.Name = "btnAttrAdd";
             this.btnAttrAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAttrAdd.TabIndex = 3;
@@ -553,7 +535,7 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(331, 269);
+            this.lvAttributes.Size = new System.Drawing.Size(331, 321);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -583,7 +565,7 @@
             // btnAttrRemove
             // 
             this.btnAttrRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAttrRemove.Location = new System.Drawing.Point(271, 294);
+            this.btnAttrRemove.Location = new System.Drawing.Point(271, 346);
             this.btnAttrRemove.Name = "btnAttrRemove";
             this.btnAttrRemove.Size = new System.Drawing.Size(75, 23);
             this.btnAttrRemove.TabIndex = 2;
@@ -651,13 +633,13 @@
             // 
             this.linkImpSeqNoHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkImpSeqNoHelp.AutoSize = true;
-            this.linkImpSeqNoHelp.Location = new System.Drawing.Point(294, 0);
+            this.linkImpSeqNoHelp.Location = new System.Drawing.Point(280, 0);
             this.linkImpSeqNoHelp.Name = "linkImpSeqNoHelp";
-            this.linkImpSeqNoHelp.Size = new System.Drawing.Size(54, 13);
+            this.linkImpSeqNoHelp.Size = new System.Drawing.Size(68, 13);
             this.linkImpSeqNoHelp.TabIndex = 5;
             this.linkImpSeqNoHelp.TabStop = true;
             this.linkImpSeqNoHelp.Tag = "https://jonasr.app/bdu/isn";
-            this.linkImpSeqNoHelp.Text = "Why this?";
+            this.linkImpSeqNoHelp.Text = "What is this?";
             this.toolTip1.SetToolTip(this.linkImpSeqNoHelp, "https://jonasr.app/bdu/isn");
             this.linkImpSeqNoHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
@@ -707,38 +689,18 @@
             this.label7.TabIndex = 3;
             this.label7.Text = "Number";
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.lblUpdateHeader);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(3, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(363, 57);
-            this.panel2.TabIndex = 37;
-            // 
-            // lblUpdateHeader
-            // 
-            this.lblUpdateHeader.AutoSize = true;
-            this.lblUpdateHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUpdateHeader.Location = new System.Drawing.Point(13, 18);
-            this.lblUpdateHeader.Name = "lblUpdateHeader";
-            this.lblUpdateHeader.Size = new System.Drawing.Size(202, 24);
-            this.lblUpdateHeader.TabIndex = 16;
-            this.lblUpdateHeader.Text = "Update [nn] [collection]";
-            // 
             // tabAssign
             // 
             this.tabAssign.BackColor = System.Drawing.SystemColors.Window;
             this.tabAssign.Controls.Add(this.textBox1);
             this.tabAssign.Controls.Add(this.btnAssignSelect);
             this.tabAssign.Controls.Add(this.txtAssignEntity);
-            this.tabAssign.Controls.Add(this.lblAssignHeader);
             this.tabAssign.Controls.Add(this.label6);
             this.tabAssign.Controls.Add(this.xrmAssignText);
             this.tabAssign.Location = new System.Drawing.Point(4, 22);
             this.tabAssign.Name = "tabAssign";
             this.tabAssign.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAssign.Size = new System.Drawing.Size(388, 476);
+            this.tabAssign.Size = new System.Drawing.Size(369, 445);
             this.tabAssign.TabIndex = 4;
             this.tabAssign.Text = "Assign";
             // 
@@ -749,17 +711,17 @@
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBox1.Location = new System.Drawing.Point(30, 403);
+            this.textBox1.Location = new System.Drawing.Point(20, 371);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(328, 124);
+            this.textBox1.Size = new System.Drawing.Size(328, 58);
             this.textBox1.TabIndex = 14;
             this.textBox1.Text = "Note: It is now possible to change Owner with normal Update.";
             // 
             // btnAssignSelect
             // 
             this.btnAssignSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAssignSelect.Location = new System.Drawing.Point(343, 123);
+            this.btnAssignSelect.Location = new System.Drawing.Point(334, 68);
             this.btnAssignSelect.Name = "btnAssignSelect";
             this.btnAssignSelect.Size = new System.Drawing.Size(29, 22);
             this.btnAssignSelect.TabIndex = 13;
@@ -771,26 +733,18 @@
             // 
             this.txtAssignEntity.BackColor = System.Drawing.SystemColors.Window;
             this.txtAssignEntity.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtAssignEntity.Location = new System.Drawing.Point(20, 104);
+            this.txtAssignEntity.Location = new System.Drawing.Point(17, 54);
             this.txtAssignEntity.Name = "txtAssignEntity";
             this.txtAssignEntity.ReadOnly = true;
             this.txtAssignEntity.Size = new System.Drawing.Size(77, 13);
             this.txtAssignEntity.TabIndex = 11;
-            // 
-            // lblAssignHeader
-            // 
-            this.lblAssignHeader.AutoSize = true;
-            this.lblAssignHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAssignHeader.Location = new System.Drawing.Point(16, 21);
-            this.lblAssignHeader.Name = "lblAssignHeader";
-            this.lblAssignHeader.Size = new System.Drawing.Size(199, 24);
-            this.lblAssignHeader.TabIndex = 10;
-            this.lblAssignHeader.Text = "Assign [nn] [collection]";
+            this.txtAssignEntity.TabStop = false;
+            this.txtAssignEntity.Text = "User/Team";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 71);
+            this.label6.Location = new System.Drawing.Point(14, 25);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(104, 13);
             this.label6.TabIndex = 7;
@@ -803,11 +757,11 @@
             this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
             this.xrmAssignText.Column = null;
             this.xrmAssignText.DisplayFormat = "";
-            this.xrmAssignText.Location = new System.Drawing.Point(17, 123);
+            this.xrmAssignText.Location = new System.Drawing.Point(17, 69);
             this.xrmAssignText.Name = "xrmAssignText";
             this.xrmAssignText.ReadOnly = true;
             this.xrmAssignText.RecordHost = this.xrmRecordAssign;
-            this.xrmAssignText.Size = new System.Drawing.Size(320, 20);
+            this.xrmAssignText.Size = new System.Drawing.Size(311, 20);
             this.xrmAssignText.TabIndex = 12;
             // 
             // xrmRecordAssign
@@ -827,7 +781,7 @@
             this.tabSetState.Location = new System.Drawing.Point(4, 22);
             this.tabSetState.Name = "tabSetState";
             this.tabSetState.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSetState.Size = new System.Drawing.Size(388, 476);
+            this.tabSetState.Size = new System.Drawing.Size(369, 445);
             this.tabSetState.TabIndex = 3;
             this.tabSetState.Text = "Set State";
             // 
@@ -838,10 +792,10 @@
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBox2.Location = new System.Drawing.Point(30, 399);
+            this.textBox2.Location = new System.Drawing.Point(20, 333);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(328, 129);
+            this.textBox2.Size = new System.Drawing.Size(328, 106);
             this.textBox2.TabIndex = 18;
             this.textBox2.Text = "Note: It is now possible to change Status and Status Reason with normal Update.\r\n" +
     "But be careful, as the combo has to work together, otherwise Dataverse will retu" +
@@ -853,9 +807,9 @@
             this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateContact);
             this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateAccount);
             this.panQualifyLead.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panQualifyLead.Location = new System.Drawing.Point(3, 164);
+            this.panQualifyLead.Location = new System.Drawing.Point(3, 125);
             this.panQualifyLead.Name = "panQualifyLead";
-            this.panQualifyLead.Size = new System.Drawing.Size(382, 78);
+            this.panQualifyLead.Size = new System.Drawing.Size(363, 78);
             this.panQualifyLead.TabIndex = 17;
             this.panQualifyLead.Visible = false;
             // 
@@ -891,7 +845,6 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.lblStateHeader);
             this.panel3.Controls.Add(this.cbSetStatus);
             this.panel3.Controls.Add(this.cbSetStatusReason);
             this.panel3.Controls.Add(this.label8);
@@ -899,18 +852,8 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(382, 161);
+            this.panel3.Size = new System.Drawing.Size(363, 122);
             this.panel3.TabIndex = 16;
-            // 
-            // lblStateHeader
-            // 
-            this.lblStateHeader.AutoSize = true;
-            this.lblStateHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStateHeader.Location = new System.Drawing.Point(13, 18);
-            this.lblStateHeader.Name = "lblStateHeader";
-            this.lblStateHeader.Size = new System.Drawing.Size(202, 24);
-            this.lblStateHeader.TabIndex = 15;
-            this.lblStateHeader.Text = "Update [nn] [collection]";
             // 
             // cbSetStatus
             // 
@@ -918,9 +861,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSetStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSetStatus.FormattingEnabled = true;
-            this.cbSetStatus.Location = new System.Drawing.Point(16, 84);
+            this.cbSetStatus.Location = new System.Drawing.Point(14, 41);
             this.cbSetStatus.Name = "cbSetStatus";
-            this.cbSetStatus.Size = new System.Drawing.Size(349, 21);
+            this.cbSetStatus.Size = new System.Drawing.Size(330, 21);
             this.cbSetStatus.TabIndex = 11;
             this.cbSetStatus.SelectedIndexChanged += new System.EventHandler(this.cbSetStatus_SelectedIndexChanged);
             // 
@@ -930,16 +873,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSetStatusReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSetStatusReason.FormattingEnabled = true;
-            this.cbSetStatusReason.Location = new System.Drawing.Point(16, 130);
+            this.cbSetStatusReason.Location = new System.Drawing.Point(14, 81);
             this.cbSetStatusReason.Name = "cbSetStatusReason";
-            this.cbSetStatusReason.Size = new System.Drawing.Size(349, 21);
+            this.cbSetStatusReason.Size = new System.Drawing.Size(330, 21);
             this.cbSetStatusReason.TabIndex = 14;
             this.cbSetStatusReason.SelectedIndexChanged += new System.EventHandler(this.cbSetStatusReason_SelectedIndexChanged);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 68);
+            this.label8.Location = new System.Drawing.Point(11, 25);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(37, 13);
             this.label8.TabIndex = 12;
@@ -948,7 +891,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 115);
+            this.label2.Location = new System.Drawing.Point(11, 65);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 13);
             this.label2.TabIndex = 13;
@@ -958,12 +901,12 @@
             // 
             this.tabDelete.BackColor = System.Drawing.SystemColors.Window;
             this.tabDelete.Controls.Add(this.txtDeleteWarning);
-            this.tabDelete.Controls.Add(this.lblDeleteHeader);
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
             this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDelete.Size = new System.Drawing.Size(388, 476);
+            this.tabDelete.Size = new System.Drawing.Size(369, 476);
             this.tabDelete.TabIndex = 2;
+            this.tabDelete.Tag = "Delete";
             this.tabDelete.Text = "Delete";
             // 
             // txtDeleteWarning
@@ -974,24 +917,14 @@
             this.txtDeleteWarning.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDeleteWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDeleteWarning.ForeColor = System.Drawing.Color.Red;
-            this.txtDeleteWarning.Location = new System.Drawing.Point(35, 97);
+            this.txtDeleteWarning.Location = new System.Drawing.Point(17, 47);
             this.txtDeleteWarning.Multiline = true;
             this.txtDeleteWarning.Name = "txtDeleteWarning";
-            this.txtDeleteWarning.Size = new System.Drawing.Size(328, 425);
+            this.txtDeleteWarning.Size = new System.Drawing.Size(328, 411);
             this.txtDeleteWarning.TabIndex = 1;
             this.txtDeleteWarning.Text = "This action will delete [nn] records in the list to the left.\r\n\r\nThis action can " +
     "NOT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation q" +
     "uestion, and then point of no return.";
-            // 
-            // lblDeleteHeader
-            // 
-            this.lblDeleteHeader.AutoSize = true;
-            this.lblDeleteHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDeleteHeader.Location = new System.Drawing.Point(16, 21);
-            this.lblDeleteHeader.Name = "lblDeleteHeader";
-            this.lblDeleteHeader.Size = new System.Drawing.Size(196, 24);
-            this.lblDeleteHeader.TabIndex = 0;
-            this.lblDeleteHeader.Text = "Delete [nn] [collection]";
             // 
             // xrmRecordAttribute
             // 
@@ -1029,7 +962,7 @@
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(983, 614);
+            this.Size = new System.Drawing.Size(983, 583);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
@@ -1050,8 +983,6 @@
             this.gbImpSeqNo.ResumeLayout(false);
             this.gbImpSeqNo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numImpSeqNo)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.tabAssign.ResumeLayout(false);
             this.tabAssign.PerformLayout();
             this.tabSetState.ResumeLayout(false);
@@ -1071,7 +1002,6 @@
 
         private System.Windows.Forms.ImageList imageList1;
         internal System.Windows.Forms.ToolStrip toolStripMain;
-        private System.Windows.Forms.Label lblRecords;
         private System.Windows.Forms.GroupBox gbExecute;
         private System.Windows.Forms.Label lblUpdateStatus;
         private System.Windows.Forms.Button btnExecute;
@@ -1090,21 +1020,16 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabUpdate;
         private System.Windows.Forms.TabPage tabDelete;
-        private System.Windows.Forms.Label lblDeleteHeader;
         private System.Windows.Forms.TabPage tabSetState;
         private System.Windows.Forms.TextBox txtDeleteWarning;
         private System.Windows.Forms.ToolStripButton tsbCancel;
         private System.Windows.Forms.Panel panRecordSummary;
         private System.Windows.Forms.TabPage tabAssign;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label lblAssignHeader;
-        private System.Windows.Forms.Label lblStateHeader;
         private System.Windows.Forms.ComboBox cbSetStatusReason;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cbSetStatus;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label lblUpdateHeader;
         private System.Windows.Forms.Panel panQualifyLead;
         private System.Windows.Forms.CheckBox chkQualifyLeadCreateOpportunity;
         private System.Windows.Forms.CheckBox chkQualifyLeadCreateContact;

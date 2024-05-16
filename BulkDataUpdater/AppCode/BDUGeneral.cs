@@ -55,7 +55,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 return;
             }
             EnableControls(false, true);
-            lblRecords.Text = "Retrieving records...";
+            lblSelectedRecords.Text = "Fetching records...";
             fetchResulCount = -1;
             records = null;
             working = true;
@@ -116,7 +116,6 @@ namespace Cinteros.XTB.BulkDataUpdater
                 }
                 isOnForms = null;
                 isOnViews = null;
-                lblRecords.Text = $"{records.Entities.Count} {records.EntityName} records";
                 crmGridView1.Service = Service;
                 crmGridView1.LayoutXML = job.LayoutXML;
                 crmGridView1.DataSource = records;
