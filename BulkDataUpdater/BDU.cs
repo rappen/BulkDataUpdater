@@ -442,20 +442,26 @@
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                EnableControls(false);
-                var fetchDoc = new XmlDocument();
-                fetchDoc.Load(ofd.FileName);
+                try
+                {
+                    EnableControls(false);
+                    var fetchDoc = new XmlDocument();
+                    fetchDoc.Load(ofd.FileName);
 
-                if (fetchDoc.DocumentElement.Name != "fetch" ||
-                    fetchDoc.DocumentElement.ChildNodes.Count > 0 &&
-                    fetchDoc.DocumentElement.ChildNodes[0].Name == "fetch")
-                {
-                    MessageBox.Show(this, "Invalid Xml: Definition XML root must be fetch!", "Error",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (fetchDoc.DocumentElement.Name != "fetch" ||
+                        fetchDoc.DocumentElement.ChildNodes.Count > 0 &&
+                        fetchDoc.DocumentElement.ChildNodes[0].Name == "fetch")
+                    {
+                        MessageBox.Show(this, "Invalid Xml: Definition XML root must be fetch!", "Error",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        result = fetchDoc.OuterXml;
+                    }
                 }
-                else
+                finally
                 {
-                    result = fetchDoc.OuterXml;
                     EnableControls(true);
                 }
             }
@@ -464,7 +470,6 @@
 
         private void OpenView()
         {
-            EnableControls(false);
             if (views == null || views.Count == 0)
             {
                 LoadViews(OpenView);
@@ -474,16 +479,23 @@
             viewselector.StartPosition = FormStartPosition.CenterParent;
             if (viewselector.ShowDialog() == DialogResult.OK)
             {
-                view = viewselector.View;
-                var fetchDoc = new XmlDocument();
-                if (view.Contains("fetchxml"))
+                try
                 {
-                    fetchDoc.LoadXml(view["fetchxml"].ToString());
-                    view.TryGetAttributeValue("layoutxml", out string layout);
-                    FetchUpdated(fetchDoc.OuterXml, layout);
+                    EnableControls(false);
+                    view = viewselector.View;
+                    var fetchDoc = new XmlDocument();
+                    if (view.Contains("fetchxml"))
+                    {
+                        fetchDoc.LoadXml(view["fetchxml"].ToString());
+                        view.TryGetAttributeValue("layoutxml", out string layout);
+                        FetchUpdated(fetchDoc.OuterXml, layout);
+                    }
+                }
+                finally
+                {
+                    EnableControls(true);
                 }
             }
-            EnableControls(true);
         }
 
         private void RefreshGridRecords()
