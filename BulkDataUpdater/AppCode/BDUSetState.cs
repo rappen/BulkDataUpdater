@@ -28,7 +28,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 return;
             }
             var includedrecords = GetIncludedRecords();
-            if (MessageBox.Show($"{includedrecords.Count()} records will unconditionally be set to {state.Metadata.Label.UserLocalizedLabel.Label} {status.Metadata.Label.UserLocalizedLabel.Label}.\n" +
+            if (MessageBoxEx.Show(this, $"{includedrecords.Count()} records will unconditionally be set to {state.Metadata.Label.UserLocalizedLabel.Label} {status.Metadata.Label.UserLocalizedLabel.Label}.\n" +
                 "UI defined rules will NOT be enforced.\n" +
                 "Plugins and workflows WILL trigger.\n" +
                 "User privileges WILL be respected.\n\n" +
@@ -39,7 +39,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             if (executeoptions.BatchSize > 1 && executeoptions.MultipleRequest && includedrecords.Count() > 1)
             {
-                if (MessageBox.Show("Note that the new feature SetStateMultiple from Microsoft is not (yet) available.\nWe will use ExecuteMultiple instead.", "Batch & Multi", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
+                if (MessageBoxEx.Show(this, "Note that the new feature SetStateMultiple from Microsoft is not (yet) available.\nWe will use ExecuteMultiple instead.", "Batch & Multi", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
                 {
                     return;
                 }

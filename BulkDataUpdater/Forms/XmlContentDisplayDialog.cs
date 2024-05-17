@@ -22,7 +22,6 @@
 
         #region Public Constructor
 
-
         public XmlContentDisplayDialog(string xmlString, string header, bool allowEdit, bool allowFormat)
         {
             InitializeComponent();
@@ -40,7 +39,7 @@
             btnFormat.Visible = allowFormat;
             if (xmlString?.Length > 100000)
             {
-                var dlgresult = MessageBox.Show("Huge result, this may take a while!\n" + xmlString.Length.ToString() + " characters in the XML document.\n\nContinue?", "Huge result",
+                var dlgresult = MessageBoxEx.Show(this, "Huge result, this may take a while!\n" + xmlString.Length.ToString() + " characters in the XML document.\n\nContinue?", "Huge result",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (dlgresult == DialogResult.No)
                 {
@@ -51,7 +50,7 @@
             ScintillaInitialize.InitXML(txtXML, true);
         }
 
-        #endregion Public Constructors
+        #endregion Public Constructor
 
         #region Public Methods
 

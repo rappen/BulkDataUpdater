@@ -316,12 +316,13 @@
             {
                 job = new BDUJob();
             }
+            if (string.IsNullOrWhiteSpace(fetch))
+            {
+                return;
+            }
             job.FetchXML = fetch;
             job.LayoutXML = layout;
-            if (!string.IsNullOrWhiteSpace(fetch))
-            {
-                RetrieveRecords();
-            }
+            RetrieveRecords();
         }
 
         private void GetFromEditor()
@@ -354,12 +355,12 @@
                     }
                     catch (System.IO.FileNotFoundException)
                     {
-                        MessageBox.Show("FetchXML Builder is not installed.\nDownload latest version from the Tool Library.", "FetchXML Builder",
+                        MessageBoxEx.Show(this, "FetchXML Builder is not installed.\nDownload latest version from the Tool Library.", "FetchXML Builder",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     catch (PluginNotFoundException)
                     {
-                        MessageBox.Show("FetchXML Builder was not found.\nInstall it from the XrmToolBox Tool Library.", "FetchXML Builder",
+                        MessageBoxEx.Show(this, "FetchXML Builder was not found.\nInstall it from the XrmToolBox Tool Library.", "FetchXML Builder",
                                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     break;
@@ -377,7 +378,7 @@
                     break;
 
                 default:
-                    MessageBox.Show("Select record source.", "Get Records", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBoxEx.Show(this, "Select record source.", "Get Records", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     break;
             }
             LogUse(tag, records?.Entities?.Count);
@@ -445,15 +446,27 @@
                 try
                 {
                     EnableControls(false);
+                    var filename = ofd.FileName;
                     var fetchDoc = new XmlDocument();
-                    fetchDoc.Load(ofd.FileName);
+                    fetchDoc.Load(filename);
 
                     if (fetchDoc.DocumentElement.Name != "fetch" ||
                         fetchDoc.DocumentElement.ChildNodes.Count > 0 &&
                         fetchDoc.DocumentElement.ChildNodes[0].Name == "fetch")
                     {
-                        MessageBox.Show(this, "Invalid Xml: Definition XML root must be fetch!", "Error",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        if (filename.ToLowerInvariant().EndsWith(".bdu.xml") &&
+                            OpenJobFile(filename, true) is BDUJob tryjob)
+                        {
+                            if (MessageBoxEx.Show(this, "This file seems to not be a fetch xml file, but it is a valid\nBulk Data Updater Job.\n\nShall we open it?", "Open File", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                            {
+                                job = tryjob;
+                                UseJob(true);
+                            }
+                        }
+                        else
+                        {
+                            MessageBoxEx.Show(this, "Invalid Xml: Definition XML root must be fetch!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                     else
                     {
@@ -466,6 +479,28 @@
                 }
             }
             return result;
+        }
+
+        private BDUJob OpenJobFile(string filename, bool nullifnotavalidjob)
+        {
+            try
+            {
+                var document = new XmlDocument();
+                document.Load(filename);
+                return (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
+            }
+            catch (Exception ex)
+            {
+                if (nullifnotavalidjob)
+                {
+                    return null;
+                }
+                else
+                {
+                    ShowErrorDialog(ex);
+                    return new BDUJob();
+                }
+            }
         }
 
         private void OpenView()
@@ -686,11 +721,11 @@
             }
             else if (lvAttributes.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Only one attribute can be edited at a time.", "Edit Attribute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBoxEx.Show(this, "Only one attribute can be edited at a time.", "Edit Attribute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
-                MessageBox.Show("Select an attribute to edit.", "Edit Attribute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBoxEx.Show(this, "Select an attribute to edit.", "Edit Attribute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -729,7 +764,7 @@
             entities = null;
             if (string.IsNullOrEmpty(currentconnection) ||
                 currentconnection == e.ConnectionDetail.ConnectionName ||
-                MessageBox.Show($"Changing connection from '{currentconnection}' to '{e.ConnectionDetail.ConnectionName}'.\n\nWe usually reload settings for the new connection, shall we?", "Connected Connection", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                MessageBoxEx.Show($"Changing connection from '{currentconnection}' to '{e.ConnectionDetail.ConnectionName}'.\n\nWe usually reload settings for the new connection, shall we?", "Connected Connection", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 LoadSetting();
             }
@@ -796,18 +831,9 @@
             }
             if (opendld.ShowDialog() == DialogResult.OK)
             {
-                try
-                {
-                    var document = new XmlDocument();
-                    document.Load(opendld.FileName);
-                    job = (BDUJob)XmlSerializerHelper.Deserialize(document.OuterXml, typeof(BDUJob));
-                    UseJob(true);
-                }
-                catch (Exception ex)
-                {
-                    job = new BDUJob();
-                    ShowErrorDialog(ex);
-                }
+                var filename = opendld.FileName;
+                job = OpenJobFile(filename, false);
+                UseJob(true);
             }
         }
 

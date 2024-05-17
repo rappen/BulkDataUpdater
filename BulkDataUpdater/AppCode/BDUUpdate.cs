@@ -24,7 +24,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 return;
             }
             var includedrecords = GetIncludedRecords();
-            if (MessageBox.Show($"{includedrecords.Count()} records will unconditionally be updated.\nUI defined rules will NOT be enforced.\n\nConfirm update!",
+            if (MessageBoxEx.Show(this, $"{includedrecords.Count()} records will unconditionally be updated.\nUI defined rules will NOT be enforced.\n\nConfirm update!",
                 "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk) != DialogResult.OK)
             {
                 return;
@@ -183,7 +183,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 .Select(i => i.Tag as BulkActionItem)
                 .Any(i => i.Attribute.Metadata.LogicalName == bai.Attribute.Metadata.LogicalName))
             {
-                if (!editing && MessageBox.Show($"Replace already added attribute {bai.Attribute} ?", "Attribute added", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
+                if (!editing && MessageBoxEx.Show(this, $"Replace already added attribute {bai.Attribute} ?", "Attribute added", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
                 {
                     return;
                 }

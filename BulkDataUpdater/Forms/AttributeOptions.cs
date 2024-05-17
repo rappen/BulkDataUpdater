@@ -26,7 +26,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                     !settings.OnView &&
                     !settings.InQuery)
                 {
-                    if (MessageBox.Show("Are you sure?\nNothing will be shown now...\n\nTry again?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    if (MessageBoxEx.Show("Are you sure?\nNothing will be shown now...\n\nTry again?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         Show(settings, entity);
                     }

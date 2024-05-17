@@ -44,12 +44,12 @@ namespace Cinteros.XTB.BulkDataUpdater
         {
             if (!PluginManagerExtended.Instance.ValidatedPlugins.Any(p => p.Metadata.Name == "XRM Tokens Runner"))
             {
-                MessageBox.Show("Please install the tool 'XRM Tokens Runner'!", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBoxEx.Show(this, "Please install the tool 'XRM Tokens Runner'!", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             if (record == null)
             {
-                MessageBox.Show("A record must be available to work with XRM Tokens Runner.", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBoxEx.Show(this, "A record must be available to work with XRM Tokens Runner.", "XRM Tokens Runner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {

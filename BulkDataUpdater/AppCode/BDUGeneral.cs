@@ -78,7 +78,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                     else if (completedargs.Cancelled)
                     {
                         Cursor = Cursors.Default;
-                        MessageBox.Show($"Manual abort.", "Execute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBoxEx.Show(this, $"Manual abort.", "Execute", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     else if (completedargs.Result is EntityCollection result)
                     {
@@ -332,7 +332,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             if (completedargs.Error != null)
             {
                 ShowErrorDialog(completedargs.Error, action);
-                if (MessageBox.Show("Error occured.\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                if (MessageBoxEx.Show(this, "Error occured.\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     RetrieveRecords();
                 }
@@ -340,7 +340,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             else if (completedargs.Cancelled)
             {
                 Cursor = Cursors.Default;
-                if (MessageBox.Show("Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                if (MessageBoxEx.Show(this, "Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     RetrieveRecords();
                 }
@@ -353,7 +353,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     LogUse("Failed", result.Item2);
                 }
-                if (MessageBox.Show($"{action} completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                if (MessageBoxEx.Show(this, $"{action} completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     RetrieveRecords();
                 }

@@ -41,7 +41,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 return;
             }
             var includedrecords = GetIncludedRecords();
-            if (MessageBox.Show($"{includedrecords.Count()} records will unconditionally be reassigned to {txtAssignEntity.Text} {xrmAssignText.Text}.\n" +
+            if (MessageBoxEx.Show($"{includedrecords.Count()} records will unconditionally be reassigned to {txtAssignEntity.Text} {xrmAssignText.Text}.\n" +
                 "UI defined rules will NOT be enforced.\n" +
                 "Plugins and workflows WILL trigger.\n" +
                 "User privileges WILL be respected.\n\n" +

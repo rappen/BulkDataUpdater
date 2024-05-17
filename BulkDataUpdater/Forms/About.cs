@@ -65,7 +65,7 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBox.Show(@"The evolution of Bulk Data Updater is based on feedback issues and anonymous statistics collected about usage.
+            MessageBoxEx.Show(this, @"The evolution of Bulk Data Updater is based on feedback issues and anonymous statistics collected about usage.
 The statistics are a valuable source of information for continuing the development to make the tool even easier to use and improve the most popular features.
 
 Thank You,

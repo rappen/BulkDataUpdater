@@ -57,7 +57,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
         {
             if (!(cmbAttribute.SelectedItem is AttributeMetadataItem attribute))
             {
-                MessageBox.Show("Select an attribute to update from the list.");
+                MessageBoxEx.Show(this, "Select an attribute to update from the list.");
                 return null;
             }
             var bai = new BulkActionItem
@@ -107,7 +107,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
             }
             catch (Exception e)
             {
-                MessageBox.Show("Value error:\n" + e.Message, "Set value", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBoxEx.Show(this, "Value error:\n" + e.Message, "Set value", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
             return bai;
