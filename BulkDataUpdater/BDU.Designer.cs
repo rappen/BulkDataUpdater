@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbFetch = new System.Windows.Forms.ToolStripDropDownButton();
@@ -58,7 +58,6 @@
             this.lblSelectedRecords = new System.Windows.Forms.Label();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
             this.chkSetState = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabUpdate = new System.Windows.Forms.TabPage();
@@ -84,8 +83,6 @@
             this.btnAssignSelect = new System.Windows.Forms.Button();
             this.txtAssignEntity = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
-            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panQualifyLead = new System.Windows.Forms.Panel();
@@ -100,6 +97,9 @@
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
+            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
+            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
@@ -110,7 +110,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabUpdate.SuspendLayout();
             this.gb3attributes.SuspendLayout();
@@ -121,6 +120,7 @@
             this.panQualifyLead.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabDelete.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -308,7 +308,7 @@
             this.tsbBymyacoffee.Name = "tsbBymyacoffee";
             this.tsbBymyacoffee.Size = new System.Drawing.Size(36, 36);
             this.tsbBymyacoffee.Tag = "https://www.buymeacoffee.com/rappen";
-            this.tsbBymyacoffee.Text = "toolStripButton1";
+            this.tsbBymyacoffee.Text = "By Me a Coffee!";
             this.tsbBymyacoffee.ToolTipText = "By Me a Coffee!";
             this.tsbBymyacoffee.Click += new System.EventHandler(this.link_Click);
             // 
@@ -322,7 +322,7 @@
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnRefresh.Size = new System.Drawing.Size(51, 35);
-            this.btnRefresh.TabIndex = 26;
+            this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Tag = "Refresh";
             this.btnRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -338,7 +338,7 @@
             this.gbExecute.Location = new System.Drawing.Point(0, 471);
             this.gbExecute.Name = "gbExecute";
             this.gbExecute.Size = new System.Drawing.Size(377, 63);
-            this.gbExecute.TabIndex = 37;
+            this.gbExecute.TabIndex = 99;
             this.gbExecute.TabStop = false;
             this.gbExecute.Text = "Execution";
             // 
@@ -390,7 +390,7 @@
             this.btnSelectAll.Location = new System.Drawing.Point(14, 10);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(75, 23);
-            this.btnSelectAll.TabIndex = 27;
+            this.btnSelectAll.TabIndex = 1;
             this.btnSelectAll.Text = "Select All";
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
@@ -411,48 +411,18 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.chkSetState);
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2.Controls.Add(this.gbExecute);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.Size = new System.Drawing.Size(983, 534);
             this.splitContainer1.SplitterDistance = 602;
-            this.splitContainer1.TabIndex = 39;
-            // 
-            // crmGridView1
-            // 
-            this.crmGridView1.AllowUserToAddRows = false;
-            this.crmGridView1.AllowUserToDeleteRows = false;
-            this.crmGridView1.AllowUserToOrderColumns = true;
-            this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.crmGridView1.ColumnOrder = "";
-            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crmGridView1.FilterColumns = "";
-            this.crmGridView1.LayoutXML = "";
-            this.crmGridView1.Location = new System.Drawing.Point(0, 43);
-            this.crmGridView1.Name = "crmGridView1";
-            this.crmGridView1.ReadOnly = true;
-            this.crmGridView1.RowHeadersVisible = false;
-            this.crmGridView1.RowHeadersWidth = 72;
-            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.crmGridView1.Service = null;
-            this.crmGridView1.ShowFriendlyNames = true;
-            this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(602, 491);
-            this.crmGridView1.TabIndex = 2;
-            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
-            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
+            this.splitContainer1.TabIndex = 2;
             // 
             // chkSetState
             // 
-            this.chkSetState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkSetState.AutoSize = true;
-            this.chkSetState.Location = new System.Drawing.Point(-264, 703);
+            this.chkSetState.Location = new System.Drawing.Point(17, 114);
             this.chkSetState.Name = "chkSetState";
             this.chkSetState.Size = new System.Drawing.Size(102, 17);
             this.chkSetState.TabIndex = 18;
@@ -470,7 +440,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(377, 471);
-            this.tabControl1.TabIndex = 39;
+            this.tabControl1.TabIndex = 1;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabUpdate
@@ -481,7 +451,7 @@
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
             this.tabUpdate.Padding = new System.Windows.Forms.Padding(3, 8, 3, 3);
-            this.tabUpdate.Size = new System.Drawing.Size(369, 476);
+            this.tabUpdate.Size = new System.Drawing.Size(369, 445);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             // 
@@ -494,18 +464,18 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(3, 8);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(363, 379);
-            this.gb3attributes.TabIndex = 36;
+            this.gb3attributes.Size = new System.Drawing.Size(363, 348);
+            this.gb3attributes.TabIndex = 1;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Attributes to update";
             // 
             // btnAttrEdit
             // 
             this.btnAttrEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAttrEdit.Location = new System.Drawing.Point(96, 346);
+            this.btnAttrEdit.Location = new System.Drawing.Point(96, 315);
             this.btnAttrEdit.Name = "btnAttrEdit";
             this.btnAttrEdit.Size = new System.Drawing.Size(75, 23);
-            this.btnAttrEdit.TabIndex = 4;
+            this.btnAttrEdit.TabIndex = 3;
             this.btnAttrEdit.Text = "Edit";
             this.btnAttrEdit.UseVisualStyleBackColor = true;
             this.btnAttrEdit.Click += new System.EventHandler(this.btnAttrEdit_Click);
@@ -513,10 +483,10 @@
             // btnAttrAdd
             // 
             this.btnAttrAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAttrAdd.Location = new System.Drawing.Point(15, 346);
+            this.btnAttrAdd.Location = new System.Drawing.Point(15, 315);
             this.btnAttrAdd.Name = "btnAttrAdd";
             this.btnAttrAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAttrAdd.TabIndex = 3;
+            this.btnAttrAdd.TabIndex = 2;
             this.btnAttrAdd.Text = "Add";
             this.btnAttrAdd.UseVisualStyleBackColor = true;
             this.btnAttrAdd.Click += new System.EventHandler(this.btnAttrAdd_Click);
@@ -535,7 +505,7 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(331, 321);
+            this.lvAttributes.Size = new System.Drawing.Size(331, 290);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -565,10 +535,10 @@
             // btnAttrRemove
             // 
             this.btnAttrRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAttrRemove.Location = new System.Drawing.Point(271, 346);
+            this.btnAttrRemove.Location = new System.Drawing.Point(271, 315);
             this.btnAttrRemove.Name = "btnAttrRemove";
             this.btnAttrRemove.Size = new System.Drawing.Size(75, 23);
-            this.btnAttrRemove.TabIndex = 2;
+            this.btnAttrRemove.TabIndex = 4;
             this.btnAttrRemove.Text = "Remove";
             this.btnAttrRemove.UseVisualStyleBackColor = true;
             this.btnAttrRemove.Click += new System.EventHandler(this.btnAttrRemove_Click);
@@ -583,10 +553,10 @@
             this.gbImpSeqNo.Controls.Add(this.numImpSeqNo);
             this.gbImpSeqNo.Controls.Add(this.label7);
             this.gbImpSeqNo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbImpSeqNo.Location = new System.Drawing.Point(3, 387);
+            this.gbImpSeqNo.Location = new System.Drawing.Point(3, 356);
             this.gbImpSeqNo.Name = "gbImpSeqNo";
             this.gbImpSeqNo.Size = new System.Drawing.Size(363, 86);
-            this.gbImpSeqNo.TabIndex = 37;
+            this.gbImpSeqNo.TabIndex = 2;
             this.gbImpSeqNo.TabStop = false;
             this.gbImpSeqNo.Text = "Import Sequence Number";
             // 
@@ -598,7 +568,7 @@
             this.linkShowImpSeqNoRecords.Location = new System.Drawing.Point(12, 50);
             this.linkShowImpSeqNoRecords.Name = "linkShowImpSeqNoRecords";
             this.linkShowImpSeqNoRecords.Size = new System.Drawing.Size(167, 16);
-            this.linkShowImpSeqNoRecords.TabIndex = 7;
+            this.linkShowImpSeqNoRecords.TabIndex = 5;
             this.linkShowImpSeqNoRecords.TabStop = true;
             this.linkShowImpSeqNoRecords.Text = "Show updated records in FXB";
             this.linkShowImpSeqNoRecords.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -612,7 +582,7 @@
             this.btnDefImpSeqNo.Location = new System.Drawing.Point(141, 21);
             this.btnDefImpSeqNo.Name = "btnDefImpSeqNo";
             this.btnDefImpSeqNo.Size = new System.Drawing.Size(23, 23);
-            this.btnDefImpSeqNo.TabIndex = 6;
+            this.btnDefImpSeqNo.TabIndex = 3;
             this.btnDefImpSeqNo.UseVisualStyleBackColor = true;
             this.btnDefImpSeqNo.Click += new System.EventHandler(this.impSeqNo_Changed);
             // 
@@ -636,7 +606,7 @@
             this.linkImpSeqNoHelp.Location = new System.Drawing.Point(280, 0);
             this.linkImpSeqNoHelp.Name = "linkImpSeqNoHelp";
             this.linkImpSeqNoHelp.Size = new System.Drawing.Size(68, 13);
-            this.linkImpSeqNoHelp.TabIndex = 5;
+            this.linkImpSeqNoHelp.TabIndex = 6;
             this.linkImpSeqNoHelp.TabStop = true;
             this.linkImpSeqNoHelp.Tag = "https://jonasr.app/bdu/isn";
             this.linkImpSeqNoHelp.Text = "What is this?";
@@ -750,28 +720,6 @@
             this.label6.TabIndex = 7;
             this.label6.Text = "Select User or Team";
             // 
-            // xrmAssignText
-            // 
-            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
-            this.xrmAssignText.Column = null;
-            this.xrmAssignText.DisplayFormat = "";
-            this.xrmAssignText.Location = new System.Drawing.Point(17, 69);
-            this.xrmAssignText.Name = "xrmAssignText";
-            this.xrmAssignText.ReadOnly = true;
-            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
-            this.xrmAssignText.Size = new System.Drawing.Size(311, 20);
-            this.xrmAssignText.TabIndex = 12;
-            // 
-            // xrmRecordAssign
-            // 
-            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.xrmRecordAssign.LogicalName = null;
-            this.xrmRecordAssign.Record = null;
-            this.xrmRecordAssign.Service = null;
-            this.xrmRecordAssign.ColumnValueChanged += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.xrmRecordAssign_ColumnValueChanged);
-            // 
             // tabSetState
             // 
             this.tabSetState.BackColor = System.Drawing.SystemColors.Window;
@@ -807,7 +755,7 @@
             this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateContact);
             this.panQualifyLead.Controls.Add(this.chkQualifyLeadCreateAccount);
             this.panQualifyLead.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panQualifyLead.Location = new System.Drawing.Point(3, 125);
+            this.panQualifyLead.Location = new System.Drawing.Point(3, 141);
             this.panQualifyLead.Name = "panQualifyLead";
             this.panQualifyLead.Size = new System.Drawing.Size(363, 78);
             this.panQualifyLead.TabIndex = 17;
@@ -845,6 +793,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.chkSetState);
             this.panel3.Controls.Add(this.cbSetStatus);
             this.panel3.Controls.Add(this.cbSetStatusReason);
             this.panel3.Controls.Add(this.label8);
@@ -852,7 +801,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(363, 122);
+            this.panel3.Size = new System.Drawing.Size(363, 138);
             this.panel3.TabIndex = 16;
             // 
             // cbSetStatus
@@ -904,7 +853,7 @@
             this.tabDelete.Location = new System.Drawing.Point(4, 22);
             this.tabDelete.Name = "tabDelete";
             this.tabDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDelete.Size = new System.Drawing.Size(369, 476);
+            this.tabDelete.Size = new System.Drawing.Size(369, 445);
             this.tabDelete.TabIndex = 2;
             this.tabDelete.Tag = "Delete";
             this.tabDelete.Text = "Delete";
@@ -925,6 +874,56 @@
             this.txtDeleteWarning.Text = "This action will delete [nn] records in the list to the left.\r\n\r\nThis action can " +
     "NOT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation q" +
     "uestion, and then point of no return.";
+            // 
+            // crmGridView1
+            // 
+            this.crmGridView1.AllowUserToAddRows = false;
+            this.crmGridView1.AllowUserToDeleteRows = false;
+            this.crmGridView1.AllowUserToOrderColumns = true;
+            this.crmGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.crmGridView1.ColumnOrder = "";
+            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crmGridView1.FilterColumns = "";
+            this.crmGridView1.LayoutXML = "";
+            this.crmGridView1.Location = new System.Drawing.Point(0, 43);
+            this.crmGridView1.Name = "crmGridView1";
+            this.crmGridView1.ReadOnly = true;
+            this.crmGridView1.RowHeadersVisible = false;
+            this.crmGridView1.RowHeadersWidth = 72;
+            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.crmGridView1.Service = null;
+            this.crmGridView1.ShowFriendlyNames = true;
+            this.crmGridView1.ShowIdColumn = false;
+            this.crmGridView1.Size = new System.Drawing.Size(602, 491);
+            this.crmGridView1.TabIndex = 3;
+            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
+            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
+            // 
+            // xrmAssignText
+            // 
+            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
+            this.xrmAssignText.Column = null;
+            this.xrmAssignText.DisplayFormat = "";
+            this.xrmAssignText.Location = new System.Drawing.Point(17, 69);
+            this.xrmAssignText.Name = "xrmAssignText";
+            this.xrmAssignText.ReadOnly = true;
+            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
+            this.xrmAssignText.Size = new System.Drawing.Size(311, 20);
+            this.xrmAssignText.TabIndex = 12;
+            // 
+            // xrmRecordAssign
+            // 
+            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.xrmRecordAssign.LogicalName = null;
+            this.xrmRecordAssign.Record = null;
+            this.xrmRecordAssign.Service = null;
+            this.xrmRecordAssign.ColumnValueChanged += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.xrmRecordAssign_ColumnValueChanged);
             // 
             // xrmRecordAttribute
             // 
@@ -973,10 +972,8 @@
             this.panRecordSummary.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabUpdate.ResumeLayout(false);
             this.gb3attributes.ResumeLayout(false);
@@ -993,6 +990,7 @@
             this.panel3.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

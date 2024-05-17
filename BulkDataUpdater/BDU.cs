@@ -3,7 +3,6 @@
     using AppCode;
     using Cinteros.XTB.BulkDataUpdater.Forms;
     using McTools.Xrm.Connection;
-    using McTools.Xrm.Connection.WinForms.AppCode;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
