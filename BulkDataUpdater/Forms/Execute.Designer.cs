@@ -283,11 +283,12 @@
             this.linkLabel3.Size = new System.Drawing.Size(136, 13);
             this.linkLabel3.TabIndex = 1;
             this.linkLabel3.TabStop = true;
-            this.linkLabel3.Tag = "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
-    "ness-logic";
+            this.linkLabel3.Tag = "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/bypass-custo" +
+    "m-business-logic-preview";
             this.linkLabel3.Text = "MS Learn: Preview Options";
-            this.toolTip1.SetToolTip(this.linkLabel3, "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
-        "ness-logic");
+            this.toolTip1.SetToolTip(this.linkLabel3, "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/bypass-custo" +
+        "m-business-logic-preview");
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // gbBypassPreview
             // 
