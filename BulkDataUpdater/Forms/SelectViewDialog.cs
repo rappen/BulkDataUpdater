@@ -125,7 +125,7 @@
         {
             if (cmbView.SelectedItem is ViewItem viewitem)
             {
-                txtFetch.Text = viewitem.GetFetch();
+                txtFetch.FormatXML(viewitem.GetFetch(), '\'');
                 ScintillaInitialize.Format(txtFetch);
                 btnOk.Enabled = true;
             }

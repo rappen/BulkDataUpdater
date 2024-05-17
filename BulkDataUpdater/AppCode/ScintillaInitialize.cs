@@ -1,6 +1,8 @@
 ﻿using ScintillaNET;
 using System;
 using System.Drawing;
+using System.IO;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Cinteros.XTB.BulkDataUpdater.AppCode
@@ -83,6 +85,24 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             catch (Exception)
             {
                 // Handle and throw if fatal exception here; don't just ignore them
+            }
+        }
+
+        public static void FormatXML(this Scintilla scintilla, string text, char quotechar)
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            using (var writer = new StringWriter())
+            using (var xmlWriter = new XmlFragmentWriter(writer))
+            {
+                xmlWriter.QuoteChar = quotechar;
+                xmlWriter.Formatting = Formatting.Indented;
+
+                doc.Save(xmlWriter);
+                var ro = scintilla.ReadOnly;
+                scintilla.ReadOnly = false;
+                scintilla.Text = writer.ToString();
+                scintilla.ReadOnly = ro;
             }
         }
     }

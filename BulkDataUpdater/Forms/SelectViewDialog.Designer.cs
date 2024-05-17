@@ -36,16 +36,16 @@
             this.cmbEntity = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.panOk = new System.Windows.Forms.Panel();
-            this.btnOk = new System.Windows.Forms.Button();
             this.panCancel = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.panOk = new System.Windows.Forms.Panel();
+            this.btnOk = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.txtFetch = new ScintillaNET.Scintilla();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panOk.SuspendLayout();
             this.panCancel.SuspendLayout();
+            this.panOk.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -127,6 +127,25 @@
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // panCancel
+            // 
+            this.panCancel.Controls.Add(this.btnCancel);
+            this.panCancel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panCancel.Location = new System.Drawing.Point(402, 0);
+            this.panCancel.Name = "panCancel";
+            this.panCancel.Size = new System.Drawing.Size(91, 38);
+            this.panCancel.TabIndex = 5;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(3, 8);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 5;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            // 
             // panOk
             // 
             this.panOk.Controls.Add(this.btnOk);
@@ -147,25 +166,6 @@
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-            // 
-            // panCancel
-            // 
-            this.panCancel.Controls.Add(this.btnCancel);
-            this.panCancel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panCancel.Location = new System.Drawing.Point(402, 0);
-            this.panCancel.Name = "panCancel";
-            this.panCancel.Size = new System.Drawing.Size(91, 38);
-            this.panCancel.TabIndex = 5;
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(3, 8);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 5;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
@@ -206,8 +206,8 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
-            this.panOk.ResumeLayout(false);
             this.panCancel.ResumeLayout(false);
+            this.panOk.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 

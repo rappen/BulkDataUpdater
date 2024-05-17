@@ -237,6 +237,7 @@
     <Compile Include="AppCode\BDUUpdate.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="AppCode\XmlFragmentWriter.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
