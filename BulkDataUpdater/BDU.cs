@@ -512,6 +512,7 @@
             }
             var viewselector = new SelectViewDialog(this);
             viewselector.StartPosition = FormStartPosition.CenterParent;
+            var enable = true;
             if (viewselector.ShowDialog() == DialogResult.OK)
             {
                 try
@@ -523,12 +524,16 @@
                     {
                         fetchDoc.LoadXml(view["fetchxml"].ToString());
                         view.TryGetAttributeValue("layoutxml", out string layout);
+                        enable = false;
                         FetchUpdated(fetchDoc.OuterXml, layout);
                     }
                 }
                 finally
                 {
-                    EnableControls(true);
+                    if (enable)
+                    {
+                        EnableControls(true);
+                    }
                 }
             }
         }
