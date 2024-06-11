@@ -245,7 +245,7 @@
             this.panValueLookup.TabIndex = 4;
             this.panValueLookup.Visible = false;
             // 
-            // btnLookupValue
+        // btnLookupValue
             // 
             this.btnLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLookupValue.Image = ((System.Drawing.Image)(resources.GetObject("btnLookupValue.Image")));
@@ -436,14 +436,14 @@
             // 
             // cdsLookupValue
             // 
-            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cdsLookupValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cdsLookupValue.BackColor = System.Drawing.SystemColors.Window;
             this.cdsLookupValue.Column = null;
             this.cdsLookupValue.DisplayFormat = "";
             this.cdsLookupValue.Location = new System.Drawing.Point(12, 8);
             this.cdsLookupValue.Name = "cdsLookupValue";
-            this.cdsLookupValue.RecordHost = null;
+            this.cdsLookupValue.RecordHost = this.xrmRecordAttribute;
             this.cdsLookupValue.Size = new System.Drawing.Size(316, 20);
             this.cdsLookupValue.TabIndex = 0;
             // 

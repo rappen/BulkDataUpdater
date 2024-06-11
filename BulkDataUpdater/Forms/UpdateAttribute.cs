@@ -1,7 +1,6 @@
 ﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
-using Microsoft.Xrm.Sdk.Query;
 using Rappen.XRM.Helpers;
 using Rappen.XRM.Helpers.Extensions;
 using Rappen.XRM.Tokens;
@@ -12,12 +11,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Web.Services.Description;
-using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Xml;
-using XrmToolBox;
-using XrmToolBox.Extensibility;
 using HelpFetch = Rappen.XRM.Helpers.FetchXML;
 
 namespace Cinteros.XTB.BulkDataUpdater.Forms
@@ -40,6 +34,8 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                 record = selected,
                 lockedattribute = bai?.Attribute?.Metadata?.LogicalName
             };
+            form.xrmRecordAttribute.Service = bdu.Service;
+            form.xrmLookupDialog.Service = bdu.Service;
             form.RefreshAttributes();
             form.SetBAI(bai);
             form.EnableControls();
@@ -405,7 +401,6 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                     {
                         value = false;
                         lookup = true;
-                        xrmLookupDialog.Service = bdu.Service;
                         xrmLookupDialog.LogicalNames = lkpmeta.Targets;
                         if (!xrmLookupDialog.LogicalNames.Contains(xrmRecordAttribute.LogicalName))
                         {

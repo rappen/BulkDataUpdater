@@ -313,6 +313,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UpdateAttribute.resx">
       <DependentUpon>UpdateAttribute.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AttributeOptions.resx">
       <DependentUpon>AttributeOptions.cs</DependentUpon>
