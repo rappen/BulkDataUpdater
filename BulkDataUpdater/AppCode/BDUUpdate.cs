@@ -93,28 +93,31 @@ namespace Cinteros.XTB.BulkDataUpdater
                         progress = GetProgressDetails(sw, total, current, entities.Entities.Count, failed);
                         WaitingExecution(bgworker, workargs, executeoptions, progress);
                         PushProgress(bgworker, progress);
-                        if (entities.Entities.Count == 1 && !isn)
+                        if (entities.Entities.Count == 1)
                         {
                             failed += ExecuteRequest(new UpdateRequest { Target = entities.Entities.FirstOrDefault() }, executeoptions);
                         }
-                        else if (executeoptions.MultipleRequest || executeoptions.BatchSize == 1)
-                        {
-                            failed += ExecuteRequest(new UpdateMultipleRequest { Targets = entities }, executeoptions);
-                        }
-                        else if (isn)
-                        {
-                            throw new Exception("Import Sequence Number can only be set by UpdateMultiple.");
-                        }
                         else
                         {
-                            var batch = new ExecuteMultipleRequest
+                            if (executeoptions.MultipleRequest || executeoptions.BatchSize == 1)
                             {
-                                Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
-                                Requests = new OrganizationRequestCollection()
-                            };
-                            batch.Requests.AddRange(entities.Entities.Select(e => new UpdateRequest { Target = e }));
-                            batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions));
-                            failed += ExecuteRequest(batch, executeoptions);
+                                failed += ExecuteRequest(new UpdateMultipleRequest { Targets = entities }, executeoptions);
+                            }
+                            else if (isn)
+                            {
+                                throw new Exception("Import Sequence Number can only be set by UpdateMultiple.");
+                            }
+                            else
+                            {
+                                var batch = new ExecuteMultipleRequest
+                                {
+                                    Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
+                                    Requests = new OrganizationRequestCollection()
+                                };
+                                batch.Requests.AddRange(entities.Entities.Select(e => new UpdateRequest { Target = e }));
+                                batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions));
+                                failed += ExecuteRequest(batch, executeoptions);
+                            }
                         }
                         updated += entities.Entities.Count;
                         entities.Entities.Clear();
