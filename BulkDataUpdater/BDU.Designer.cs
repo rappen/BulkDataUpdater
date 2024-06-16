@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbFetch = new System.Windows.Forms.ToolStripDropDownButton();
@@ -44,12 +44,13 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tsbFriendly = new System.Windows.Forms.ToolStripButton();
             this.tsbRaw = new System.Windows.Forms.ToolStripButton();
-            this.tslAbout = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCancel = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
+            this.tslBuyMeaCoffee = new System.Windows.Forms.ToolStripLabel();
+            this.tslWeSupportTools = new System.Windows.Forms.ToolStripLabel();
             this.tslDoc = new System.Windows.Forms.ToolStripLabel();
-            this.tsbBymyacoffee = new System.Windows.Forms.ToolStripButton();
+            this.tslAbout = new System.Windows.Forms.ToolStripLabel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.gbExecute = new System.Windows.Forms.GroupBox();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
@@ -58,7 +59,6 @@
             this.lblSelectedRecords = new System.Windows.Forms.Label();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.chkSetState = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabUpdate = new System.Windows.Forms.TabPage();
             this.gb3attributes = new System.Windows.Forms.GroupBox();
@@ -90,6 +90,7 @@
             this.chkQualifyLeadCreateContact = new System.Windows.Forms.CheckBox();
             this.chkQualifyLeadCreateAccount = new System.Windows.Forms.CheckBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.chkSetState = new System.Windows.Forms.CheckBox();
             this.cbSetStatus = new System.Windows.Forms.ComboBox();
             this.cbSetStatusReason = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -110,7 +111,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabUpdate.SuspendLayout();
             this.gb3attributes.SuspendLayout();
@@ -121,6 +121,7 @@
             this.panQualifyLead.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabDelete.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -141,16 +142,17 @@
             this.toolStripLabel1,
             this.tsbFriendly,
             this.tsbRaw,
-            this.tslAbout,
             this.toolStripSeparator2,
             this.tsbCancel,
             this.toolStripSeparator17,
-            this.tslDoc,
-            this.tsbBymyacoffee});
+            this.tslAbout,
+            this.tslBuyMeaCoffee,
+            this.tslWeSupportTools,
+            this.tslDoc});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Padding = new System.Windows.Forms.Padding(0, 4, 1, 6);
-            this.toolStripMain.Size = new System.Drawing.Size(983, 49);
+            this.toolStripMain.Size = new System.Drawing.Size(1309, 49);
             this.toolStripMain.TabIndex = 23;
             this.toolStripMain.Text = "toolStrip1";
             // 
@@ -257,16 +259,6 @@
             this.tsbRaw.ToolTipText = "LogicalName columns and guids, numbers etc data will be shown";
             this.tsbRaw.Click += new System.EventHandler(this.tsbFriendly_Click);
             // 
-            // tslAbout
-            // 
-            this.tslAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tslAbout.Image = ((System.Drawing.Image)(resources.GetObject("tslAbout.Image")));
-            this.tslAbout.IsLink = true;
-            this.tslAbout.Name = "tslAbout";
-            this.tslAbout.Size = new System.Drawing.Size(114, 36);
-            this.tslAbout.Text = "by Jonas Rapp";
-            this.tslAbout.Click += new System.EventHandler(this.tslAbout_Click);
-            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -288,6 +280,38 @@
             this.toolStripSeparator17.Name = "toolStripSeparator17";
             this.toolStripSeparator17.Size = new System.Drawing.Size(6, 39);
             // 
+            // tslBuyMeaCoffee
+            // 
+            this.tslBuyMeaCoffee.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslBuyMeaCoffee.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tslBuyMeaCoffee.Image = ((System.Drawing.Image)(resources.GetObject("tslBuyMeaCoffee.Image")));
+            this.tslBuyMeaCoffee.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tslBuyMeaCoffee.IsLink = true;
+            this.tslBuyMeaCoffee.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.tslBuyMeaCoffee.Name = "tslBuyMeaCoffee";
+            this.tslBuyMeaCoffee.Size = new System.Drawing.Size(32, 36);
+            this.tslBuyMeaCoffee.Tag = "https://www.buymeacoffee.com/rappen";
+            this.tslBuyMeaCoffee.Text = "Buy Me a Coffee";
+            this.tslBuyMeaCoffee.ToolTipText = "Simplest support - jusy Buy Me a Coffee!\r\nhttps://www.buymeacoffee.com/rappen";
+            this.tslBuyMeaCoffee.Click += new System.EventHandler(this.link_Click);
+            // 
+            // tslWeSupportTools
+            // 
+            this.tslWeSupportTools.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslWeSupportTools.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tslWeSupportTools.Image = ((System.Drawing.Image)(resources.GetObject("tslWeSupportTools.Image")));
+            this.tslWeSupportTools.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tslWeSupportTools.IsLink = true;
+            this.tslWeSupportTools.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.tslWeSupportTools.Name = "tslWeSupportTools";
+            this.tslWeSupportTools.Size = new System.Drawing.Size(51, 36);
+            this.tslWeSupportTools.Tag = "https://jonasr.app/supporting";
+            this.tslWeSupportTools.Text = "We Support Tools";
+            this.tslWeSupportTools.ToolTipText = "We can support these tools!\r\nAs a company with a proper invoice, or personally ca" +
+    "n support a bit easier.\r\nhttp://jonasr.app/supporting/";
+            this.tslWeSupportTools.Visible = false;
+            this.tslWeSupportTools.Click += new System.EventHandler(this.link_Click);
+            // 
             // tslDoc
             // 
             this.tslDoc.Image = ((System.Drawing.Image)(resources.GetObject("tslDoc.Image")));
@@ -299,18 +323,15 @@
             this.tslDoc.ToolTipText = "https://jonasr.app/BDU/";
             this.tslDoc.Click += new System.EventHandler(this.link_Click);
             // 
-            // tsbBymyacoffee
+            // tslAbout
             // 
-            this.tsbBymyacoffee.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsbBymyacoffee.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbBymyacoffee.Image = ((System.Drawing.Image)(resources.GetObject("tsbBymyacoffee.Image")));
-            this.tsbBymyacoffee.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbBymyacoffee.Name = "tsbBymyacoffee";
-            this.tsbBymyacoffee.Size = new System.Drawing.Size(36, 36);
-            this.tsbBymyacoffee.Tag = "https://www.buymeacoffee.com/rappen";
-            this.tsbBymyacoffee.Text = "By Me a Coffee!";
-            this.tsbBymyacoffee.ToolTipText = "By Me a Coffee!";
-            this.tsbBymyacoffee.Click += new System.EventHandler(this.link_Click);
+            this.tslAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslAbout.Image = ((System.Drawing.Image)(resources.GetObject("tslAbout.Image")));
+            this.tslAbout.IsLink = true;
+            this.tslAbout.Name = "tslAbout";
+            this.tslAbout.Size = new System.Drawing.Size(114, 36);
+            this.tslAbout.Text = "by Jonas Rapp";
+            this.tslAbout.Click += new System.EventHandler(this.tslAbout_Click);
             // 
             // btnRefresh
             // 
@@ -318,7 +339,7 @@
             this.btnRefresh.BackColor = System.Drawing.SystemColors.Window;
             this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
             this.btnRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefresh.Location = new System.Drawing.Point(542, 4);
+            this.btnRefresh.Location = new System.Drawing.Point(868, 4);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.btnRefresh.Size = new System.Drawing.Size(51, 35);
@@ -373,7 +394,7 @@
             this.panRecordSummary.Dock = System.Windows.Forms.DockStyle.Top;
             this.panRecordSummary.Location = new System.Drawing.Point(0, 0);
             this.panRecordSummary.Name = "panRecordSummary";
-            this.panRecordSummary.Size = new System.Drawing.Size(602, 43);
+            this.panRecordSummary.Size = new System.Drawing.Size(928, 43);
             this.panRecordSummary.TabIndex = 1;
             // 
             // lblSelectedRecords
@@ -415,19 +436,9 @@
             this.splitContainer1.Panel2.Controls.Add(this.gbExecute);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(983, 534);
-            this.splitContainer1.SplitterDistance = 602;
+            this.splitContainer1.Size = new System.Drawing.Size(1309, 534);
+            this.splitContainer1.SplitterDistance = 928;
             this.splitContainer1.TabIndex = 2;
-            // 
-            // chkSetState
-            // 
-            this.chkSetState.AutoSize = true;
-            this.chkSetState.Location = new System.Drawing.Point(17, 114);
-            this.chkSetState.Name = "chkSetState";
-            this.chkSetState.Size = new System.Drawing.Size(102, 17);
-            this.chkSetState.TabIndex = 18;
-            this.chkSetState.Text = "Try old SetState";
-            this.chkSetState.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
@@ -804,7 +815,17 @@
             this.panel3.Size = new System.Drawing.Size(363, 138);
             this.panel3.TabIndex = 16;
             // 
-          // cbSetStatus
+            // chkSetState
+            // 
+            this.chkSetState.AutoSize = true;
+            this.chkSetState.Location = new System.Drawing.Point(17, 114);
+            this.chkSetState.Name = "chkSetState";
+            this.chkSetState.Size = new System.Drawing.Size(102, 17);
+            this.chkSetState.TabIndex = 18;
+            this.chkSetState.Text = "Try old SetState";
+            this.chkSetState.UseVisualStyleBackColor = true;
+            // 
+            // cbSetStatus
             // 
             this.cbSetStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -881,8 +902,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.crmGridView1.AutoRefresh = false;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -899,14 +920,14 @@
             this.crmGridView1.Service = null;
             this.crmGridView1.ShowFriendlyNames = true;
             this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(602, 491);
+            this.crmGridView1.Size = new System.Drawing.Size(928, 491);
             this.crmGridView1.TabIndex = 3;
             this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
             this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
-            //
+            // 
             // xrmAssignText
             // 
-            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
             this.xrmAssignText.Column = null;
@@ -962,7 +983,7 @@
             this.Controls.Add(this.toolStripMain);
             this.Name = "BulkDataUpdater";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
-            this.Size = new System.Drawing.Size(983, 583);
+            this.Size = new System.Drawing.Size(1309, 583);
             this.TabIcon = ((System.Drawing.Image)(resources.GetObject("$this.TabIcon")));
             this.ConnectionUpdated += new XrmToolBox.Extensibility.PluginControlBase.ConnectionUpdatedHandler(this.DataUpdater_ConnectionUpdated);
             this.Load += new System.EventHandler(this.DataUpdater_Load);
@@ -975,7 +996,6 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabUpdate.ResumeLayout(false);
             this.gb3attributes.ResumeLayout(false);
@@ -992,6 +1012,7 @@
             this.panel3.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1053,7 +1074,6 @@
         private System.Windows.Forms.ToolStripButton tsbFriendly;
         private System.Windows.Forms.ToolStripButton tsbRaw;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripButton tsbBymyacoffee;
         private System.Windows.Forms.NumericUpDown numImpSeqNo;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox chkDefImpSeqNo;
@@ -1071,5 +1091,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmFetchFile;
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Label lblSelectedRecords;
+        private System.Windows.Forms.ToolStripLabel tslWeSupportTools;
+        private System.Windows.Forms.ToolStripLabel tslBuyMeaCoffee;
     }
 }

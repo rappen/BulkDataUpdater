@@ -129,6 +129,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 UpdateIncludeCount();
             }
             InitializeTab();
+            SetCommercial();
             Cursor = Cursors.Default;
         }
 
@@ -363,6 +364,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 linkShowImpSeqNoRecords.Enabled = true;
             }
+            SetCommercial();
         }
     }
 }

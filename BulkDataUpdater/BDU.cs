@@ -52,6 +52,7 @@
         private EntityCollection records;
         private Entity view;
         private string currentconnection;
+        private Random random;
 
         #endregion Private Fields
 
@@ -59,6 +60,7 @@
 
         public BulkDataUpdater()
         {
+            random = new Random();
             UrlUtils.TOOL_NAME = "BulkDataUpdater";
             UrlUtils.MVP_ID = "DX-MVP-5002475";
             InitializeComponent();
@@ -688,6 +690,15 @@
             return entities?.FirstOrDefault(e => e.LogicalName.Equals(entityname));
         }
 
+        private void SetCommercial()
+        {
+            var rand = random.Next(0, 100);
+            var wesup = rand < 50;
+            var buyme = rand >= 50 && rand < 90;
+            tslWeSupportTools.Visible = wesup;
+            tslBuyMeaCoffee.Visible = buyme;
+        }
+
         #endregion Private Methods
 
         #region Form Event Handlers
@@ -764,6 +775,7 @@
 
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
+            SetCommercial();
             currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
             xrmRecordAttribute.Service = Service;
             crmGridView1.DataSource = null;
