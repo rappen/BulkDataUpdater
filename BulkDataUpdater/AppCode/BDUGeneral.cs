@@ -121,6 +121,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 crmGridView1.DataSource = records;
                 crmGridView1.ShowFriendlyNames = useFriendlyNames;
                 crmGridView1.ShowLocalTimes = useFriendlyNames;
+                crmGridView1.Refresh();
                 if (string.IsNullOrWhiteSpace(job.LayoutXML))
                 {
                     crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);

@@ -543,6 +543,7 @@
             EnableControls(false);
             crmGridView1.ShowFriendlyNames = useFriendlyNames;
             crmGridView1.ShowLocalTimes = useFriendlyNames;
+            crmGridView1.Refresh();
             crmGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
             EnableControls(true);
             UpdateIncludeCount();
@@ -803,10 +804,11 @@
 
         private void tsbFriendly_Click(object sender, EventArgs e)
         {
-            if (sender != null)
+            if (sender == null || tsbFriendly.Checked == (sender == tsbFriendly))
             {
-                tsbFriendly.Checked = sender == tsbFriendly;
+                return;
             }
+            tsbFriendly.Checked = sender == tsbFriendly;
             tsbRaw.Checked = !tsbFriendly.Checked;
             useFriendlyNames = tsbFriendly.Checked;
             RefreshGridRecords();
