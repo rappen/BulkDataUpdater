@@ -464,18 +464,18 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                     yes = yes ||
                         ((!updateAttributes.Required || IsRequired(attribute)) &&
                          (!updateAttributes.Recommended || attribute.RequiredLevel?.Value == AttributeRequiredLevel.Recommended) &&
-                         (!updateAttributes.InQuery || fetch.Entity.Attributes.Any(a => a.Name == attribute.LogicalName)) &&
-                         (!updateAttributes.OnForm || bdu.IsOnAnyForm(fetch.Entity.Name, attribute.LogicalName, RefreshAttributes)) &&
-                         (!updateAttributes.OnView || bdu.IsOnAnyView(fetch.Entity.Name, attribute.LogicalName, RefreshAttributes)));
+                         (!updateAttributes.InQuery || fetch.Entity?.Attributes?.Any(a => a.Name == attribute.LogicalName) == true) &&
+                         (!updateAttributes.OnForm || bdu.IsOnAnyForm(fetch.Entity?.Name, attribute.LogicalName, RefreshAttributes)) &&
+                         (!updateAttributes.OnView || bdu.IsOnAnyView(fetch.Entity?.Name, attribute.LogicalName, RefreshAttributes)));
                 }
                 else
                 {
                     yes = yes ||
                         (updateAttributes.Required && IsRequired(attribute)) ||
                         (updateAttributes.Recommended && attribute.RequiredLevel?.Value == AttributeRequiredLevel.Recommended) ||
-                        (updateAttributes.InQuery && fetch.Entity.Attributes.Any(a => a.Name == attribute.LogicalName)) ||
-                        (updateAttributes.OnForm && bdu.IsOnAnyForm(fetch.Entity.Name, attribute.LogicalName, RefreshAttributes)) ||
-                        (updateAttributes.OnView && bdu.IsOnAnyView(fetch.Entity.Name, attribute.LogicalName, RefreshAttributes));
+                        (updateAttributes.InQuery && fetch.Entity?.Attributes?.Any(a => a.Name == attribute.LogicalName) == true) ||
+                        (updateAttributes.OnForm && bdu.IsOnAnyForm(fetch.Entity?.Name, attribute.LogicalName, RefreshAttributes)) ||
+                        (updateAttributes.OnView && bdu.IsOnAnyView(fetch.Entity?.Name, attribute.LogicalName, RefreshAttributes));
                 }
                 if (yes || attribute.LogicalName == lockedattribute)
                 {
