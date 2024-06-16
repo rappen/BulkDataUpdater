@@ -119,7 +119,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                     panAttribute.Enabled = string.IsNullOrEmpty(lockedattribute);
                     panAction.Enabled = attribute != null;
                     panValue.Enabled = panAction.Enabled && panAction.Tag is BulkActionAction;
-                    btnSave.Enabled = panButtons.Enabled && IsValueValid();
+                    btnSave.Enabled = attribute != null && panButtons.Enabled && IsValueValid();
                 }
                 catch
                 {
@@ -450,6 +450,11 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
             var result = new List<AttributeMetadata>();
             var fetch = HelpFetch.Fetch.FromString(bdu.job.FetchXML);
             var attributes = bdu.entitymeta?.Attributes?.ToList() ?? new List<AttributeMetadata>();
+            if (!string.IsNullOrEmpty(lockedattribute) && !attributes.Any(a => a.LogicalName.Equals(lockedattribute)))
+            {
+                MessageBoxEx.Show(bdu, $"The attribute '{lockedattribute}' is not available for entity '{record?.LogicalName}'", "Attribute not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return result;
+            }
             foreach (var attribute in attributes)
             {
                 if (attribute.IsPrimaryId == true)
