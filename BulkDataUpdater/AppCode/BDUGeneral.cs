@@ -1,7 +1,6 @@
 ﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
-using Microsoft.Xrm.Sdk.Metadata;
 using Rappen.XRM.Helpers;
 using Rappen.XRM.Helpers.Extensions;
 using Rappen.XTB.Helpers.Extensions;
@@ -66,6 +65,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                 Work = (worker, eventargs) =>
                 {
                     eventargs.Result = Service.RetrieveMultipleAll(fetch, worker, eventargs, null);
+                    if (!string.IsNullOrEmpty(job?.Entity) && eventargs.Result is EntityCollection result && result.Entities.Count > 0)
+                    {
+                        job.SupportMessages = Service.MessagesByEntity(job.Entity, worker);
+                    }
                 },
                 PostWorkCallBack = (completedargs) =>
                 {

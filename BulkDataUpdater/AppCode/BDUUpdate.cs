@@ -268,24 +268,33 @@ namespace Cinteros.XTB.BulkDataUpdater
                 return;
             }
             working = true;
-            chkDefImpSeqNo.Enabled = chkSetImpSeqNo.Checked;
-            numImpSeqNo.Enabled = chkSetImpSeqNo.Checked && !chkDefImpSeqNo.Checked;
-            btnDefImpSeqNo.Enabled = chkSetImpSeqNo.Checked && chkDefImpSeqNo.Checked;
-            if ((!forcekeepnum || numImpSeqNo.Value == 0) && chkSetImpSeqNo.Checked && chkDefImpSeqNo.Checked)
+            if (entitymeta?.Attributes?.Any(a => a.LogicalName == "importsequencenumber") == true)
             {
-                var impseqno = numImpSeqNo.Value;
-                var today = DateTime.Today.ToString("yyMMdd");
-                if (forcenewnum || !impseqno.ToString().StartsWith(today))
+                gbImpSeqNo.Enabled = true;
+                chkDefImpSeqNo.Enabled = chkSetImpSeqNo.Checked;
+                numImpSeqNo.Enabled = chkSetImpSeqNo.Checked && !chkDefImpSeqNo.Checked;
+                btnDefImpSeqNo.Enabled = chkSetImpSeqNo.Checked && chkDefImpSeqNo.Checked;
+                if ((!forcekeepnum || numImpSeqNo.Value == 0) && chkSetImpSeqNo.Checked && chkDefImpSeqNo.Checked)
                 {
-                    impseqno = int.Parse(today) * 1000;
-                    impseqno = impseqno + new Random().Next(999) + 1;
-                    numImpSeqNo.Value = impseqno;
-                    linkShowImpSeqNoRecords.Enabled = false;
+                    var impseqno = numImpSeqNo.Value;
+                    var today = DateTime.Today.ToString("yyMMdd");
+                    if (forcenewnum || !impseqno.ToString().StartsWith(today))
+                    {
+                        impseqno = int.Parse(today) * 1000;
+                        impseqno = impseqno + new Random().Next(999) + 1;
+                        numImpSeqNo.Value = impseqno;
+                        linkShowImpSeqNoRecords.Enabled = false;
+                    }
+                }
+                if (sender != null)
+                {
+                    UpdateJobUpdate(job.Update);
                 }
             }
-            if (sender != null)
+            else
             {
-                UpdateJobUpdate(job.Update);
+                gbImpSeqNo.Enabled = false;
+                chkSetImpSeqNo.Checked = false;
             }
             working = false;
         }
@@ -297,7 +306,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                 .Select(i => i.Tag as BulkActionItem)
                 .Select(a => a.Attribute.Metadata.LogicalName)
                 .Where(a => a != "importsequencenumber")
-                .Where(a => a != entitymeta.PrimaryNameAttribute)
+                .Where(a => a != entitymeta?.PrimaryNameAttribute)
                 .Select(a => $"<attribute name='{a}'/>"));
             return $"<fetch><entity name='{entitymeta.LogicalName}'><attribute name='{entitymeta.PrimaryNameAttribute}'/><attribute name='importsequencenumber'/>{attrs}<filter><condition attribute='importsequencenumber' operator='eq' value='{numImpSeqNo.Value}'/></filter></entity></fetch>";
         }

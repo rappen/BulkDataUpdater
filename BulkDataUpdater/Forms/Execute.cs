@@ -17,7 +17,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
         private bool confirmedbypasspreview;
         private bool init;
 
-        public static DialogResult Show(BulkDataUpdater bdu, JobExecute jobexe)
+        public static DialogResult Show(BulkDataUpdater bdu, JobExecute jobexe, IEnumerable<string> supportmessages)
         {
             if (jobexe == null)
             {
@@ -34,6 +34,8 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                     jobexe is JobDelete ? "Delete" : "Execute"
             };
             form.init = true;
+            form.rbBatchMultipleRequests.Text = $"{form.action}Multiple";
+            form.rbBatchMultipleRequests.Enabled = supportmessages.Contains($"{form.action}Multiple");
             form.SetExecuteOptions(jobexe);
             form.ValidateOptions();
             form.init = false;
@@ -108,9 +110,16 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                 {
                     error = "Batch size must be positive whole number or empty.";
                 }
-                if (size > 1 && jobexe is JobDelete && rbBatchMultipleRequests.Checked)
+                if (size > 1)
                 {
-                    error = "Delete is still not supported by UpdateMultiple.";
+                    if (!rbBatchMultipleRequests.Enabled && rbBatchMultipleRequests.Checked)
+                    {
+                        rbBatchExecuteMultiple.Checked = true;
+                    }
+                    if (jobexe is JobDelete && rbBatchMultipleRequests.Checked)
+                    {
+                        error = "Delete is still not supported by UpdateMultiple.";
+                    }
                 }
             }
             if (chkBypassPlugins.Checked)

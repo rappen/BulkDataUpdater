@@ -706,7 +706,7 @@
         private void btnExecute_Click(object sender, EventArgs e)
         {
             var jobaction = GetJobAction();
-            if (Execute.Show(this, jobaction) == DialogResult.OK)
+            if (Execute.Show(this, jobaction, job.SupportMessages) == DialogResult.OK)
             {
                 ExecuteAction(jobaction);
             }

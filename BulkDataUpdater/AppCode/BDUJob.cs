@@ -40,6 +40,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         public JobAssign Assign { get; set; } = new JobAssign();
         public JobSetState SetState { get; set; } = new JobSetState();
         public JobDelete Delete { get; set; } = new JobDelete();
+        internal IEnumerable<string> SupportMessages { get; set; }
     }
 
     public class JobInfo
