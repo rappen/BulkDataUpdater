@@ -116,9 +116,13 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                     {
                         rbBatchExecuteMultiple.Checked = true;
                     }
+                    if (jobexe is JobSetState && rbBatchMultipleRequests.Checked)
+                    {
+                        error = "Set State is still not supporting the SetStateMultiple in this tool.";
+                    }
                     if (jobexe is JobDelete && rbBatchMultipleRequests.Checked)
                     {
-                        error = "Delete is still not supported by UpdateMultiple.";
+                        error = "Delete is still not supporting the DeleteMultiple in this tool.";
                     }
                 }
             }
