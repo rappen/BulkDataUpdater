@@ -50,11 +50,13 @@ namespace Cinteros.XTB.BulkDataUpdater
             WorkAsync(new WorkAsyncInfo()
             {
                 Message = "Updating records",
+                MessageWidth = 400,
+                MessageHeight = 200,
                 IsCancelable = true,
                 AsyncArgument = selectedattributes,
                 Work = (bgworker, workargs) => { UpdateRecordsWork(bgworker, workargs, includedrecords, executeoptions, isn); },
                 PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, "Update"); },
-                ProgressChanged = (changeargs) => { SetWorkingMessage(changeargs.UserState.ToString()); }
+                ProgressChanged = (changeargs) => { SetWorkingMessage(changeargs.UserState.ToString(), 400, 200); }
             }); ;
         }
 
