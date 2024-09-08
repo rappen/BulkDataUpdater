@@ -4,6 +4,7 @@ using Microsoft.Xrm.Sdk.Metadata;
 using Rappen.XRM.Helpers;
 using Rappen.XRM.Helpers.Extensions;
 using Rappen.XRM.Tokens;
+using Rappen.XTB.Helpers;
 using Rappen.XTB.Helpers.ControlItems;
 using System;
 using System.Collections.Generic;
@@ -612,7 +613,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
 
         private void btnCalcHelp_Click(object sender, EventArgs e)
         {
-            Process.Start("https://jonasr.app/bdu/#calc");
+            UrlUtils.OpenUrl("https://jonasr.app/bdu/#calc", bdu.ConnectionDetail);
         }
 
         private void btnXRMTR_Click(object sender, EventArgs e)

@@ -416,7 +416,7 @@
                 // Reset some settings when new version is deployed
                 globalsettings.CurrentVersion = version;
                 SettingsManager.Instance.Save(typeof(BulkDataUpdater), globalsettings, "[Global]");
-                Process.Start($"https://jonasr.app/BDU/releases/#{version}");
+                UrlUtils.OpenUrl($"https://jonasr.app/BDU/releases/#{version}");
             }
         }
 
@@ -894,12 +894,12 @@
 
         private void link_Click(object sender, EventArgs e)
         {
-            UrlUtils.OpenUrl(sender);
+            UrlUtils.OpenUrl(sender, ConnectionDetail);
         }
 
         private void link_Click(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            UrlUtils.OpenUrl(sender);
+            UrlUtils.OpenUrl(sender, ConnectionDetail);
         }
 
         private void btnSelectAll_Click(object sender, EventArgs e)

@@ -188,7 +188,7 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
 
         private void link_Click(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            UrlUtils.OpenUrl(sender);
+            UrlUtils.OpenUrl(sender, bdu.ConnectionDetail);
         }
 
         private void validate_Click(object sender, System.EventArgs e)

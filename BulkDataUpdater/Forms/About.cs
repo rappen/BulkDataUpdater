@@ -1,5 +1,4 @@
-﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
-using Rappen.XTB.Helpers;
+﻿using Rappen.XTB.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -74,7 +73,7 @@ Jonas", "Anonymous statistics", MessageBoxButtons.OK, MessageBoxIcon.Information
 
         private void link_Click(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            UrlUtils.OpenUrl(sender);
+            UrlUtils.OpenUrl(sender, bdu.ConnectionDetail);
         }
     }
 }
