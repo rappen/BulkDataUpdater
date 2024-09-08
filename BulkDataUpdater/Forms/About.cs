@@ -76,10 +76,5 @@ Jonas", "Anonymous statistics", MessageBoxButtons.OK, MessageBoxIcon.Information
         {
             UrlUtils.OpenUrl(sender);
         }
-
-        private void link_Click(object sender, EventArgs e)
-        {
-            UrlUtils.OpenUrl(sender);
-        }
     }
 }

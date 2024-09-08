@@ -47,30 +47,29 @@
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(593, 276);
+            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Location = new System.Drawing.Point(595, 190);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(168, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(156, 25);
             this.linkLabel1.TabIndex = 2;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Tag = "https://jonasr.app/bdu/";
-            this.linkLabel1.Text = "Bulk Data Updater documentation";
+            this.linkLabel1.Text = "Documentation";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(593, 192);
+            this.label2.Location = new System.Drawing.Point(595, 85);
             this.label2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 13);
@@ -80,7 +79,7 @@
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(690, 192);
+            this.linkLabel2.Location = new System.Drawing.Point(692, 85);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(64, 13);
             this.linkLabel2.TabIndex = 4;
@@ -102,7 +101,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(593, 168);
+            this.label5.Location = new System.Drawing.Point(595, 61);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 10;
@@ -111,7 +110,7 @@
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(690, 168);
+            this.lblVersion.Location = new System.Drawing.Point(692, 61);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(22, 13);
             this.lblVersion.TabIndex = 11;
@@ -139,7 +138,7 @@
             this.listAssemblies.Location = new System.Drawing.Point(3, 16);
             this.listAssemblies.Name = "listAssemblies";
             this.listAssemblies.ShowGroups = false;
-            this.listAssemblies.Size = new System.Drawing.Size(386, 182);
+            this.listAssemblies.Size = new System.Drawing.Size(386, 214);
             this.listAssemblies.TabIndex = 0;
             this.listAssemblies.UseCompatibleStateImageBehavior = false;
             this.listAssemblies.View = System.Windows.Forms.View.Details;
@@ -157,16 +156,16 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.listAssemblies);
-            this.groupBox1.Location = new System.Drawing.Point(490, 328);
+            this.groupBox1.Location = new System.Drawing.Point(490, 296);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(392, 201);
+            this.groupBox1.Size = new System.Drawing.Size(392, 233);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(593, 240);
+            this.label6.Location = new System.Drawing.Point(595, 133);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(52, 13);
             this.label6.TabIndex = 15;
@@ -175,7 +174,7 @@
             // linkLabel5
             // 
             this.linkLabel5.AutoSize = true;
-            this.linkLabel5.Location = new System.Drawing.Point(690, 240);
+            this.linkLabel5.Location = new System.Drawing.Point(692, 133);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(59, 13);
             this.linkLabel5.TabIndex = 16;
@@ -186,7 +185,7 @@
             // linkLabel4
             // 
             this.linkLabel4.AutoSize = true;
-            this.linkLabel4.Location = new System.Drawing.Point(690, 216);
+            this.linkLabel4.Location = new System.Drawing.Point(692, 109);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(51, 13);
             this.linkLabel4.TabIndex = 18;
@@ -198,7 +197,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(593, 216);
+            this.label1.Location = new System.Drawing.Point(595, 109);
             this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 13);
@@ -208,31 +207,17 @@
             // linkLabel3
             // 
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(593, 297);
+            this.linkLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel3.Location = new System.Drawing.Point(595, 237);
             this.linkLabel3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(77, 13);
+            this.linkLabel3.Size = new System.Drawing.Size(153, 25);
             this.linkLabel3.TabIndex = 19;
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Tag = "https://jonasr.app/bdu/releases";
             this.linkLabel3.Text = "Release Notes";
             this.linkLabel3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(523, 38);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(327, 109);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 20;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Tag = "http://jonasr.app/supporting/";
-            this.toolTip1.SetToolTip(this.pictureBox2, "We can support these tools!\r\nAs a company with a proper invoice, or personally ca" +
-        "n support a bit easier.\r\nhttp://jonasr.app/supporting/\r\n");
-            this.pictureBox2.Click += new System.EventHandler(this.link_Click);
             // 
             // About
             // 
@@ -241,7 +226,6 @@
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.button1;
             this.ClientSize = new System.Drawing.Size(904, 560);
-            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.linkLabel3);
             this.Controls.Add(this.linkLabel4);
             this.Controls.Add(this.label1);
@@ -262,7 +246,6 @@
             this.Text = "About";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,6 +269,5 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
