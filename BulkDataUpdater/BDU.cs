@@ -2,6 +2,7 @@
 {
     using AppCode;
     using Cinteros.XTB.BulkDataUpdater.Forms;
+    using Cinteros.XTB.BulkDataUpdater.Properties;
     using McTools.Xrm.Connection;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Metadata;
@@ -787,6 +788,29 @@
             LoadGlobalSetting();
             LogUse("Load", ai2: true);
             Supporting.ShowIf(this, false, true, ai2);
+            if (Supporting.IsEnabled(this))
+            {
+                tsbSupporting.Visible = true;
+                var supptype = Supporting.IsSupporting(this);
+                switch (supptype)
+                {
+                    case SupportType.Company:
+                        tsbSupporting.Image = Resources.We_Support_icon;
+                        break;
+
+                    case SupportType.Personal:
+                        tsbSupporting.Image = Resources.I_Support_icon;
+                        break;
+
+                    case SupportType.Contribute:
+                        tsbSupporting.Image = Resources.I_Contribute_icon;
+                        break;
+                }
+            }
+            else
+            {
+                tsbSupporting.Visible = false;
+            }
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
