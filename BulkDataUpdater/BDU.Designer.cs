@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbFetch = new System.Windows.Forms.ToolStripDropDownButton();
@@ -47,10 +47,8 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCancel = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
-            this.tslBuyMeaCoffee = new System.Windows.Forms.ToolStripLabel();
-            this.tslWeSupportTools = new System.Windows.Forms.ToolStripLabel();
-            this.tslDoc = new System.Windows.Forms.ToolStripLabel();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
+            this.tslDoc = new System.Windows.Forms.ToolStripLabel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.gbExecute = new System.Windows.Forms.GroupBox();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
@@ -59,6 +57,7 @@
             this.lblSelectedRecords = new System.Windows.Forms.Label();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabUpdate = new System.Windows.Forms.TabPage();
             this.gb3attributes = new System.Windows.Forms.GroupBox();
@@ -83,6 +82,8 @@
             this.btnAssignSelect = new System.Windows.Forms.Button();
             this.txtAssignEntity = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
+            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.tabSetState = new System.Windows.Forms.TabPage();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panQualifyLead = new System.Windows.Forms.Panel();
@@ -98,12 +99,10 @@
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
-            this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
-            this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
+            this.tsbSupporting = new System.Windows.Forms.ToolStripButton();
             this.toolStripMain.SuspendLayout();
             this.gbExecute.SuspendLayout();
             this.panRecordSummary.SuspendLayout();
@@ -111,6 +110,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabUpdate.SuspendLayout();
             this.gb3attributes.SuspendLayout();
@@ -121,7 +121,6 @@
             this.panQualifyLead.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabDelete.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -146,9 +145,8 @@
             this.tsbCancel,
             this.toolStripSeparator17,
             this.tslAbout,
-            this.tslBuyMeaCoffee,
-            this.tslWeSupportTools,
-            this.tslDoc});
+            this.tslDoc,
+            this.tsbSupporting});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Padding = new System.Windows.Forms.Padding(0, 4, 1, 6);
@@ -280,37 +278,15 @@
             this.toolStripSeparator17.Name = "toolStripSeparator17";
             this.toolStripSeparator17.Size = new System.Drawing.Size(6, 39);
             // 
-            // tslBuyMeaCoffee
+            // tslAbout
             // 
-            this.tslBuyMeaCoffee.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tslBuyMeaCoffee.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tslBuyMeaCoffee.Image = ((System.Drawing.Image)(resources.GetObject("tslBuyMeaCoffee.Image")));
-            this.tslBuyMeaCoffee.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tslBuyMeaCoffee.IsLink = true;
-            this.tslBuyMeaCoffee.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.tslBuyMeaCoffee.Name = "tslBuyMeaCoffee";
-            this.tslBuyMeaCoffee.Size = new System.Drawing.Size(32, 36);
-            this.tslBuyMeaCoffee.Tag = "https://www.buymeacoffee.com/rappen";
-            this.tslBuyMeaCoffee.Text = "Buy Me a Coffee";
-            this.tslBuyMeaCoffee.ToolTipText = "Simplest support - jusy Buy Me a Coffee!\r\nhttps://www.buymeacoffee.com/rappen";
-            this.tslBuyMeaCoffee.Click += new System.EventHandler(this.link_Click);
-            // 
-            // tslWeSupportTools
-            // 
-            this.tslWeSupportTools.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tslWeSupportTools.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tslWeSupportTools.Image = ((System.Drawing.Image)(resources.GetObject("tslWeSupportTools.Image")));
-            this.tslWeSupportTools.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tslWeSupportTools.IsLink = true;
-            this.tslWeSupportTools.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.tslWeSupportTools.Name = "tslWeSupportTools";
-            this.tslWeSupportTools.Size = new System.Drawing.Size(51, 36);
-            this.tslWeSupportTools.Tag = "https://jonasr.app/supporting";
-            this.tslWeSupportTools.Text = "We Support Tools";
-            this.tslWeSupportTools.ToolTipText = "We can support these tools!\r\nAs a company with a proper invoice, or personally ca" +
-    "n support a bit easier.\r\nhttp://jonasr.app/supporting/";
-            this.tslWeSupportTools.Visible = false;
-            this.tslWeSupportTools.Click += new System.EventHandler(this.link_Click);
+            this.tslAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tslAbout.Image = ((System.Drawing.Image)(resources.GetObject("tslAbout.Image")));
+            this.tslAbout.IsLink = true;
+            this.tslAbout.Name = "tslAbout";
+            this.tslAbout.Size = new System.Drawing.Size(114, 36);
+            this.tslAbout.Text = "by Jonas Rapp";
+            this.tslAbout.Click += new System.EventHandler(this.tslAbout_Click);
             // 
             // tslDoc
             // 
@@ -322,16 +298,6 @@
             this.tslDoc.Text = "Documentation";
             this.tslDoc.ToolTipText = "https://jonasr.app/BDU/";
             this.tslDoc.Click += new System.EventHandler(this.link_Click);
-            // 
-            // tslAbout
-            // 
-            this.tslAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tslAbout.Image = ((System.Drawing.Image)(resources.GetObject("tslAbout.Image")));
-            this.tslAbout.IsLink = true;
-            this.tslAbout.Name = "tslAbout";
-            this.tslAbout.Size = new System.Drawing.Size(114, 36);
-            this.tslAbout.Text = "by Jonas Rapp";
-            this.tslAbout.Click += new System.EventHandler(this.tslAbout_Click);
             // 
             // btnRefresh
             // 
@@ -439,6 +405,35 @@
             this.splitContainer1.Size = new System.Drawing.Size(1309, 534);
             this.splitContainer1.SplitterDistance = 928;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // crmGridView1
+            // 
+            this.crmGridView1.AllowUserToAddRows = false;
+            this.crmGridView1.AllowUserToDeleteRows = false;
+            this.crmGridView1.AllowUserToOrderColumns = true;
+            this.crmGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.crmGridView1.AutoRefresh = false;
+            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.crmGridView1.ColumnOrder = "";
+            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crmGridView1.FilterColumns = "";
+            this.crmGridView1.LayoutXML = "";
+            this.crmGridView1.Location = new System.Drawing.Point(0, 43);
+            this.crmGridView1.Name = "crmGridView1";
+            this.crmGridView1.ReadOnly = true;
+            this.crmGridView1.RowHeadersVisible = false;
+            this.crmGridView1.RowHeadersWidth = 72;
+            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.crmGridView1.Service = null;
+            this.crmGridView1.ShowFriendlyNames = true;
+            this.crmGridView1.ShowIdColumn = false;
+            this.crmGridView1.Size = new System.Drawing.Size(928, 491);
+            this.crmGridView1.TabIndex = 3;
+            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
+            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
             // 
             // tabControl1
             // 
@@ -731,6 +726,28 @@
             this.label6.TabIndex = 7;
             this.label6.Text = "Select User or Team";
             // 
+            // xrmAssignText
+            // 
+            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
+            this.xrmAssignText.Column = null;
+            this.xrmAssignText.DisplayFormat = "";
+            this.xrmAssignText.Location = new System.Drawing.Point(17, 69);
+            this.xrmAssignText.Name = "xrmAssignText";
+            this.xrmAssignText.ReadOnly = true;
+            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
+            this.xrmAssignText.Size = new System.Drawing.Size(311, 20);
+            this.xrmAssignText.TabIndex = 12;
+            // 
+            // xrmRecordAssign
+            // 
+            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.xrmRecordAssign.LogicalName = null;
+            this.xrmRecordAssign.Record = null;
+            this.xrmRecordAssign.Service = null;
+            this.xrmRecordAssign.ColumnValueChanged += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.xrmRecordAssign_ColumnValueChanged);
+            // 
             // tabSetState
             // 
             this.tabSetState.BackColor = System.Drawing.SystemColors.Window;
@@ -896,57 +913,6 @@
     "NOT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation q" +
     "uestion, and then point of no return.";
             // 
-            // crmGridView1
-            // 
-            this.crmGridView1.AllowUserToAddRows = false;
-            this.crmGridView1.AllowUserToDeleteRows = false;
-            this.crmGridView1.AllowUserToOrderColumns = true;
-            this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.crmGridView1.AutoRefresh = false;
-            this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.crmGridView1.ColumnOrder = "";
-            this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crmGridView1.FilterColumns = "";
-            this.crmGridView1.LayoutXML = "";
-            this.crmGridView1.Location = new System.Drawing.Point(0, 43);
-            this.crmGridView1.Name = "crmGridView1";
-            this.crmGridView1.ReadOnly = true;
-            this.crmGridView1.RowHeadersVisible = false;
-            this.crmGridView1.RowHeadersWidth = 72;
-            this.crmGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.crmGridView1.Service = null;
-            this.crmGridView1.ShowFriendlyNames = true;
-            this.crmGridView1.ShowIdColumn = false;
-            this.crmGridView1.Size = new System.Drawing.Size(928, 491);
-            this.crmGridView1.TabIndex = 3;
-            this.crmGridView1.RecordDoubleClick += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.crmGridView1_RecordDoubleClick);
-            this.crmGridView1.SelectionChanged += new System.EventHandler(this.crmGridView1_SelectionChanged);
-            // 
-            // xrmAssignText
-            // 
-            this.xrmAssignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.xrmAssignText.BackColor = System.Drawing.SystemColors.Window;
-            this.xrmAssignText.Column = null;
-            this.xrmAssignText.DisplayFormat = "";
-            this.xrmAssignText.Location = new System.Drawing.Point(17, 69);
-            this.xrmAssignText.Name = "xrmAssignText";
-            this.xrmAssignText.ReadOnly = true;
-            this.xrmAssignText.RecordHost = this.xrmRecordAssign;
-            this.xrmAssignText.Size = new System.Drawing.Size(311, 20);
-            this.xrmAssignText.TabIndex = 12;
-            // 
-            // xrmRecordAssign
-            // 
-            this.xrmRecordAssign.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.xrmRecordAssign.LogicalName = null;
-            this.xrmRecordAssign.Record = null;
-            this.xrmRecordAssign.Service = null;
-            this.xrmRecordAssign.ColumnValueChanged += new Rappen.XTB.Helpers.Controls.XRMRecordEventHandler(this.xrmRecordAssign_ColumnValueChanged);
-            // 
             // xrmRecordAttribute
             // 
             this.xrmRecordAttribute.Id = new System.Guid("00000000-0000-0000-0000-000000000000");
@@ -974,6 +940,19 @@
             this.xrmLookupAssign.Service = null;
             this.xrmLookupAssign.Title = "Select User or Team to assign to";
             // 
+            // tsbSupporting
+            // 
+            this.tsbSupporting.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbSupporting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSupporting.Image = global::Cinteros.XTB.BulkDataUpdater.Properties.Resources.Supporting_icon;
+            this.tsbSupporting.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsbSupporting.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSupporting.Name = "tsbSupporting";
+            this.tsbSupporting.Size = new System.Drawing.Size(56, 36);
+            this.tsbSupporting.ToolTipText = "We all support these free, open-source tools - either\r\nas a company, personally, " +
+    "or by contribution.";
+            this.tsbSupporting.Click += new System.EventHandler(this.tsbSupporting_Click);
+            // 
             // BulkDataUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -996,6 +975,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabUpdate.ResumeLayout(false);
             this.gb3attributes.ResumeLayout(false);
@@ -1012,7 +992,6 @@
             this.panel3.PerformLayout();
             this.tabDelete.ResumeLayout(false);
             this.tabDelete.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.crmGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1091,7 +1070,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmFetchFile;
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Label lblSelectedRecords;
-        private System.Windows.Forms.ToolStripLabel tslWeSupportTools;
-        private System.Windows.Forms.ToolStripLabel tslBuyMeaCoffee;
+        private System.Windows.Forms.ToolStripButton tsbSupporting;
     }
 }

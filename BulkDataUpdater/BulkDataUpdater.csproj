@@ -213,6 +213,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Rappen.XTB.Supporting\Forms\Supporting.cs">
+      <Link>Forms\Supporting.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Rappen.XTB.Supporting\Forms\Supporting.Designer.cs">
+      <Link>Forms\Supporting.Designer.cs</Link>
+      <DependentUpon>Supporting.cs</DependentUpon>
+    </Compile>
     <Compile Include="AppCode\BDUAssign.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -304,6 +312,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\Rappen.XTB.Supporting\Forms\Supporting.resx">
+      <Link>Forms\Supporting.resx</Link>
+      <DependentUpon>Supporting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -333,9 +345,21 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="..\Rappen.XTB.Helper\Rappen.XRM.Helpers\Rappen.XRM.Helpers.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Include="Resources\I-Contribute-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I-Support-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Supporting-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\We-Support-icon.png" />
+  </ItemGroup>
   <Import Project="..\Rappen.XTB.Helper\Rappen.XRM.Tokens\Rappen.XRM.Tokens.projitems" Label="Shared" />
   <Import Project="..\Rappen.XTB.Helper\Rappen.XTB.Helpers\Rappen.XTB.Helpers.projitems" Label="Shared" />
+  <Import Project="..\Rappen.XTB.Helper\Rappen.XRM.Helpers\Rappen.XRM.Helpers.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>ilmerge.exe /target:library /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319" "/out:Rappen.XTB.BDU.dll" "$(TargetFileName)" "..\..\..\lib\System.Runtime.CompilerServices.Unsafe.dll"

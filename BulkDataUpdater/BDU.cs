@@ -7,6 +7,7 @@
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
     using Rappen.XRM.Helpers.Extensions;
+    using Rappen.XTB;
     using Rappen.XTB.Helpers;
     using Rappen.XTB.Helpers.Extensions;
     using System;
@@ -690,15 +691,6 @@
             return entities?.FirstOrDefault(e => e.LogicalName.Equals(entityname));
         }
 
-        private void SetCommercial()
-        {
-            var rand = random.Next(0, 100);
-            var wesup = rand < 50;
-            var buyme = rand >= 50 && rand < 90;
-            tslWeSupportTools.Visible = wesup;
-            tslBuyMeaCoffee.Visible = buyme;
-        }
-
         #endregion Private Methods
 
         #region Form Event Handlers
@@ -775,7 +767,6 @@
 
         private void DataUpdater_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
-            SetCommercial();
             currentversion = new Version(e.ConnectionDetail?.OrganizationVersion);
             xrmRecordAttribute.Service = Service;
             crmGridView1.DataSource = null;
@@ -795,6 +786,7 @@
         {
             LoadGlobalSetting();
             LogUse("Load", ai2: true);
+            Supporting.ShowIf(this, false, true, ai2);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -913,6 +905,11 @@
         private void btnSelectAll_Click(object sender, EventArgs e)
         {
             crmGridView1.SelectAll();
+        }
+
+        private void tsbSupporting_Click(object sender, EventArgs e)
+        {
+            Supporting.ShowIf(this, true, false, ai2);
         }
 
         #endregion Form Event Handlers
