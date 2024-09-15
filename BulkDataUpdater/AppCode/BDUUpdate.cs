@@ -244,7 +244,11 @@ namespace Cinteros.XTB.BulkDataUpdater
             chkDefImpSeqNo.Checked = job.DefaultImpSeqNo;
             numImpSeqNo.Value = job.ImpSeqNo;
             lvAttributes.Items.Clear();
-            job.Attributes.ForEach(a => AddBAI(a));
+            if (entitymeta == null)
+            {
+                return;
+            }
+            job.Attributes.Where(a => entitymeta.Attributes.Select(am => am.LogicalName).Contains(a.AttributeName)).ToList().ForEach(a => AddBAI(a));
             if (lvAttributes.Items.Count > 0)
             {
                 lvAttributes.Items[0].Selected = true;
