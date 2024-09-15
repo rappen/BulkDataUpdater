@@ -431,6 +431,7 @@
             job = settings.Job;
             updateAttributes = settings.UpdateAttributes;
             fetchResulCount = settings.FetchResultCount;
+            useFriendlyNames = settings.Friendly;
             tsbFriendly.Checked = settings.Friendly;
             tsbRaw.Checked = !settings.Friendly;
             tsbFriendly_Click(null, null);
