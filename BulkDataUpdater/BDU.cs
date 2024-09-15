@@ -13,6 +13,7 @@
     using Rappen.XTB.Helpers.Extensions;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -956,19 +957,25 @@
             }
             if (savedlg.ShowDialog() == DialogResult.OK)
             {
+                var saved = false;
                 var suffix = Path.GetExtension(savedlg.FileName).ToLowerInvariant().Trim('.');
                 if (suffix == "xml")
                 {
-                    job.Log.SaveXML(this, savedlg.FileName);
+                    saved = job.Log.SaveXML(this, savedlg.FileName);
                 }
                 else
                 {
                     var separator = suffix == "csv" ? ';' : suffix == "txt" ? '\t' : ',';
-                    job.Log.SaveText(this, savedlg.FileName, separator);
+                    saved = job.Log.SaveText(this, savedlg.FileName, separator);
+                }
+                if (saved &&
+                    MessageBoxEx.Show(this, "Log saved!\n\nOpen it?", "Save Log", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    Process.Start(savedlg.FileName);
                 }
             }
         }
-
-        #endregion Form Event Handlers
     }
+
+    #endregion Form Event Handlers
 }

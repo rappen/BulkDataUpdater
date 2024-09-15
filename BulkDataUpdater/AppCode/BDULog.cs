@@ -71,7 +71,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
         public string FileName => $"BDU_{Action}_{EntityLogicalName}_{TimeStamp:yyyyMMdd_HHmmss}";
 
-        public void SaveXML(PluginControlBase tool, string filepath = null)
+        public bool SaveXML(PluginControlBase tool, string filepath = null)
         {
             if (string.IsNullOrEmpty(filepath))
             {
@@ -85,25 +85,29 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
                     Directory.CreateDirectory(path);
                 }
                 XmlSerializerHelper.SerializeToFile(this, filepath);
+                return true;
             }
             catch (Exception ex)
             {
                 tool.LogError($"Saving settings to {filepath}\n{ex}");
                 tool.ShowErrorDialog(ex, "Saving Log", filepath);
+                return false;
             }
         }
 
-        public void SaveText(PluginControlBase tool, string filepath, char separator)
+        public bool SaveText(PluginControlBase tool, string filepath, char separator)
         {
             try
             {
                 var content = ToFlatten(separator);
                 File.WriteAllText(filepath, content);
+                return true;
             }
             catch (Exception ex)
             {
                 tool.LogError($"Saving settings to {filepath}\n{ex}");
                 tool.ShowErrorDialog(ex, "Saving Log", filepath);
+                return false;
             }
         }
 
