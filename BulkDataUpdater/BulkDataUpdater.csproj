@@ -230,7 +230,9 @@
     <Compile Include="AppCode\BDUAssign.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="AppCode\BDUEntity.cs" />
     <Compile Include="AppCode\BDUJob.cs" />
+    <Compile Include="AppCode\BDULog.cs" />
     <Compile Include="AppCode\FindTextHandler.cs" />
     <Compile Include="AppCode\Prompt.cs" />
     <Compile Include="AppCode\ScintillaInitialize.cs" />
