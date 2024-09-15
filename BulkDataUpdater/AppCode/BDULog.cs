@@ -19,15 +19,23 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
     {
         private IOrganizationService service;
         private EntityMetadata entitymeta;
+        internal TimeSpan Duration;
 
-        public DateTime TimeStamp = DateTime.Now;
-        public string Action;
-        public int RecordCount;
-        public TimeSpan Duration;
-        public int Errors = 0;
-        public List<BDULogRequest> Requests = new List<BDULogRequest>();
+        public DateTime TimeStamp { get; set; } = DateTime.Now;
+        public string Action { get; set; }
 
-        public string EntityName => entitymeta?.LogicalName;
+        public string EntityLogicalName
+        { get { return entitymeta?.LogicalName; } set { } }
+
+        public string EntityDisplayName
+        { get { return entitymeta?.ToDisplayName(); } set { } }
+
+        public double DurationMS
+        { get { return Duration.TotalMilliseconds; } set { } }
+
+        public int Records { get; set; }
+        public int Errors { get; set; } = 0;
+        public List<BDULogRequest> Requests { get; set; } = new List<BDULogRequest>();
 
         private BDULogRun()
         { }
@@ -37,7 +45,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             this.service = service;
             this.entitymeta = entitymeta;
             Action = action;
-            RecordCount = recordcount;
+            Records = recordcount;
         }
 
         public BDULogRequest AddRequest(IEnumerable<BDUEntity> records)
@@ -52,27 +60,36 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
         public void Finished()
         {
-            Duration = (DateTime.Now - TimeStamp);
+            if (Duration != null && Duration.TotalMilliseconds > 0)
+            {
+                return;
+            }
+            Duration = DateTime.Now - TimeStamp;
             Requests.Where(r => r.Duration == null || r.Duration.TotalMilliseconds == 0).ToList().ForEach(r => r.Finished());
             Requests.ForEach(r => Errors += r.Success ? 0 : 1);
         }
 
-        public string FileName => $"BDU_{Action}_{EntityName}_{TimeStamp:yyyyMMdd_HHmmss}";
+        public string FileName => $"BDU_{Action}_{EntityLogicalName}_{TimeStamp:yyyyMMdd_HHmmss}";
 
-        public void SaveLog(PluginControlBase tool)
+        public void SaveXML(PluginControlBase tool, string filepath = null)
         {
-            string path = Path.Combine(Paths.LogsPath, FileName + ".log");
+            if (string.IsNullOrEmpty(filepath))
+            {
+                filepath = Path.Combine(Paths.LogsPath, FileName + ".log");
+            }
+            var path = Path.GetDirectoryName(filepath);
             try
             {
-                if (!Directory.Exists(Paths.LogsPath))
+                if (!Directory.Exists(path))
                 {
-                    Directory.CreateDirectory(Paths.LogsPath);
+                    Directory.CreateDirectory(path);
                 }
-                XmlSerializerHelper.SerializeToFile(this, path);
+                XmlSerializerHelper.SerializeToFile(this, filepath);
             }
             catch (Exception ex)
             {
-                tool.LogError($"Saving settings to {path}\n{ex}");
+                tool.LogError($"Saving settings to {filepath}\n{ex}");
+                tool.ShowErrorDialog(ex, "Saving Log", filepath);
             }
         }
 
@@ -85,7 +102,8 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             }
             catch (Exception ex)
             {
-                tool.ShowErrorDialog(ex, $"Error saving log", filepath);
+                tool.LogError($"Saving settings to {filepath}\n{ex}");
+                tool.ShowErrorDialog(ex, "Saving Log", filepath);
             }
         }
 
@@ -104,12 +122,12 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             OnTheRight(rows, headerrow++, headercol, "Date", TimeStamp.ToShortDateString());
             OnTheRight(rows, headerrow++, headercol, "Time", TimeStamp.ToString("HH:mm:ss"));
             OnTheRight(rows, headerrow++, headercol, "Action", Action);
-            OnTheRight(rows, headerrow++, headercol, "Entity", EntityName);
+            OnTheRight(rows, headerrow++, headercol, "Entity", EntityLogicalName);
             if (entitymeta?.ToDisplayName() is string table && !string.IsNullOrEmpty(table))
             {
                 OnTheRight(rows, headerrow++, headercol, "Table", entitymeta?.ToDisplayName());
             }
-            OnTheRight(rows, headerrow++, headercol, "Records", RecordCount.ToString());
+            OnTheRight(rows, headerrow++, headercol, "Records", Records.ToString());
             if (Duration.TotalMilliseconds > 0)
             {
                 var (duration, unit) = Duration.ToSmartStringSplit();
@@ -165,14 +183,19 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
     public class BDULogRequest
     {
-        public DateTime TimeStamp;
-        public int No = 0;
-        public string Request = "<none>";
-        public Guid Id;
-        public TimeSpan Duration;
-        public bool Success;
-        public string ErrorMessage;
-        public List<BDULogRecord> Records = new List<BDULogRecord>();
+        internal TimeSpan Duration;
+
+        public DateTime TimeStamp { get; set; }
+        public int No { get; set; } = 0;
+        public string Request { get; set; } = "<none>";
+        public Guid Id { get; set; }
+
+        public double DurationMS
+        { get { return Duration.TotalMilliseconds; } set { } }
+
+        public bool Success { get; set; }
+        public string ErrorMessage { get; set; }
+        public List<BDULogRecord> Records { get; set; } = new List<BDULogRecord>();
 
         private BDULogRequest()
         { }
@@ -205,10 +228,9 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
     public class BDULogRecord
     {
         private BDUEntity record;
-        public List<BDULogAttribute> Attributes = new List<BDULogAttribute>();
-
-        public Guid Id;
-        public string Name;
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public List<BDULogAttribute> Attributes { get; set; } = new List<BDULogAttribute>();
 
         private BDULogRecord()
         { }
@@ -241,14 +263,14 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
     public class BDULogAttribute
     {
-        public string LogicalName;
-        public string DisplayName;
-        public string Action;
-        public object NewValue;
-        public string NewValueString;
-        public object OldValue;
-        public string OldValueString;
-        public bool OldValueKnown;
+        public string LogicalName { get; set; }
+        public string DisplayName { get; set; }
+        public string Action { get; set; }
+        public object NewValue { get; set; }
+        public string NewValueString { get; set; }
+        public object OldValue { get; set; }
+        public string OldValueString { get; set; }
+        public bool OldValueKnown { get; set; }
 
         private BDULogAttribute()
         { }
@@ -258,7 +280,10 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             LogicalName = attribute;
             DisplayName = service.GetAttribute(entity.LogicalName, attribute)?.ToDisplayName();
             Action = entity.Action.ContainsKey(attribute) ? entity.Action[attribute] : string.Empty;
-            entity.TryGetAttributeValue(attribute, out NewValue);
+            if (entity.Contains(attribute))
+            {
+                NewValue = entity[attribute];
+            }
             NewValueString = entity.AttributeToString(attribute, service);
             if (entity.OldAttribues.Contains(LogicalName) && entity.OldAttribues[LogicalName] != null)
             {
