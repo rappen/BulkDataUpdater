@@ -8,4 +8,5 @@
 */obj
 /packages
 *.csproj.user
-/.vs
+**/.vs
+/tmp
