@@ -13,7 +13,6 @@
     using Rappen.XTB.Helpers.Extensions;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -273,6 +272,7 @@
                         (tabControl1.SelectedTab == tabAssign && xrmRecordAssign.Record != null) ||
                         (tabControl1.SelectedTab == tabSetState && cbSetStatus.SelectedItem != null && cbSetStatusReason.SelectedItem != null) ||
                         (tabControl1.SelectedTab == tabDelete));
+                    btnSaveLog.Enabled = enabled && job?.Log != null;
                     SetImpSeqNo(forcekeepnum: true);
                 }
                 catch
@@ -934,6 +934,39 @@
         private void tsbSupporting_Click(object sender, EventArgs e)
         {
             Supporting.ShowIf(this, true, false, ai2);
+        }
+
+        private void btnSaveLog_Click(object sender, EventArgs e)
+        {
+            if (job?.Log == null)
+            {
+                MessageBoxEx.Show(this, "No log to save.", "Save Log", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            var savedlg = new SaveFileDialog
+            {
+                Filter = "CSV (*.csv)|*.csv|TAB (*.txt)|*.txt|XML (*.xml)|*.xml",
+                DefaultExt = ".csv",
+                FileName = job.Log.FileName,
+                Title = "Save a BDU log"
+            };
+            if (!string.IsNullOrEmpty(job.Info?.OriginalPath))
+            {
+                savedlg.InitialDirectory = Path.GetDirectoryName(job.Info.OriginalPath);
+            }
+            if (savedlg.ShowDialog() == DialogResult.OK)
+            {
+                var suffix = Path.GetExtension(savedlg.FileName).ToLowerInvariant().Trim('.');
+                if (suffix == "xml")
+                {
+                    job.Log.SaveXML(this, savedlg.FileName);
+                }
+                else
+                {
+                    var separator = suffix == "csv" ? ';' : suffix == "txt" ? '\t' : ',';
+                    job.Log.SaveText(this, savedlg.FileName, separator);
+                }
+            }
         }
 
         #endregion Form Event Handlers

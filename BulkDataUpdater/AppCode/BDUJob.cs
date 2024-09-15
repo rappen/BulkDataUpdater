@@ -10,6 +10,8 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
     {
         private string fetchXML;
 
+        internal BDULogRun Log;
+
         public JobInfo Info { get; set; }
         public string Entity { get; set; }
 

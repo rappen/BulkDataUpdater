@@ -1,6 +1,7 @@
 ﻿using Cinteros.XTB.BulkDataUpdater.AppCode;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
+using Rappen.XRM.Helpers.Extensions;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -56,17 +57,19 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 job.Assign.ExecuteOptions = executeoptions;
             }
+            var log = new BDULogRun(ConnectionDetail.ServiceClient, "Assign", entitymeta, includedrecords.Count());
+
             WorkAsync(new WorkAsyncInfo()
             {
                 Message = "Assigning records",
                 IsCancelable = true,
-                Work = (bgworker, workargs) => { AssignRecordsWork(bgworker, workargs, owner, includedrecords, executeoptions); },
-                PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, "Assign"); },
+                Work = (bgworker, workargs) => { AssignRecordsWork(bgworker, workargs, owner, includedrecords, executeoptions, log); },
+                PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, log); },
                 ProgressChanged = (changeargs) => { SetWorkingMessage(changeargs.UserState.ToString()); }
             });
         }
 
-        private void AssignRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, Entity owner, System.Collections.Generic.IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions)
+        private void AssignRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, Entity owner, System.Collections.Generic.IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions, BDULogRun log)
         {
             var sw = Stopwatch.StartNew();
             var progress = "Starting...";
@@ -74,10 +77,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             var current = 0;
             var assigned = 0;
             var failed = 0;
-            var entities = new EntityCollection
-            {
-                EntityName = includedrecords.FirstOrDefault().LogicalName
-            };
+            var entities = new BDUEntityCollection();
             foreach (var record in includedrecords)
             {
                 if (bgworker.CancellationPending)
@@ -86,21 +86,22 @@ namespace Cinteros.XTB.BulkDataUpdater
                     break;
                 }
                 current++;
-                var clone = new Entity(record.LogicalName, record.Id);
+                var clone = new BDUEntity(record.LogicalName, record.Id, record.ToStringExt(ConnectionDetail.ServiceClient));
                 clone.Attributes.Add("ownerid", owner.ToEntityReference());
-                entities.Entities.Add(clone);
-                if (entities.Entities.Count >= executeoptions.BatchSize || current == total)
+                entities.Add(clone);
+                if (entities.Count >= executeoptions.BatchSize || current == total)
                 {
-                    progress = GetProgressDetails(sw, total, current, entities.Entities.Count, failed);
+                    progress = GetProgressDetails(sw, total, current, entities.Count, failed);
                     WaitingExecution(bgworker, workargs, executeoptions, progress);
                     PushProgress(bgworker, progress);
-                    if (entities.Entities.Count == 1)
+                    var logreq = log.AddRequest(entities);
+                    if (entities.Count == 1)
                     {
-                        failed += ExecuteRequest(new UpdateRequest { Target = entities.Entities.FirstOrDefault() }, executeoptions);
+                        failed += ExecuteRequest(new UpdateRequest { Target = entities.FirstOrDefault() }, executeoptions, logreq);
                     }
                     else if (executeoptions.MultipleRequest)
                     {
-                        failed += ExecuteRequest(new UpdateMultipleRequest { Targets = entities }, executeoptions);
+                        failed += ExecuteRequest(new UpdateMultipleRequest { Targets = entities.ToEntityCollection() }, executeoptions, logreq);
                     }
                     else
                     {
@@ -109,12 +110,12 @@ namespace Cinteros.XTB.BulkDataUpdater
                             Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
                             Requests = new OrganizationRequestCollection()
                         };
-                        batch.Requests.AddRange(entities.Entities.Select(e => new UpdateRequest { Target = e }));
+                        batch.Requests.AddRange(entities.Select(e => new UpdateRequest { Target = e }));
                         batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions));
-                        failed += ExecuteRequest(batch, executeoptions);
+                        failed += ExecuteRequest(batch, executeoptions, logreq);
                     }
-                    assigned += entities.Entities.Count;
-                    entities.Entities.Clear();
+                    assigned += entities.Count;
+                    entities.Clear();
                 }
             }
             sw.Stop();

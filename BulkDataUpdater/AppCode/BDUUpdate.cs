@@ -46,6 +46,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             job.Update.ExecuteOptions = executeoptions;
             var isn = selectedattributes.Any(a => a.Attribute.Metadata.LogicalName == "importsequencenumber");
+            var log = new BDULogRun(ConnectionDetail.ServiceClient, "Update", entitymeta, includedrecords.Count());
 
             WorkAsync(new WorkAsyncInfo()
             {
@@ -54,13 +55,13 @@ namespace Cinteros.XTB.BulkDataUpdater
                 MessageHeight = 200,
                 IsCancelable = true,
                 AsyncArgument = selectedattributes,
-                Work = (bgworker, workargs) => { UpdateRecordsWork(bgworker, workargs, includedrecords, executeoptions, isn); },
-                PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, "Update"); },
+                Work = (bgworker, workargs) => { UpdateRecordsWork(bgworker, workargs, includedrecords, executeoptions, isn, log); },
+                PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, log); },
                 ProgressChanged = (changeargs) => { SetWorkingMessage(changeargs.UserState.ToString(), 400, 200); }
             }); ;
         }
 
-        private void UpdateRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions, bool isn)
+        private void UpdateRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions, bool isn, BDULogRun log)
         {
             var sw = Stopwatch.StartNew();
             var progress = "Starting...";
@@ -69,10 +70,8 @@ namespace Cinteros.XTB.BulkDataUpdater
             var updated = 0;
             var failed = 0;
             var attributes = workargs.Argument as List<BulkActionItem>;
-            var entities = new EntityCollection
-            {
-                EntityName = includedrecords.FirstOrDefault().LogicalName
-            };
+            var entities = new BDUEntityCollection();
+            log.Start();
             foreach (var record in includedrecords)
             {
                 if (bgworker.CancellationPending)
@@ -87,23 +86,24 @@ namespace Cinteros.XTB.BulkDataUpdater
                     PushProgress(bgworker, $"{progress}{Environment.NewLine}Reloading record {current}");
                     LoadMissingAttributesForRecord(record, attributes);
                 }
-                if (GetUpdateRecord(record, attributes, current) is Entity updateentity && updateentity.Attributes.Count > 0)
+                if (GetUpdateRecord(record, attributes, current) is BDUEntity updateentity && updateentity.Attributes.Count > 0)
                 {
-                    entities.Entities.Add(updateentity);
-                    if (entities.Entities.Count >= executeoptions.BatchSize || current == total)
+                    entities.Add(updateentity);
+                    if (entities.Count >= executeoptions.BatchSize || current == total)
                     {
-                        progress = GetProgressDetails(sw, total, current, entities.Entities.Count, failed);
+                        progress = GetProgressDetails(sw, total, current, entities.Count, failed);
                         WaitingExecution(bgworker, workargs, executeoptions, progress);
                         PushProgress(bgworker, progress);
-                        if (entities.Entities.Count == 1)
+                        var logreq = log.AddRequest(entities);
+                        if (entities.Count == 1)
                         {
-                            failed += ExecuteRequest(new UpdateRequest { Target = entities.Entities.FirstOrDefault() }, executeoptions);
+                            failed += ExecuteRequest(new UpdateRequest { Target = entities.FirstOrDefault() }, executeoptions, logreq);
                         }
                         else
                         {
                             if (executeoptions.MultipleRequest || executeoptions.BatchSize == 1)
                             {
-                                failed += ExecuteRequest(new UpdateMultipleRequest { Targets = entities }, executeoptions);
+                                failed += ExecuteRequest(new UpdateMultipleRequest { Targets = entities.ToEntityCollection() }, executeoptions, logreq);
                             }
                             else if (isn)
                             {
@@ -116,13 +116,13 @@ namespace Cinteros.XTB.BulkDataUpdater
                                     Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
                                     Requests = new OrganizationRequestCollection()
                                 };
-                                batch.Requests.AddRange(entities.Entities.Select(e => new UpdateRequest { Target = e }));
+                                batch.Requests.AddRange(entities.Select(e => new UpdateRequest { Target = e }));
                                 batch.Requests.ToList().ForEach(r => SetBypassPlugins(r, executeoptions));
-                                failed += ExecuteRequest(batch, executeoptions);
+                                failed += ExecuteRequest(batch, executeoptions, logreq);
                             }
                         }
-                        updated += entities.Entities.Count;
-                        entities.Entities.Clear();
+                        updated += entities.Count;
+                        entities.Clear();
                     }
                 }
             }
@@ -130,13 +130,13 @@ namespace Cinteros.XTB.BulkDataUpdater
             workargs.Result = new Tuple<int, int, long>(updated, failed, sw.ElapsedMilliseconds);
         }
 
-        private Entity GetUpdateRecord(Entity record, List<BulkActionItem> attributes, int sequence)
+        private BDUEntity GetUpdateRecord(Entity record, List<BulkActionItem> attributes, int sequence)
         {
             if (attributes.Count == 0)
             {
                 return null;
             }
-            var updaterecord = new Entity(record.LogicalName, record.Id);
+            var updaterecord = new BDUEntity(record.LogicalName, record.Id, record.ToStringExt(ConnectionDetail.ServiceClient));
             foreach (var bai in attributes)
             {
                 var attribute = bai.Attribute.Metadata.LogicalName;
@@ -154,6 +154,9 @@ namespace Cinteros.XTB.BulkDataUpdater
                 }
                 if (!bai.DontTouch || !ValuesEqual(newvalue, currentvalue))
                 {
+                    updaterecord.Action[attribute] = bai.Action.ToString();
+                    updaterecord.OldAttribues[attribute] = currentvalue;
+                    updaterecord.OldFormatted[attribute] = record.AttributeToString(attribute, ConnectionDetail.ServiceClient);
                     updaterecord[attribute] = newvalue;
                     record[attribute] = newvalue;
                 }

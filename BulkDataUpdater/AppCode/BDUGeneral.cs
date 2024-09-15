@@ -229,21 +229,29 @@ namespace Cinteros.XTB.BulkDataUpdater
         /// <param name="request"></param>
         /// <param name="executeoptions"></param>
         /// <returns>Number of error occured</returns>
-        private int ExecuteRequest(OrganizationRequest request, JobExecuteOptions executeoptions)
+        private int ExecuteRequest(OrganizationRequest request, JobExecuteOptions executeoptions, BDULogRequest log)
         {
+            log.Request = request.RequestName.Replace("Request", string.Empty);
             var errors = 0;
             try
             {
                 SetBypassPlugins(request, executeoptions);
+                log.Start();
                 var response = Service.Execute(request);
+                log.Finished();
                 if (!executeoptions.IgnoreErrors && response is ExecuteMultipleResponse respexc && respexc?.IsFaulted == true)
                 {
                     errors = respexc.Responses.Count(r => r.Fault != null);
                     throw new FaultException<OrganizationServiceFault>(respexc.Responses.FirstOrDefault(r => r.Fault != null).Fault);
                 }
+                else
+                {
+                    log.Success = true;
+                }
             }
             catch (Exception ex)
             {
+                log.Finished();
                 if (!executeoptions.IgnoreErrors)
                 {
                     throw ex;
@@ -252,6 +260,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     errors = 1;
                 }
+            }
+            finally
+            {
+                log.Id = request.RequestId ?? Guid.Empty;
             }
             return errors;
         }
@@ -329,13 +341,16 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
         }
 
-        private void BulkRecordsCallback(System.ComponentModel.RunWorkerCompletedEventArgs completedargs, string action)
+        private void BulkRecordsCallback(System.ComponentModel.RunWorkerCompletedEventArgs completedargs, BDULogRun log)
         {
+            job.Log = log;
+            log.Finished();
+            log.SaveXML(this);
             working = false;
             EnableControls(true, false);
             if (completedargs.Error != null)
             {
-                ShowErrorDialog(completedargs.Error, action);
+                ShowErrorDialog(completedargs.Error, log.Action);
                 if (MessageBoxEx.Show(this, "Error occured.\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     RetrieveRecords();
@@ -352,17 +367,17 @@ namespace Cinteros.XTB.BulkDataUpdater
             else if (completedargs.Result is Tuple<int, int, long> result)
             {
                 lblUpdateStatus.Text = $"{result.Item1} records updated, {result.Item2} records failed.";
-                LogUse(action, result.Item1, result.Item3);
+                LogUse(log.Action, result.Item1, result.Item3);
                 if (result.Item2 > 0)
                 {
                     LogUse("Failed", result.Item2);
                 }
-                if (MessageBoxEx.Show(this, $"{action} completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                if (MessageBoxEx.Show(this, $"{log.Action} completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     RetrieveRecords();
                 }
             }
-            if (action == "Update" && chkSetImpSeqNo.Checked)
+            if (log.Action == "Update" && chkSetImpSeqNo.Checked)
             {
                 linkShowImpSeqNoRecords.Enabled = true;
             }

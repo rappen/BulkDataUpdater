@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbFetch = new System.Windows.Forms.ToolStripDropDownButton();
@@ -49,6 +49,7 @@
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
             this.tslDoc = new System.Windows.Forms.ToolStripLabel();
+            this.tsbSupporting = new System.Windows.Forms.ToolStripButton();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.gbExecute = new System.Windows.Forms.GroupBox();
             this.lblUpdateStatus = new System.Windows.Forms.Label();
@@ -102,7 +103,7 @@
             this.xrmRecordAttribute = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
             this.cdsLookupDialog = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
             this.xrmLookupAssign = new Rappen.XTB.Helpers.Controls.XRMLookupDialog();
-            this.tsbSupporting = new System.Windows.Forms.ToolStripButton();
+            this.btnSaveLog = new System.Windows.Forms.Button();
             this.toolStripMain.SuspendLayout();
             this.gbExecute.SuspendLayout();
             this.panRecordSummary.SuspendLayout();
@@ -299,6 +300,19 @@
             this.tslDoc.ToolTipText = "https://jonasr.app/BDU/";
             this.tslDoc.Click += new System.EventHandler(this.link_Click);
             // 
+            // tsbSupporting
+            // 
+            this.tsbSupporting.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbSupporting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSupporting.Image = global::Cinteros.XTB.BulkDataUpdater.Properties.Resources.Supporting_icon;
+            this.tsbSupporting.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsbSupporting.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSupporting.Name = "tsbSupporting";
+            this.tsbSupporting.Size = new System.Drawing.Size(56, 36);
+            this.tsbSupporting.ToolTipText = "We all support these free, open-source tools - either\r\nas a company, personally, " +
+    "or by contribution.";
+            this.tsbSupporting.Click += new System.EventHandler(this.tsbSupporting_Click);
+            // 
             // btnRefresh
             // 
             this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -319,30 +333,30 @@
             // 
             // gbExecute
             // 
+            this.gbExecute.Controls.Add(this.btnSaveLog);
             this.gbExecute.Controls.Add(this.lblUpdateStatus);
             this.gbExecute.Controls.Add(this.btnExecute);
             this.gbExecute.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbExecute.Location = new System.Drawing.Point(0, 471);
+            this.gbExecute.Location = new System.Drawing.Point(0, 444);
             this.gbExecute.Name = "gbExecute";
-            this.gbExecute.Size = new System.Drawing.Size(377, 63);
+            this.gbExecute.Size = new System.Drawing.Size(377, 90);
             this.gbExecute.TabIndex = 99;
             this.gbExecute.TabStop = false;
             this.gbExecute.Text = "Execution";
             // 
             // lblUpdateStatus
             // 
-            this.lblUpdateStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblUpdateStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblUpdateStatus.Location = new System.Drawing.Point(18, 20);
             this.lblUpdateStatus.Name = "lblUpdateStatus";
-            this.lblUpdateStatus.Size = new System.Drawing.Size(220, 33);
+            this.lblUpdateStatus.Size = new System.Drawing.Size(220, 64);
             this.lblUpdateStatus.TabIndex = 100;
             this.lblUpdateStatus.Text = "Status";
-            this.lblUpdateStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnExecute
             // 
-            this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExecute.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExecute.Location = new System.Drawing.Point(244, 15);
             this.btnExecute.Name = "btnExecute";
@@ -412,8 +426,8 @@
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.crmGridView1.AutoRefresh = false;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -445,7 +459,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(377, 471);
+            this.tabControl1.Size = new System.Drawing.Size(377, 444);
             this.tabControl1.TabIndex = 1;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -457,7 +471,7 @@
             this.tabUpdate.Location = new System.Drawing.Point(4, 22);
             this.tabUpdate.Name = "tabUpdate";
             this.tabUpdate.Padding = new System.Windows.Forms.Padding(3, 8, 3, 3);
-            this.tabUpdate.Size = new System.Drawing.Size(369, 445);
+            this.tabUpdate.Size = new System.Drawing.Size(369, 418);
             this.tabUpdate.TabIndex = 1;
             this.tabUpdate.Text = "Update";
             // 
@@ -470,7 +484,7 @@
             this.gb3attributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb3attributes.Location = new System.Drawing.Point(3, 8);
             this.gb3attributes.Name = "gb3attributes";
-            this.gb3attributes.Size = new System.Drawing.Size(363, 348);
+            this.gb3attributes.Size = new System.Drawing.Size(363, 321);
             this.gb3attributes.TabIndex = 1;
             this.gb3attributes.TabStop = false;
             this.gb3attributes.Text = "Attributes to update";
@@ -478,7 +492,7 @@
             // btnAttrEdit
             // 
             this.btnAttrEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAttrEdit.Location = new System.Drawing.Point(96, 315);
+            this.btnAttrEdit.Location = new System.Drawing.Point(96, 288);
             this.btnAttrEdit.Name = "btnAttrEdit";
             this.btnAttrEdit.Size = new System.Drawing.Size(75, 23);
             this.btnAttrEdit.TabIndex = 3;
@@ -489,7 +503,7 @@
             // btnAttrAdd
             // 
             this.btnAttrAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAttrAdd.Location = new System.Drawing.Point(15, 315);
+            this.btnAttrAdd.Location = new System.Drawing.Point(15, 288);
             this.btnAttrAdd.Name = "btnAttrAdd";
             this.btnAttrAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAttrAdd.TabIndex = 2;
@@ -511,7 +525,7 @@
             this.lvAttributes.HideSelection = false;
             this.lvAttributes.Location = new System.Drawing.Point(15, 19);
             this.lvAttributes.Name = "lvAttributes";
-            this.lvAttributes.Size = new System.Drawing.Size(331, 290);
+            this.lvAttributes.Size = new System.Drawing.Size(331, 263);
             this.lvAttributes.TabIndex = 1;
             this.lvAttributes.UseCompatibleStateImageBehavior = false;
             this.lvAttributes.View = System.Windows.Forms.View.Details;
@@ -541,7 +555,7 @@
             // btnAttrRemove
             // 
             this.btnAttrRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAttrRemove.Location = new System.Drawing.Point(271, 315);
+            this.btnAttrRemove.Location = new System.Drawing.Point(271, 288);
             this.btnAttrRemove.Name = "btnAttrRemove";
             this.btnAttrRemove.Size = new System.Drawing.Size(75, 23);
             this.btnAttrRemove.TabIndex = 4;
@@ -559,7 +573,7 @@
             this.gbImpSeqNo.Controls.Add(this.numImpSeqNo);
             this.gbImpSeqNo.Controls.Add(this.label7);
             this.gbImpSeqNo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbImpSeqNo.Location = new System.Drawing.Point(3, 356);
+            this.gbImpSeqNo.Location = new System.Drawing.Point(3, 329);
             this.gbImpSeqNo.Name = "gbImpSeqNo";
             this.gbImpSeqNo.Size = new System.Drawing.Size(363, 86);
             this.gbImpSeqNo.TabIndex = 2;
@@ -940,18 +954,17 @@
             this.xrmLookupAssign.Service = null;
             this.xrmLookupAssign.Title = "Select User or Team to assign to";
             // 
-            // tsbSupporting
+            // btnSaveLog
             // 
-            this.tsbSupporting.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.tsbSupporting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSupporting.Image = global::Cinteros.XTB.BulkDataUpdater.Properties.Resources.Supporting_icon;
-            this.tsbSupporting.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbSupporting.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSupporting.Name = "tsbSupporting";
-            this.tsbSupporting.Size = new System.Drawing.Size(56, 36);
-            this.tsbSupporting.ToolTipText = "We all support these free, open-source tools - either\r\nas a company, personally, " +
-    "or by contribution.";
-            this.tsbSupporting.Click += new System.EventHandler(this.tsbSupporting_Click);
+            this.btnSaveLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveLog.Enabled = false;
+            this.btnSaveLog.Location = new System.Drawing.Point(244, 59);
+            this.btnSaveLog.Name = "btnSaveLog";
+            this.btnSaveLog.Size = new System.Drawing.Size(116, 23);
+            this.btnSaveLog.TabIndex = 101;
+            this.btnSaveLog.Text = "Save Log...";
+            this.btnSaveLog.UseVisualStyleBackColor = true;
+            this.btnSaveLog.Click += new System.EventHandler(this.btnSaveLog_Click);
             // 
             // BulkDataUpdater
             // 
@@ -1071,5 +1084,6 @@
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Label lblSelectedRecords;
         private System.Windows.Forms.ToolStripButton tsbSupporting;
+        private System.Windows.Forms.Button btnSaveLog;
     }
 }

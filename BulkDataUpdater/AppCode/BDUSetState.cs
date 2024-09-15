@@ -3,6 +3,7 @@ using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Rappen.XRM.Helpers.Extensions;
 using Rappen.XTB.Helpers.ControlItems;
 using System;
 using System.Collections.Generic;
@@ -50,17 +51,19 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 job.SetState.ExecuteOptions = executeoptions;
             }
+            var log = new BDULogRun(ConnectionDetail.ServiceClient, "SetState", entitymeta, includedrecords.Count());
+
             WorkAsync(new WorkAsyncInfo()
             {
                 Message = "Set State for records",
                 IsCancelable = true,
-                Work = (bgworker, workargs) => { SetStateRecordsWork(bgworker, workargs, state, status, includedrecords, executeoptions); },
-                PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, "SetState"); },
+                Work = (bgworker, workargs) => { SetStateRecordsWork(bgworker, workargs, state, status, includedrecords, executeoptions, log); },
+                PostWorkCallBack = (completedargs) => { BulkRecordsCallback(completedargs, log); },
                 ProgressChanged = (changeargs) => { SetWorkingMessage(changeargs.UserState.ToString()); }
             });
         }
 
-        private void SetStateRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, OptionMetadataItem state, OptionMetadataItem status, IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions)
+        private void SetStateRecordsWork(System.ComponentModel.BackgroundWorker bgworker, System.ComponentModel.DoWorkEventArgs workargs, OptionMetadataItem state, OptionMetadataItem status, IEnumerable<Entity> includedrecords, JobExecuteOptions executeoptions, BDULogRun log)
         {
             var sw = Stopwatch.StartNew();
             var progress = "Starting...";
@@ -68,11 +71,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             var current = 0;
             var updated = 0;
             var failed = 0;
-            var batch = new ExecuteMultipleRequest
-            {
-                Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
-                Requests = new OrganizationRequestCollection()
-            };
+            var entities = new BDUEntityCollection();
             foreach (var record in includedrecords)
             {
                 if (bgworker.CancellationPending)
@@ -81,31 +80,41 @@ namespace Cinteros.XTB.BulkDataUpdater
                     break;
                 }
                 current++;
-                var req = GetSetStateRequest(record, state, status);
-                SetBypassPlugins(req, executeoptions);
-                batch.Requests.Add(req);
-                if (batch.Requests.Count >= executeoptions.BatchSize || current == total)
+                entities.Add(new BDUEntity(record.LogicalName, record.Id, record.ToStringExt(ConnectionDetail.ServiceClient)));
+                if (entities.Count >= executeoptions.BatchSize || current == total)
                 {
-                    progress = GetProgressDetails(sw, total, current, batch.Requests.Count, failed);
+                    progress = GetProgressDetails(sw, total, current, entities.Count, failed);
                     WaitingExecution(bgworker, workargs, executeoptions, progress);
                     PushProgress(bgworker, progress);
+                    var batch = new ExecuteMultipleRequest
+                    {
+                        Settings = new ExecuteMultipleSettings { ContinueOnError = executeoptions.IgnoreErrors },
+                        Requests = new OrganizationRequestCollection()
+                    };
+                    foreach (var entity in entities)
+                    {
+                        var req = GetSetStateRequest(entity, state, status);
+                        batch.Requests.Add(req);
+                        SetBypassPlugins(req, executeoptions);
+                    }
+                    var logreq = log.AddRequest(entities);
                     if (batch.Requests.Count == 1)
                     {
-                        failed += ExecuteRequest(batch.Requests.FirstOrDefault(), executeoptions);
+                        failed += ExecuteRequest(batch.Requests.FirstOrDefault(), executeoptions, logreq);
                     }
                     else
                     {
-                        failed += ExecuteRequest(batch, executeoptions);
+                        failed += ExecuteRequest(batch, executeoptions, logreq);
                     }
                     updated += batch.Requests.Count;
-                    batch.Requests.Clear();
+                    entities.Clear();
                 }
             }
             sw.Stop();
             workargs.Result = new Tuple<int, int, long>(updated, failed, sw.ElapsedMilliseconds);
         }
 
-        private OrganizationRequest GetSetStateRequest(Entity record, OptionMetadataItem state, OptionMetadataItem status)
+        private OrganizationRequest GetSetStateRequest(BDUEntity record, OptionMetadataItem state, OptionMetadataItem status)
         {
             switch (record.LogicalName)
             {
@@ -160,10 +169,9 @@ namespace Cinteros.XTB.BulkDataUpdater
                     Status = new OptionSetValue((int)status.Metadata.Value)
                 };
             }
-            var clone = new Entity(record.LogicalName, record.Id);
-            clone.Attributes.Add(_common_.Status, new OptionSetValue((int)state.Metadata.Value));
-            clone.Attributes.Add(_common_.StatusReason, new OptionSetValue((int)status.Metadata.Value));
-            return new UpdateRequest { Target = clone };
+            record.Attributes.Add(_common_.Status, new OptionSetValue((int)state.Metadata.Value));
+            record.Attributes.Add(_common_.StatusReason, new OptionSetValue((int)status.Metadata.Value));
+            return new UpdateRequest { Target = record };
         }
 
         private bool UpdateState(Entity record, List<BulkActionItem> attributes)
