@@ -60,6 +60,7 @@
             this.panButtons = new System.Windows.Forms.Panel();
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.chkDontAskNext = new System.Windows.Forms.CheckBox();
             this.panBatchOption.SuspendLayout();
             this.gbWaitBetween.SuspendLayout();
             this.gbBatch.SuspendLayout();
@@ -106,7 +107,7 @@
             // 
             this.linkBulkOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkBulkOperations.AutoSize = true;
-            this.linkBulkOperations.Location = new System.Drawing.Point(212, 22);
+            this.linkBulkOperations.Location = new System.Drawing.Point(239, 22);
             this.linkBulkOperations.Name = "linkBulkOperations";
             this.linkBulkOperations.Size = new System.Drawing.Size(134, 13);
             this.linkBulkOperations.TabIndex = 113;
@@ -121,7 +122,7 @@
             // 
             this.linkBypassPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkBypassPlugins.AutoSize = true;
-            this.linkBypassPlugins.Location = new System.Drawing.Point(215, 22);
+            this.linkBypassPlugins.Location = new System.Drawing.Point(242, 22);
             this.linkBypassPlugins.Name = "linkBypassPlugins";
             this.linkBypassPlugins.Size = new System.Drawing.Size(131, 13);
             this.linkBypassPlugins.TabIndex = 112;
@@ -149,10 +150,10 @@
             this.gbWaitBetween.Controls.Add(this.label5);
             this.gbWaitBetween.Controls.Add(this.cmbDelayCall);
             this.gbWaitBetween.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbWaitBetween.Location = new System.Drawing.Point(6, 6);
+            this.gbWaitBetween.Location = new System.Drawing.Point(6, 116);
             this.gbWaitBetween.Name = "gbWaitBetween";
-            this.gbWaitBetween.Size = new System.Drawing.Size(352, 48);
-            this.gbWaitBetween.TabIndex = 1;
+            this.gbWaitBetween.Size = new System.Drawing.Size(379, 48);
+            this.gbWaitBetween.TabIndex = 3;
             this.gbWaitBetween.TabStop = false;
             this.gbWaitBetween.Text = "Pause between calls";
             // 
@@ -214,7 +215,7 @@
             // chkIgnoreErrors
             // 
             this.chkIgnoreErrors.AutoSize = true;
-            this.chkIgnoreErrors.Location = new System.Drawing.Point(81, 21);
+            this.chkIgnoreErrors.Location = new System.Drawing.Point(81, 15);
             this.chkIgnoreErrors.Name = "chkIgnoreErrors";
             this.chkIgnoreErrors.Size = new System.Drawing.Size(85, 17);
             this.chkIgnoreErrors.TabIndex = 108;
@@ -223,12 +224,12 @@
             // 
             // btnExecute
             // 
-            this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExecute.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnExecute.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExecute.Image = ((System.Drawing.Image)(resources.GetObject("btnExecute.Image")));
             this.btnExecute.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExecute.Location = new System.Drawing.Point(218, 6);
+            this.btnExecute.Location = new System.Drawing.Point(245, 22);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.btnExecute.Size = new System.Drawing.Size(128, 38);
@@ -245,10 +246,10 @@
             this.gbBatch.Controls.Add(this.panBatchOption);
             this.gbBatch.Controls.Add(this.label3);
             this.gbBatch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbBatch.Location = new System.Drawing.Point(6, 54);
+            this.gbBatch.Location = new System.Drawing.Point(6, 6);
             this.gbBatch.Name = "gbBatch";
-            this.gbBatch.Size = new System.Drawing.Size(352, 70);
-            this.gbBatch.TabIndex = 2;
+            this.gbBatch.Size = new System.Drawing.Size(379, 70);
+            this.gbBatch.TabIndex = 1;
             this.gbBatch.TabStop = false;
             this.gbBatch.Text = "Batch records";
             // 
@@ -258,9 +259,9 @@
             this.gbBypass.Controls.Add(this.chkBypassPlugins);
             this.gbBypass.Controls.Add(this.linkBypassPlugins);
             this.gbBypass.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbBypass.Location = new System.Drawing.Point(6, 172);
+            this.gbBypass.Location = new System.Drawing.Point(6, 164);
             this.gbBypass.Name = "gbBypass";
-            this.gbBypass.Size = new System.Drawing.Size(352, 48);
+            this.gbBypass.Size = new System.Drawing.Size(379, 48);
             this.gbBypass.TabIndex = 4;
             this.gbBypass.TabStop = false;
             this.gbBypass.Text = "Bypass Logic";
@@ -278,7 +279,7 @@
             // 
             this.linkLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(210, 10);
+            this.linkLabel3.Location = new System.Drawing.Point(237, 10);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(136, 13);
             this.linkLabel3.TabIndex = 1;
@@ -301,9 +302,9 @@
             this.gbBypassPreview.Controls.Add(this.chkBypassAsync);
             this.gbBypassPreview.Controls.Add(this.linkLabel1);
             this.gbBypassPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbBypassPreview.Location = new System.Drawing.Point(6, 220);
+            this.gbBypassPreview.Location = new System.Drawing.Point(6, 212);
             this.gbBypassPreview.Name = "gbBypassPreview";
-            this.gbBypassPreview.Size = new System.Drawing.Size(352, 97);
+            this.gbBypassPreview.Size = new System.Drawing.Size(379, 77);
             this.gbBypassPreview.TabIndex = 5;
             this.gbBypassPreview.TabStop = false;
             this.gbBypassPreview.Text = "Preview: Bypass Logic";
@@ -330,7 +331,7 @@
             // 
             this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(219, 55);
+            this.linkLabel2.Location = new System.Drawing.Point(246, 55);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(127, 13);
             this.linkLabel2.TabIndex = 5;
@@ -362,7 +363,7 @@
             this.txtBypassSteps.Location = new System.Drawing.Point(15, 71);
             this.txtBypassSteps.Multiline = true;
             this.txtBypassSteps.Name = "txtBypassSteps";
-            this.txtBypassSteps.Size = new System.Drawing.Size(331, 20);
+            this.txtBypassSteps.Size = new System.Drawing.Size(358, 0);
             this.txtBypassSteps.TabIndex = 6;
             this.toolTip1.SetToolTip(this.txtBypassSteps, "Add Guids separated by comma.\r\nGuids are found on Plugin Steps in Plugin Registra" +
         "ting Tool.");
@@ -383,7 +384,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(214, 33);
+            this.linkLabel1.Location = new System.Drawing.Point(241, 33);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(132, 13);
             this.linkLabel1.TabIndex = 4;
@@ -399,28 +400,29 @@
             // 
             this.gbErrors.Controls.Add(this.chkIgnoreErrors);
             this.gbErrors.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbErrors.Location = new System.Drawing.Point(6, 124);
+            this.gbErrors.Location = new System.Drawing.Point(6, 76);
             this.gbErrors.Name = "gbErrors";
-            this.gbErrors.Size = new System.Drawing.Size(352, 48);
-            this.gbErrors.TabIndex = 3;
+            this.gbErrors.Size = new System.Drawing.Size(379, 40);
+            this.gbErrors.TabIndex = 2;
             this.gbErrors.TabStop = false;
             this.gbErrors.Text = "Errors";
             // 
             // panButtons
             // 
+            this.panButtons.Controls.Add(this.chkDontAskNext);
             this.panButtons.Controls.Add(this.lblInfo);
             this.panButtons.Controls.Add(this.btnCancel);
             this.panButtons.Controls.Add(this.btnExecute);
             this.panButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panButtons.Location = new System.Drawing.Point(6, 317);
+            this.panButtons.Location = new System.Drawing.Point(6, 289);
             this.panButtons.Name = "panButtons";
-            this.panButtons.Size = new System.Drawing.Size(352, 58);
+            this.panButtons.Size = new System.Drawing.Size(379, 78);
             this.panButtons.TabIndex = 9;
             // 
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(12, 44);
+            this.lblInfo.Location = new System.Drawing.Point(12, 60);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(95, 13);
             this.lblInfo.TabIndex = 117;
@@ -429,12 +431,24 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(15, 14);
+            this.btnCancel.Location = new System.Drawing.Point(15, 30);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 116;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // chkDontAskNext
+            // 
+            this.chkDontAskNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkDontAskNext.AutoSize = true;
+            this.chkDontAskNext.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkDontAskNext.Location = new System.Drawing.Point(123, 3);
+            this.chkDontAskNext.Name = "chkDontAskNext";
+            this.chkDontAskNext.Size = new System.Drawing.Size(250, 17);
+            this.chkDontAskNext.TabIndex = 118;
+            this.chkDontAskNext.Text = "Don\'t ask for these options next time to execute";
+            this.chkDontAskNext.UseVisualStyleBackColor = true;
             // 
             // Execute
             // 
@@ -443,17 +457,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(364, 381);
+            this.ClientSize = new System.Drawing.Size(391, 373);
             this.Controls.Add(this.gbBypassPreview);
             this.Controls.Add(this.panButtons);
             this.Controls.Add(this.gbBypass);
+            this.Controls.Add(this.gbWaitBetween);
             this.Controls.Add(this.gbErrors);
             this.Controls.Add(this.gbBatch);
-            this.Controls.Add(this.gbWaitBetween);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(380, 420);
+            this.MinimumSize = new System.Drawing.Size(380, 412);
             this.Name = "Execute";
             this.Padding = new System.Windows.Forms.Padding(6);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -508,5 +522,6 @@
         private System.Windows.Forms.GroupBox gbBypassPreview;
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox chkDontAskNext;
     }
 }

@@ -112,6 +112,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         public bool BypassSync { get; set; } = false;
         public bool BypassAsync { get; set; } = false;
         public List<Guid> BypassSteps { get; set; } = new List<Guid>();
+        public bool DontAskOptions { get; set; } = false;
 
         internal int DelayCurrent = 0;
         internal bool DelayNow = false;

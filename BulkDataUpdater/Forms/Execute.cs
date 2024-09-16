@@ -63,7 +63,8 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                 BypassCustom = chkBypassPlugins.Checked,
                 BypassSync = chkBypassSync.Checked,
                 BypassAsync = chkBypassAsync.Checked,
-                BypassSteps = GetStepGuids()
+                BypassSteps = GetStepGuids(),
+                DontAskOptions = chkDontAskNext.Checked
             };
 
         private List<Guid> GetStepGuids()

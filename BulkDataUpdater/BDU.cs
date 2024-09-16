@@ -298,17 +298,21 @@
             if (tabControl1.SelectedTab == tabUpdate)
             {
                 SetUpdateFromJob(job.Update);
+                chkAskForExecuteOptions.Visible = job.Update.ExecuteOptions.DontAskOptions;
             }
             else if (tabControl1.SelectedTab == tabAssign)
             {
                 SetAssignFromJob(job.Assign);
+                chkAskForExecuteOptions.Visible = job.Assign.ExecuteOptions.DontAskOptions;
             }
             else if (tabControl1.SelectedTab == tabSetState)
             {
                 SetSetStateFromJob(job.SetState);
+                chkAskForExecuteOptions.Visible = job.SetState.ExecuteOptions.DontAskOptions;
             }
             else if (tabControl1.SelectedTab == tabDelete)
             {
+                chkAskForExecuteOptions.Visible = job.Delete.ExecuteOptions.DontAskOptions;
             }
             btnExecute.Text = tabControl1.SelectedTab.Name.Replace("tab", "");
             working = tempworker;
@@ -701,10 +705,13 @@
         private void btnExecute_Click(object sender, EventArgs e)
         {
             var jobaction = GetJobAction();
-            if (Execute.Show(this, jobaction, job.SupportMessages) == DialogResult.OK)
+            if ((jobaction.ExecuteOptions.DontAskOptions && !chkAskForExecuteOptions.Checked) ||
+                Execute.Show(this, jobaction, job.SupportMessages) == DialogResult.OK)
             {
                 ExecuteAction(jobaction);
             }
+            chkAskForExecuteOptions.Visible = jobaction.ExecuteOptions.DontAskOptions;
+            chkAskForExecuteOptions.Checked = false;
         }
 
         private void btnGetRecords_Click(object sender, EventArgs e)
