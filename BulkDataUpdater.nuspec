@@ -20,8 +20,7 @@ Read more: https://jonasr.app/BDU and https://jonasr.app/xrm-tokens/
 		</description>
 		<summary>BDU can update one or multiple columns, for one or a gazillion records in Microsoft Dataverse! Empower yourself to achieve more.</summary>
 		<releaseNotes>
-It's a tiny update, with a huge impact.
-Bugfix: Setting a lookup field value did do... nothing. Now it does as it should again.
+Now everything is logged! Read more: https://jonasr.app/logging
 
 See latest release notes, and all history:
 https://jonasr.app/bdu/releases/#$versionnumber$
