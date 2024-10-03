@@ -884,11 +884,12 @@
         private void tsbSaveJob_Click(object sender, EventArgs e)
         {
             UpdateJobFromUI(tabControl1.SelectedTab);
+            var initfile = job.Info?.Name.Replace(".bdu.xml", "").Replace(".bdu", "").Replace(".xml", "");
             var savedlg = new SaveFileDialog
             {
                 Filter = "BDU xml (*.bdu.xml)|*.bdu.xml",
                 DefaultExt = ".bdu.xml",
-                FileName = job.Info?.Name,
+                FileName = initfile,
                 Title = "Save a BDU job"
             };
             if (!string.IsNullOrEmpty(job.Info?.OriginalPath))
