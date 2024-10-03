@@ -12,6 +12,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
     {
         private string entityname;
         private string attributename;
+        private BulkActionAction action;
 
         public string EntityName
         {
@@ -39,7 +40,13 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
 
         internal AttributeMetadataItem Attribute { get; set; }
         public bool DontTouch { get; set; }
-        public BulkActionAction Action { get; set; }
+
+        public BulkActionAction Action
+        {
+            get => action == BulkActionAction.SetValue ? BulkActionAction.Set : action;
+            set => action = value == BulkActionAction.SetValue ? BulkActionAction.Set : value;
+        }
+
         public object Value { get; set; }
         public string StringValue { get; set; }
 
@@ -81,6 +88,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         Set = 0,
         Calc = 3,
         Touch = 1,
-        Null = 2
+        Null = 2,
+        SetValue = 99
     }
 }
