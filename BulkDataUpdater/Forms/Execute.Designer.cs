@@ -58,9 +58,9 @@
             this.gbErrors = new System.Windows.Forms.GroupBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panButtons = new System.Windows.Forms.Panel();
+            this.chkDontAskNext = new System.Windows.Forms.CheckBox();
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.chkDontAskNext = new System.Windows.Forms.CheckBox();
             this.panBatchOption.SuspendLayout();
             this.gbWaitBetween.SuspendLayout();
             this.gbBatch.SuspendLayout();
@@ -228,14 +228,14 @@
             this.btnExecute.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnExecute.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExecute.Image = ((System.Drawing.Image)(resources.GetObject("btnExecute.Image")));
-            this.btnExecute.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExecute.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnExecute.Location = new System.Drawing.Point(245, 22);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.btnExecute.Size = new System.Drawing.Size(128, 38);
             this.btnExecute.TabIndex = 115;
-            this.btnExecute.Text = "Execute!";
-            this.btnExecute.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnExecute.Text = "Execute";
+            this.btnExecute.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolTip1.SetToolTip(this.btnExecute, "This will execute the action.\r\nThere is NOT undo.");
             this.btnExecute.UseVisualStyleBackColor = true;
             // 
@@ -419,6 +419,18 @@
             this.panButtons.Size = new System.Drawing.Size(379, 78);
             this.panButtons.TabIndex = 9;
             // 
+            // chkDontAskNext
+            // 
+            this.chkDontAskNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkDontAskNext.AutoSize = true;
+            this.chkDontAskNext.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkDontAskNext.Location = new System.Drawing.Point(123, 3);
+            this.chkDontAskNext.Name = "chkDontAskNext";
+            this.chkDontAskNext.Size = new System.Drawing.Size(250, 17);
+            this.chkDontAskNext.TabIndex = 118;
+            this.chkDontAskNext.Text = "Don\'t ask for these options next time to execute";
+            this.chkDontAskNext.UseVisualStyleBackColor = true;
+            // 
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
@@ -438,18 +450,6 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // chkDontAskNext
-            // 
-            this.chkDontAskNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkDontAskNext.AutoSize = true;
-            this.chkDontAskNext.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkDontAskNext.Location = new System.Drawing.Point(123, 3);
-            this.chkDontAskNext.Name = "chkDontAskNext";
-            this.chkDontAskNext.Size = new System.Drawing.Size(250, 17);
-            this.chkDontAskNext.TabIndex = 118;
-            this.chkDontAskNext.Text = "Don\'t ask for these options next time to execute";
-            this.chkDontAskNext.UseVisualStyleBackColor = true;
-            // 
             // Execute
             // 
             this.AcceptButton = this.btnExecute;
@@ -465,6 +465,7 @@
             this.Controls.Add(this.gbErrors);
             this.Controls.Add(this.gbBatch);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(380, 412);
