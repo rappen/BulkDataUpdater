@@ -20,8 +20,6 @@ Read more: https://jonasr.app/BDU and https://jonasr.app/xrm-tokens/
 		</description>
 		<summary>BDU can update one or multiple columns, for one or a gazillion records in Microsoft Dataverse! Empower yourself to achieve more.</summary>
 		<releaseNotes>
-Now everything is logged! Read more: https://jonasr.app/logging
-
 See latest release notes, and all history:
 https://jonasr.app/bdu/releases/#$versionnumber$
 		</releaseNotes>
