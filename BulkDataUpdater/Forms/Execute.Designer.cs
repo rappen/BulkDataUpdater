@@ -44,10 +44,10 @@
             this.chkIgnoreErrors = new System.Windows.Forms.CheckBox();
             this.btnExecute = new System.Windows.Forms.Button();
             this.gbBatch = new System.Windows.Forms.GroupBox();
-            this.gbBypass = new System.Windows.Forms.GroupBox();
+            this.gbBypassOld = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-            this.gbBypassPreview = new System.Windows.Forms.GroupBox();
+            this.gbBypass = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
@@ -64,8 +64,8 @@
             this.panBatchOption.SuspendLayout();
             this.gbWaitBetween.SuspendLayout();
             this.gbBatch.SuspendLayout();
+            this.gbBypassOld.SuspendLayout();
             this.gbBypass.SuspendLayout();
-            this.gbBypassPreview.SuspendLayout();
             this.gbErrors.SuspendLayout();
             this.panButtons.SuspendLayout();
             this.SuspendLayout();
@@ -107,7 +107,7 @@
             // 
             this.linkBulkOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkBulkOperations.AutoSize = true;
-            this.linkBulkOperations.Location = new System.Drawing.Point(239, 22);
+            this.linkBulkOperations.Location = new System.Drawing.Point(262, 22);
             this.linkBulkOperations.Name = "linkBulkOperations";
             this.linkBulkOperations.Size = new System.Drawing.Size(134, 13);
             this.linkBulkOperations.TabIndex = 113;
@@ -122,7 +122,7 @@
             // 
             this.linkBypassPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkBypassPlugins.AutoSize = true;
-            this.linkBypassPlugins.Location = new System.Drawing.Point(242, 22);
+            this.linkBypassPlugins.Location = new System.Drawing.Point(265, 22);
             this.linkBypassPlugins.Name = "linkBypassPlugins";
             this.linkBypassPlugins.Size = new System.Drawing.Size(131, 13);
             this.linkBypassPlugins.TabIndex = 112;
@@ -152,7 +152,7 @@
             this.gbWaitBetween.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbWaitBetween.Location = new System.Drawing.Point(6, 116);
             this.gbWaitBetween.Name = "gbWaitBetween";
-            this.gbWaitBetween.Size = new System.Drawing.Size(379, 48);
+            this.gbWaitBetween.Size = new System.Drawing.Size(402, 48);
             this.gbWaitBetween.TabIndex = 3;
             this.gbWaitBetween.TabStop = false;
             this.gbWaitBetween.Text = "Pause between calls";
@@ -229,7 +229,7 @@
             this.btnExecute.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExecute.Image = ((System.Drawing.Image)(resources.GetObject("btnExecute.Image")));
             this.btnExecute.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnExecute.Location = new System.Drawing.Point(245, 22);
+            this.btnExecute.Location = new System.Drawing.Point(268, 22);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.btnExecute.Size = new System.Drawing.Size(128, 38);
@@ -246,25 +246,25 @@
             this.gbBatch.Controls.Add(this.panBatchOption);
             this.gbBatch.Controls.Add(this.label3);
             this.gbBatch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbBatch.Location = new System.Drawing.Point(6, 6);
+            this.gbBatch.Location = new System.Drawing.Point(6, 46);
             this.gbBatch.Name = "gbBatch";
-            this.gbBatch.Size = new System.Drawing.Size(379, 70);
-            this.gbBatch.TabIndex = 1;
+            this.gbBatch.Size = new System.Drawing.Size(402, 70);
+            this.gbBatch.TabIndex = 2;
             this.gbBatch.TabStop = false;
             this.gbBatch.Text = "Batch records";
             // 
-            // gbBypass
+            // gbBypassOld
             // 
-            this.gbBypass.Controls.Add(this.label4);
-            this.gbBypass.Controls.Add(this.chkBypassPlugins);
-            this.gbBypass.Controls.Add(this.linkBypassPlugins);
-            this.gbBypass.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbBypass.Location = new System.Drawing.Point(6, 164);
-            this.gbBypass.Name = "gbBypass";
-            this.gbBypass.Size = new System.Drawing.Size(379, 48);
-            this.gbBypass.TabIndex = 4;
-            this.gbBypass.TabStop = false;
-            this.gbBypass.Text = "Bypass Logic";
+            this.gbBypassOld.Controls.Add(this.label4);
+            this.gbBypassOld.Controls.Add(this.chkBypassPlugins);
+            this.gbBypassOld.Controls.Add(this.linkBypassPlugins);
+            this.gbBypassOld.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.gbBypassOld.Location = new System.Drawing.Point(6, 261);
+            this.gbBypassOld.Name = "gbBypassOld";
+            this.gbBypassOld.Size = new System.Drawing.Size(402, 48);
+            this.gbBypassOld.TabIndex = 5;
+            this.gbBypassOld.TabStop = false;
+            this.gbBypassOld.Text = "Old style: Bypass Logic";
             // 
             // label4
             // 
@@ -279,35 +279,35 @@
             // 
             this.linkLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(237, 10);
+            this.linkLabel3.Location = new System.Drawing.Point(260, 10);
             this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(136, 13);
+            this.linkLabel3.Size = new System.Drawing.Size(132, 13);
             this.linkLabel3.TabIndex = 1;
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Tag = "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/bypass-custo" +
     "m-business-logic-preview";
-            this.linkLabel3.Text = "MS Learn: Preview Options";
+            this.linkLabel3.Text = "MS Learn: Bypass Options";
             this.toolTip1.SetToolTip(this.linkLabel3, "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/bypass-custo" +
         "m-business-logic-preview");
             this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
-            // gbBypassPreview
+            // gbBypass
             // 
-            this.gbBypassPreview.Controls.Add(this.label1);
-            this.gbBypassPreview.Controls.Add(this.label2);
-            this.gbBypassPreview.Controls.Add(this.linkLabel3);
-            this.gbBypassPreview.Controls.Add(this.linkLabel2);
-            this.gbBypassPreview.Controls.Add(this.chkBypassSync);
-            this.gbBypassPreview.Controls.Add(this.txtBypassSteps);
-            this.gbBypassPreview.Controls.Add(this.chkBypassAsync);
-            this.gbBypassPreview.Controls.Add(this.linkLabel1);
-            this.gbBypassPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbBypassPreview.Location = new System.Drawing.Point(6, 212);
-            this.gbBypassPreview.Name = "gbBypassPreview";
-            this.gbBypassPreview.Size = new System.Drawing.Size(379, 77);
-            this.gbBypassPreview.TabIndex = 5;
-            this.gbBypassPreview.TabStop = false;
-            this.gbBypassPreview.Text = "Preview: Bypass Logic";
+            this.gbBypass.Controls.Add(this.label1);
+            this.gbBypass.Controls.Add(this.label2);
+            this.gbBypass.Controls.Add(this.linkLabel3);
+            this.gbBypass.Controls.Add(this.linkLabel2);
+            this.gbBypass.Controls.Add(this.chkBypassSync);
+            this.gbBypass.Controls.Add(this.txtBypassSteps);
+            this.gbBypass.Controls.Add(this.chkBypassAsync);
+            this.gbBypass.Controls.Add(this.linkLabel1);
+            this.gbBypass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbBypass.Location = new System.Drawing.Point(6, 164);
+            this.gbBypass.Name = "gbBypass";
+            this.gbBypass.Size = new System.Drawing.Size(402, 223);
+            this.gbBypass.TabIndex = 4;
+            this.gbBypass.TabStop = false;
+            this.gbBypass.Text = "Bypass Logic";
             // 
             // label1
             // 
@@ -331,14 +331,14 @@
             // 
             this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(246, 55);
+            this.linkLabel2.Location = new System.Drawing.Point(269, 55);
             this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(127, 13);
+            this.linkLabel2.Size = new System.Drawing.Size(123, 13);
             this.linkLabel2.TabIndex = 5;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Tag = "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
     "ness-logic-preview#bypassbusinesslogicexecutionstepids";
-            this.linkLabel2.Text = "MS Learn: Preview Steps";
+            this.linkLabel2.Text = "MS Learn: Bypass Steps";
             this.toolTip1.SetToolTip(this.linkLabel2, "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
         "ness-logic-preview#bypassbusinesslogicexecutionstepids");
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
@@ -363,7 +363,7 @@
             this.txtBypassSteps.Location = new System.Drawing.Point(15, 71);
             this.txtBypassSteps.Multiline = true;
             this.txtBypassSteps.Name = "txtBypassSteps";
-            this.txtBypassSteps.Size = new System.Drawing.Size(358, 0);
+            this.txtBypassSteps.Size = new System.Drawing.Size(381, 20);
             this.txtBypassSteps.TabIndex = 6;
             this.toolTip1.SetToolTip(this.txtBypassSteps, "Add Guids separated by comma.\r\nGuids are found on Plugin Steps in Plugin Registra" +
         "ting Tool.");
@@ -384,14 +384,14 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(241, 33);
+            this.linkLabel1.Location = new System.Drawing.Point(264, 33);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(132, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(128, 13);
             this.linkLabel1.TabIndex = 4;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Tag = "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
     "ness-logic-preview#bypassbusinesslogicexecution";
-            this.linkLabel1.Text = "MS Learn: Preview Modes";
+            this.linkLabel1.Text = "MS Learn: Bypass Modes";
             this.toolTip1.SetToolTip(this.linkLabel1, "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
         "ness-logic-preview#bypassbusinesslogicexecution");
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
@@ -400,10 +400,10 @@
             // 
             this.gbErrors.Controls.Add(this.chkIgnoreErrors);
             this.gbErrors.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbErrors.Location = new System.Drawing.Point(6, 76);
+            this.gbErrors.Location = new System.Drawing.Point(6, 6);
             this.gbErrors.Name = "gbErrors";
-            this.gbErrors.Size = new System.Drawing.Size(379, 40);
-            this.gbErrors.TabIndex = 2;
+            this.gbErrors.Size = new System.Drawing.Size(402, 40);
+            this.gbErrors.TabIndex = 1;
             this.gbErrors.TabStop = false;
             this.gbErrors.Text = "Errors";
             // 
@@ -414,9 +414,9 @@
             this.panButtons.Controls.Add(this.btnCancel);
             this.panButtons.Controls.Add(this.btnExecute);
             this.panButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panButtons.Location = new System.Drawing.Point(6, 289);
+            this.panButtons.Location = new System.Drawing.Point(6, 309);
             this.panButtons.Name = "panButtons";
-            this.panButtons.Size = new System.Drawing.Size(379, 78);
+            this.panButtons.Size = new System.Drawing.Size(402, 78);
             this.panButtons.TabIndex = 9;
             // 
             // chkDontAskNext
@@ -424,7 +424,7 @@
             this.chkDontAskNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkDontAskNext.AutoSize = true;
             this.chkDontAskNext.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkDontAskNext.Location = new System.Drawing.Point(123, 3);
+            this.chkDontAskNext.Location = new System.Drawing.Point(146, 3);
             this.chkDontAskNext.Name = "chkDontAskNext";
             this.chkDontAskNext.Size = new System.Drawing.Size(250, 17);
             this.chkDontAskNext.TabIndex = 118;
@@ -457,18 +457,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(391, 373);
-            this.Controls.Add(this.gbBypassPreview);
+            this.ClientSize = new System.Drawing.Size(414, 393);
+            this.Controls.Add(this.gbBypassOld);
             this.Controls.Add(this.panButtons);
             this.Controls.Add(this.gbBypass);
             this.Controls.Add(this.gbWaitBetween);
-            this.Controls.Add(this.gbErrors);
             this.Controls.Add(this.gbBatch);
+            this.Controls.Add(this.gbErrors);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(380, 412);
+            this.MinimumSize = new System.Drawing.Size(380, 430);
             this.Name = "Execute";
             this.Padding = new System.Windows.Forms.Padding(6);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -479,10 +479,10 @@
             this.gbWaitBetween.PerformLayout();
             this.gbBatch.ResumeLayout(false);
             this.gbBatch.PerformLayout();
+            this.gbBypassOld.ResumeLayout(false);
+            this.gbBypassOld.PerformLayout();
             this.gbBypass.ResumeLayout(false);
             this.gbBypass.PerformLayout();
-            this.gbBypassPreview.ResumeLayout(false);
-            this.gbBypassPreview.PerformLayout();
             this.gbErrors.ResumeLayout(false);
             this.gbErrors.PerformLayout();
             this.panButtons.ResumeLayout(false);
@@ -507,7 +507,7 @@
         private System.Windows.Forms.CheckBox chkIgnoreErrors;
         private System.Windows.Forms.Button btnExecute;
         private System.Windows.Forms.GroupBox gbBatch;
-        private System.Windows.Forms.GroupBox gbBypass;
+        private System.Windows.Forms.GroupBox gbBypassOld;
         private System.Windows.Forms.GroupBox gbErrors;
         private System.Windows.Forms.CheckBox chkBypassSync;
         private System.Windows.Forms.CheckBox chkBypassAsync;
@@ -520,7 +520,7 @@
         private System.Windows.Forms.TextBox txtBypassSteps;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.GroupBox gbBypassPreview;
+        private System.Windows.Forms.GroupBox gbBypass;
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkDontAskNext;
