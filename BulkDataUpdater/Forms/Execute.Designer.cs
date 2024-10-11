@@ -128,10 +128,10 @@
             this.linkBypassPlugins.TabIndex = 112;
             this.linkBypassPlugins.TabStop = true;
             this.linkBypassPlugins.Tag = "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
-    "ness-logic";
+    "ness-logic#bypasscustompluginexecution";
             this.linkBypassPlugins.Text = "MS Learn: Bypass Custom";
             this.toolTip1.SetToolTip(this.linkBypassPlugins, "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
-        "ness-logic");
+        "ness-logic#bypasscustompluginexecution");
             this.linkBypassPlugins.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // chkBypassPlugins
@@ -279,16 +279,16 @@
             // 
             this.linkLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(260, 10);
+            this.linkLabel3.Location = new System.Drawing.Point(186, 10);
             this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(132, 13);
+            this.linkLabel3.Size = new System.Drawing.Size(207, 13);
             this.linkLabel3.TabIndex = 1;
             this.linkLabel3.TabStop = true;
-            this.linkLabel3.Tag = "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/bypass-custo" +
-    "m-business-logic-preview";
-            this.linkLabel3.Text = "MS Learn: Bypass Options";
-            this.toolTip1.SetToolTip(this.linkLabel3, "https://learn.microsoft.com/en-us/power-apps/developer/data-platform/bypass-custo" +
-        "m-business-logic-preview");
+            this.linkLabel3.Tag = "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
+    "ness-logic";
+            this.linkLabel3.Text = "MS Learn: Bypass custom Dataverse logic";
+            this.toolTip1.SetToolTip(this.linkLabel3, "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
+        "ness-logic");
             this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // gbBypass
@@ -337,10 +337,10 @@
             this.linkLabel2.TabIndex = 5;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Tag = "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
-    "ness-logic-preview#bypassbusinesslogicexecutionstepids";
+    "ness-logic#bypassbusinesslogicexecutionstepids";
             this.linkLabel2.Text = "MS Learn: Bypass Steps";
             this.toolTip1.SetToolTip(this.linkLabel2, "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
-        "ness-logic-preview#bypassbusinesslogicexecutionstepids");
+        "ness-logic#bypassbusinesslogicexecutionstepids");
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // chkBypassSync
@@ -390,10 +390,10 @@
             this.linkLabel1.TabIndex = 4;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Tag = "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
-    "ness-logic-preview#bypassbusinesslogicexecution";
+    "ness-logic#bypassbusinesslogicexecution";
             this.linkLabel1.Text = "MS Learn: Bypass Modes";
             this.toolTip1.SetToolTip(this.linkLabel1, "https://learn.microsoft.com/power-apps/developer/data-platform/bypass-custom-busi" +
-        "ness-logic-preview#bypassbusinesslogicexecution");
+        "ness-logic#bypassbusinesslogicexecution");
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Click);
             // 
             // gbErrors
