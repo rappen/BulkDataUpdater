@@ -86,7 +86,8 @@ namespace Cinteros.XTB.BulkDataUpdater
                     PushProgress(bgworker, $"{progress}{Environment.NewLine}Reloading record {current}");
                     LoadMissingAttributesForRecord(record, attributes);
                 }
-                if (GetUpdateRecord(record, attributes, current) is BDUEntity updateentity && updateentity.Attributes.Count > 0)
+                if (GetUpdateRecord(record, attributes, current) is BDUEntity updateentity &&
+                    updateentity.Attributes.Where(a => !job.Update.SetImpSeqNo || a.Key != "importsequencenumber").Count() > 0)
                 {
                     entities.Add(updateentity);
                     if (entities.Count >= executeoptions.BatchSize || current == total)
