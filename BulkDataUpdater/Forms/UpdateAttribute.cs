@@ -202,8 +202,16 @@ namespace Cinteros.XTB.BulkDataUpdater.Forms
                     }
                     else if (bai.Value is EntityReference er)
                     {
-                        xrmRecordAttribute.LogicalName = er.LogicalName;
-                        xrmRecordAttribute.Id = er.Id;
+                        try
+                        {
+                            xrmRecordAttribute.LogicalName = er.LogicalName;
+                            xrmRecordAttribute.Id = er.Id;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBoxEx.Show(bdu, $"Error setting record reference: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            xrmRecordAttribute.Record = null;
+                        }
                     }
                     else if (bai.Attribute.Metadata is MemoAttributeMetadata)
                     {
