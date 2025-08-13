@@ -96,7 +96,7 @@ namespace Cinteros.XTB.BulkDataUpdater
                             records = result;
                             fetchResulCount = records.Entities.Count;
                         }
-                        entitymeta = entities.FirstOrDefault(e => e.LogicalName == records?.EntityName);
+                        entitymeta = GetEntity(records?.EntityName);
                     }
                     RetrieveRecordsReady();
                 },

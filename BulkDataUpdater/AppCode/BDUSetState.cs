@@ -272,7 +272,7 @@ namespace Cinteros.XTB.BulkDataUpdater
 
         private void SetSetStateFromJob(JobSetState job)
         {
-            LoadStates(entities?.FirstOrDefault(ent => ent.LogicalName == records?.EntityName), job?.State);
+            LoadStates(GetEntity(records?.EntityName), job?.State);
         }
 
         private void UpdateJobSetState(JobSetState job)

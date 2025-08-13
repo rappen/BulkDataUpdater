@@ -41,11 +41,16 @@
             this.tsbOpenJob = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveJob = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.tsbFriendly = new System.Windows.Forms.ToolStripButton();
-            this.tsbRaw = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCancel = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbSettings = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tsbFriendly = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbRaw = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiMetadata = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMetadataCache = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMetadataLoad = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiMetadataOneByOne = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.tslAbout = new System.Windows.Forms.ToolStripLabel();
             this.tslDoc = new System.Windows.Forms.ToolStripLabel();
@@ -140,11 +145,9 @@
             this.tsbOpenJob,
             this.tsbSaveJob,
             this.toolStripSeparator1,
-            this.toolStripLabel1,
-            this.tsbFriendly,
-            this.tsbRaw,
-            this.toolStripSeparator2,
             this.tsbCancel,
+            this.toolStripSeparator2,
+            this.tsbSettings,
             this.toolStripSeparator17,
             this.tslAbout,
             this.tslDoc,
@@ -182,7 +185,7 @@
             // 
             this.rsmFetchXml.Image = ((System.Drawing.Image)(resources.GetObject("rsmFetchXml.Image")));
             this.rsmFetchXml.Name = "rsmFetchXml";
-            this.rsmFetchXml.Size = new System.Drawing.Size(196, 38);
+            this.rsmFetchXml.Size = new System.Drawing.Size(176, 22);
             this.rsmFetchXml.Tag = "Edit";
             this.rsmFetchXml.Text = "Edit Fetch XML...";
             this.rsmFetchXml.Click += new System.EventHandler(this.btnGetRecords_Click);
@@ -191,7 +194,7 @@
             // 
             this.tsmFetchView.Image = ((System.Drawing.Image)(resources.GetObject("tsmFetchView.Image")));
             this.tsmFetchView.Name = "tsmFetchView";
-            this.tsmFetchView.Size = new System.Drawing.Size(196, 38);
+            this.tsmFetchView.Size = new System.Drawing.Size(176, 22);
             this.tsmFetchView.Tag = "View";
             this.tsmFetchView.Text = "Open View...";
             this.tsmFetchView.Click += new System.EventHandler(this.btnGetRecords_Click);
@@ -228,42 +231,6 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
             // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(48, 36);
-            this.toolStripLabel1.Text = "Display:";
-            // 
-            // tsbFriendly
-            // 
-            this.tsbFriendly.BackColor = System.Drawing.SystemColors.Window;
-            this.tsbFriendly.Checked = true;
-            this.tsbFriendly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsbFriendly.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.tsbFriendly.Image = ((System.Drawing.Image)(resources.GetObject("tsbFriendly.Image")));
-            this.tsbFriendly.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbFriendly.Name = "tsbFriendly";
-            this.tsbFriendly.Size = new System.Drawing.Size(85, 36);
-            this.tsbFriendly.Text = "Friendly";
-            this.tsbFriendly.ToolTipText = "Friendly columns and data will be shown";
-            this.tsbFriendly.Click += new System.EventHandler(this.tsbFriendly_Click);
-            // 
-            // tsbRaw
-            // 
-            this.tsbRaw.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.tsbRaw.Image = ((System.Drawing.Image)(resources.GetObject("tsbRaw.Image")));
-            this.tsbRaw.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRaw.Name = "tsbRaw";
-            this.tsbRaw.Size = new System.Drawing.Size(65, 36);
-            this.tsbRaw.Text = "Raw";
-            this.tsbRaw.ToolTipText = "LogicalName columns and guids, numbers etc data will be shown";
-            this.tsbRaw.Click += new System.EventHandler(this.tsbFriendly_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
-            // 
             // tsbCancel
             // 
             this.tsbCancel.Enabled = false;
@@ -274,6 +241,100 @@
             this.tsbCancel.Text = "Cancel";
             this.tsbCancel.ToolTipText = "Cancel if it takes too long time...";
             this.tsbCancel.Click += new System.EventHandler(this.tsbCancel_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
+            // 
+            // tsbSettings
+            // 
+            this.tsbSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbFriendly,
+            this.tsbRaw,
+            this.toolStripMenuItem1,
+            this.tsmiMetadata});
+            this.tsbSettings.Image = ((System.Drawing.Image)(resources.GetObject("tsbSettings.Image")));
+            this.tsbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSettings.Name = "tsbSettings";
+            this.tsbSettings.Size = new System.Drawing.Size(94, 36);
+            this.tsbSettings.Text = "Settings";
+            // 
+            // tsbFriendly
+            // 
+            this.tsbFriendly.BackColor = System.Drawing.SystemColors.Window;
+            this.tsbFriendly.Checked = true;
+            this.tsbFriendly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbFriendly.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tsbFriendly.Image = ((System.Drawing.Image)(resources.GetObject("tsbFriendly.Image")));
+            this.tsbFriendly.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbFriendly.Name = "tsbFriendly";
+            this.tsbFriendly.Size = new System.Drawing.Size(196, 38);
+            this.tsbFriendly.Text = "Friendly";
+            this.tsbFriendly.ToolTipText = "Friendly columns and data will be shown";
+            this.tsbFriendly.Click += new System.EventHandler(this.tsbFriendly_Click);
+            // 
+            // tsbRaw
+            // 
+            this.tsbRaw.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tsbRaw.Image = ((System.Drawing.Image)(resources.GetObject("tsbRaw.Image")));
+            this.tsbRaw.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRaw.Name = "tsbRaw";
+            this.tsbRaw.Size = new System.Drawing.Size(196, 38);
+            this.tsbRaw.Text = "Raw";
+            this.tsbRaw.ToolTipText = "LogicalName columns and guids, numbers etc data will be shown";
+            this.tsbRaw.Click += new System.EventHandler(this.tsbFriendly_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(193, 6);
+            // 
+            // tsmiMetadata
+            // 
+            this.tsmiMetadata.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiMetadataCache,
+            this.tsmiMetadataLoad,
+            this.tsmiMetadataOneByOne});
+            this.tsmiMetadata.Image = ((System.Drawing.Image)(resources.GetObject("tsmiMetadata.Image")));
+            this.tsmiMetadata.Name = "tsmiMetadata";
+            this.tsmiMetadata.Size = new System.Drawing.Size(196, 38);
+            this.tsmiMetadata.Text = "Metadata";
+            this.tsmiMetadata.ToolTipText = "Metadata is needed for this tool, it can\r\nbe loaded in three different flavors.";
+            // 
+            // tsmiMetadataCache
+            // 
+            this.tsmiMetadataCache.Checked = true;
+            this.tsmiMetadataCache.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsmiMetadataCache.Image = ((System.Drawing.Image)(resources.GetObject("tsmiMetadataCache.Image")));
+            this.tsmiMetadataCache.Name = "tsmiMetadataCache";
+            this.tsmiMetadataCache.Size = new System.Drawing.Size(252, 38);
+            this.tsmiMetadataCache.Tag = "Cache";
+            this.tsmiMetadataCache.Text = "Cache included in XrmToolBox";
+            this.tsmiMetadataCache.ToolTipText = "The general cache for all metadata in the\r\nenvironment helps us all, but it may g" +
+    "et\r\nstuck sometimes...";
+            this.tsmiMetadataCache.Click += new System.EventHandler(this.tsmiMetadata_Click);
+            // 
+            // tsmiMetadataLoad
+            // 
+            this.tsmiMetadataLoad.Image = ((System.Drawing.Image)(resources.GetObject("tsmiMetadataLoad.Image")));
+            this.tsmiMetadataLoad.Name = "tsmiMetadataLoad";
+            this.tsmiMetadataLoad.Size = new System.Drawing.Size(252, 38);
+            this.tsmiMetadataLoad.Tag = "Load";
+            this.tsmiMetadataLoad.Text = "Load all entities";
+            this.tsmiMetadataLoad.ToolTipText = "This is the old classical way to load everything a once.";
+            this.tsmiMetadataLoad.Click += new System.EventHandler(this.tsmiMetadata_Click);
+            // 
+            // tsmiMetadataOneByOne
+            // 
+            this.tsmiMetadataOneByOne.Image = ((System.Drawing.Image)(resources.GetObject("tsmiMetadataOneByOne.Image")));
+            this.tsmiMetadataOneByOne.Name = "tsmiMetadataOneByOne";
+            this.tsmiMetadataOneByOne.Size = new System.Drawing.Size(252, 38);
+            this.tsmiMetadataOneByOne.Tag = "OneByOne";
+            this.tsmiMetadataOneByOne.Text = "One by one when needed";
+            this.tsmiMetadataOneByOne.ToolTipText = "This flavor is a fast way to get started, although\r\nit has to be used carefully, " +
+    "since it may be\r\nmissing metadata.\r\nPlease give me constructive feedback!";
+            this.tsmiMetadataOneByOne.Click += new System.EventHandler(this.tsmiMetadata_Click);
             // 
             // toolStripSeparator17
             // 
@@ -459,6 +520,11 @@
             this.crmGridView1.ColumnOrder = "";
             this.crmGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmGridView1.FilterColumns = "";
+            this.crmGridView1.Filtering.And = false;
+            this.crmGridView1.Filtering.Columns = "";
+            this.crmGridView1.Filtering.Not = false;
+            this.crmGridView1.Filtering.RegEx = false;
+            this.crmGridView1.Filtering.Text = "";
             this.crmGridView1.LayoutXML = "";
             this.crmGridView1.Location = new System.Drawing.Point(0, 43);
             this.crmGridView1.Name = "crmGridView1";
@@ -1077,9 +1143,8 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ToolStripButton tsbFriendly;
-        private System.Windows.Forms.ToolStripButton tsbRaw;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripMenuItem tsbFriendly;
+        private System.Windows.Forms.ToolStripMenuItem tsbRaw;
         private System.Windows.Forms.NumericUpDown numImpSeqNo;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox chkDefImpSeqNo;
@@ -1100,5 +1165,11 @@
         private System.Windows.Forms.ToolStripButton tsbSupporting;
         private System.Windows.Forms.Button btnSaveLog;
         private System.Windows.Forms.CheckBox chkAskForExecuteOptions;
+        private System.Windows.Forms.ToolStripDropDownButton tsbSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMetadata;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMetadataCache;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMetadataLoad;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMetadataOneByOne;
     }
 }

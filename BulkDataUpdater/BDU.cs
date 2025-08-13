@@ -48,6 +48,8 @@
         private const string aiKey2 = "d46e9c12-ee8b-4b28-9643-dae62ae7d3d4";    // jonas@jonasr.app, XrmToolBoxTools
         private AppInsights ai1 = new AppInsights(aiEndpoint, aiKey1, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
         private AppInsights ai2 = new AppInsights(aiEndpoint, aiKey2, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
+        private GlobalSettings globalsettings;
+        private bool allmetadataloaded = false;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
         private string deleteWarningText;
         private int fetchResulCount = -1;
@@ -413,17 +415,26 @@
         private void LoadGlobalSetting()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out GlobalSettings globalsettings, "[Global]"))
+            if (!SettingsManager.Instance.TryLoad(typeof(BulkDataUpdater), out globalsettings, "[Global]"))
             {
                 globalsettings = new GlobalSettings();
             }
+            tsmiMetadataLoad.Checked = globalsettings.Metadata == tsmiMetadataLoad.Tag as string;
+            tsmiMetadataOneByOne.Checked = globalsettings.Metadata == tsmiMetadataOneByOne.Tag as string;
+            tsmiMetadataCache.Checked = !tsmiMetadataLoad.Checked && !tsmiMetadataOneByOne.Checked;
+
             if (!version.Equals(globalsettings.CurrentVersion))
             {
                 // Reset some settings when new version is deployed
                 globalsettings.CurrentVersion = version;
-                SettingsManager.Instance.Save(typeof(BulkDataUpdater), globalsettings, "[Global]");
+                SaveGlobalSettings();
                 UrlUtils.OpenUrl($"https://jonasr.app/BDU/releases/#{version}");
             }
+        }
+
+        private void SaveGlobalSettings()
+        {
+            SettingsManager.Instance.Save(typeof(BulkDataUpdater), globalsettings, "[Global]");
         }
 
         private void LoadSetting()
@@ -593,11 +604,16 @@
 
         private void AfterEntitiesLoaded(IEnumerable<EntityMetadata> metadatas, bool forcereload)
         {
+            allmetadataloaded = metadatas?.Count() > 50;
             entities = metadatas?.ToList();
             EnableControls(true);
             if (entities != null)
             {
                 UseJob(!string.IsNullOrWhiteSpace(job?.FetchXML) && fetchResulCount > 0 && fetchResulCount < 100);
+            }
+            else
+            {
+                entities = new List<EntityMetadata>();
             }
         }
 
@@ -633,16 +649,24 @@
                         {
                             throw new Exception("Need a connection to load views.");
                         }
+                        if (!allmetadataloaded)
+                        {
+                            worker.ReportProgress(0, "Loading all metadata...");
+                            entities = Service.LoadEntities().EntityMetadata.ToList();
+                            allmetadataloaded = true;
+                        }
+                        worker.ReportProgress(0, "Loading system views...");
                         var qexs = new QueryExpression("savedquery");
                         qexs.ColumnSet = new ColumnSet("name", "returnedtypecode", "fetchxml", "layoutxml", "iscustomizable");
                         qexs.Criteria.AddCondition("statecode", ConditionOperator.Equal, 0);
                         qexs.Criteria.AddCondition("fetchxml", ConditionOperator.NotNull);
                         qexs.AddOrder("name", OrderType.Ascending);
                         var sysviews = Service.RetrieveMultipleAll(qexs, worker, eventargs, null, false);
+                        worker.ReportProgress(0, $"Importing {sysviews.Entities.Count} system views...");
                         foreach (var view in sysviews.Entities)
                         {
                             var entityname = view["returnedtypecode"].ToString();
-                            if (!string.IsNullOrWhiteSpace(entityname) && GetEntity(entityname) != null)
+                            if (!string.IsNullOrWhiteSpace(entityname) /*&& GetEntity(entityname, false) != null*/)
                             {
                                 if (views == null)
                                 {
@@ -655,15 +679,17 @@
                                 views[entityname + "|S"].Add(view);
                             }
                         }
+                        worker.ReportProgress(0, "Loading personal views...");
                         var qexu = new QueryExpression("userquery");
                         qexu.ColumnSet = new ColumnSet("name", "returnedtypecode", "fetchxml", "layoutxml");
                         qexu.Criteria.AddCondition("statecode", ConditionOperator.Equal, 0);
                         qexu.AddOrder("name", OrderType.Ascending);
                         var userviews = Service.RetrieveMultipleAll(qexu, worker, eventargs, null, false);
+                        worker.ReportProgress(0, $"Importing {userviews.Entities.Count} personal views...");
                         foreach (var view in userviews.Entities)
                         {
                             var entityname = view["returnedtypecode"].ToString();
-                            if (!string.IsNullOrWhiteSpace(entityname) && GetEntity(entityname) != null)
+                            if (!string.IsNullOrWhiteSpace(entityname) /*&& GetEntity(entityname, false) != null*/)
                             {
                                 if (views == null)
                                 {
@@ -689,12 +715,31 @@
                     {
                         viewsLoaded();
                     }
+                },
+                ProgressChanged = (changeargs) =>
+                {
+                    SetWorkingMessage(changeargs.UserState.ToString());
                 }
             });
         }
 
-        internal EntityMetadata GetEntity(string entityname)
+        internal EntityMetadata GetEntity(string entityname, bool loadifmissing = true)
         {
+            if (string.IsNullOrWhiteSpace(entityname))
+            {
+                return null;
+            }
+            if (!allmetadataloaded && loadifmissing && entities?.Any(e => e.LogicalName.Equals(entityname)) != true)
+            {
+                if (entities == null)
+                {
+                    entities = new List<EntityMetadata>();
+                }
+                if (Service?.LoadEntityDetails(entityname) is EntityMetadata entitymeta)
+                {
+                    entities.Add(entitymeta);
+                }
+            }
             return entities?.FirstOrDefault(e => e.LogicalName.Equals(entityname));
         }
 
@@ -781,6 +826,7 @@
             xrmRecordAttribute.Service = Service;
             crmGridView1.DataSource = null;
             entities = null;
+            allmetadataloaded = false;
             if (string.IsNullOrEmpty(currentconnection) ||
                 currentconnection == e.ConnectionDetail.ConnectionName ||
                 MessageBoxEx.Show($"Changing connection from '{currentconnection}' to '{e.ConnectionDetail.ConnectionName}'.\n\nWe usually reload settings for the new connection, shall we?", "Connected Connection", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -789,12 +835,27 @@
             }
             currentconnection = e.ConnectionDetail.ConnectionName;
             EnableControls(false);
-            this.GetAllEntityMetadatas(AfterEntitiesLoaded);
+            if (globalsettings == null)
+            {
+                LoadGlobalSetting();
+            }
+            if (globalsettings.Metadata == tsmiMetadataOneByOne.Tag as string)
+            {
+                LogInfo("Metadata loaded when needed");
+                AfterEntitiesLoaded(null, false);
+            }
+            else
+            {
+                this.GetAllEntityMetadatas(AfterEntitiesLoaded, globalsettings.Metadata == tsmiMetadataCache.Tag as string);
+            }
         }
 
         private void DataUpdater_Load(object sender, EventArgs e)
         {
-            LoadGlobalSetting();
+            if (globalsettings == null)
+            {
+                LoadGlobalSetting();
+            }
             LogUse("Load", ai2: true);
             Supporting.ShowIf(this, false, true, ai2);
             if (Supporting.IsEnabled(this))
@@ -983,6 +1044,31 @@
                     Process.Start(savedlg.FileName);
                 }
             }
+        }
+
+        private void tsmiMetadata_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem ctrl))
+            {
+                ctrl = tsmiMetadataCache;
+            }
+            if (ctrl.Checked)
+            {   // Not changed setting
+                return;
+            }
+            if (globalsettings == null)
+            {
+                LoadGlobalSetting();
+            }
+            globalsettings.Metadata = ctrl.Tag as string;
+            SaveGlobalSettings();
+            foreach (var item in tsmiMetadata.DropDownItems.OfType<ToolStripMenuItem>())
+            {
+                item.Checked = item == ctrl;
+            }
+            MessageBoxEx.Show(this, "Metadata setting is changed.\n" +
+                "To try again, close this tool and start it again, or change your connection.", "Metadata",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 
