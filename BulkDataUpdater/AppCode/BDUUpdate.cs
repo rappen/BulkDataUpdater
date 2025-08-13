@@ -98,6 +98,10 @@ namespace Cinteros.XTB.BulkDataUpdater
                         var logreq = log.AddRequest(entities);
                         if (entities.Count == 1)
                         {
+                            if (isn)
+                            {
+                                throw new Exception("Import Sequence Number can only be set by UpdateMultiple.");
+                            }
                             failed += ExecuteRequest(new UpdateRequest { Target = entities.FirstOrDefault() }, executeoptions, logreq);
                         }
                         else
