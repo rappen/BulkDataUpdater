@@ -419,9 +419,10 @@
             {
                 globalsettings = new GlobalSettings();
             }
+            tsmiMetadataCache.Checked = globalsettings.Metadata == tsmiMetadataCache.Tag as string;
             tsmiMetadataLoad.Checked = globalsettings.Metadata == tsmiMetadataLoad.Tag as string;
             tsmiMetadataOneByOne.Checked = globalsettings.Metadata == tsmiMetadataOneByOne.Tag as string;
-            tsmiMetadataCache.Checked = !tsmiMetadataLoad.Checked && !tsmiMetadataOneByOne.Checked;
+            tsmiMetadataCacheBg.Checked = !tsmiMetadataCache.Checked && !tsmiMetadataLoad.Checked && !tsmiMetadataOneByOne.Checked;
 
             if (!version.Equals(globalsettings.CurrentVersion))
             {
@@ -846,7 +847,9 @@
             }
             else
             {
-                this.GetAllEntityMetadatas(AfterEntitiesLoaded, globalsettings.Metadata == tsmiMetadataCache.Tag as string);
+                var cache = globalsettings.Metadata == tsmiMetadataCache.Tag as string || globalsettings.Metadata == tsmiMetadataCacheBg.Tag as string;
+                var wait = globalsettings.Metadata != tsmiMetadataCacheBg.Tag as string;
+                this.GetAllEntityMetadatas(AfterEntitiesLoaded, cache, wait);
             }
         }
 

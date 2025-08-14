@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkDataUpdater));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbFetch = new System.Windows.Forms.ToolStripDropDownButton();
@@ -104,6 +104,7 @@
             this.tabDelete = new System.Windows.Forms.TabPage();
             this.txtDeleteWarning = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tsmiMetadataCacheBg = new System.Windows.Forms.ToolStripMenuItem();
             this.crmGridView1 = new Rappen.XTB.Helpers.Controls.XRMDataGridView();
             this.xrmAssignText = new Rappen.XTB.Helpers.Controls.XRMColumnText();
             this.xrmRecordAssign = new Rappen.XTB.Helpers.Controls.XRMRecordHost();
@@ -293,6 +294,7 @@
             // tsmiMetadata
             // 
             this.tsmiMetadata.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiMetadataCacheBg,
             this.tsmiMetadataCache,
             this.tsmiMetadataLoad,
             this.tsmiMetadataOneByOne});
@@ -300,19 +302,19 @@
             this.tsmiMetadata.Name = "tsmiMetadata";
             this.tsmiMetadata.Size = new System.Drawing.Size(196, 38);
             this.tsmiMetadata.Text = "Metadata";
-            this.tsmiMetadata.ToolTipText = "Metadata is needed for this tool, it can\r\nbe loaded in three different flavors.";
+            this.tsmiMetadata.ToolTipText = "Metadata is needed for this tool, it can\r\nbe loaded in three different flavors.\r\n" +
+    "\r\nIf you find any weird behaviour - please report it from menu:\r\nHelp - Feedback" +
+    " for Bulk Data Updater";
             // 
             // tsmiMetadataCache
             // 
-            this.tsmiMetadataCache.Checked = true;
-            this.tsmiMetadataCache.CheckState = System.Windows.Forms.CheckState.Checked;
             this.tsmiMetadataCache.Image = ((System.Drawing.Image)(resources.GetObject("tsmiMetadataCache.Image")));
             this.tsmiMetadataCache.Name = "tsmiMetadataCache";
-            this.tsmiMetadataCache.Size = new System.Drawing.Size(283, 38);
+            this.tsmiMetadataCache.Size = new System.Drawing.Size(332, 38);
             this.tsmiMetadataCache.Tag = "Cache";
-            this.tsmiMetadataCache.Text = "Using cache included in XrmToolBox";
+            this.tsmiMetadataCache.Text = "XrmToolBox Cache: waiting until it loaded";
             this.tsmiMetadataCache.ToolTipText = "The general cache for all metadata in the\r\nenvironment helps us all, but it may g" +
-    "et\r\nstuck sometimes...";
+    "et\r\nstuck sometimes...\r\nIt used to load in this way earlier.";
             this.tsmiMetadataCache.Click += new System.EventHandler(this.tsmiMetadata_Click);
             // 
             // tsmiMetadataLoad
@@ -964,14 +966,26 @@
     "NOT be undone.\r\n\r\nWhen the Delete button is clicked, there is one confirmation q" +
     "uestion, and then point of no return.";
             // 
+            // tsmiMetadataCacheBg
+            // 
+            this.tsmiMetadataCacheBg.Checked = true;
+            this.tsmiMetadataCacheBg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsmiMetadataCacheBg.Image = ((System.Drawing.Image)(resources.GetObject("tsmiMetadataCacheBg.Image")));
+            this.tsmiMetadataCacheBg.Name = "tsmiMetadataCacheBg";
+            this.tsmiMetadataCacheBg.Size = new System.Drawing.Size(332, 38);
+            this.tsmiMetadataCacheBg.Tag = "CacheBg";
+            this.tsmiMetadataCacheBg.Text = "XrmToolBox Cache: loaded in the background";
+            this.tsmiMetadataCacheBg.ToolTipText = resources.GetString("tsmiMetadataCacheBg.ToolTipText");
+            this.tsmiMetadataCacheBg.Click += new System.EventHandler(this.tsmiMetadata_Click);
+            // 
             // crmGridView1
             // 
             this.crmGridView1.AllowUserToAddRows = false;
             this.crmGridView1.AllowUserToDeleteRows = false;
             this.crmGridView1.AllowUserToOrderColumns = true;
             this.crmGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.crmGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.crmGridView1.AutoRefresh = false;
             this.crmGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.crmGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -1173,5 +1187,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMetadataCache;
         private System.Windows.Forms.ToolStripMenuItem tsmiMetadataLoad;
         private System.Windows.Forms.ToolStripMenuItem tsmiMetadataOneByOne;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMetadataCacheBg;
     }
 }
