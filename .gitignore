@@ -10,3 +10,4 @@
 *.csproj.user
 **/.vs
 /tmp
+/MigrationBackup/*

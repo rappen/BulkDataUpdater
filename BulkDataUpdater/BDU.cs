@@ -11,6 +11,7 @@
     using Rappen.XTB;
     using Rappen.XTB.Helpers;
     using Rappen.XTB.Helpers.Extensions;
+    using Rappen.XTB.Helpers.RappXTB;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -22,7 +23,7 @@
     using Xrm.Common.Forms;
     using XrmToolBox.Extensibility;
 
-    public partial class BulkDataUpdater : PluginControlBase
+    public partial class BulkDataUpdater : RappPluginControlBase
     {
         #region Internal Fields
 
@@ -43,11 +44,6 @@
 
         #region Private Fields
 
-        private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
-        private const string aiKey1 = "eed73022-2444-45fd-928b-5eebd8fa46a6";    // jonas@rappen.net tenant, XrmToolBox
-        private const string aiKey2 = "d46e9c12-ee8b-4b28-9643-dae62ae7d3d4";    // jonas@jonasr.app, XrmToolBoxTools
-        private AppInsights ai1 = new AppInsights(aiEndpoint, aiKey1, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
-        private AppInsights ai2 = new AppInsights(aiEndpoint, aiKey2, Assembly.GetExecutingAssembly(), "Bulk Data Updater");
         private GlobalSettings globalsettings;
         private bool allmetadataloaded = false;
         private static string fetchTemplate = "<fetch><entity name=\"\"/></fetch>";
@@ -106,7 +102,7 @@
         public override void ClosingPlugin(PluginCloseInfo info)
         {
             SaveSetting();
-            LogUse("Close", ai2: true);
+            LogUse("Close", newAppInsights: true);
         }
 
         #endregion Public Methods
@@ -392,7 +388,7 @@
                     MessageBoxEx.Show(this, "Select record source.", "Get Records", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     break;
             }
-            LogUse(tag, records?.Entities?.Count);
+            LogUse(tag, count: records?.Entities?.Count);
         }
 
         private void LoadMissingAttributesForRecord(Entity record, IEnumerable<BulkActionItem> attributes)
@@ -621,19 +617,44 @@
         private JobExecute GetJobAction()
         {
             JobExecute jobaction = null;
-            if (tabControl1.SelectedTab == tabUpdate) jobaction = job.Update;
-            else if (tabControl1.SelectedTab == tabAssign) jobaction = job.Assign;
-            else if (tabControl1.SelectedTab == tabSetState) jobaction = job.SetState;
-            else if (tabControl1.SelectedTab == tabDelete) jobaction = job.Delete;
+            if (tabControl1.SelectedTab == tabUpdate)
+            {
+                jobaction = job.Update;
+            }
+            else if (tabControl1.SelectedTab == tabAssign)
+            {
+                jobaction = job.Assign;
+            }
+            else if (tabControl1.SelectedTab == tabSetState)
+            {
+                jobaction = job.SetState;
+            }
+            else if (tabControl1.SelectedTab == tabDelete)
+            {
+                jobaction = job.Delete;
+            }
+
             return jobaction;
         }
 
         private void ExecuteAction(JobExecute jobaction)
         {
-            if (jobaction is JobUpdate) UpdateRecords(jobaction.ExecuteOptions);
-            else if (jobaction is JobAssign) AssignRecords(jobaction.ExecuteOptions);
-            else if (jobaction is JobSetState) SetStateRecords(jobaction.ExecuteOptions);
-            else if (jobaction is JobDelete) DeleteRecords(jobaction.ExecuteOptions);
+            if (jobaction is JobUpdate)
+            {
+                UpdateRecords(jobaction.ExecuteOptions);
+            }
+            else if (jobaction is JobAssign)
+            {
+                AssignRecords(jobaction.ExecuteOptions);
+            }
+            else if (jobaction is JobSetState)
+            {
+                SetStateRecords(jobaction.ExecuteOptions);
+            }
+            else if (jobaction is JobDelete)
+            {
+                DeleteRecords(jobaction.ExecuteOptions);
+            }
         }
 
         internal void LoadViews(Action viewsLoaded)
@@ -859,8 +880,8 @@
             {
                 LoadGlobalSetting();
             }
-            LogUse("Load", ai2: true);
-            Supporting.ShowIf(this, false, true, ai2);
+            LogUse("Load", newAppInsights: true);
+            Supporting.ShowIf(this, ShowItFrom.Open, false, true);
             if (Supporting.IsEnabled(this))
             {
                 tsbSupporting.Visible = true;
@@ -986,7 +1007,7 @@
 
         private void linkShowImpSeqNoRecords_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            string fetch = GetFetchFromISN();
+            var fetch = GetFetchFromISN();
             OnOutgoingMessage(this, new MessageBusEventArgs("FetchXML Builder", true) { TargetArgument = fetch });
         }
 
@@ -1007,7 +1028,7 @@
 
         private void tsbSupporting_Click(object sender, EventArgs e)
         {
-            Supporting.ShowIf(this, true, false, ai2);
+            Supporting.ShowIf(this, ShowItFrom.Button, true, false, sync: true);
         }
 
         private void btnSaveLog_Click(object sender, EventArgs e)

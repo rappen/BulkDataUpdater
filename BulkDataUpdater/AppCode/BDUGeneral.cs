@@ -18,26 +18,6 @@ namespace Cinteros.XTB.BulkDataUpdater
     {
         private bool updatingExecuteOptions;
 
-        internal void LogUse(string action, double? count = null, double? duration = null, bool ai1 = true, bool ai2 = false)
-        {
-            if (ai1)
-            {
-                this.ai1.WriteEvent(action, count, duration, HandleAIResult);
-            }
-            if (ai2)
-            {
-                this.ai2.WriteEvent(action, count, duration, HandleAIResult);
-            }
-        }
-
-        private void HandleAIResult(string result)
-        {
-            if (!string.IsNullOrEmpty(result))
-            {
-                LogError("Failed to write to Application Insights:\n{0}", result);
-            }
-        }
-
         private void RetrieveRecords()
         {
             if (working)
@@ -367,10 +347,10 @@ namespace Cinteros.XTB.BulkDataUpdater
             else if (completedargs.Result is Tuple<int, int, long> result)
             {
                 lblUpdateStatus.Text = $"{result.Item1} records updated, {result.Item2} records failed.";
-                LogUse(log.Action, result.Item1, result.Item3);
+                LogUse(log.Action, count: result.Item1, duration: result.Item3);
                 if (result.Item2 > 0)
                 {
-                    LogUse("Failed", result.Item2);
+                    LogUse("Failed", count: result.Item2);
                 }
                 if (MessageBoxEx.Show(this, $"{log.Action} completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {

@@ -1,7 +1,6 @@
 ﻿namespace Cinteros.XTB.BulkDataUpdater
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.IO;
     using System.Linq;
@@ -24,7 +23,25 @@
 
         public string EmailAccount => "jonas@rappen.net";
 
-        public override IXrmToolBoxPluginControl GetControl() => new BulkDataUpdater();
+        public override IXrmToolBoxPluginControl GetControl()
+        {
+            var tool = new BulkDataUpdater();
+            tool.SaveImageFromBase64(
+                tool.IconBigPath,
+                GetType()
+                .GetCustomAttributes(typeof(ExportMetadataAttribute), false)
+                .OfType<ExportMetadataAttribute>()
+                .FirstOrDefault(a => a.Name == "BigImageBase64")?.Value as string);
+            tool.SaveImageFromBase64(
+                tool.IconSmallPath,
+                GetType()
+                .GetCustomAttributes(typeof(ExportMetadataAttribute), false)
+                .OfType<ExportMetadataAttribute>()
+                .FirstOrDefault(a => a.Name == "SmallImageBase64")?.Value as string);
+            return tool;
+        }
+
+        public override Guid GetId() => XrmToolBoxToolIds.BulkDataUpdater;
 
         public BulkDataUpdaterTool()
         {
@@ -42,21 +59,21 @@
         private Assembly AssemblyResolveEventHandler(object sender, ResolveEventArgs args)
         {
             Assembly loadAssembly = null;
-            Assembly currAssembly = Assembly.GetExecutingAssembly();
+            var currAssembly = Assembly.GetExecutingAssembly();
 
             // base name of the assembly that failed to resolve
             var argName = args.Name.Substring(0, args.Name.IndexOf(","));
 
             // check to see if the failing assembly is one that we reference.
-            List<AssemblyName> refAssemblies = currAssembly.GetReferencedAssemblies().ToList();
+            var refAssemblies = currAssembly.GetReferencedAssemblies().ToList();
             var refAssembly = refAssemblies.Where(a => a.Name == argName).FirstOrDefault();
 
             // if the current unresolved assembly is referenced by our plugin, attempt to load
             if (refAssembly != null)
             {
                 // load from the path to this plugin assembly, not host executable
-                string dir = Path.GetDirectoryName(currAssembly.Location).ToLower();
-                string folder = Path.GetFileNameWithoutExtension(currAssembly.Location);
+                var dir = Path.GetDirectoryName(currAssembly.Location).ToLower();
+                var folder = Path.GetFileNameWithoutExtension(currAssembly.Location);
                 dir = Path.Combine(dir, folder);
 
                 var assmbPath = Path.Combine(dir, $"{argName}.dll");
@@ -73,7 +90,5 @@
 
             return loadAssembly;
         }
-
-        public override Guid GetId() => XrmToolBoxToolIds.BulkDataUpdater;
     }
 }
