@@ -3,6 +3,7 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Rappen.XRM.Helpers;
 using Rappen.XRM.Helpers.Extensions;
+using Rappen.XTB.Helpers;
 using Rappen.XTB.Helpers.Extensions;
 using System;
 using System.Collections.Generic;
@@ -328,20 +329,35 @@ namespace Cinteros.XTB.BulkDataUpdater
             log.SaveXML(this);
             working = false;
             EnableControls(true, false);
+            var isShownAndActive = this.IsShownAndActive();
             if (completedargs.Error != null)
             {
-                ShowErrorDialog(completedargs.Error, log.Action.ToString());
-                if (MessageBoxEx.Show(this, $"Error occured.\nRun query to get records again, to verify {log.ActionWas.ToLowerInvariant()}.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                if (isShownAndActive)
                 {
-                    RetrieveRecords();
+                    ShowErrorDialog(completedargs.Error, log.Action.ToString());
+                    if (MessageBoxEx.Show(this, "Error occured.\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                    {
+                        RetrieveRecords();
+                    }
+                }
+                else
+                {
+                    ToastHelper.ToastIt(this, "BulkDataUpdater", $"{log.Action} failed", "Restore Bulk Data Updater to review the error.");
                 }
             }
             else if (completedargs.Cancelled)
             {
                 Cursor = Cursors.Default;
-                if (MessageBoxEx.Show(this, $"Operation cancelled!\nRun query to get records again, to verify {log.ActionWas.ToLowerInvariant()}.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                if (isShownAndActive)
                 {
-                    RetrieveRecords();
+                    if (MessageBoxEx.Show(this, "Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                    {
+                        RetrieveRecords();
+                    }
+                }
+                else
+                {
+                    ToastHelper.ToastIt(this, "BulkDataUpdater", "Operation cancelled", "Restore Bulk Data Updater to review the results.");
                 }
             }
             else if (completedargs.Result is Tuple<int, int, long> result)
@@ -352,9 +368,16 @@ namespace Cinteros.XTB.BulkDataUpdater
                 {
                     LogUse("Failed", count: result.Item2);
                 }
-                if (MessageBoxEx.Show(this, $"{log.Action} completed!\nRun query to show {log.ActionWas.ToLowerInvariant()} records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                if (isShownAndActive)
                 {
-                    RetrieveRecords();
+                    if (MessageBoxEx.Show(this, $"{log.Action} completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                    {
+                        RetrieveRecords();
+                    }
+                }
+                else
+                {
+                    ToastHelper.ToastIt(this, "BulkDataUpdater", $"{log.Action} completed", $"{result.Item1} records updated, {result.Item2} failed. Restore Bulk Data Updater to refresh records.");
                 }
             }
             if (log.Action == BDUAction.Update && chkSetImpSeqNo.Checked)
