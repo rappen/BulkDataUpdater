@@ -41,7 +41,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 job.Delete.ExecuteOptions = executeoptions;
             }
-            var log = new BDULogRun(ConnectionDetail.ServiceClient, "Delete", entitymeta, includedrecords.Count());
+            var log = new BDULogRun(ConnectionDetail.ServiceClient, BDUAction.Delete, entitymeta, includedrecords.Count());
 
             WorkAsync(new WorkAsyncInfo()
             {

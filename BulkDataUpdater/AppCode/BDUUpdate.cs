@@ -46,7 +46,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             }
             job.Update.ExecuteOptions = executeoptions;
             var isn = selectedattributes.Any(a => a.Attribute.Metadata.LogicalName == "importsequencenumber");
-            var log = new BDULogRun(ConnectionDetail.ServiceClient, "Update", entitymeta, includedrecords.Count());
+            var log = new BDULogRun(ConnectionDetail.ServiceClient, BDUAction.Update, entitymeta, includedrecords.Count());
 
             WorkAsync(new WorkAsyncInfo()
             {

@@ -330,8 +330,8 @@ namespace Cinteros.XTB.BulkDataUpdater
             EnableControls(true, false);
             if (completedargs.Error != null)
             {
-                ShowErrorDialog(completedargs.Error, log.Action);
-                if (MessageBoxEx.Show(this, "Error occured.\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                ShowErrorDialog(completedargs.Error, log.Action.ToString());
+                if (MessageBoxEx.Show(this, $"Error occured.\nRun query to get records again, to verify {log.ActionWas.ToLowerInvariant()}.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     RetrieveRecords();
                 }
@@ -339,25 +339,25 @@ namespace Cinteros.XTB.BulkDataUpdater
             else if (completedargs.Cancelled)
             {
                 Cursor = Cursors.Default;
-                if (MessageBoxEx.Show(this, "Operation cancelled!\nRun query to get records again, to verify updated values.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                if (MessageBoxEx.Show(this, $"Operation cancelled!\nRun query to get records again, to verify {log.ActionWas.ToLowerInvariant()}.", "Cancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     RetrieveRecords();
                 }
             }
             else if (completedargs.Result is Tuple<int, int, long> result)
             {
-                lblUpdateStatus.Text = $"{result.Item1} records updated, {result.Item2} records failed.";
-                LogUse(log.Action, count: result.Item1, duration: result.Item3);
+                lblUpdateStatus.Text = $"{result.Item1} records {log.ActionWas.ToLowerInvariant()}, {result.Item2} records failed.";
+                LogUse(log.Action.ToString(), count: result.Item1, duration: result.Item3);
                 if (result.Item2 > 0)
                 {
                     LogUse("Failed", count: result.Item2);
                 }
-                if (MessageBoxEx.Show(this, $"{log.Action} completed!\nRun query to show updated records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                if (MessageBoxEx.Show(this, $"{log.Action} completed!\nRun query to show {log.ActionWas.ToLowerInvariant()} records?", "Bulk Data Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     RetrieveRecords();
                 }
             }
-            if (log.Action == "Update" && chkSetImpSeqNo.Checked)
+            if (log.Action == BDUAction.Update && chkSetImpSeqNo.Checked)
             {
                 linkShowImpSeqNoRecords.Enabled = true;
             }

@@ -51,7 +51,7 @@ namespace Cinteros.XTB.BulkDataUpdater
             {
                 job.SetState.ExecuteOptions = executeoptions;
             }
-            var log = new BDULogRun(ConnectionDetail.ServiceClient, "SetState", entitymeta, includedrecords.Count());
+            var log = new BDULogRun(ConnectionDetail.ServiceClient, BDUAction.SetState, entitymeta, includedrecords.Count());
 
             WorkAsync(new WorkAsyncInfo()
             {

@@ -22,7 +22,8 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         internal TimeSpan Duration;
 
         public DateTime TimeStamp { get; set; } = DateTime.Now;
-        public string Action { get; set; }
+
+        public BDUAction Action { get; set; }
 
         public string EntityLogicalName
         { get { return entitymeta?.LogicalName; } set { } }
@@ -40,7 +41,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         private BDULogRun()
         { }
 
-        public BDULogRun(IOrganizationService service, string action, EntityMetadata entitymeta, int recordcount)
+        public BDULogRun(IOrganizationService service, BDUAction action, EntityMetadata entitymeta, int recordcount)
         {
             this.service = service;
             this.entitymeta = entitymeta;
@@ -68,6 +69,15 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             Requests.Where(r => r.Duration == null || r.Duration.TotalMilliseconds == 0).ToList().ForEach(r => r.Finished());
             Requests.ForEach(r => Errors += r.Success ? 0 : 1);
         }
+
+        public string ActionWas => Action switch
+        {
+            BDUAction.Create => "Created",
+            BDUAction.Update => "Updated",
+            BDUAction.Assign => "Assigned",
+            BDUAction.SetState => "Set State",
+            BDUAction.Delete => "Deleted"
+        };
 
         public string FileName => $"BDU_{Action}_{EntityLogicalName}_{TimeStamp:yyyyMMdd_HHmmss}";
 
@@ -125,7 +135,7 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
             var headercol = rows.Max(r => r.Count) + 1;
             OnTheRight(rows, headerrow++, headercol, "Date", TimeStamp.ToShortDateString());
             OnTheRight(rows, headerrow++, headercol, "Time", TimeStamp.ToString("HH:mm:ss"));
-            OnTheRight(rows, headerrow++, headercol, "Action", Action);
+            OnTheRight(rows, headerrow++, headercol, "Action", Action.ToString());
             OnTheRight(rows, headerrow++, headercol, "Entity", EntityLogicalName);
             if (entitymeta?.ToDisplayName() is string table && !string.IsNullOrEmpty(table))
             {
@@ -298,5 +308,14 @@ namespace Cinteros.XTB.BulkDataUpdater.AppCode
         }
 
         internal List<string> ToFlatten(bool fillcells) => new List<string> { Action, DisplayName, NewValueString, OldValueString };
+    }
+
+    public enum BDUAction
+    {
+        Create,
+        Update,
+        Assign,
+        SetState,
+        Delete
     }
 }
